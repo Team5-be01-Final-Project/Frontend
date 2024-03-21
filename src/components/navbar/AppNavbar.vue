@@ -57,6 +57,7 @@ const { isSidebarMinimized } = storeToRefs(GlobalStore)
   display: flex;
   align-items: center;
   margin-left: 1rem;
+  width: 20%;
 
   & > * {
     margin-right: 1rem;
@@ -65,6 +66,13 @@ const { isSidebarMinimized } = storeToRefs(GlobalStore)
   & > *:last-child {
     margin-right: 0;
   }
+}
+
+.app-navbar__actions {
+  display: flex;
+  justify-content: center; /* 수평 가운데 정렬 */
+  align-items: center; /* 수직 가운데 정렬 */
+  flex: 1; /* 부모 요소의 남은 공간을 모두 차지하도록 설정 */
 }
 
 .icon-fade-enter-active,

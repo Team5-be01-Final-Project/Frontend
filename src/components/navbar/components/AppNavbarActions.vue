@@ -4,12 +4,12 @@
     <VaButton
       v-if="!isMobile"
       preset="secondary"
-      href="https://admin.vuestic.dev/"
+      href onclick="/src/pages/admin/dashboard/Dashboard.vue"
       target="_blank"
       color="textPrimary"
       class="app-navbar-actions__item flex-shrink-0 mx-0"
     >
-      {{ t('aboutVuesticAdmin') }}
+      {{ t('Home') }}
     </VaButton>
     <VaButton
       v-if="!isMobile"
@@ -19,16 +19,42 @@
       color="textPrimary"
       class="app-navbar-actions__item flex-shrink-0 mx-0"
     >
-      {{ t('helpAndSupport') }}
+      {{ t('시스템관리') }}
     </VaButton>
-    <NotificationDropdown class="app-navbar-actions__item" />
-    <ProfileDropdown class="app-navbar-actions__item app-navbar-actions__item--profile mr-1" />
+    <VaButton
+      v-if="!isMobile"
+      preset="secondary"
+      href="https://admin.vuestic.dev/"
+      target="_blank"
+      color="textPrimary"
+      class="app-navbar-actions__item flex-shrink-0 mx-0"
+    >
+      {{ t('상품관리') }}
+    </VaButton>
+    <VaButton
+      v-if="!isMobile"
+      preset="secondary"
+      href="https://admin.vuestic.dev/"
+      target="_blank"
+      color="textPrimary"
+      class="app-navbar-actions__item flex-shrink-0 mx-0"
+    >
+      {{ t('판매관리') }}
+    </VaButton>
+    <VaButton
+      v-if="!isMobile"
+      preset="secondary"
+      href="https://admin.vuestic.dev/"
+      target="_blank"
+      color="textPrimary"
+      class="app-navbar-actions__item flex-shrink-0 mx-0"
+    >
+      {{ t('영업관리') }}
+    </VaButton>
   </div>
 </template>
 
 <script lang="ts" setup>
-import ProfileDropdown from './dropdowns/ProfileDropdown.vue'
-import NotificationDropdown from './dropdowns/NotificationDropdown.vue'
 import GithubButton from './GitHubButton.vue'
 
 defineProps({
@@ -43,6 +69,10 @@ const { t } = useI18n()
 .app-navbar-actions {
   display: flex;
   align-items: center;
+
+  .app-navbar-actions__item {
+    margin-right: 10px; /* 간격을 조정할 값 지정 */
+  }
 
   .va-dropdown__anchor {
     color: var(--va-primary);

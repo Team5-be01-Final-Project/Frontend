@@ -2,7 +2,7 @@
   <VaButton
     preset="secondary"
     color="textPrimary"
-    href="https://github.com/epicmaxco/vuestic-admin"
+    href="https://github.com/Team5-be01-Final-Project"
     target="_blank"
     aria-label="Visit github"
   >
