@@ -11,7 +11,7 @@ import NotFoundImage from '../components/NotFoundImage.vue'
 
     <div class="flex flex-col items-center gap-6 px-4 my-8">
       <NotFoundImage />
-      <h1 class="va-h1 text-center sm:text-5xl text-4xl">Page not found</h1>
+      <h1 class="va-h1 text-center sm:text-5xl text-4xl">Page not found!!!!!</h1>
 
       <p class="text-center">
         The page you are looking for might have been removed had its name changed or is temporarily unavailable.
