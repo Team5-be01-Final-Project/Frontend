@@ -2,23 +2,23 @@
 import { defineVaDataTableColumns, useModal } from 'vuestic-ui'
 import { User, UserRole } from '../types'
 import UserAvatar from './UserAvatar.vue'
-import { onMounted, ref } from 'vue';
-import axios from 'axios';
+import { PropType, computed, toRef } from 'vue'
 import { Pagination, Sorting } from '../../../data/pages/users'
 import { useVModel } from '@vueuse/core'
 import { Project } from '../../projects/types'
 
 const columns = defineVaDataTableColumns([
-  { label: '사업자번호', key: 'clientCode', sortable: true },
-  { label: '거래처명', key: 'clientName', sortable: true },
-  { label: '병원 분류', key: 'clientClass', sortable: true },
-  { label: '대표명', key: 'clientBoss', sortable: true },
-  { label: '주소', key: 'clientWhere', sortable: true },
-  { label: '우편번호', key: 'clientPost', sortable: true },
-  { label: '담당자', key: 'clientEmp', sortable: true },
-  { label: '담당자전화번호', key: 'clientEmpTel', sortable: true },
+  { label: '사업자번호', key: 'fullname', sortable: true },
+  { label: '거래처이름', key: 'email', sortable: true },
+  { label: '병원 분류', key: 'username', sortable: true },
+  { label: '전화번호', key: 'role', sortable: true },
+  { label: '우편번호', key: 'projects', sortable: true },
+  { label: '주소', key: 'projects', sortable: true },
+  { label: '대표명', key: 'projects', sortable: true },
+  { label: '담당자', key: 'projects', sortable: true },
+  { label: '담당자전화번호', key: 'projects', sortable: true },
   { label: ' ', key: 'actions', align: 'right' },
-]);
+])
 
 const props = defineProps({
   users: {
@@ -83,17 +83,6 @@ const formatProjectNames = (projects: Project[]) => {
     ' more'
   )
 }
-
-const clients = ref([]);
-
-onMounted(async () => {
-  try {
-    const response = await axios.get('http://localhost:8081/clients/list');
-    clients.value = response.data;
-  } catch (error) {
-    console.error('Error fetching the clients:', error);
-  }
-});
 </script>
 
 <template>
@@ -101,38 +90,37 @@ onMounted(async () => {
     v-model:sort-by="sortByVModel"
     v-model:sorting-order="sortingOrderVModel"
     :columns="columns"
-    :items="clients"
+    :items="users"
     :loading="$props.loading"
   >
-  <template #cell(clientCode)="{ rowData }">
-  <div>{{ rowData.clientCode }}</div>
-</template>
+    <template #cell(fullname)="{ rowData }">
+      <div class="flex items-center gap-2 max-w-[230px] ellipsis">
+        <UserAvatar :user="rowData as User" size="small" />
+        {{ rowData.fullname }}
+      </div>
+    </template>
 
-<template #cell(clientName)="{ rowData }">
-  <div>{{ rowData.clientName }}</div>
-</template>
+    <template #cell(username)="{ rowData }">
+      <div class="max-w-[120px] ellipsis">
+        {{ rowData.username }}
+      </div>
+    </template>
 
-<template #cell(clientClass)="{ rowData }">
-  <div>{{ rowData.clientClass }}</div>
-</template>
+    <template #cell(email)="{ rowData }">
+      <div class="ellipsis max-w-[230px]">
+        {{ rowData.email }}
+      </div>
+    </template>
 
-<template #cell(clientBoss)="{ rowData }">
-  <div>{{ rowData.clientBoss }}</div>
-</template>
+    <template #cell(role)="{ rowData }">
+      <VaBadge :text="rowData.role" :color="roleColors[rowData.role as UserRole]" />
+    </template>
 
-<template #cell(clientWhere)="{ rowData }">
-  <div>{{ rowData.clientWhere }}</div>
-</template>
-<template #cell(clientPost)="{ rowData }">
-  <div>{{ rowData.clientPost }}</div>
-</template>
-<template #cell(clientEmp)="{ rowData }">
-  <div>{{ rowData.clientEmp }}</div>
-</template>
-<template #cell(clientEmpTel)="{ rowData }">
-  <div>{{ rowData.clientEmpTel }}</div>
-</template>
-
+    <template #cell(projects)="{ rowData }">
+      <div class="ellipsis max-w-[300px] lg:max-w-[450px]">
+        {{ formatProjectNames(rowData.projects) }}
+      </div>
+    </template>
 
     <template #cell(actions)="{ rowData }">
       <div class="flex gap-2 justify-end">

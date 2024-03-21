@@ -20,7 +20,7 @@ export default {
     },
     {
       name: 'users',
-      displayName: 'menu.users',
+      displayName: '거래처관리',
       meta: {
         icon: 'group',
       },

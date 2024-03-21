@@ -105,6 +105,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/404',
     component: () => import('../pages/404.vue'),
   },
+  {
+    name: 'WY',
+    path: '/WY',
+    component: () => import('../pages/WY.vue'),
+  },
 ]
 
 const router = createRouter({
