@@ -17,4 +17,3 @@ app.use(router)
 
 app.use(createVuestic());
 app.mount('#app')
-
