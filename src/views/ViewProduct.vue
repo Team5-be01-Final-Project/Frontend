@@ -47,15 +47,21 @@
         </tbody>
       </table>
       <div class="pagination">
-        <button @click="prevPage" :disabled="currentPage === 1">이전</button>
-        <span>{{ currentPage }}</span>
-        <button @click="nextPage" :disabled="currentPage === pageCount">다음</button>
+        <VaButton @click="prevPage" :disabled="currentPage === 1">이전</VaButton>
+        <VaButton
+      class="mr-6 mb-2"
+      preset="secondary"
+      hover-behavior="opacity"
+      :hover-opacity="0.4">{{ currentPage }}</VaButton>
+        <VaButton @click="nextPage" :disabled="currentPage === pageCount">다음</VaButton>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { VaButton } from 'vuestic-ui/web-components';
+
 export default {
   data() {
     return {
