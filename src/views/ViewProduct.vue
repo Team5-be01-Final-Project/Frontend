@@ -7,7 +7,6 @@
           v-model="selectedField"
           placeholder="Select filter fields"
           :options="[
-            { text: '품목 기준 코드', value: 'proCode' },
             { text: '제품명', value: 'proName' },
             { text: '품목 구분', value: 'proSeg' },
             { text: '주성분', value: 'proIngre' },
@@ -104,16 +103,9 @@ export default {
         this.filteredProducts = this.products;
       } else {
         // 선택한 필드에 따라 제품을 필터링
-        if (this.selectedField === 'proCode') {
-          // 품목기준코드일 경우 정확히 일치하는 제품을 필터링
-          this.filteredProducts = this.products.filter(product => {
-            return product.proCode.includes(this.filter);
-          });
-        } else {
-          this.filteredProducts = this.products.filter(product => {
-            return product[this.selectedField] && product[this.selectedField].includes(this.filter);
-          });
-        }
+        this.filteredProducts = this.products.filter(product => {
+          return product[this.selectedField] && product[this.selectedField].includes(this.filter);
+        });
       }
     },
     nextPage() {
