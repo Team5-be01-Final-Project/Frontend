@@ -6,6 +6,7 @@
         <thead>
           <tr>
             <th>거래처 코드</th>
+            <th>거래처명</th> <!-- 추가 -->
             <th>상품 코드</th>
             <th>상품명</th>
             <th>품목 구분</th>
@@ -16,6 +17,7 @@
         <tbody>
           <tr v-for="(item, index) in products" :key="index">
             <td>{{ item.clientCode }}</td>
+            <td>{{ item.clientName }}</td> <!-- 추가 -->
             <td>{{ item.proCode }}</td>
             <td>{{ item.product.proName }}</td>
             <td>{{ item.product.proSeg }}</td>
