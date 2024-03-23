@@ -8,7 +8,6 @@
           placeholder="Select filter fields"
           :options="[
             { text: '거래처명', value: 'clientName' },
-            { text: '품목기준코드', value: 'proCode' },
             { text: '제품명', value: 'product.proName' },
             { text: '분류', value: 'product.proCat' }
           ]"
