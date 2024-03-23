@@ -52,12 +52,56 @@
               <td>{{ employee.deptName }}</td>
               <td>{{ employee.empTel }}</td>
               <td>{{ employee.authName }}</td>
-              <td>{{}}</td>
+              <td><VaButton @click="openAlarmSettingsModal(employee)">알림 설정</VaButton></td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
+
+    <VaModal v-model="isAlarmSettingsModalOpen"
+    ok-text="저장" cancel-text="취소" @ok="saveAlarmSettings" >
+      <template #header>
+        <h4>알림 설정 변경</h4>
+      </template>
+
+      <!-- <div class="flex flex-col">
+        <div class="mb-6">
+          {{ selection }}
+        </div>
+        <VaCheckbox
+          v-model="selection"
+          array-value="one"
+          label="one"
+          class="mb-6"
+        />
+        <VaCheckbox
+          v-model="selection"
+          array-value="two"
+          label="two"
+          class="mb-6"
+        />
+        <VaCheckbox
+          v-model="selection"
+          array-value="three"
+          label="three"
+          class="mb-6"
+        />
+        <VaCheckbox
+          v-model="selection"
+          array-value="four"
+          label="four"
+        />
+      </div> -->
+
+      <div class="flex flex-col">
+          <div v-for="(value, code) in alarmSettings" :key="code" class="mb-6">
+            <VaCheckbox :value="code" v-model="alarmSettings[code]" :label="`알림 ${code}`" />
+          </div>
+      </div>
+        
+    </VaModal>
+
   </template>
   
   <script>
@@ -73,7 +117,12 @@
         currentPage: 1,
         selectedDept: null, // 부서 선택을 위한 변수
         selectedSearchCondition: null, // 검색 조건 선택을 위한 변수
-        searchText: '' // 검색어 입력을 위한 변수
+        searchText: '', // 검색어 입력을 위한 변수
+        isAlarmSettingsModalOpen: false,
+        alarmSettings: {
+        'AL01': false, // 이상 온도 알림
+        // 'AL02': false, // 이상 압력 알림
+        },
       };
     },
     created() {
@@ -104,7 +153,54 @@
             } finally {
             this.loading = false;
             }
-        }
+        },
+
+        openAlarmSettingsModal(employee) {
+          console.log("알림 설정 모달 열림", employee);
+          this.selectedEmployee = employee;
+          // 모든 알람 설정을 먼저 false로 초기화
+          Object.keys(this.alarmSettings).forEach(key => {
+            this.alarmSettings[key] = false;
+          });
+          // 사용자의 알람 설정을 조회하는 백엔드 API 호출
+          axios.get(`http://localhost:8081/alarms/settings/${employee.empCode}`)
+              .then(response => {
+                  // 응답으로 받은 알람 설정으로 alarmSettings 업데이트
+                  response.data.forEach(setting => {
+                    if (this.alarmSettings.hasOwnProperty(setting.alarmCode)) {
+                      this.alarmSettings[setting.alarmCode] = setting.alarmSetting;
+                    }
+                  });
+              })
+              .catch(error => console.error("알람 설정 조회 실패:", error));
+          this.isAlarmSettingsModalOpen = true;
+        },
+        async saveAlarmSettings() {
+          try {
+            const empCode = this.selectedEmployee.empCode;
+
+            const requests = Object.entries(this.alarmSettings).map(([alarmCode, alarmSetting]) => {
+              const requestData = {
+                empCode: empCode,
+                alarmCode: alarmCode,
+                alarmSetting: alarmSetting
+              };
+              console.log(requestData); // 요청 데이터 로깅
+              // 백엔드로 POST 요청 보내기
+              return axios.post(`http://localhost:8081/alarms/update`, requestData);
+            });
+
+            await Promise.all(requests);
+            console.log("모든 알람 설정 저장 성공");
+            this.isAlarmSettingsModalOpen = false; // 모달 닫기
+            this.fetchEmployeesList(); // 직원 목록 새로고침
+            // 추가적인 처리...
+          } catch (error) {
+            console.error("알람 설정 저장 실패:", error);
+            // 오류 처리...
+          }
+        },
+
     }
   };
   </script>
