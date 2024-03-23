@@ -158,11 +158,23 @@
         openAlarmSettingsModal(employee) {
           console.log("알림 설정 모달 열림", employee);
           this.selectedEmployee = employee;
-          this.selection = []; // 예시: 배열을 비움
-          // this.selectedEmployeeAlarmSettings = employee.alarmSettings;
+          // 모든 알람 설정을 먼저 false로 초기화
+          Object.keys(this.alarmSettings).forEach(key => {
+            this.alarmSettings[key] = false;
+          });
+          // 사용자의 알람 설정을 조회하는 백엔드 API 호출
+          axios.get(`http://localhost:8081/alarms/settings/${employee.empCode}`)
+              .then(response => {
+                  // 응답으로 받은 알람 설정으로 alarmSettings 업데이트
+                  response.data.forEach(setting => {
+                    if (this.alarmSettings.hasOwnProperty(setting.alarmCode)) {
+                      this.alarmSettings[setting.alarmCode] = setting.alarmSetting;
+                    }
+                  });
+              })
+              .catch(error => console.error("알람 설정 조회 실패:", error));
           this.isAlarmSettingsModalOpen = true;
         },
-
         async saveAlarmSettings() {
           try {
             const empCode = this.selectedEmployee.empCode;
