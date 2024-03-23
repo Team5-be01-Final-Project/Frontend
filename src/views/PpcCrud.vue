@@ -8,8 +8,9 @@
             <th>#</th>
             <th>거래처명</th>
             <th>상품명</th>
-            <th>판매가 입력</th>
-            <th>수정</th> <!-- 레이블 변경 -->
+            <th>판매가</th>
+            <th>수정</th>
+            <th>삭제</th>
           </tr>
         </thead>
         <tbody>
@@ -17,27 +18,43 @@
             <td>{{ index + 1 }}</td>
             <td>{{ product.clientName }}</td>
             <td>{{ product.product.proName }}</td>
+            <td>{{ product.ppcSale }}</td>
             <td>
-              <input type="number" v-model="product.ppcSale" placeholder="판매가 입력" />
+              <button @click="showEditModal(product, index)">수정</button>
             </td>
             <td>
-              <!-- 수정 기능을 위한 버튼 이벤트 변경 -->
-              <button @click="updateSale(product.proCode, product.ppcSale, product.clientCode)">수정</button>
+              <button @click="showDeleteModal(product, index)">삭제</button>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
+    <Modal
+      :isVisible="isModalVisible"
+      :currentItem="currentItem"
+      :isEditing="isEditing"
+      @close="isModalVisible = false"
+      @edit="updateSale"
+      @delete="deleteSale"
+    />
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import Modal from '@/components/Modal.vue'; // 모달 컴포넌트 경로가 확인하세요.
 
 export default {
+  components: {
+    Modal,
+  },
   data() {
     return {
       products: [],
+      isModalVisible: false,
+      currentItem: null,
+      isEditing: false,
+      currentIndex: null, // 현재 수정 또는 삭제 대상 아이템의 인덱스
     };
   },
   methods: {
@@ -49,18 +66,41 @@ export default {
         console.error('Error fetching products:', error);
       }
     },
-    async updateSale(proCode, ppcSale, clientCode) {
+    showEditModal(item, index) {
+      this.currentItem = Object.assign({}, item);
+      this.currentIndex = index;
+      this.isEditing = true;
+      this.isModalVisible = true;
+    },
+    showDeleteModal(item, index) {
+      this.currentItem = Object.assign({}, item);
+      this.currentIndex = index;
+      this.isEditing = false;
+      this.isModalVisible = true;
+    },
+    async updateSale(item) {
       try {
-        // 기존 판매가 등록 로직을 수정 로직으로 변경
-        const response = await axios.post(`/ppc/${proCode}`, { clientCode, ppcSale });
-        alert(`판매가가 성공적으로 수정되었습니다: ${response.data.product.proName}`);
-        // 상품 목록을 새로고침하여 수정된 정보를 반영
-        this.fetchProducts();
+        await axios.post(`/ppc/${item.proCode}`, { clientCode: item.clientCode, ppcSale: item.ppcSale });
+        this.products[this.currentIndex] = item; // 목록에서 해당 아이템을 업데이트
+        alert('판매가가 성공적으로 수정되었습니다.');
       } catch (error) {
         console.error('Error updating sale price:', error);
         alert('판매가 수정에 실패했습니다.');
       }
+      this.isModalVisible = false;
     },
+    async deleteSale(proCode) {
+  try {
+    await axios.delete(`/ppc/${proCode}`);
+    this.products.splice(this.currentIndex, 1); // 목록에서 해당 아이템을 제거
+    alert('상품이 성공적으로 삭제되었습니다.');
+  } catch (error) {
+    console.error('Error deleting product:', error);
+    alert('상품 삭제에 실패했습니다.');
+  }
+  this.isModalVisible = false;
+}
+,
   },
   created() {
     this.fetchProducts();
@@ -69,8 +109,5 @@ export default {
 </script>
 
 <style scoped>
-/* 스타일은 여러분의 요구에 맞게 조정하세요 */
-.va-table-responsive {
-  overflow: auto;
-}
+/* 여기에 필요한 스타일을 추가하세요. */
 </style>
