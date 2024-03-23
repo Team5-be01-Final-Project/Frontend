@@ -19,46 +19,42 @@
       <input type="number" v-model="salePrice" placeholder="판매가 입력" />
       <button @click="registerSale">등록</button>
     </div>
-  <div class="product-list">
-    <div class="va-table-responsive">
-      <h3 class="va-h3">모든 상품 목록</h3>
-      <table class="va-table va-table--hoverable">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>거래처명</th>
-            <th>상품명</th>
-            <th>판매가</th>
-            <th>수정</th>
-            <th>삭제</th>
-          </tr>
-        </thead>
-        <tbody>
-  <tr v-for="(product, index) in paginatedProducts" :key="product.proCode">
-    <td>{{ (currentPage - 1) * perPage + index + 1 }}</td>
-    <td>{{ product.clientName }}</td>
-    <td>{{ product.product.proName }}</td>
-    <td>{{ product.ppcSale }}</td>
-    <td>
-      <button @click="showEditModal(product, index)">수정</button>
-    </td>
-    <td>
-      <button @click="showDeleteModal(product, index)">삭제</button>
-    </td>
-  </tr>
-</tbody>
-
-      </table>
-    </div>
-    <div class="pagination">
-        <VaButton @click="prevPage" :disabled="currentPage === 1">이전</VaButton>
-        <VaButton
-      class="mr-6 mb-2"
-      preset="secondary"
-      hover-behavior="opacity"
-      :hover-opacity="0.4">{{ currentPage }}</VaButton>
-        <VaButton @click="nextPage" :disabled="currentPage === pageCount">다음</VaButton>
+    <div class="product-list">
+      <div class="va-table-responsive">
+        <h3 class="va-h3">모든 상품 목록</h3>
+        <table class="va-table va-table--hoverable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>거래처명</th>
+              <th>상품명</th>
+              <th>판매가</th>
+              <th>수정</th>
+              <th>삭제</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(product, index) in paginatedProducts" :key="product.proCode">
+              <td>{{ (currentPage - 1) * perPage + index + 1 }}</td>
+              <td>{{ product.clientName }}</td>
+              <td>{{ product.product.proName }}</td>
+              <td>{{ product.ppcSale }}</td>
+              <td>
+                <button @click="showEditModal(product, index)">수정</button>
+              </td>
+              <td>
+                <button @click="showDeleteModal(product, index)">삭제</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
+      <div class="pagination">
+        <button @click="prevPage" :disabled="currentPage === 1">이전</button>
+        <span class="mr-6 mb-2" :hover-opacity="0.4">{{ currentPage }}</span>
+        <button @click="nextPage" :disabled="currentPage === pageCount">다음</button>
+      </div>
+    </div>
     <Modal
       :isVisible="isModalVisible"
       :currentItem="currentItem"
@@ -68,12 +64,11 @@
       @delete="deleteSale"
     />
   </div>
-  </div>
 </template>
 
 <script>
 import axios from 'axios';
-import Modal from '@/components/Modal.vue'; // 모달 컴포넌트 경로가 확인하세요.
+import Modal from '@/components/Modal.vue';
 
 export default {
   components: {
@@ -85,59 +80,63 @@ export default {
       isModalVisible: false,
       currentItem: null,
       isEditing: false,
-      currentIndex: null, // 현재 수정 또는 삭제 대상 아이템의 인덱스
+      currentIndex: null,
       currentPage: 1,
       perPage: 20,
-      clients: [], // 거래처 목록
-      selectedClientCode: '', // 선택된 거래처 코드
-      selectedProductCode: '', // 선택된 상품 코드
-      salePrice: '', // 입력된 판매가
+      clients: [],
+      selectedClientCode: '',
+      selectedProductCode: '',
+      salePrice: '',
     };
   },
   computed: {
-  paginatedProducts() {
-    const startIndex = (this.currentPage - 1) * this.perPage;
-    const endIndex = startIndex + this.perPage;
-    return this.products.slice(startIndex, endIndex); // `filteredProducts` 대신 `products` 사용
+    paginatedProducts() {
+      const startIndex = (this.currentPage - 1) * this.perPage;
+      const endIndex = startIndex + this.perPage;
+      return this.products.slice(startIndex, endIndex);
+    },
+    pageCount() {
+      return Math.ceil(this.products.length / this.perPage);
+    }
   },
-  pageCount() {
-    return Math.ceil(this.products.length / this.perPage); // 여기도 마찬가지로 `filteredProducts` 대신 `products` 사용
-  }
-},
-
-
-methods: {
-  async registerSale() {
-  // 입력된 값의 유효성 검사
-  if (!this.selectedClientCode || !this.selectedProductCode || !this.salePrice) {
-    alert('모든 정보를 입력해주세요.');
-    return;
-  }
-
-  try {
-    const response = await axios.post(`/ppc/${this.selectedProductCode}`, {
-      clientCode: this.selectedClientCode, // clientCode 값을 정확히 전달
-      ppcSale: parseInt(this.salePrice, 10) // ppcSale 값을 정수로 변환
-    });
-
-    // 성공적으로 요청이 처리되면, 사용자에게 알림을 표시하고 필요한 후속 작업을 수행
-    alert('판매가 성공적으로 등록되었습니다.');
-    this.fetchProducts(); // 상품 목록 새로고침
-
-    // 입력 필드 초기화
-    this.selectedClientCode = '';
-    this.selectedProductCode = '';
-    this.salePrice = '';
-  } catch (error) {
-    console.error('판매 등록 중 오류 발생:', error);
-    alert('판매 등록에 실패했습니다.');
-  }
-}
-
-,
+  methods: {
+    async registerSale() {
+      if (!this.selectedClientCode || !this.selectedProductCode || !this.salePrice) {
+        alert('모든 정보를 입력해주세요.');
+        return;
+      }
+      const isAlreadyRegistered = await this.checkProductRegistration(this.selectedClientCode, this.selectedProductCode);
+      if (isAlreadyRegistered) {
+        alert('이미 해당 품목이 등록되어 있습니다.');
+        return;
+      }
+      try {
+        const response = await axios.post(`/ppc/${this.selectedProductCode}`, {
+          clientCode: this.selectedClientCode,
+          ppcSale: parseInt(this.salePrice, 10)
+        });
+        alert('판매가 성공적으로 등록되었습니다.');
+        this.fetchProducts();
+        this.selectedClientCode = '';
+        this.selectedProductCode = '';
+        this.salePrice = '';
+      } catch (error) {
+        console.error('판매 등록 중 오류 발생:', error);
+        alert('해당거래처에 해당 상품이 존재합니다.');
+      }
+    },
+    async checkProductRegistration(clientCode, productCode) {
+      try {
+        const response = await axios.get(`/ppc/${clientCode}/${productCode}/exists`);
+        return response.data.exists;
+      } catch (error) {
+        console.error('Error checking product registration:', error);
+        return false;
+      }
+    },
     async fetchClients() {
       try {
-        const response = await axios.get('/clients/list'); // '/api/clients'는 예시 URL입니다. 실제 경로로 교체해야 합니다.
+        const response = await axios.get('/clients/list');
         this.clients = response.data;
       } catch (error) {
         console.error('Error fetching clients:', error);
@@ -176,7 +175,7 @@ methods: {
     async updateSale(item) {
       try {
         await axios.post(`/ppc/${item.proCode}`, { clientCode: item.clientCode, ppcSale: item.ppcSale });
-        this.products[this.currentIndex] = item; // 목록에서 해당 아이템을 업데이트
+        this.products[this.currentIndex] = item;
         alert('판매가가 성공적으로 수정되었습니다.');
       } catch (error) {
         console.error('Error updating sale price:', error);
@@ -185,17 +184,16 @@ methods: {
       this.isModalVisible = false;
     },
     async deleteSale(proCode) {
-  try {
-    await axios.delete(`/ppc/${proCode}`);
-    this.products.splice(this.currentIndex, 1); // 목록에서 해당 아이템을 제거
-    alert('상품이 성공적으로 삭제되었습니다.');
-  } catch (error) {
-    console.error('Error deleting product:', error);
-    alert('상품 삭제에 실패했습니다.');
-  }
-  this.isModalVisible = false;
-}
-,
+      try {
+        await axios.delete(`/ppc/${proCode}`);
+        this.products.splice(this.currentIndex, 1);
+        alert('상품이 성공적으로 삭제됐습니다.');
+      } catch (error) {
+        console.error('Error deleting product:', error);
+        alert('상품 삭제에 실패했습니다.');
+      }
+      this.isModalVisible = false;
+    },
   },
   created() {
     this.fetchProducts();
@@ -217,3 +215,4 @@ methods: {
   margin-right: 5px;
 }
 </style>
+
