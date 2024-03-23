@@ -1,4 +1,24 @@
 <template>
+  <div>
+    <div class="sales-registration">
+      <h3>판매가 등록</h3>
+      <select v-model="selectedClientCode">
+        <option disabled value="">거래처 선택</option>
+        <option v-for="client in clients" :key="client.clientCode" :value="client.clientCode">
+          {{ client.clientName }}
+        </option>
+      </select>
+      
+      <select v-model="selectedProductCode">
+        <option disabled value="">상품 선택</option>
+        <option v-for="product in products" :key="product.proCode" :value="product.proCode">
+          {{ product.product.proName }}
+        </option>
+      </select>
+
+      <input type="number" v-model="salePrice" placeholder="판매가 입력" />
+      <button @click="registerSale">등록</button>
+    </div>
   <div class="product-list">
     <div class="va-table-responsive">
       <h3 class="va-h3">모든 상품 목록</h3>
@@ -48,6 +68,7 @@
       @delete="deleteSale"
     />
   </div>
+  </div>
 </template>
 
 <script>
@@ -67,6 +88,10 @@ export default {
       currentIndex: null, // 현재 수정 또는 삭제 대상 아이템의 인덱스
       currentPage: 1,
       perPage: 20,
+      clients: [], // 거래처 목록
+      selectedClientCode: '', // 선택된 거래처 코드
+      selectedProductCode: '', // 선택된 상품 코드
+      salePrice: '', // 입력된 판매가
     };
   },
   computed: {
@@ -81,7 +106,43 @@ export default {
 },
 
 
-  methods: {
+methods: {
+  async registerSale() {
+  // 입력된 값의 유효성 검사
+  if (!this.selectedClientCode || !this.selectedProductCode || !this.salePrice) {
+    alert('모든 정보를 입력해주세요.');
+    return;
+  }
+
+  try {
+    const response = await axios.post(`/ppc/${this.selectedProductCode}`, {
+      clientCode: this.selectedClientCode, // clientCode 값을 정확히 전달
+      ppcSale: parseInt(this.salePrice, 10) // ppcSale 값을 정수로 변환
+    });
+
+    // 성공적으로 요청이 처리되면, 사용자에게 알림을 표시하고 필요한 후속 작업을 수행
+    alert('판매가 성공적으로 등록되었습니다.');
+    this.fetchProducts(); // 상품 목록 새로고침
+
+    // 입력 필드 초기화
+    this.selectedClientCode = '';
+    this.selectedProductCode = '';
+    this.salePrice = '';
+  } catch (error) {
+    console.error('판매 등록 중 오류 발생:', error);
+    alert('판매 등록에 실패했습니다.');
+  }
+}
+
+,
+    async fetchClients() {
+      try {
+        const response = await axios.get('/clients/list'); // '/api/clients'는 예시 URL입니다. 실제 경로로 교체해야 합니다.
+        this.clients = response.data;
+      } catch (error) {
+        console.error('Error fetching clients:', error);
+      }
+    },
     nextPage() {
       if (this.currentPage < this.pageCount) {
         this.currentPage++;
@@ -138,6 +199,7 @@ export default {
   },
   created() {
     this.fetchProducts();
+    this.fetchClients();
   },
 };
 </script>
