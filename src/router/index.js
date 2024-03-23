@@ -34,6 +34,11 @@ const router = createRouter({
       path: '/ppcview',
       name: 'ppcview',
       component: () => import('../views/PpcView.vue')
+    },
+    {
+      path: '/ppccrud',
+      name: 'ppccrud',
+      component: () => import('../views/PpcCrud.vue')
     }
   ]
 })
