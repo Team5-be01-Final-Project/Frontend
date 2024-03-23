@@ -1,5 +1,20 @@
 <template>
   <div>
+    <VaSelect
+  v-model="selectedFilterField"
+  placeholder="Select filter fields"
+  :options="[
+    { text: '거래처명', value: 'clientName' },
+    { text: '제품명', value: 'product.proName' },
+  ]"
+  value-by="value"
+/>
+
+        <VaInput
+          v-model="filter"
+          placeholder="Filter..."
+          class="w-full"
+        />
     <div class="sales-registration">
       <h3>판매가 등록</h3>
       <select v-model="selectedClientCode">
@@ -29,7 +44,7 @@
             <tr>
               <th>#</th>
               <th>거래처명</th>
-              <th>상품명</th>
+              <th>제품명</th>
               <th>판매가</th>
               <th>수정</th>
               <th>삭제</th>
@@ -88,6 +103,8 @@ export default {
   },
   data() {
     return {
+      filter: '',
+    selectedFilterField: 'clientName', 
       products: [],
       isModalVisible: false,
       currentItem: null,
@@ -102,10 +119,21 @@ export default {
     };
   },
   computed: {
+    filteredProducts() {
+      return this.products.filter(product => {
+        let value = '';
+        if (this.selectedFilterField === 'clientName') {
+          value = product.clientName;
+        } else if (this.selectedFilterField === 'product.proName') { // 제품명 필드 경로 수정
+          value = product.product.proName;
+        }
+        return value.toLowerCase().includes(this.filter.toLowerCase());
+      });
+    },
     paginatedProducts() {
       const startIndex = (this.currentPage - 1) * this.perPage;
       const endIndex = startIndex + this.perPage;
-      return this.products.slice(startIndex, endIndex);
+      return this.filteredProducts.slice(startIndex, endIndex);
     },
     pageCount() {
       return Math.ceil(this.products.length / this.perPage);
@@ -168,6 +196,8 @@ export default {
       try {
         const response = await axios.get('/ppc/all');
         this.products = response.data;
+         // 필터링된 제품 목록이 업데이트되도록 추가
+         this.paginatedProducts;
       } catch (error) {
         console.error('Error fetching products:', error);
       }
