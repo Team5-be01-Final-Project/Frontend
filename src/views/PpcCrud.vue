@@ -1,24 +1,4 @@
 <template>
-  <div>
-    <div class="sales-registration">
-      <h3>판매가 등록</h3>
-      <select v-model="selectedClientCode">
-        <option disabled value="">거래처 선택</option>
-        <option v-for="client in clients" :key="client.clientCode" :value="client.clientCode">
-          {{ client.clientName }}
-        </option>
-      </select>
-      
-      <select v-model="selectedProductCode">
-        <option disabled value="">상품 선택</option>
-        <option v-for="product in products" :key="product.proCode" :value="product.proCode">
-          {{ product.product.proName }}
-        </option>
-      </select>
-
-      <input type="number" v-model="salePrice" placeholder="판매가 입력" />
-      <button @click="registerSale">등록</button>
-    </div>
   <div class="product-list">
     <div class="va-table-responsive">
       <h3 class="va-h3">모든 상품 목록</h3>
@@ -34,21 +14,31 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(product, index) in products" :key="product.proCode">
-            <td>{{ index + 1 }}</td>
-            <td>{{ product.clientName }}</td>
-            <td>{{ product.product.proName }}</td>
-            <td>{{ product.ppcSale }}</td>
-            <td>
-              <button @click="showEditModal(product, index)">수정</button>
-            </td>
-            <td>
-              <button @click="showDeleteModal(product, index)">삭제</button>
-            </td>
-          </tr>
-        </tbody>
+  <tr v-for="(product, index) in paginatedProducts" :key="product.proCode">
+    <td>{{ (currentPage - 1) * perPage + index + 1 }}</td>
+    <td>{{ product.clientName }}</td>
+    <td>{{ product.product.proName }}</td>
+    <td>{{ product.ppcSale }}</td>
+    <td>
+      <button @click="showEditModal(product, index)">수정</button>
+    </td>
+    <td>
+      <button @click="showDeleteModal(product, index)">삭제</button>
+    </td>
+  </tr>
+</tbody>
+
       </table>
     </div>
+    <div class="pagination">
+        <VaButton @click="prevPage" :disabled="currentPage === 1">이전</VaButton>
+        <VaButton
+      class="mr-6 mb-2"
+      preset="secondary"
+      hover-behavior="opacity"
+      :hover-opacity="0.4">{{ currentPage }}</VaButton>
+        <VaButton @click="nextPage" :disabled="currentPage === pageCount">다음</VaButton>
+      </div>
     <Modal
       :isVisible="isModalVisible"
       :currentItem="currentItem"
@@ -57,7 +47,6 @@
       @edit="updateSale"
       @delete="deleteSale"
     />
-  </div>
   </div>
 </template>
 
@@ -71,56 +60,37 @@ export default {
   },
   data() {
     return {
-      clients: [],
-      products: [],
-      selectedClientCode: '',
-      selectedProductCode: '',
-      salePrice: '',
       products: [],
       isModalVisible: false,
       currentItem: null,
       isEditing: false,
       currentIndex: null, // 현재 수정 또는 삭제 대상 아이템의 인덱스
+      currentPage: 1,
+      perPage: 20,
     };
   },
+  computed: {
+  paginatedProducts() {
+    const startIndex = (this.currentPage - 1) * this.perPage;
+    const endIndex = startIndex + this.perPage;
+    return this.products.slice(startIndex, endIndex); // `filteredProducts` 대신 `products` 사용
+  },
+  pageCount() {
+    return Math.ceil(this.products.length / this.perPage); // 여기도 마찬가지로 `filteredProducts` 대신 `products` 사용
+  }
+},
+
+
   methods: {
-    fetchData() {
-      axios.get('/ppc/data')
-        .then(response => {
-          this.clients = response.data.clients;
-          this.products = response.data.products;
-        })
-        .catch(error => {
-          console.error('데이터를 가져오는 중 오류가 발생했습니다:', error);
-        });
+    nextPage() {
+      if (this.currentPage < this.pageCount) {
+        this.currentPage++;
+      }
     },
-    registerSale() {
-      // 선택된 거래처, 상품, 입력된 판매가를 백엔드로 전송하는 로직
-      axios.post(`/ppc/${this.selectedProductCode}`, {
-        clientCode: this.selectedClientCode,
-        ppcSale: this.salePrice
-      })
-      .then(() => {
-        alert('판매가가 성공적으로 등록되었습니다.');
-        this.fetchProducts(); // 상품 목록을 새로고침
-      })
-      .catch(error => {
-        console.error('판매가 등록에 실패했습니다:', error);
-        alert('판매가 등록에 실패했습니다.');
-      });
-      axios.post('/api/sales', { // API 경로는 백엔드 설정에 따라 달라질 수 있습니다.
-        clientCode: this.selectedClient,
-        proCode: this.selectedProduct,
-        salePrice: this.salePrice
-      })
-      .then(() => {
-        alert('상품이 성공적으로 등록되었습니다.');
-        this.fetchProducts(); // 상품 목록 새로고침
-      })
-      .catch(error => {
-        console.error('상품 등록 중 오류가 발생했습니다:', error);
-        alert('상품 등록에 실패했습니다.');
-      });
+    prevPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+      }
     },
     async fetchProducts() {
       try {
@@ -173,5 +143,15 @@ export default {
 </script>
 
 <style scoped>
-/* 여기에 필요한 스타일을 추가하세요. */
+.va-table-responsive {
+  overflow: auto;
+}
+.pagination {
+  margin-top: 20px;
+}
+.pagination button {
+  cursor: pointer;
+  padding: 5px 10px;
+  margin-right: 5px;
+}
 </style>
