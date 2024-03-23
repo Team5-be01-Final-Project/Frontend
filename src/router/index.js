@@ -49,7 +49,7 @@ const router = createRouter({
       path: '/viewclient',
       name: 'viewclient',
       component: () => import('../views/ViewClient.vue')
-    }
+    },
   ]
 })
 
