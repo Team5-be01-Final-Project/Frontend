@@ -45,6 +45,10 @@ const router = createRouter({
       path: '/ppccrud',
       name: 'ppccrud',
       component: () => import('../views/PpcCrud.vue')
+    },{
+      path: '/viewclient',
+      name: 'viewclient',
+      component: () => import('../views/ViewClient.vue')
     }
   ]
 })
