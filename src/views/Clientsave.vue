@@ -25,9 +25,10 @@
         ></va-input>
 
         <va-select
-            v-model="client.clientClass"
+            v-model="selectedClass"
             label="병원 분류"
             :options="classes"
+            
         ></va-select>
         </div>
         <div class="col-span-1" style="height: 50px;"></div>
@@ -130,10 +131,10 @@
   </template>
   
   <script setup>
-  import { ref, onMounted, nextTick  } from 'vue'
+  import { ref, onMounted, nextTick, watch } from 'vue'
   import axios from 'axios'
   import { VaInput, VaButton, VaAlert, VaSelect, VaDateInput } from 'vuestic-ui'
-  
+  const selectedClass = ref(null);
   const client = ref({
   clientCode: '',
   clientName: '',
@@ -149,12 +150,19 @@
   employee: null,
 
 })
-  
+// 선택된 클래스가 변경될 때마다 실행될 함수
+watch(selectedClass, (newValue) => {
+  if (newValue) {
+    client.value.clientClass = newValue.value;
+  } else {
+    client.value.clientClass = null; // 선택이 해제되었을 경우
+  }
+});
 const errorMessage = ref('')
 const valueSingle = ref('')
 const value = ref(new Date()) // 계약 시작일, 기본값으로 오늘 날짜 설정
 const value2 = ref(new Date()) // 계약 종료일, 기본값으로 오늘 날짜 설정
-const classes = [1,2,3]
+const classes = ref([ { text: '제1병원', value: 1 }, { text: '제2병원', value: 2 }, { text: '제3병원', value: 3 } ])
 const employees = ref([]); // 사원 목록을 저장할 배열
 const selectKey = ref(0); // selectKey 정의
 
