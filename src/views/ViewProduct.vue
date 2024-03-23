@@ -35,7 +35,7 @@
         </thead>
         <tbody>
           <tr v-for="(product, index) in paginatedProducts" :key="product.proCode">
-            <td>{{ index + 1 }}</td>
+            <td>{{ getPageNumber(index) }}</td>
             <td>{{ product.proCode }}</td>
             <td>{{ product.proName }}</td>
             <td>{{ product.proSeg }}</td>
@@ -123,6 +123,10 @@ export default {
       if (this.currentPage > 1) {
         this.currentPage--;
       }
+    },
+    // 각 제품의 번호를 계산하는 함수
+    getPageNumber(index) {
+      return (this.currentPage - 1) * this.perPage + index + 1;
     }
   }
 };
