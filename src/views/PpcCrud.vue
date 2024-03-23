@@ -17,7 +17,9 @@
       </select>
 
       <input type="number" v-model="salePrice" placeholder="판매가 입력" />
-      <button @click="registerSale">등록</button>
+      <VaButton
+    color="info"
+    class="mr-6 mb-2" @click="registerSale">등록</VaButton>
     </div>
     <div class="product-list">
       <div class="va-table-responsive">
@@ -40,19 +42,28 @@
               <td>{{ product.product.proName }}</td>
               <td>{{ product.ppcSale }}</td>
               <td>
-                <button @click="showEditModal(product, index)">수정</button>
+                <VaButton
+    color="warning"
+    class="mr-6 mb-2"
+ @click="showEditModal(product, index)">수정</VaButton>
               </td>
               <td>
-                <button @click="showDeleteModal(product, index)">삭제</button>
+                <VaButton
+    color="danger"
+    class="mr-6 mb-2" @click="showDeleteModal(product, index)">삭제</VaButton>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
       <div class="pagination">
-        <button @click="prevPage" :disabled="currentPage === 1">이전</button>
-        <span class="mr-6 mb-2" :hover-opacity="0.4">{{ currentPage }}</span>
-        <button @click="nextPage" :disabled="currentPage === pageCount">다음</button>
+        <VaButton @click="prevPage" :disabled="currentPage === 1">이전</VaButton>
+        <VaButton
+      class="mr-6 mb-2"
+      preset="secondary"
+      hover-behavior="opacity"
+      :hover-opacity="0.4">{{ currentPage }}</VaButton>
+        <VaButton @click="nextPage" :disabled="currentPage === pageCount">다음</VaButton>
       </div>
     </div>
     <Modal
@@ -69,6 +80,7 @@
 <script>
 import axios from 'axios';
 import Modal from '@/components/Modal.vue';
+import { VaButton } from 'vuestic-ui/web-components';
 
 export default {
   components: {
