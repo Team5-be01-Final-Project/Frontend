@@ -49,7 +49,11 @@ const router = createRouter({
       path: '/viewclient',
       name: 'viewclient',
       component: () => import('../views/ViewClient.vue')
-    },
+    },{
+      path: '/ClientDetail/:clientCode',
+      name: 'ClientDetail',
+      component: () => import('../views/ClientDetail.vue')
+    }
   ]
 })
 
