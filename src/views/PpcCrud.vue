@@ -1,4 +1,24 @@
 <template>
+  <div>
+    <div class="sales-registration">
+      <h3>판매가 등록</h3>
+      <select v-model="selectedClientCode">
+        <option disabled value="">거래처 선택</option>
+        <option v-for="client in clients" :key="client.clientCode" :value="client.clientCode">
+          {{ client.clientName }}
+        </option>
+      </select>
+      
+      <select v-model="selectedProductCode">
+        <option disabled value="">상품 선택</option>
+        <option v-for="product in products" :key="product.proCode" :value="product.proCode">
+          {{ product.product.proName }}
+        </option>
+      </select>
+
+      <input type="number" v-model="salePrice" placeholder="판매가 입력" />
+      <button @click="registerSale">등록</button>
+    </div>
   <div class="product-list">
     <div class="va-table-responsive">
       <h3 class="va-h3">모든 상품 목록</h3>
@@ -38,6 +58,7 @@
       @delete="deleteSale"
     />
   </div>
+  </div>
 </template>
 
 <script>
@@ -50,6 +71,11 @@ export default {
   },
   data() {
     return {
+      clients: [],
+      products: [],
+      selectedClientCode: '',
+      selectedProductCode: '',
+      salePrice: '',
       products: [],
       isModalVisible: false,
       currentItem: null,
@@ -58,6 +84,44 @@ export default {
     };
   },
   methods: {
+    fetchData() {
+      axios.get('/ppc/data')
+        .then(response => {
+          this.clients = response.data.clients;
+          this.products = response.data.products;
+        })
+        .catch(error => {
+          console.error('데이터를 가져오는 중 오류가 발생했습니다:', error);
+        });
+    },
+    registerSale() {
+      // 선택된 거래처, 상품, 입력된 판매가를 백엔드로 전송하는 로직
+      axios.post(`/ppc/${this.selectedProductCode}`, {
+        clientCode: this.selectedClientCode,
+        ppcSale: this.salePrice
+      })
+      .then(() => {
+        alert('판매가가 성공적으로 등록되었습니다.');
+        this.fetchProducts(); // 상품 목록을 새로고침
+      })
+      .catch(error => {
+        console.error('판매가 등록에 실패했습니다:', error);
+        alert('판매가 등록에 실패했습니다.');
+      });
+      axios.post('/api/sales', { // API 경로는 백엔드 설정에 따라 달라질 수 있습니다.
+        clientCode: this.selectedClient,
+        proCode: this.selectedProduct,
+        salePrice: this.salePrice
+      })
+      .then(() => {
+        alert('상품이 성공적으로 등록되었습니다.');
+        this.fetchProducts(); // 상품 목록 새로고침
+      })
+      .catch(error => {
+        console.error('상품 등록 중 오류가 발생했습니다:', error);
+        alert('상품 등록에 실패했습니다.');
+      });
+    },
     async fetchProducts() {
       try {
         const response = await axios.get('/ppc/all');
