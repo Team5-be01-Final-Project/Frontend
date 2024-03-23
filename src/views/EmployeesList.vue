@@ -31,6 +31,7 @@
                     class="w-full"
                 />
                 <VaButton @click="fetchFilteredEmployees">검색</VaButton>
+                <VaButton @click="updateEmployeeAuthority(employee)">저장</VaButton>
             </div>
         <table class="va-table va-table--hoverable">
           <thead>
@@ -51,7 +52,18 @@
               <td>{{ employee.posName }}</td>
               <td>{{ employee.deptName }}</td>
               <td>{{ employee.empTel }}</td>
-              <td>{{ employee.authName }}</td>
+              <td>
+                <!-- <va-select
+                  v-model="employee.selectedAuthorityCode"
+                  placeholder="권한 선택"
+                  :options="authorityCodeOptions" 
+                /> -->
+                <select v-model="employee.selectedAuthorityCode">
+                  <option v-for="code in authorityCodes" :key="code.authCode" :value="code.authCode">
+                    {{ code.authName }}
+                  </option>
+                </select>
+              </td>
               <td><VaButton @click="openAlarmSettingsModal(employee)">알림 설정</VaButton></td>
             </tr>
           </tbody>
@@ -64,35 +76,6 @@
       <template #header>
         <h4>알림 설정 변경</h4>
       </template>
-
-      <!-- <div class="flex flex-col">
-        <div class="mb-6">
-          {{ selection }}
-        </div>
-        <VaCheckbox
-          v-model="selection"
-          array-value="one"
-          label="one"
-          class="mb-6"
-        />
-        <VaCheckbox
-          v-model="selection"
-          array-value="two"
-          label="two"
-          class="mb-6"
-        />
-        <VaCheckbox
-          v-model="selection"
-          array-value="three"
-          label="three"
-          class="mb-6"
-        />
-        <VaCheckbox
-          v-model="selection"
-          array-value="four"
-          label="four"
-        />
-      </div> -->
 
       <div class="flex flex-col">
           <div v-for="(value, code) in alarmSettings" :key="code" class="mb-6">
@@ -119,15 +102,30 @@
         selectedSearchCondition: null, // 검색 조건 선택을 위한 변수
         searchText: '', // 검색어 입력을 위한 변수
         isAlarmSettingsModalOpen: false,
+        employee: {
+        selectedAuthorityCode: null,
+        },
+        authorityCodes: [],
         alarmSettings: {
         'AL01': false, // 이상 온도 알림
         // 'AL02': false, // 이상 압력 알림
         },
       };
     },
-    created() {
-      this.fetchEmployeesList();
+    computed: {
+      authorityCodeOptions() {
+        return this.authorityCodes.map(code => ({
+          text: code.authName,
+          value: code.authCode,
+        }));
+      },
     },
+    created() {
+      this.fetchAuthorityCodes().then(() => {
+        this.fetchEmployeesList();
+      });
+    },
+    
     methods: {
         async fetchFilteredEmployees() {
             try {
@@ -140,6 +138,10 @@
             }
             const response = await axios.get(`http://localhost:8081/employees/list?${params.toString()}`);
             this.employees = response.data;
+            this.employees = response.data.map(employee => ({
+              ...employee,
+              selectedAuthorityCode: employee.authCode, // 올바른 속성 접근 및 설정
+            }));
             } catch (error) {
             console.error('필터링된 데이터 가져오기 실패:', error);
             }
@@ -148,11 +150,40 @@
             try {
             const response = await axios.get(`http://localhost:8081/employees/list?`);
             this.employees = response.data; // 응답 데이터 할당
+            this.employees = response.data.map(employee => ({
+              ...employee,
+              // 백엔드로부터 받은 권한 코드를 selectedAuthorityCode에 설정
+              selectedAuthorityCode: employee.authCode,
+            }));
             } catch (error) {
             console.error('데이터 가져오기 실패:', error);
             } finally {
             this.loading = false;
             }
+        },
+
+        async fetchAuthorityCodes() {
+          try {
+            const response = await axios.get('http://localhost:8081/authorities/codes');
+            this.authorityCodes = response.data.map(item => ({
+              authName: item.authName,
+              authCode: item.authCode,
+            }));
+          } catch (error) {
+            console.error('권한 코드 가져오기 실패:', error);
+          }
+        },
+        async updateEmployeeAuthority(employee) {
+          try {
+            const params = new URLSearchParams({
+              empCode: employee.empCode,
+              authCode: employee.selectedAuthorityCode
+            });
+            await axios.put(`http://localhost:8081/employees/${employee.empCode}/authority`, params);
+            // 성공 메시지나 추가 로직
+          } catch (error) {
+            console.error('권한 업데이트 실패:', error);
+          }
         },
 
         openAlarmSettingsModal(employee) {
