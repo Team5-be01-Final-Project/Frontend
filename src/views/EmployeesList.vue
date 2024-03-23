@@ -58,11 +58,17 @@
                   placeholder="권한 선택"
                   :options="authorityCodeOptions" 
                 /> -->
-                <select v-model="employee.selectedAuthorityCode">
+                <!-- <select v-model="employee.selectedAuthorityCode">
                   <option v-for="code in authorityCodes" :key="code.authCode" :value="code.authCode">
                     {{ code.authName }}
                   </option>
-                </select>
+                </select> -->
+
+                <va-select
+                v-model="employee.selectedAuthorityCode"
+                placeholder="권한 선택"
+                :options="authorityCodeOptions"/>
+
               </td>
               <td><VaButton @click="openAlarmSettingsModal(employee)">알림 설정</VaButton></td>
             </tr>
@@ -112,14 +118,23 @@
         },
       };
     },
+    // computed: {
+    //   authorityCodeOptions() {
+    //     return this.authorityCodes.map(code => ({
+    //       text: code.authName,
+    //       value: code.authCode,
+    //     }));
+    //   },
+    // },
     computed: {
       authorityCodeOptions() {
         return this.authorityCodes.map(code => ({
-          text: code.authName,
-          value: code.authCode,
+          text: code.authName, // 사용자에게 보여질 텍스트
+          value: code.authCode // 실제 선택 시 반환될 값
         }));
-      },
+      }
     },
+
     created() {
       this.fetchAuthorityCodes().then(() => {
         this.fetchEmployeesList();
@@ -140,7 +155,7 @@
             this.employees = response.data;
             this.employees = response.data.map(employee => ({
               ...employee,
-              selectedAuthorityCode: employee.authCode, // 올바른 속성 접근 및 설정
+              selectedAuthorityCode: employee.authName, // 올바른 속성 접근 및 설정
             }));
             } catch (error) {
             console.error('필터링된 데이터 가져오기 실패:', error);
@@ -153,7 +168,7 @@
             this.employees = response.data.map(employee => ({
               ...employee,
               // 백엔드로부터 받은 권한 코드를 selectedAuthorityCode에 설정
-              selectedAuthorityCode: employee.authCode,
+              selectedAuthorityCode: employee.authName, 
             }));
             } catch (error) {
             console.error('데이터 가져오기 실패:', error);
