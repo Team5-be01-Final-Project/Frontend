@@ -94,7 +94,7 @@ export default {
   methods: {
     async fetchProducts() {
       try {
-        const response = await axios.get('http://localhost:8081/clients/212-82-07728/products/all');
+        const response = await axios.get('/ppc/all');
         this.products = response.data;
       } catch (error) {
         console.error('데이터 가져오기 실패:', error);

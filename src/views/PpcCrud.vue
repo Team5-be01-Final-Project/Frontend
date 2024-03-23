@@ -4,52 +4,53 @@
       <h3 class="va-h3">거래처별 판매상품 목록</h3>
       <div class="grid md:grid-cols-2 gap-6 mb-6">
         <VaSelect
-          v-model="selectedField"
-          placeholder="Select filter fields"
-          :options="[
-            { text: '거래처명', value: 'clientName' },
-            { text: '제품명', value: 'product.proName' },
-            { text: '분류', value: 'product.proCat' }
-          ]"
-          value-by="value"
+          v-model="selectedClient"
+          placeholder="거래처 선택"
+          :options="clients"
+          value-by="clientCode"
+          label-by="clientName"
+          searchable
         />
-        <VaInput
-          v-model="filter"
-          placeholder="Filter..."
-          class="w-full"
+
+        <VaSelect
+          v-model="selectedProduct"
+          placeholder="제품 선택"
+          :options="products"
+          value-by="proCode"
+          label-by="proName"
+          searchable
         />
+
+        <VaInput v-model="salePrice" placeholder="판매가" class="w-full" />
+        <VaButton @click="registerSale" preset="primary">등록</VaButton>
       </div>
       <table class="va-table va-table--hoverable">
         <thead>
           <tr>
             <th>#</th>
             <th>거래처명</th>
+            <th>담당영업사원</th>
             <th>품목기준코드</th>
             <th>제품명</th>
-            <th>품목 구분</th>
-            <th>분류</th>
-            <th>판매 가격</th>
+            <th>단가</th>
+            <th>판매가</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(item, index) in paginatedProducts" :key="index">
             <td>{{ (currentPage - 1) * perPage + index + 1 }}</td>
             <td>{{ item.clientName }}</td>
+            <td>{{ item.empName }}</td>
             <td>{{ item.proCode }}</td>
-            <td>{{ item.product.proName }}</td>
-            <td>{{ item.product.proSeg }}</td>
-            <td>{{ item.product.proCat }}</td>
+            <td>{{ item.proName }}</td>
+            <td>{{ item.proUnit }}</td>
             <td>{{ item.ppcSale }}</td>
           </tr>
         </tbody>
       </table>
       <div class="pagination">
         <VaButton @click="prevPage" :disabled="currentPage === 1">이전</VaButton>
-        <VaButton
-      class="mr-6 mb-2"
-      preset="secondary"
-      hover-behavior="opacity"
-      :hover-opacity="0.4">{{ currentPage }}</VaButton>
+        <VaButton class="mr-6 mb-2" preset="secondary" hover-behavior="opacity" :hover-opacity="0.4">{{ currentPage }}</VaButton>
         <VaButton @click="nextPage" :disabled="currentPage === pageCount">다음</VaButton>
       </div>
     </div>
@@ -58,50 +59,69 @@
 
 <script>
 import axios from 'axios';
-import { VaButton } from 'vuestic-ui/web-components';
+import { VaButton, VaInput, VaSelect } from 'vuestic-ui';
 
 export default {
-
   data() {
     return {
+      clients: [],
       products: [],
-      filter: '',
-      selectedField: null,
+      selectedClient: null,
+      selectedProduct: null,
+      salePrice: '',
       currentPage: 1,
       perPage: 20,
     };
   },
   computed: {
-    filteredProducts() {
-      let filtered = this.products;
-      if (this.filter.trim() && this.selectedField) {
-        filtered = this.products.filter(item => {
-          const value = this.getValue(item, this.selectedField);
-          return value.toLowerCase().includes(this.filter.trim().toLowerCase());
-        });
-      }
-      return filtered;
-    },
     paginatedProducts() {
       const startIndex = (this.currentPage - 1) * this.perPage;
       const endIndex = startIndex + this.perPage;
-      return this.filteredProducts.slice(startIndex, endIndex);
+      return this.products.slice(startIndex, endIndex).map(item => ({
+        ...item,
+        proName: item.product.proName,
+        proUnit: item.product.proUnit,
+      }));
     },
     pageCount() {
-      return Math.ceil(this.filteredProducts.length / this.perPage);
+      return Math.ceil(this.products.length / this.perPage);
     }
   },
   methods: {
-    async fetchProducts() {
+    async fetchData() {
       try {
-        const response = await axios.get('http://localhost:8081/clients/212-82-07728/products/all');
-        this.products = response.data;
+        const response = await axios.get('/ppc/data');
+        const data = response.data;
+        this.clients = data.clients;
+        this.products = data.products;
       } catch (error) {
         console.error('데이터 가져오기 실패:', error);
       }
     },
-    getValue(item, field) {
-      return field.split('.').reduce((obj, key) => obj[key], item);
+    async registerSale() {
+      try {
+        if (!this.selectedClient || !this.selectedProduct || !this.salePrice) {
+          alert('거래처, 제품 및 판매가를 모두 선택해야 합니다.');
+          return;
+        }
+
+        // 판매 등록 요청
+        const response = await axios.post(`/ppc/${this.selectedProduct.proCode}`, {
+          ppcSale: this.salePrice
+        }, {
+          headers: {
+            clientCode: this.selectedClient.clientCode
+          }
+        });
+
+        // 성공적으로 등록된 경우
+        this.products.push(response.data);
+        alert('판매가가 성공적으로 등록되었습니다.');
+      } catch (error) {
+        // 실패한 경우
+        console.error('판매가 등록 실패:', error);
+        alert('판매가 등록에 실패했습니다.');
+      }
     },
     nextPage() {
       if (this.currentPage < this.pageCount) {
@@ -115,21 +135,7 @@ export default {
     }
   },
   created() {
-    this.fetchProducts();
+    this.fetchData();
   }
 };
 </script>
-
-<style scoped>
-.va-table-responsive {
-  overflow: auto;
-}
-.pagination {
-  margin-top: 20px;
-}
-.pagination button {
-  cursor: pointer;
-  padding: 5px 10px;
-  margin-right: 5px;
-}
-</style>
