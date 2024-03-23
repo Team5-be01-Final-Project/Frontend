@@ -17,21 +17,24 @@
         />
     <div class="sales-registration">
       <h3>판매가 등록</h3>
-      <select v-model="selectedClientCode">
-        <option disabled value="">거래처 선택</option>
-        <option v-for="client in clients" :key="client.clientCode" :value="client.clientCode">
-          {{ client.clientName }}
-        </option>
-      </select>
+      <VaSelect
+    v-model="selectedClientCode"
+    searchable
+    placeholder="거래처 선택"
+    :reduce="client => client.clientCode" 
+    :options="clients.map(client => ({ text: client.clientName, value: client }))"
+    class="mb-4" 
+  />
       
-      <select v-model="selectedProductCode">
-        <option disabled value="">상품 선택</option>
-        <option v-for="product in products" :key="product.proCode" :value="product.proCode">
-          {{ product.product.proName }}
-        </option>
-      </select>
+  <VaSelect
+  v-model="selectedProductCode"
+  searchable
+  placeholder="상품 선택"
+  :options="products.map(product => ({ text: product.product.proName, value: product.proCode }))"
+  class="mb-4"
+/>
 
-      <input type="number" v-model="salePrice" placeholder="판매가 입력" />
+  <VaInput type="number" v-model="salePrice" placeholder="판매가 입력" />
       <VaButton
     color="info"
     class="mr-6 mb-2" @click="registerSale">등록</VaButton>
@@ -95,7 +98,7 @@
 <script>
 import axios from 'axios';
 import Modal from '@/components/Modal.vue';
-import { VaButton } from 'vuestic-ui/web-components';
+import { VaButton, VaSelect } from 'vuestic-ui/web-components';
 
 export default {
   components: {
