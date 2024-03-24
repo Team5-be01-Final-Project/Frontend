@@ -111,7 +111,6 @@ function fetchClients() {
 function nextPage() {
   if (currentPage.value < pageCount.value) {
     currentPage.value++;
-=======
 
 export default {
   components: {
