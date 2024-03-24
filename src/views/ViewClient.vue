@@ -31,7 +31,7 @@
         </thead>
         <tbody>
           <tr v-for="client in paginatedClients" :key="client.clientCode">
-            <td>{{ client.clientCode }}</td>
+            <td @click="navigateToDetail(client.clientCode)" class="clickable">{{ client.clientCode }}</td>
             <td>{{ client.clientName }}</td>
             <td>{{ clientClassText(client.clientClass) }}</td>
             <td>{{ client.clientWhere }}</td>
@@ -57,8 +57,9 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
+import { useRouter } from 'vue-router'; 
 import { VaSelect, VaInput, VaButton } from 'vuestic-ui';
-
+const router = useRouter();
 const clients = ref([]);
 const selectedField = ref(null);
 const filter = ref('');
@@ -105,6 +106,11 @@ function fetchClients() {
     });
 }
 
+function navigateToDetail(clientCode) {
+  // 프로그래매틱 네비게이션으로 상세 페이지로 이동
+  router.push(`/clientdetail/${clientCode}`);
+}
+
 function nextPage() {
   if (currentPage.value < pageCount.value) {
     currentPage.value++;
@@ -146,5 +152,9 @@ onMounted(() => {
 }
 .pagination button {
   margin: 0 5px;
+}
+
+.clickable {
+  cursor: pointer;
 }
 </style>
