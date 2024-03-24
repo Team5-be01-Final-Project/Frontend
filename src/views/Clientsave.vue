@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>클라이언트 등록</h3>
+    <h3>거래처 등록</h3>
     <div class="col-span-1" style="height: 50px;"></div>
     <div class="col-span-1" style="height: 50px;"></div>
     <form @submit.prevent="submitForm">
@@ -134,6 +134,11 @@
 import { ref, onMounted, nextTick, watch } from 'vue'
 import axios from 'axios'
 import { VaInput, VaButton, VaAlert, VaSelect, VaDateInput } from 'vuestic-ui'
+// 필요한 라이브러리 및 훅을 import 합니다.
+import { useRouter } from 'vue-router';
+
+// 컴포넌트 내부에서 useRouter 훅을 사용하여 router 인스턴스를 가져옵니다.
+const router = useRouter();
 const selectedClass = ref(null);
 const client = ref({
 clientCode: '',
@@ -182,17 +187,22 @@ try {
     clientEnd: formatDate(client.value.clientEnd),
     empCode: client.value.employee ? client.value.employee.value : null,
   };
-  console.log("제출 전 formData:", formData);
-  errorMessage.value = '';
+
   const response = await axios.post('/clients', formData);
-  alert('클라이언트가 성공적으로 등록되었습니다.');
-  console.log(response.data);
-  // 폼 초기화 로직
-} catch (error) {
-  console.error('폼 제출 중 오류:', error);
-  errorMessage.value = '사업자 등록번호가 중복됩니다.';
-}
+    
+    if (response.status === 200 || response.status === 201) { // 성공 응답 코드 확인
+      alert('거래처가 성공적으로 등록되었습니다.');
+      await router.push('/viewclient'); // 페이지 이동 대기
+      return; // 함수에서 바로 빠져나와 불필요한 실행 방지
+    } else {
+      throw new Error('등록에 실패했습니다.'); // 서버 응답이 성공이 아닐 경우, 에러를 강제로 발생시킴
+    }
+  } catch (error) {
+    console.error('폼 제출 중 오류:', error);
+    alert('사업자등록번호가 중복입니다. 다시 시도해주세요.');
+  }
 };
+
 // 사원 정보를 불러오는 함수
 onMounted(async () => {
 try {

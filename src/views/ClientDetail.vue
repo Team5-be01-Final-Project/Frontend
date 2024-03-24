@@ -100,9 +100,10 @@
       <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 items-end">
         <VaSelect
       :key="selectKey"
-      v-model="client.employee"
+      v-model="selectedEmployee"
       label="담당 사원"
       :options="employees"
+      @input="updateSelectedEmployee"
     ></VaSelect>
       </div>
       <div class="col-span-1" style="height: 50px;"></div>
@@ -132,7 +133,8 @@
     import { useRoute, useRouter } from 'vue-router';
     import axios from 'axios';
     import { VaInput, VaButton, VaSelect, VaDatePicker } from 'vuestic-ui';
-    
+    const selectedClass = ref(null);
+    const selectedEmployee = ref(null);
     const route = useRoute();
     const router = useRouter();
     const clientCode = route.params.clientCode;
@@ -148,7 +150,7 @@
         clientStart: new Date(),
         clientEnd: new Date(),
         clientNote: '',
-        employee: '',
+        employee: null,
     });
     
     const classes = ref([
@@ -163,19 +165,31 @@
 const fetchClientData = async () => {
   try {
     const response = await axios.get(`/clients/${clientCode}`);
-    const fetchedData = response.data;
-    client.value = {
-      ...fetchedData,
-      clientStart: new Date(fetchedData.clientStart),
-      clientEnd: new Date(fetchedData.clientEnd),
-      employee: fetchedData.employee ? fetchedData.employee.empCode : '',
-    };
+    if (response.status === 200 && response.data) {
+      const fetchedData = response.data;
+
+      // clientClass와 employee(empCode) 값에 따라 selectedClass와 selectedEmployee를 설정
+      // 예시에서는 clientClass와 empCode를 직접 사용할 수 있는 구조로 가정하고 있습니다.
+      // 실제로는 서버에서 받은 데이터 구조에 맞게 접근해야 할 수도 있습니다.
+      selectedClass.value = classes.value.find(c => c.value === fetchedData.clientClass);
+      selectedEmployee.value = employees.value.find(e => e.value === fetchedData.empCode);
+
+      // 날짜 형식은 변환 필요
+      client.value = {
+        ...fetchedData,
+        clientStart: new Date(fetchedData.clientStart),
+        clientEnd: new Date(fetchedData.clientEnd),
+        // clientClass와 employee는 위에서 설정한 selectedClass와 selectedEmployee를 사용
+      };
+    } else {
+      console.error("Server response not OK:", response);
+    }
   } catch (error) {
     console.error("Failed to fetch client data:", error);
   }
 };
 
-// 서버로부터 사원 목록을 가져옵니다.
+// 사원 목록을 불러오는 부분
 const fetchEmployees = async () => {
   try {
     const response = await axios.get('/employees/list');
@@ -189,19 +203,37 @@ const fetchEmployees = async () => {
 };
 
 
-// 거래처 정보를 수정합니다.
+// 선택된 사원의 empCode를 client.employee에 할당
+const updateSelectedEmployee = (newValue) => {
+  client.value.employee = newValue ? newValue.value : null;
+};
+
+
 const submitForm = async () => {
+  const clientData = {
+    clientCode: client.value.clientCode,
+    clientName: client.value.clientName,
+    clientClass: selectedClass.value.value, // 클래스 선택값
+    clientBoss: client.value.clientBoss,
+    clientWhere: client.value.clientWhere,
+    clientPost: client.value.clientPost,
+    clientEmp: client.value.clientEmp,
+    clientEmpTel: client.value.clientEmpTel,
+    clientStart: client.value.clientStart.toISOString(),
+    clientEnd: client.value.clientEnd.toISOString(),
+    clientNote: client.value.clientNote,
+    empCode: selectedEmployee.value.value, // 직원 선택값
+  };
+
+
   try {
-    await axios.put(`/clients/${clientCode}`, {
-      ...client.value,
-      clientStart: client.value.clientStart.toISOString(),
-      clientEnd: client.value.clientEnd.toISOString(),
-      employee: client.value.employee,
-    });
-    alert("Client updated successfully!");
+    const response = await axios.put(`/clients/${client.value.clientCode}`, clientData);
+    console.log(response.data);
+    alert("거래처 수정이 완료되었습니다.");
     router.push('/viewclient');
   } catch (error) {
     console.error("Failed to update client:", error);
+    alert("거래처 수정에 실패했습니다.");
   }
 };
 
