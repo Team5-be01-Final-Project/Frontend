@@ -31,7 +31,6 @@
                     class="w-full"
                 />
                 <VaButton @click="fetchFilteredEmployees">검색</VaButton>
-                <VaButton @click="updateEmployeeAuthority">권한 저장</VaButton>
             </div>
         <table class="va-table va-table--hoverable">
           <thead>
