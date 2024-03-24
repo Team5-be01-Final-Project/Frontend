@@ -31,7 +31,7 @@
                     class="w-full"
                 />
                 <VaButton @click="fetchFilteredEmployees">검색</VaButton>
-                <!-- <VaButton @click="updateEmployeeAuthority(employee)">저장</VaButton> -->
+                <VaButton @click="updateEmployeeAuthority">권한 저장</VaButton>
             </div>
         <table class="va-table va-table--hoverable">
           <thead>
@@ -53,24 +53,12 @@
               <td>{{ employee.deptName }}</td>
               <td>{{ employee.empTel }}</td>
               <td>
-                <!-- <va-select
-                  v-model="employee.selectedAuthorityCode"
-                  placeholder="권한 선택"
-                  :options="authorityCodeOptions" 
-                /> -->
-                <!-- <select v-model="employee.selectedAuthorityCode">
-                  <option v-for="code in authorityCodes" :key="code.authCode" :value="code.authCode">
-                    {{ code.authName }}
-                  </option>
-                </select> -->
-
                 <va-select
                 v-model="employee.selectedAuthorityCode"
                 placeholder="권한 선택"
                 :options="authorityCodeOptions"
-                @change="() => authorityChange(employee)"
-                />
-
+                @update:modelValue="authorityChange(employee)"
+                /> 
               </td>
               <td><VaButton @click="openAlarmSettingsModal(employee)">알림 설정</VaButton></td>
             </tr>
@@ -82,9 +70,10 @@
     <VaModal
       v-model="isAuthorityChangeModalOpen"
       title="권한 변경 확인"
-      @ok="proceedChange"
-      @cancel="cancelChange"
+      @ok="AuthorityChangeModalproceedChange" ok-text="변경"
+      @cancel="AuthorityChangeModalcancelChange" cancel-text="취소"
     >
+    <h4>권한을 변경 하시겠습니까?</h4>
     </VaModal>
 
     <VaModal v-model="isAlarmSettingsModalOpen"
@@ -118,10 +107,10 @@
         selectedSearchCondition: null, // 검색 조건 선택을 위한 변수
         searchText: '', // 검색어 입력을 위한 변수
         employee: {
-        selectedAuthorityCode: null,
+          originalAuthorityCode: null,
+          selectedAuthorityCode: null,
         },
         authorityCodes: [],
-        isAuthorityChangeModalOpen: false,
         changingEmployee: null, // 권한 변경할 직원 정보 저장
         isAlarmSettingsModalOpen: false,
         alarmSettings: {
@@ -130,14 +119,7 @@
         },
       };
     },
-    // computed: {
-    //   authorityCodeOptions() {
-    //     return this.authorityCodes.map(code => ({
-    //       text: code.authName,
-    //       value: code.authCode,
-    //     }));
-    //   },
-    // },
+
     computed: {
       authorityCodeOptions() {
         return this.authorityCodes.map(code => ({
@@ -167,7 +149,11 @@
             this.employees = response.data;
             this.employees = response.data.map(employee => ({
               ...employee,
-              selectedAuthorityCode: employee.authName, // 올바른 속성 접근 및 설정
+              // 백엔드로부터 받은 권한 코드를 selectedAuthorityCode에 설정,
+              selectedAuthorityCode: { 
+                text : employee.authName, 
+                value : employee.authCode 
+              } ,
             }));
             } catch (error) {
             console.error('필터링된 데이터 가져오기 실패:', error);
@@ -180,7 +166,10 @@
             this.employees = response.data.map(employee => ({
               ...employee,
               // 백엔드로부터 받은 권한 코드를 selectedAuthorityCode에 설정
-              selectedAuthorityCode: employee.authName, 
+              selectedAuthorityCode: {
+                text : employee.authName, 
+                value : employee.authCode 
+              },
             }));
             } catch (error) {
             console.error('데이터 가져오기 실패:', error);
@@ -200,21 +189,6 @@
             console.error('권한 코드 가져오기 실패:', error);
           }
         },
-        
-        async updateEmployeeAuthority(employee) {
-          try {
-            const requestData = {
-              empCode: employee.empCode,
-              authCode: employee.authCode, // 기존 권한 코드. 이 부분을 적절하게 설정해야 합니다.
-              newAuthCode: employee.selectedAuthorityCode // 새로운 권한 코드
-            };
-            await axios.post(`http://localhost:8081/authorities/changeAuthority`, requestData);
-            this.$toast.success('권한이 성공적으로 업데이트되었습니다.'); // 성공 메시지 표시, toast 사용 예시
-          } catch (error) {
-            console.error('권한 업데이트 실패:', error);
-            this.$toast.error('권한 업데이트 중 오류가 발생했습니다.'); // 오류 메시지 표시, toast 사용 예시
-          }
-        },
 
         authorityChange(employee) {
           console.log('authorityChange called', employee);
@@ -222,23 +196,41 @@
           this.isAuthorityChangeModalOpen = true; // 모달 열기
         },
 
-        async proceedChange() {
+        async AuthorityChangeModalproceedChange() {
           if (this.changingEmployee) {
             try {
               await this.updateEmployeeAuthority(this.changingEmployee);
-              this.fetchEmployeesList(); // 변경 사항 반영을 위해 직원 목록 새로고침
+              this.fetchFilteredEmployees(); // 변경 사항 반영을 위해 직원 목록 새로고침
             } catch (error) {
               console.error('권한 변경 처리 실패:', error);
             }
           }
           this.isAuthorityChangeModalOpen = false; // 모달 닫기
         },
-        cancelChange() {
-          this.isAuthorityChangeModalOpen = false; // 변경 취소하고 모달 닫기
+
+        AuthorityChangeModalcancelChange() {
+            this.fetchFilteredEmployees(); // 변경 사항 반영을 위해 직원 목록 새로고침
+            this.isAuthorityChangeModalOpen = false; // 모달 닫기
         },
 
-        openAlarmSettingsModal(employee) {
-          console.log("알림 설정 모달 열림", employee);
+        async updateEmployeeAuthority(employee) {
+          try {
+            const requestData = {
+              empCode: employee.empCode,
+              authCode: employee.authCode, // 기존 권한 코드. 
+              newAuthCode: employee.selectedAuthorityCode.value // 새로운 권한 코드
+            };
+
+            console.log(requestData);
+            await axios.post(`http://localhost:8081/authorities/changeAuthority`, requestData);
+            console.log('권한이 성공적으로 업데이트되었습니다.'); // 성공 메시지 표시, toast 사용 예시
+          } catch (error) {
+            console.error('권한 업데이트 실패:', error);
+          }
+        },
+
+      openAlarmSettingsModal(employee) {
+        console.log("알림 설정 모달 열림", employee);
           this.selectedEmployee = employee;
           // 모든 알람 설정을 먼저 false로 초기화
           Object.keys(this.alarmSettings).forEach(key => {
@@ -257,6 +249,7 @@
               .catch(error => console.error("알람 설정 조회 실패:", error));
           this.isAlarmSettingsModalOpen = true;
         },
+
         async saveAlarmSettings() {
           try {
             const empCode = this.selectedEmployee.empCode;
@@ -285,6 +278,7 @@
 
     }
   };
+  
   </script>
   
   <style>
