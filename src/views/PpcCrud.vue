@@ -175,7 +175,7 @@ methods: {
     console.log('Response:', response);
     // 성공적으로 요청이 처리되면, 사용자에게 알림을 표시하고 필요한 후속 작업을 수행
     alert('판매가 성공적으로 등록되었습니다.');
-    this.fetchProducts(); // 상품 목록 새로고침
+    this.fetchPPCData(); // 상품 목록 새로고침
 
     // 입력 필드 초기화
     this.selectedClientCode = '';
@@ -185,9 +185,8 @@ methods: {
     console.error('판매 상품 중복:', error);
     alert('해당 거래처에 해당 상품이 이미 존재합니다.');
   }
-}
+},
 
-,
     async fetchClients() {
       try {
         const response = await axios.get('/clients/list'); // '/api/clients'는 예시 URL입니다. 실제 경로로 교체해야 합니다.
@@ -206,14 +205,26 @@ methods: {
         this.currentPage--;
       }
     },
-    async fetchProducts() {
+// PPC 정보를 가져오는 메서드
+async fetchPPCData() {
       try {
-        const response = await axios.get('/ppc/all');
-        this.products = response.data;
+        const response = await axios.get('http://localhost:8081/ppc/all');
+        this.products = response.data; // PPC 데이터 사용
       } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error('Error fetching PPC data:', error);
       }
     },
+
+    // 판매가 등록에 사용할 상품 리스트를 가져오는 메서드
+    async fetchProductList() {
+      try {
+        const response = await axios.get('http://localhost:8081/api/products');
+        this.productList = response.data; // 상품 리스트 데이터 저장
+      } catch (error) {
+        console.error('Error fetching product list:', error);
+      }
+    },
+
     showEditModal(item, index) {
       this.currentItem = Object.assign({}, item);
       this.currentIndex = index;
@@ -267,8 +278,9 @@ methods: {
     },
   },
   created() {
-    this.fetchProducts();
-    this.fetchClients();
+    this.fetchPPCData(); // PPC 데이터 로드
+    this.fetchProductList(); // 판매가 등록에 사용할 상품 리스트 로드
+    this.fetchClients(); // 거래처 정보 로드
   },
 };
 </script>
