@@ -53,7 +53,17 @@ const router = createRouter({
       path: '/ClientDetail/:clientCode',
       name: 'ClientDetail',
       component: () => import('../views/ClientDetail.vue')
+    },{
+      path: '/login',
+      name: 'login',
+      component: () => import('../views/Login.vue')
+    },
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: () => import('../views/Dashboard.vue')
     }
+
   ]
 })
 

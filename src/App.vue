@@ -10,14 +10,14 @@ import { RouterLink, RouterView } from 'vue-router'
     <div class="wrapper">
       <HelloWorld msg="You did it!" />
 
-      <nav>
+      <!-- <nav>
         <RouterLink to="/viewproduct">판매상품 조회</RouterLink>
         <RouterLink to="/employeeslist">사원리스트 조회</RouterLink>
         <RouterLink to="/ppcview">거래처별 판매상품 리스트 조회</RouterLink>
         <RouterLink to="/ppccrud">거래처별 판매상품 리스트 등록</RouterLink>
         <RouterLink to="/Clientsave">매출 거래처 등록</RouterLink>
         <RouterLink to="/viewclient">매출 거래처 조회</RouterLink>
-      </nav>
+      </nav> -->
     </div>
   </header>
 
