@@ -1,5 +1,19 @@
 <template>
   <div>
+    <VaSelect
+  v-model="selectedFilterField"
+  placeholder="Select filter fields"
+  :options="[
+    { text: '거래처명', value: 'clientName' },
+    { text: '제품명', value: 'product.proName' },
+  ]"
+  value-by="value"
+/>
+        <VaInput
+          v-model="filter"
+          placeholder="Filter..."
+          class="w-full"
+        />
     <div class="sales-registration">
       <h3>판매가 등록</h3>
       <select v-model="selectedClientCode">
@@ -74,6 +88,7 @@
 <script>
 import axios from 'axios';
 import Modal from '@/components/Modal.vue'; // 모달 컴포넌트 경로가 확인하세요.
+import { VaButton, VaSelect } from 'vuestic-ui/web-components';
 
 export default {
   components: {
@@ -81,6 +96,8 @@ export default {
   },
   data() {
     return {
+      filter: '',
+    selectedFilterField: 'clientName',
       products: [],
       isModalVisible: false,
       currentItem: null,
@@ -95,16 +112,24 @@ export default {
     };
   },
   computed: {
+    filteredProducts() {
+    if (!this.filter) {
+      return this.products; // 필터링하지 않고 모든 상품 반환
+    }
+    return this.products.filter((product) => {
+      const fieldValue = this.selectedFilterField.split('.').reduce((o, i) => o[i], product);
+      return fieldValue.toString().toLowerCase().includes(this.filter.toLowerCase());
+    });
+  },
   paginatedProducts() {
     const startIndex = (this.currentPage - 1) * this.perPage;
     const endIndex = startIndex + this.perPage;
-    return this.products.slice(startIndex, endIndex); // `filteredProducts` 대신 `products` 사용
+    return this.filteredProducts.slice(startIndex, endIndex); // `filteredProducts`를 사용하여 페이지네이션 적용
   },
   pageCount() {
-    return Math.ceil(this.products.length / this.perPage); // 여기도 마찬가지로 `filteredProducts` 대신 `products` 사용
-  }
+    return Math.ceil(this.filteredProducts.length / this.perPage); // `filteredProducts`의 길이를 기준으로 페이지 수 계산
+  },
 },
-
 
 methods: {
   async registerSale() {
