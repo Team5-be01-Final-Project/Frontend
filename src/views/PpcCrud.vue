@@ -14,25 +14,38 @@
           placeholder="Filter..."
           class="w-full"
         />
-    <div class="sales-registration">
+        <div class="sales-registration">
       <h3>판매가 등록</h3>
-      <select v-model="selectedClientCode">
-        <option disabled value="">거래처 선택</option>
-        <option v-for="client in clients" :key="client.clientCode" :value="client.clientCode">
-          {{ client.clientName }}
-        </option>
-      </select>
-      
-      <select v-model="selectedProductCode">
-        <option disabled value="">상품 선택</option>
-        <option v-for="product in products" :key="product.proCode" :value="product.proCode">
-          {{ product.product.proName }}
-        </option>
-      </select>
-
-      <input type="number" v-model="salePrice" placeholder="판매가 입력" />
-      <button @click="registerSale">등록</button>
+      <!-- 거래처 선택 VaSelect -->
+      <VaSelect
+        v-model="selectedClientCode"
+        placeholder="거래처 선택"
+        class="mb-4"
+        :options="clients.map(client => ({ text: client.clientName, value: client.clientCode }))"
+      />
+      <!-- 상품 선택 VaSelect -->
+      <VaSelect
+        v-model="selectedProductCode"
+        placeholder="상품 선택"
+        class="mb-4"
+        :options="products.map(product => ({ text: product.product.proName, value: product.proCode }))"
+      />
+      <!-- 판매가 입력 VaInput -->
+      <VaInput
+        v-model.number="salePrice"
+        placeholder="판매가 입력"
+        type="number"
+        class="mb-4"
+      />
+      <!-- 등록 VaButton -->
+      <VaButton
+        color="primary"
+        @click="registerSale"
+      >
+        등록
+      </VaButton>
     </div>
+
   <div class="product-list">
     <div class="va-table-responsive">
       <h3 class="va-h3">모든 상품 목록</h3>
@@ -54,10 +67,22 @@
     <td>{{ product.product.proName }}</td>
     <td>{{ product.ppcSale }}</td>
     <td>
-      <button @click="showEditModal(product, index)">수정</button>
-    </td>
-    <td>
-      <button @click="showDeleteModal(product, index)">삭제</button>
+       <!-- 수정 VaButton -->
+       <VaButton
+                  color="warning"
+                  @click="showEditModal(product, index)"
+                >
+                  수정
+                </VaButton>
+              </td>
+              <td>
+                <!-- 삭제 VaButton -->
+                <VaButton
+                  color="danger"
+                  @click="showDeleteModal(product, index)"
+                >
+                  삭제
+                </VaButton>
     </td>
   </tr>
 </tbody>
@@ -133,6 +158,9 @@ export default {
 
 methods: {
   async registerSale() {
+    console.log('Client Code:', this.selectedClientCode);
+  console.log('Product Code:', this.selectedProductCode);
+  console.log('Sale Price:', this.salePrice);
   // 입력된 값의 유효성 검사
   if (!this.selectedClientCode || !this.selectedProductCode || !this.salePrice) {
     alert('모든 정보를 입력해주세요.');
@@ -140,11 +168,11 @@ methods: {
   }
 
   try {
-    const response = await axios.post(`/ppc/${this.selectedProductCode}`, {
-      clientCode: this.selectedClientCode, // clientCode 값을 정확히 전달
+    const response = await axios.post(`/ppc/${this.selectedProductCode.value}`, {
+      clientCode: this.selectedClientCode.value, // clientCode 값을 정확히 전달
       ppcSale: parseInt(this.salePrice, 10) // ppcSale 값을 정수로 변환
     });
-
+    console.log('Response:', response);
     // 성공적으로 요청이 처리되면, 사용자에게 알림을 표시하고 필요한 후속 작업을 수행
     alert('판매가 성공적으로 등록되었습니다.');
     this.fetchProducts(); // 상품 목록 새로고침
