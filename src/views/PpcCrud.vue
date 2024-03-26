@@ -208,7 +208,7 @@ methods: {
 // PPC 정보를 가져오는 메서드
 async fetchPPCData() {
       try {
-        const response = await axios.get('http://localhost:8081/ppc/all');
+        const response = await axios.get('/ppc/all');
         this.products = response.data; // PPC 데이터 사용
       } catch (error) {
         console.error('Error fetching PPC data:', error);
@@ -218,7 +218,7 @@ async fetchPPCData() {
     // 판매가 등록에 사용할 상품 리스트를 가져오는 메서드
     async fetchProductList() {
       try {
-        const response = await axios.get('http://localhost:8081/api/products');
+        const response = await axios.get('/api/products');
         this.productList = response.data; // 상품 리스트 데이터 저장
       } catch (error) {
         console.error('Error fetching product list:', error);
