@@ -144,7 +144,7 @@
             if (this.searchText && this.selectedSearchCondition) {
                 params.append(this.selectedSearchCondition, this.searchText);
             }
-            const response = await axios.get(`http://localhost:8081/employees/list?${params.toString()}`);
+            const response = await axios.get(`employees/list?${params.toString()}`);
             this.employees = response.data;
             this.employees = response.data.map(employee => ({
               ...employee,

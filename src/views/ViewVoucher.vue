@@ -1,0 +1,108 @@
+<template>
+    <div>
+      <h3 class="va-h3">출고전표 목록 조회</h3>
+      <table class="va-table va-table--hoverable">
+        <thead>
+          <tr>
+            <th class="text-left">전표번호</th>
+            <th class="text-left">담당자</th>
+            <th class="text-left">거래처명</th>
+            <th class="text-left">등록일</th>
+            <th class="text-left">결재자</th>
+            <th class="text-left">결재상태</th>
+            <th class="text-left">결재일</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="voucher in displayedVouchers" :key="voucher.voucId">
+            <td @click="navigateToDetail(voucher.voucId)" class="clickable">{{ voucher.voucId }}</td>
+            <td>{{ voucher.empName }}</td>
+            <td>{{ voucher.clientName }}</td>
+            <td>{{ voucher.voucDate }}</td>
+            <td>{{ voucher.signerName }}</td>
+            <td>{{ voucher.approvalStatus.trim() }}</td>
+            <td>{{ voucher.voucApproval }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="pagination">
+        <button @click="prevPage" :disabled="currentPage === 1">이전</button>
+        <span>Page {{ currentPage }} of {{ pageCount }}</span>
+        <button @click="nextPage" :disabled="currentPage === pageCount">다음</button>
+      </div>
+    </div>
+  </template>
+  
+  <script>
+  import axios from 'axios';
+  
+  export default {
+    data() {
+      return {
+        vouchers: [],
+        currentPage: 1,
+        perPage: 20,
+      };
+    },
+    computed: {
+      uniqueVouchers() {
+        const unique = {};
+        this.vouchers.forEach(voucher => {
+          unique[voucher.voucId] = voucher;
+        });
+        return Object.values(unique);
+      },
+      displayedVouchers() {
+        const start = (this.currentPage - 1) * this.perPage;
+        const end = start + this.perPage;
+        return this.uniqueVouchers.slice(start, end);
+      },
+      pageCount() {
+        return Math.ceil(this.uniqueVouchers.length / this.perPage);
+      }
+    },
+    mounted() {
+      this.fetchVouchers();
+    },
+    methods: {
+      async fetchVouchers() {
+        try {
+          const response = await axios.get('/api/vouchers');
+          this.vouchers = response.data;
+        } catch (error) {
+          console.error('Error fetching vouchers:', error);
+        }
+      },
+      navigateToDetail(voucId) {
+        this.$router.push(`/voucherdetail/${voucId}`);
+      },
+      prevPage() {
+        if (this.currentPage > 1) {
+          this.currentPage--;
+        }
+      },
+      nextPage() {
+        if (this.currentPage < this.pageCount) {
+          this.currentPage++;
+        }
+      }
+    }
+  };
+  </script>
+  
+  <style scoped>
+  .clickable {
+    cursor: pointer;
+    color: #2c3e50;
+    text-decoration: underline;
+  }
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  .pagination button {
+    margin: 0 10px;
+  }
+  </style>
+  

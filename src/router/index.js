@@ -54,8 +54,15 @@ const router = createRouter({
           path: '/stockList',
           name: 'stockList',
           component: () => import('../views/StockList.vue')
-        },
-        {
+        },   {
+          path: '/viewvoucher',
+          name: 'viewvoucher',
+          component: () => import('../views/ViewVoucher.vue')
+        }, {
+          path: '/voucherdetail/:voucherID', // 동적 세그먼트를 사용한 경로
+          name: 'VoucherDetail',
+          component: () => import('../views/VoucherDetail.vue')
+        },{
           path: '/incentivelist',
           name: 'incentivelist',
           component: () => import('../views/IncentiveList.vue')
