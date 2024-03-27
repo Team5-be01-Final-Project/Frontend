@@ -1,5 +1,11 @@
 <!-- StockList.vue -->
 <template>
+   <div class="flex">
+    <!-- 사이드바 섹션 -->
+    <div class="sidebar">
+      <ProductSidebar/>
+    </div>
+    
   <div class="stock-list">
     <h3 class="va-h3">재고 조회</h3>
     <div class="grid md:grid-cols-2 gap-6 mb-6">
@@ -55,6 +61,7 @@
       <StockRegi v-if="showRegisterModal" @close="closeRegisterModal" />
     </div>
   </div>
+  </div>
 </template>
 
 <script setup>
@@ -62,6 +69,7 @@ import { defineComponent, ref, computed, onMounted } from "vue";
 import axios from "axios";
 import StockRegi from "@/components/StockRegi.vue";
 import { VaSelect, VaInput, VaButton } from "vuestic-ui";
+import ProductSidebar from '@/components/sidebar/ProductSidebar.vue'
 
 const stockList = ref([]);
 const selectedField = ref(null);
@@ -137,6 +145,14 @@ onMounted(() => {
 </script>
 
 <style>
+.flex {
+    display: flex;
+  }
+
+  .sidebar {
+    width: 250px; /* 사이드바의 너비를 조절하세요 */
+    /* 필요에 따라 추가 스타일링 */
+  }
 .va-table-responsive {
   overflow: auto;
   min-height: 2000px;
