@@ -1,4 +1,4 @@
-export const departments = [
+export const departmentOptions = [
     { text: '전체', value: '' },
     { text: '이사회', value: 'D00' },
     { text: '영업 1팀', value: 'D01' },

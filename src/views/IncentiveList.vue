@@ -5,7 +5,12 @@
         <va-select
           v-model="selectedDepartment"
           placeholder="부서 선택"
-          :options="deptOptions"
+          :options="deptOption"
+        />
+        <va-select
+          v-model="selectedMonth"
+          placeholder="월 선택"
+          :options="monthOption"
         />
         <VaButton @click="applyFilter">검색</VaButton>
       </div>
@@ -34,42 +39,55 @@
   
   <script>
   import axios from 'axios';
-  import { departments } from '../utils/department.js'; 
+  import { departmentOptions } from '../utils/departmentOptions.js'; 
+  import { monthOptions } from '../utils/monthOptions.js'; 
   import formatNumberWithCommas from '../utils/formatNumberWithCommas.js';
   
   export default {
     data() {
+      const currentMonth = new Date().getMonth() + 1; // getMonth()는 0에서 시작하므로 +1
       return {
         incentives: [],
         selectedDepartment: '',
-        deptOptions: departments.map(dept => ({ text: dept.text, value: dept.text })),
+        deptOption: departmentOptions.map(dept => ({ text: dept.text, value: dept.value })),
+        selectedMonth: currentMonth.toString() ,
+        selectedMonthhistory: currentMonth.toString(),
+        monthOption: monthOptions.map(dept => ({ text: dept.text, value: dept.value })),
         filteredData: [] // 필터링된 데이터를 저장할 배열
       }
     },
     mounted() {
-      this.fetchIncentives();
+      this.fetchIncentives(this.selectedMonth);
     },
     methods: {
-      async fetchIncentives() {
+      async fetchIncentives(month) {
         try {
-          const response = await axios.get('/incentive/list?month=3');
+          const response = await axios.get(`/incentive/list?month=${month}`);
           this.incentives = response.data;
           this.filteredData = response.data; // 초기 상태에서는 모든 데이터를 표시
         } catch (error) {
           console.error("인센티브 데이터를 가져오는 중 에러가 발생했습니다.", error);
         }
+        this.selectedMonthhistory = this.selectedMonth; // 비동기 호출이 성공한 후 업데이트
       },
       formatNumberWithCommas,
       applyFilter() {
-      if (!this.selectedDepartment) {
-        this.filteredData = this.incentives;
-      } else {
-        this.filteredData = this.incentives.filter(item => item.deptName === this.selectedDepartment.value);
-      }
-    },
+          // 월 변경 시 데이터 다시 가져오기
+        if(this.selectedMonth !== this.selectedMonthhistory){
+          this.fetchIncentives(this.selectedMonth.value);
+        }
+        this.fetchFilterDept();
+      },
 
-    }
+      fetchFilterDept() {
+        if (!this.selectedDepartment) {
+          this.filteredData = this.incentives;
+        } else {
+          this.filteredData = this.incentives.filter(item => item.deptName === this.selectedDepartment.value);
+        }
+      },
   }
+}
   </script>
   
   <style>
@@ -93,4 +111,4 @@
   thead {
     background-color: #f2f2f2;
   }
-  </style>
+  </style>../utils/departmentCodeOptions.js/index.js
