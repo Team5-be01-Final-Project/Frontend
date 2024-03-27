@@ -1,7 +1,7 @@
 <template>
-    <div>
-      <h1>직원 인센티브 목록</h1>
-      <div>
+    <div class="va-table-responsive">
+      <h3 class="va-h3">인센티브 현황</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 items-end">
         <va-select
           v-model="selectedDepartment"
           placeholder="부서 선택"
@@ -14,7 +14,8 @@
         />
         <VaButton @click="applyFilter">검색</VaButton>
       </div>
-      <table>
+
+      <table class="va-table va-table--hoverable">
         <thead>
           <tr>
             <th>직원 이름</th>
@@ -91,24 +92,24 @@
   </script>
   
   <style>
-  /* 여기에 스타일을 추가하세요 */
-  table {
-    width: 100%;
-    border-collapse: collapse;
+
+  .va-table-responsive {
+    overflow: auto;
   }
-  
+  .pagination {
+    margin-top: 20px;
+  }
+  .pagination button {
+    cursor: pointer;
+    padding: 5px 10px;
+    margin-right: 5px;
+  }
+
+  .va-table {
+  /* min-width: 1000px; */
+  }
+
   td.money-right {
     text-align: right;
-  }
-
-  th, td {
-    border: 1px solid black;
-    padding: 8px;
-    text-align: left;
-  }
-
-  
-  thead {
-    background-color: #f2f2f2;
   }
   </style>../utils/departmentCodeOptions.js/index.js

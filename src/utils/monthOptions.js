@@ -1,5 +1,4 @@
 export const monthOptions = [
-    { text: '전체', value: '' },
     { text: '1월', value: 1 },
     { text: '2월', value: 2 },
     { text: '3월', value: 3 },
