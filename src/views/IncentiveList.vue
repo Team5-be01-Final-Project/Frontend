@@ -71,19 +71,19 @@
         this.selectedMonthhistory = this.selectedMonth; // 비동기 호출이 성공한 후 업데이트
       },
       formatNumberWithCommas,
-      applyFilter() {
+      async applyFilter() {
           // 월 변경 시 데이터 다시 가져오기
         if(this.selectedMonth !== this.selectedMonthhistory){
-          this.fetchIncentives(this.selectedMonth.value);
+          await this.fetchIncentives(this.selectedMonth.value);
         }
         this.fetchFilterDept();
       },
 
       fetchFilterDept() {
-        if (!this.selectedDepartment) {
+        if (!this.selectedDepartment || this.selectedDepartment.value === '') {
           this.filteredData = this.incentives;
         } else {
-          this.filteredData = this.incentives.filter(item => item.deptName === this.selectedDepartment.value);
+          this.filteredData = this.incentives.filter(item => item.deptName === this.selectedDepartment.text);
         }
       },
   }
