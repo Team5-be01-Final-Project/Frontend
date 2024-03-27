@@ -12,6 +12,7 @@
           <RouterLink to="/viewclient">매출 거래처 조회</RouterLink>
           <RouterLink to="/stocklist">재고 관리</RouterLink>
           <RouterLink to="/viewvoucher">출고 전표 목록 조회</RouterLink>
+          <RouterLink to="/incentivelist">인센티브 현황 조회</RouterLink>
         </nav>
       </div>
     </header>
