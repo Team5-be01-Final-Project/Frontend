@@ -3,31 +3,32 @@
   <div class="stock-list">
     <h3 class="va-h3">재고 조회</h3>
     <div class="grid md:grid-cols-2 gap-6 mb-6">
-      <div class="filter-options">
-        <VaSelect
-          v-model="selectedField"
-          placeholder="필터링할 필드 선택"
-          :options="filterOptions"
-          value-by="value"
-        />
-        <VaInput
-          v-model="filter"
-          placeholder="검색..."
-          class="w-full"
-        />
-      </div>
-      <div class="register-button-container">
-        <button @click="openRegisterModal" class="register-button">재고 등록</button>
+      <div class="filter-options-container">
+        <div class="filter-options">
+          <VaSelect
+            v-model="selectedField"
+            placeholder="필터링할 필드 선택"
+            :options="filterOptions"
+            value-by="value"
+            class="w-full filter-options"
+          />
+          <VaInput v-model="filter" placeholder="검색..." class="w-full" />
+        </div>
+        <div class="register-button-container">
+          <button @click="openRegisterModal" class="register-button">
+            재고 등록
+          </button>
+        </div>
       </div>
     </div>
     <div class="va-table-responsive">
       <table class="va-table va-table--hoverable">
         <thead>
           <tr>
-            <th class="text-center">품목기준코드</th>
-            <th class="text-center">제품명</th>
-            <th class="text-center">재고</th>
-            <th class="text-center">단가</th>
+            <th class="text-center w-aaa">품목기준코드</th>
+            <th class="text-center w-bbb">제품명</th>
+            <th class="text-center w-aaa">재고</th>
+            <th class="text-center w-aaa">단가</th>
           </tr>
         </thead>
         <tbody>
@@ -40,9 +41,13 @@
         </tbody>
       </table>
       <div class="pagination">
-        <VaButton @click="prevPage" :disabled="currentPage === 1">이전</VaButton>
+        <VaButton @click="prevPage" :disabled="currentPage === 1"
+          >이전</VaButton
+        >
         <VaButton disabled>{{ currentPage }}</VaButton>
-        <VaButton @click="nextPage" :disabled="currentPage === pageCount">다음</VaButton>
+        <VaButton @click="nextPage" :disabled="currentPage === pageCount"
+          >다음</VaButton
+        >
       </div>
     </div>
     <!-- 재고 등록 모달 -->
@@ -53,29 +58,31 @@
 </template>
 
 <script setup>
-import { defineComponent, ref, computed, onMounted } from 'vue';
-import axios from 'axios';
-import StockRegi from '@/components/StockRegi.vue';
-import { VaSelect, VaInput, VaButton } from 'vuestic-ui';
+import { defineComponent, ref, computed, onMounted } from "vue";
+import axios from "axios";
+import StockRegi from "@/components/StockRegi.vue";
+import { VaSelect, VaInput, VaButton } from "vuestic-ui";
 
 const stockList = ref([]);
 const selectedField = ref(null);
-const filter = ref('');
+const filter = ref("");
 const currentPage = ref(1);
 const perPage = ref(15);
 const showRegisterModal = ref(false);
 
 const filterOptions = ref([
-  { text: '품목코드', value: 'proCode' },
-  { text: '제품명', value: 'proName' }
+  { text: "품목코드", value: "proCode" },
+  { text: "제품명", value: "proName" },
 ]);
 
 const filteredStockList = computed(() => {
   if (!filter.value || !selectedField.value) {
     return stockList.value;
   }
-  return stockList.value.filter(stock =>
-    String(stock[selectedField.value]).toLowerCase().includes(filter.value.toLowerCase())
+  return stockList.value.filter((stock) =>
+    String(stock[selectedField.value])
+      .toLowerCase()
+      .includes(filter.value.toLowerCase())
   );
 });
 
@@ -89,12 +96,13 @@ const pageCount = computed(() => {
 });
 
 function fetchStockList() {
-  axios.get('/api/stocks/all')
-    .then(response => {
+  axios
+    .get("/api/stocks/all")
+    .then((response) => {
       stockList.value = response.data;
     })
-    .catch(error => {
-      console.error('재고 목록을 가져오는 데 실패했습니다:', error);
+    .catch((error) => {
+      console.error("재고 목록을 가져오는 데 실패했습니다:", error);
     });
 }
 
@@ -120,7 +128,7 @@ function prevPage() {
 }
 
 function formatPrice(price) {
-  return typeof price === 'number' ? price.toLocaleString() : price;
+  return typeof price === "number" ? price.toLocaleString() : price;
 }
 
 onMounted(() => {
@@ -131,13 +139,26 @@ onMounted(() => {
 <style>
 .va-table-responsive {
   overflow: auto;
-  min-height: 2000px; /* 최소 높이를 400px로 설정 */
+  min-height: 2000px;
 }
 
 .va-table {
-  width: 800px; /* 테이블의 가로 너비를 800px로 설정 */
-  table-layout: fixed; /* 테이블 레이아웃을 고정 */
-  overflow-y: auto; /* 세로 스크롤 표시 */
+  width: 800px;
+  table-layout: fixed;
+  overflow-y: auto;
+}
+
+.filter-options {
+  width: 200px;
+}
+
+.search-input {
+  width: 300px;
+}
+
+.register-button-container {
+  display: flex;
+  justify-content: flex-end;
 }
 
 /* 필터링 필드 선택과 검색 입력 간격 조절 */
@@ -146,16 +167,16 @@ onMounted(() => {
 }
 
 .va-table th {
-  font-size: 16px; /* 원하는 글꼴 크기로 조정 */
-  text-align: center; /* 헤더 셀 가운데 정렬 */
+  font-size: 16px;
+  text-align: center;
 }
 
 .va-table td.text-center {
-  text-align: center; /* 데이터 셀 가운데 정렬 */
+  text-align: center;
 }
 
 .va-table td.text-right {
-  text-align: right; /* 데이터 셀 오른쪽 정렬 */
+  text-align: right;
 }
 
 .pagination {
@@ -173,12 +194,6 @@ onMounted(() => {
   align-items: center;
 }
 
-.register-button-container {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
-
 .register-button {
   padding: 10px 20px;
   background-color: #007bff;
@@ -192,4 +207,13 @@ onMounted(() => {
 .register-button:hover {
   background-color: #0056b3;
 }
+
+.w-aaa {
+  width: 16.66%;
+}
+
+.w-bbb {
+  width: 40%;
+}
 </style>
+
