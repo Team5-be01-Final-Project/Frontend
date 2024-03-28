@@ -28,7 +28,7 @@ a,
 
   #app {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* 1024px 이상의 화면에서 2열 그리드로 전환합니다 */
+    grid-template-columns: 1fr; /* 1024px 이상의 화면에서 2열 그리드로 전환합니다 */
     padding: 0; /* 가장자리 패딩을 제거합니다 */
   }
 }
@@ -52,6 +52,7 @@ a,
 }
 
 .main-content {
+  width: calc(100% - 270px);
   margin-top: 60px; /* 네비게이션 바 높이만큼 상단 여백을 추가하여 하단에 위치하도록 설정 */
   margin-left: 270px; /* 사이드바 너비 + 20px의 여백 */
   padding-right: 0; /* 메인 컨텐츠 우측 패딩 제거 */

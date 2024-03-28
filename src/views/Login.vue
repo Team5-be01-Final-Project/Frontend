@@ -43,7 +43,7 @@ export default {
           empPw: this.empPw
         });
         if (response.status === 200) {
-          this.$router.push('/home'); // 로그인 성공 시 /home 경로로 이동
+          this.$router.push('/dashboard'); // 로그인 성공 시 /home 경로로 이동
         }
       } catch (error) {
         this.loginError = true;
