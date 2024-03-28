@@ -1,4 +1,11 @@
 <template>
+
+  <div class="flex">
+    <!-- 사이드바 섹션 -->
+    <div class="sidebar">
+      <SalesSidebar />
+    </div>
+
     <va-container>
       <table class="va-table va-table--hoverable">
         <thead>
@@ -25,11 +32,13 @@
         </tbody>
       </table>
     </va-container>
-  </template>
-  
-  <script setup>
+  </div>
+</template>
+
+<script setup>
 import { onMounted, reactive, toRefs } from 'vue';
 import axios from 'axios';
+import SalesSidebar from '@/components/sidebar/SalesSidebar.vue'
 
 const state = reactive({
   salesData: [],
@@ -64,3 +73,15 @@ onMounted(fetchSalesData);
 // toRefs를 사용하여 reactive state의 속성들을 분해 가능
 const { salesData, fields } = toRefs(state);
 </script>
+
+<style>
+.flex {
+  display: flex;
+}
+
+.sidebar {
+  width: 250px;
+  /* 사이드바의 너비를 조절하세요 */
+  /* 필요에 따라 추가 스타일링 */
+}
+</style>

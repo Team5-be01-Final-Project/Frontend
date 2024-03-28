@@ -1,29 +1,33 @@
 <script setup>
-  import { ref } from 'vue'
-  import { useRouter } from 'vue-router'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
-  const router = useRouter() // useRouter 훅을 사용합니다.
-  const activeElement = ref(null) // 현재 활성화된 요소를 추적하기 위한 ref
+const router = useRouter()
+const activeElement = ref(null) // 현재 활성화된 요소를 추적하기 위한 ref
 
-  // 모든 아코디언 항목의 열림 상태를 제어하기 위한 ref 배열
-const collapseOpen = ref([true, true,]) // 여기서 true의 개수는 아코디언 항목의 개수와 일치해야 합니다
+// 모든 아코디언 항목의 열림 상태를 제어하기 위한 ref 배열
+const collapseOpen = ref([true, true, true, true]) // 여기서 true의 개수는 아코디언 항목의 개수와 일치해야 합니다.
 
 const navigateTo = (routeName) => {
   router.push({ name: routeName })
 }
 
-
-  const items = [
-  { title: '매출조회', icon: 'mail', children: [
-    { title: '상품별 매출 현황', icon: 'drafts', routeName: 'productsales' },
-    { title: '거래처별 매출 현황', icon: 'drafts', routeName: 'clientSales' },
+const items = [
+  { title: '인센티브 확인', icon: 'mail', children: [
+      { title: '인센티브 현황 확인', icon: 'drafts', routeName: 'incentivelist' }, 
 ]
+    },
+  {
+    title: '거래처별 관리', icon: 'dashboard', children: [
+      { title: '거래처 등록', icon: 'drafts', routeName: 'clientsave' },
+      { title: '거래처 관리', icon: 'drafts', routeName: 'viewclient' },
+    ]
   },
 ]
 </script>
 
 <template>
-  <div style="height: 500px">
+  <div style="height: 100vh">
     <VaSidebar>
       <VaAccordion multiple> <!-- 여기에 multiple 속성을 추가 -->
         <template v-for="(item, index) in items">

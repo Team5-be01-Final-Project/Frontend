@@ -1,4 +1,11 @@
     <template>
+
+<div class="flex">
+    <!-- 사이드바 섹션 -->
+    <div class="sidebar">
+      <BusinessSidebar/>
+    </div>
+
         <div>
         <h3>거래처 정보 수정</h3>
         <div class="form-container">
@@ -126,6 +133,7 @@
             </form>
         </div>
         </div>
+        </div>
     </template>
     
     <script setup>
@@ -133,6 +141,8 @@
     import { useRoute, useRouter } from 'vue-router';
     import axios from 'axios';
     import { VaInput, VaButton, VaSelect, VaDatePicker } from 'vuestic-ui';
+import BusinessSidebar from '@/components/sidebar/BusinessSidebar.vue'
+    
     const selectedClass = ref(null);
     const selectedEmployee = ref(null);
     const route = useRoute();

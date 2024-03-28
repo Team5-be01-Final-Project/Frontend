@@ -173,7 +173,7 @@
         },
         async fetchEmployeesList() {
             try {
-            const response = await axios.get(`http://localhost:8081/employees/list?`);
+            const response = await axios.get(`/employees/list?`);
             this.employees = response.data; // 응답 데이터 할당
             this.employees = response.data.map(employee => ({
               ...employee,
@@ -192,7 +192,7 @@
 
         async fetchAuthorityCodes() {
           try {
-            const response = await axios.get('http://localhost:8081/authorities/codes');
+            const response = await axios.get('/authorities/codes');
             this.authorityCodes = response.data.map(item => ({
               authName: item.authName,
               authCode: item.authCode,
@@ -234,7 +234,7 @@
             };
 
             console.log(requestData);
-            await axios.post(`http://localhost:8081/authorities/changeAuthority`, requestData);
+            await axios.post(`/authorities/changeAuthority`, requestData);
             console.log('권한이 성공적으로 업데이트되었습니다.'); // 성공 메시지 표시, toast 사용 예시
           } catch (error) {
             console.error('권한 업데이트 실패:', error);
@@ -249,7 +249,7 @@
             this.alarmSettings[key] = false;
           });
           // 사용자의 알람 설정을 조회하는 백엔드 API 호출
-          axios.get(`http://localhost:8081/alarms/settings/${employee.empCode}`)
+          axios.get(`/alarms/settings/${employee.empCode}`)
               .then(response => {
                   // 응답으로 받은 알람 설정으로 alarmSettings 업데이트
                   response.data.forEach(setting => {
@@ -274,7 +274,7 @@
               };
               console.log(requestData); // 요청 데이터 로깅
               // 백엔드로 POST 요청 보내기
-              return axios.post(`http://localhost:8081/alarms/update`, requestData);
+              return axios.post(`/alarms/update`, requestData);
             });
 
             await Promise.all(requests);
