@@ -27,42 +27,40 @@
     </va-container>
   </template>
   
-  <script >
-  import axios from 'axios';
-  
-  export default {
-    data() {
-      return {
-        salesData: [],
-        fields: [
-          { key: 'clientName', label: '거래처', class: 'text-center' },
-          { key: 'proName', label: '상품명', class: 'text-center' },
-          { key: 'proUnit', label: '단가', class: 'text-center' },
-          { key: 'voucSale', label: '판매가', class: 'text-center' },
-          { key: 'voucAmount', label: '수량', class: 'text-center' },
-          { key: 'costOfSales', label: '판매원가', class: 'text-center' },
-          { key: 'voucSales', label: '매출액', class: 'text-center' },
-          { key: 'grossProfit', label: '매출이익', class: 'text-center' },
-          { key: 'profitMargin', label: '이익율', class: 'text-center' },
-        ],
-      };
-    },
-    methods: {
-      fetchSalesData() {
-        axios.get('/Clientsales')
-          .then(response => {
-            this.salesData = response.data.map(item => ({
-              ...item,
-              profitMargin: item.profitMargin ? `${Math.round(item.profitMargin)}%` : '-', // 조건부 포맷 변경
-            }));
-          })
-          .catch(error => {
-            console.error("There was an error fetching the sales data:", error);
-          });
-      },
-    },
-    mounted() {
-      this.fetchSalesData();
-    },
-  };
-  </script>
+  <script setup>
+import { onMounted, reactive, toRefs } from 'vue';
+import axios from 'axios';
+
+const state = reactive({
+  salesData: [],
+  fields: [
+    { key: 'clientName', label: '거래처', class: 'text-center' },
+    { key: 'proName', label: '상품명', class: 'text-center' },
+    { key: 'proUnit', label: '단가', class: 'text-center' },
+    { key: 'voucSale', label: '판매가', class: 'text-center' },
+    { key: 'voucAmount', label: '수량', class: 'text-center' },
+    { key: 'costOfSales', label: '판매원가', class: 'text-center' },
+    { key: 'voucSales', label: '매출액', class: 'text-center' },
+    { key: 'grossProfit', label: '매출이익', class: 'text-center' },
+    { key: 'profitMargin', label: '이익율', class: 'text-center' },
+  ],
+});
+
+const fetchSalesData = () => {
+  axios.get('/sales/Clientsales')
+    .then(response => {
+      state.salesData = response.data.map(item => ({
+        ...item,
+        profitMargin: item.profitMargin ? `${Math.round(item.profitMargin)}%` : '-', // 조건부 포맷 변경
+      }));
+    })
+    .catch(error => {
+      console.error("There was an error fetching the sales data:", error);
+    });
+};
+
+onMounted(fetchSalesData);
+
+// toRefs를 사용하여 reactive state의 속성들을 분해 가능
+const { salesData, fields } = toRefs(state);
+</script>
