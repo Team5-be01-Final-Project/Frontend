@@ -29,12 +29,4 @@ import NavigationBar from '@/components/navbar/NavigationBar.vue'
   /* 추가 스타일링(배경색, 그림자 등) */
 }
 
-/* 메인 콘텐츠 영역 스타일 */
-.main-content {
-  margin-top: 60px; /* 네비게이션 바의 높이만큼 여백 설정 */
-  padding: 0; /* 메인 콘텐츠 영역의 패딩 제거 */
-  /* 추가 스타일링 */
-}
-
-
 </style>

@@ -3,7 +3,10 @@
   import { useRouter } from 'vue-router'
 
   const router = useRouter() // useRouter 훅을 사용합니다.
+  const activeElement = ref(null) // 현재 활성화된 요소를 추적하기 위한 ref
 
+  // 모든 아코디언 항목의 열림 상태를 제어하기 위한 ref 배열
+const collapseOpen = ref([true, true,]) // 여기서 true의 개수는 아코디언 항목의 개수와 일치해야 합니다
 
 const navigateTo = (routeName) => {
   router.push({ name: routeName })
@@ -23,12 +26,13 @@ const navigateTo = (routeName) => {
 <template>
   <div style="height: 500px">
     <VaSidebar>
-      <VaAccordion>
-        <template v-for="item in items">
+      <VaAccordion multiple> <!-- 여기에 multiple 속성을 추가 -->
+        <template v-for="(item, index) in items">
           <VaCollapse
             v-if="item.children"
             :key="item.title + 'collapse'"
             body-color="#00000022"
+            v-model="collapseOpen[index]" 
           >
             <template #header="{ value: isCollapsed }">
               <VaSidebarItem :active="item.children.some((child) => child.title === activeElement)">
