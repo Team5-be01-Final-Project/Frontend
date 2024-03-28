@@ -23,7 +23,7 @@ const navigateTo = (routeName) => {
 </script>
 
 <template>
-  <div style="height: 500px">
+  <div style="height: 100vh">
     <VaSidebar>
       <VaAccordion multiple> <!-- 여기에 multiple 속성을 추가 -->
         <template v-for="(item, index) in items">
