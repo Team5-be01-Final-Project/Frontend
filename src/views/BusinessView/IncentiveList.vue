@@ -2,7 +2,7 @@
 <div class="flex">
     <!-- 사이드바 섹션 -->
     <div class="sidebar">
-      <SalesSidebar/>
+      <BusinessSidebar/>
     </div>
 
     <div class="va-table-responsive">
@@ -50,11 +50,11 @@
   import { departmentOptions } from '@/utils/departmentOptions.js'; 
   import { monthOptions } from '@/utils/monthOptions.js'; 
   import formatNumberWithCommas from '@/utils/formatNumberWithCommas.js';
-  import SalesSidebar from '@/components/sidebar/SalesSidebar.vue'
+  import BusinessSidebar from '@/components/sidebar/BusinessSidebar.vue'
   
   export default {
     components:{
-      SalesSidebar
+      BusinessSidebar
     },
     data() {
       const currentMonth = new Date().getMonth() + 1; // getMonth()는 0에서 시작하므로 +1

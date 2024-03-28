@@ -1,4 +1,12 @@
 <template>
+
+<div class="flex">
+    <!-- 사이드바 섹션 -->
+    <div class="sidebar">
+      <BusinessSidebar/>
+    </div>
+
+
   <div>
     <h3>거래처 등록</h3>
     <div class="col-span-1" style="height: 50px;"></div>
@@ -128,6 +136,7 @@
       </va-alert>
     </form>
   </div>
+  </div>
 </template>
 
 <script setup>
@@ -136,6 +145,8 @@ import axios from 'axios'
 import { VaInput, VaButton, VaAlert, VaSelect, VaDateInput } from 'vuestic-ui'
 // 필요한 라이브러리 및 훅을 import 합니다.
 import { useRouter } from 'vue-router';
+import BusinessSidebar from '@/components/sidebar/BusinessSidebar.vue'
+
 
 // 컴포넌트 내부에서 useRouter 훅을 사용하여 router 인스턴스를 가져옵니다.
 const router = useRouter();
