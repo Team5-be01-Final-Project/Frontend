@@ -20,13 +20,21 @@
             <td>{{ item.grossProfit ? `${item.grossProfit.toLocaleString()}` : '-' }}</td>
             <td>{{ item.profitMargin || '-' }}</td>
           </tr>
+                  <!-- 총합계 행 -->
+            <tr>
+            <td colspan="3" class="text-center"><strong>총합계</strong></td>
+            <td>{{ totalCostOfSales.toLocaleString() }}</td>
+            <td>{{ totalVoucSales.toLocaleString() }}</td>
+            <td>{{ totalGrossProfit.toLocaleString() }}</td>
+            <td>-</td>
+            </tr>
         </tbody>
       </table>
     </va-container>
   </template>
   
   <script setup>
-  import { onMounted, ref } from 'vue';
+  import { onMounted, ref, computed } from 'vue';
   import axios from 'axios';
   
   // Composition API를 사용하여 반응형 데이터 정의
@@ -57,5 +65,9 @@
   
   // 컴포넌트가 마운트될 때 데이터 가져오기
   onMounted(fetchSalesData);
+  // 총합계 계산
+const totalCostOfSales = computed(() => salesData.value.reduce((acc, item) => acc + (item.costOfSales || 0), 0));
+const totalVoucSales = computed(() => salesData.value.reduce((acc, item) => acc + (item.voucSales || 0), 0));
+const totalGrossProfit = computed(() => salesData.value.reduce((acc, item) => acc + (item.grossProfit || 0), 0));
   </script>
   
