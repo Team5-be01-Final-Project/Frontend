@@ -47,9 +47,9 @@
   
   <script>
   import axios from 'axios';
-  import { departmentOptions } from '../utils/departmentOptions.js'; 
-  import { monthOptions } from '../utils/monthOptions.js'; 
-  import formatNumberWithCommas from '../utils/formatNumberWithCommas.js';
+  import { departmentOptions } from '@/utils/departmentOptions.js'; 
+  import { monthOptions } from '@/utils/monthOptions.js'; 
+  import formatNumberWithCommas from '@/utils/formatNumberWithCommas.js';
   import SalesSidebar from '@/components/sidebar/SalesSidebar.vue'
   
   export default {

@@ -12,66 +12,66 @@ const router = createRouter({
     {
       path: '/viewproduct',
       name: 'viewproduct',
-      component: () => import('../views/ViewProduct.vue')
+      component: () => import('../views/ProductView/ViewProduct.vue')
     },
         {
           path: '/employeeslist',
           name: 'employeeslist',
-          component: () => import('../views/EmployeesList.vue')
+          component: () => import('../views/SystemView/EmployeesList.vue')
         },
         {
           path: '/ppcview',
           name: 'ppcview',
-          component: () => import('../views/PpcView.vue')
+          component: () => import('../views/ProductView/PpcView.vue')
         },
         {
           path: '/ppccrud',
           name: 'ppccrud',
-          component: () => import('../views/PpcCrud.vue')
+          component: () => import('../views/ProductView/PpcCrud.vue')
         },
         {
           path: '/clientsave',
           name: 'clientsave',
-          component: () => import('../views/Clientsave.vue')
+          component: () => import('../views/BusinessView/Clientsave.vue')
         },
         {
           path: '/viewclient',
           name: 'viewclient',
-          component: () => import('../views/ViewClient.vue')
+          component: () => import('../views/BusinessView/ViewClient.vue')
         },
         {
           path: '/ClientDetail/:clientCode',
           name: 'ClientDetail',
-          component: () => import('../views/ClientDetail.vue')
+          component: () => import('../views/BusinessView/ClientDetail.vue')
         },
         {
           path: '/stockList',
           name: 'stockList',
-          component: () => import('../views/StockList.vue')
+          component: () => import('../views/ProductView/StockList.vue')
         },
         {
           path: '/clientsales',
           name: 'clientSales',
-          component: () => import('../views/ClientSales.vue')
+          component: () => import('../views/SalesView/ClientSales.vue')
         },   
         {
           path: '/viewvoucher',
           name: 'viewvoucher',
-          component: () => import('../views/ViewVoucher.vue')
+          component: () => import('../views/ProductView/ViewVoucher.vue')
         }, 
         {
           path: '/voucherdetail/:voucherID', // 동적 세그먼트를 사용한 경로
           name: 'VoucherDetail',
-          component: () => import('../views/VoucherDetail.vue')
+          component: () => import('../views/ProductView/VoucherDetail.vue')
         },
         {
           path: '/incentivelist',
           name: 'incentivelist',
-          component: () => import('../views/IncentiveList.vue')
+          component: () => import('../views/BusinessView/IncentiveList.vue')
         },{
           path: '/productsales',
           name: 'productsales',
-          component: () => import('../views/ProductSales.vue')
+          component: () => import('../views/SalesView/ProductSales.vue')
         }
       ]
     })
