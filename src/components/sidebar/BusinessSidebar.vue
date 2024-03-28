@@ -13,10 +13,11 @@ const navigateTo = (routeName) => {
 }
 
 const items = [
-  { title: '인센티브 확인', icon: 'mail', children: [
-      { title: '인센티브 현황 확인', icon: 'drafts', routeName: 'incentivelist' }, 
-]
-    },
+  {
+    title: '인센티브 확인', icon: 'mail', children: [
+      { title: '인센티브 현황 확인', icon: 'drafts', routeName: 'incentivelist' },
+    ]
+  },
   {
     title: '거래처별 관리', icon: 'dashboard', children: [
       { title: '거래처 등록', icon: 'drafts', routeName: 'clientsave' },
