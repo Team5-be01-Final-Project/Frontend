@@ -19,7 +19,7 @@ const items = [
     },
   {
     title: '거래처별 상품 관리', icon: 'dashboard', children: [
-      { title: '거래처별 상품 등록', icon: 'drafts', routeName: 'ppccrud' },
+      { title: '거래처별 상품 등록 및수정', icon: 'drafts', routeName: 'ppccrud' },
       { title: '거래처별 상품 리스트', icon: 'drafts', routeName: 'ppcview' },
     ]
   },

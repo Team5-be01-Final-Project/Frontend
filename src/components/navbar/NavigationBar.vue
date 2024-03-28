@@ -1,10 +1,14 @@
 <template>
   <VaNavbar color="#ffffff">
     <template #left>
-      <VaNavbarItem class="logo">
-        <img src="@/assets/Logo.png" alt="Logo" style="width: 150px; height: auto;">
-      </VaNavbarItem>
+      <router-link to="/dashboard" class="hidden sm:block">
+        <VaNavbarItem class="logo">
+          <img src="@/assets/Logo.png" alt="Logo" style="width: 150px; height: auto;">
+        </VaNavbarItem>
+      </router-link>
     </template>
+
+
     <template #center>
 
       <router-link to="/dashboard" class="hidden sm:block">
