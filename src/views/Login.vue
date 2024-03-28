@@ -7,12 +7,12 @@
       <h2>Login</h2>
       <form @submit.prevent="login">
         <div>
-          <label for="empCode">Employee Code:</label>
+          <label for="사번">Employee Code:</label>
           <input v-model="empCode" type="text" id="empCode" required>
         </div>
         <div>
-          <label for="password">Password:</label>
-          <input v-model="password" type="password" id="password" required>
+          <label for="비밀번호">Password:</label>
+          <input v-model="empPw" type="password" id="empPw" required>
         </div>
         <button type="submit">Login</button>
         <p v-if="loginError" class="error-message">Invalid credentials. Please try again.</p>
@@ -29,19 +29,17 @@ export default {
   data() {
     return {
       empCode: '',
-      password: '',
+      empPw: '',
       loginError: false
     };
   },
   methods: {
     async login() {
-      console.log(`Logging in with Employee Code: ${this.empCode}, Password: ${this.password}`);
+      console.log(`Logging in with Employee Code: ${this.empCode}, Password: ${this.empPw}`);
       try {
-        const response = await axios.post('/api/login', null, {
-          params: {
-            empCode: this.empCode,
-            password: this.password
-          },
+        const response = await axios.post('/api/login', {
+          empCode: this.empCode,
+          empPw: this.empPw
         });
         if (response.status === 200) {
           this.$router.push('/home'); // 로그인 성공 시 /home 경로로 이동
