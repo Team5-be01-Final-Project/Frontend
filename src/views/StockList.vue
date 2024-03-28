@@ -1,5 +1,11 @@
 <!-- StockList.vue -->
 <template>
+   <div class="flex">
+    <!-- 사이드바 섹션 -->
+    <div class="sidebar">
+      <ProductSidebar/>
+    </div>
+    
   <div class="stock-list">
     <h3 class="va-h3">재고 조회</h3>
     <div class="grid md:grid-cols-2 gap-6 mb-6">
@@ -55,6 +61,7 @@
       <StockRegi v-if="showRegisterModal" @close="closeRegisterModal" />
     </div>
   </div>
+  </div>
 </template>
 
 
@@ -64,6 +71,7 @@ import { defineComponent, ref, computed, onMounted } from "vue";
 import axios from "axios";
 import StockRegi from "@/components/StockRegi.vue";
 import { VaSelect, VaInput, VaButton } from "vuestic-ui";
+import ProductSidebar from '@/components/sidebar/ProductSidebar.vue'
 
 // 데이터와 상태 관리를 위한 변수들
 const stockList = ref([]); // 서버에서 받아온 재고 목록을 저장하는 배열
@@ -150,11 +158,22 @@ onMounted(() => {
 
 
 <style>
+
+.flex {
+    display: flex;
+  }
+
+  .sidebar {
+    width: 250px; /* 사이드바의 너비를 조절하세요 */
+    /* 필요에 따라 추가 스타일링 */
+  }
+
   /* 테이블과 필터 옵션 컨테이너의 스타일 */
   .va-table-responsive {
     overflow: auto; /* 가로 스크롤이 필요한 경우 오버플로우 설정 */
     min-height: 2000px; /* 최소 높이 설정 */
   }
+
 
   .va-table {
     width: 800px; /* 테이블 너비 고정 */

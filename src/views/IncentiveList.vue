@@ -1,4 +1,10 @@
 <template>
+<div class="flex">
+    <!-- 사이드바 섹션 -->
+    <div class="sidebar">
+      <SalesSidebar/>
+    </div>
+
     <div class="va-table-responsive">
       <h3 class="va-h3">인센티브 현황</h3>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4 items-end">
@@ -36,6 +42,7 @@
         </tbody>
       </table>
     </div>
+    </div>
   </template>
   
   <script>
@@ -43,8 +50,12 @@
   import { departmentOptions } from '../utils/departmentOptions.js'; 
   import { monthOptions } from '../utils/monthOptions.js'; 
   import formatNumberWithCommas from '../utils/formatNumberWithCommas.js';
+  import SalesSidebar from '@/components/sidebar/SalesSidebar.vue'
   
   export default {
+    components:{
+      SalesSidebar
+    },
     data() {
       const currentMonth = new Date().getMonth() + 1; // getMonth()는 0에서 시작하므로 +1
       return {
@@ -92,7 +103,14 @@
   </script>
   
   <style>
+.flex {
+    display: flex;
+  }
 
+  .sidebar {
+    width: 250px; /* 사이드바의 너비를 조절하세요 */
+    /* 필요에 따라 추가 스타일링 */
+  }
   .va-table-responsive {
     overflow: auto;
   }
@@ -111,5 +129,10 @@
 
   td.money-right {
     text-align: right;
+  }
+
+  .va-table-responsive {
+    flex-grow: 1; /* 메인 콘텐츠가 남은 공간을 모두 차지하도록 함 */
+    /* 필요에 따라 추가 스타일링 */
   }
   </style>../utils/departmentCodeOptions.js/index.js

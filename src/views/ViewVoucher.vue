@@ -1,5 +1,11 @@
 <template>
-    <div>
+    <div class="flex">
+    <!-- 사이드바 섹션 -->
+    <div class="sidebar">
+      <ProductSidebar/>
+    </div>
+
+    <div class="Main">
       <h3 class="va-h3">출고전표 목록 조회</h3>
       <table class="va-table va-table--hoverable">
         <thead>
@@ -31,12 +37,17 @@
         <button @click="nextPage" :disabled="currentPage === pageCount">다음</button>
       </div>
     </div>
+    </div>
   </template>
   
   <script>
   import axios from 'axios';
-  
+  import ProductSidebar from '@/components/sidebar/ProductSidebar.vue'
+
   export default {
+    components: {
+    ProductSidebar,
+  },
     data() {
       return {
         vouchers: [],
@@ -91,6 +102,14 @@
   </script>
   
   <style scoped>
+  .flex {
+    display: flex;
+  }
+
+  .sidebar {
+    width: 250px; /* 사이드바의 너비를 조절하세요 */
+    /* 필요에 따라 추가 스타일링 */
+  }
   .clickable {
     cursor: pointer;
     color: #2c3e50;
@@ -103,6 +122,10 @@
   }
   .pagination button {
     margin: 0 10px;
+  }
+  .Main {
+    flex-grow: 1; /* 메인 콘텐츠가 남은 공간을 모두 차지하도록 함 */
+    /* 필요에 따라 추가 스타일링 */
   }
   </style>
   

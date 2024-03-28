@@ -1,4 +1,11 @@
 <template>
+    <div class="flex">
+    <!-- 사이드바 섹션 -->
+    <div class="sidebar">
+      <ProductSidebar/>
+    </div>
+
+
   <div class="product-list">
     <div class="va-table-responsive">
       <h3 class="va-h3">거래처별 판매상품 목록</h3>
@@ -54,13 +61,18 @@
       </div>
     </div>
   </div>
+  </div>
 </template>
 
 <script>
 import axios from 'axios';
 import { VaButton } from 'vuestic-ui/web-components';
+import ProductSidebar from '@/components/sidebar/ProductSidebar.vue'
 
 export default {
+  components:{
+      ProductSidebar
+    },
 
   data() {
     return {
@@ -121,6 +133,14 @@ export default {
 </script>
 
 <style scoped>
+.flex {
+    display: flex;
+  }
+
+  .sidebar {
+    width: 250px; /* 사이드바의 너비를 조절하세요 */
+    /* 필요에 따라 추가 스타일링 */
+  }
 .va-table-responsive {
   overflow: auto;
 }
@@ -132,4 +152,8 @@ export default {
   padding: 5px 10px;
   margin-right: 5px;
 }
+.product-list {
+    flex-grow: 1; /* 메인 콘텐츠가 남은 공간을 모두 차지하도록 함 */
+    /* 필요에 따라 추가 스타일링 */
+  }
 </style>
