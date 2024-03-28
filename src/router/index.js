@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Login from '@/views/Login.vue'
-import Home from '@/views/Home.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -11,15 +10,10 @@ const router = createRouter({
       component: Login
     },
     {
-      path: '/home',
-      name: 'home',
-      component: Home,
-      children: [
-        {
-          path: '/viewproduct',
-          name: 'viewproduct',
-          component: () => import('../views/ViewProduct.vue')
-        },
+      path: '/viewproduct',
+      name: 'viewproduct',
+      component: () => import('../views/ViewProduct.vue')
+    },
         {
           path: '/employeeslist',
           name: 'employeeslist',
@@ -54,19 +48,33 @@ const router = createRouter({
           path: '/stockList',
           name: 'stockList',
           component: () => import('../views/StockList.vue')
-        },   {
+        },
+        {
+          path: '/clientsales',
+          name: 'clientSales',
+          component: () => import('../views/ClientSales.vue')
+        },   
+        {
           path: '/viewvoucher',
           name: 'viewvoucher',
           component: () => import('../views/ViewVoucher.vue')
-        },
+        }, 
         {
           path: '/voucherdetail/:voucherID', // 동적 세그먼트를 사용한 경로
           name: 'VoucherDetail',
           component: () => import('../views/VoucherDetail.vue')
         },
+        {
+          path: '/incentivelist',
+          name: 'incentivelist',
+          component: () => import('../views/IncentiveList.vue')
+        },{
+          path: '/productsales',
+          name: 'productsales',
+          component: () => import('../views/ProductSales.vue')
+        }
       ]
-    }
-  ]
-})
+    })
+
 
 export default router

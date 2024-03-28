@@ -1,4 +1,11 @@
 <template>
+   <div class="flex">
+    <!-- 사이드바 섹션 -->
+    <div class="sidebar">
+      <SystemSidebar/>
+    </div>
+
+
     <div class="employees-list">
         <div class="va-table-responsive">
             <h3 class="va-h3">사원 리스트 조회</h3>
@@ -65,6 +72,7 @@
         </table>
       </div>
     </div>
+   </div>
 
     <VaModal
       v-model="isAuthorityChangeModalOpen"
@@ -94,9 +102,13 @@
   <script>
   import axios from 'axios';
   import { VaButton } from 'vuestic-ui/web-components';
+  import SystemSidebar from '@/components/sidebar/SystemSidebar.vue'
 
   
   export default {
+    components:{
+      SystemSidebar
+    },
     data() {
       return {
         employees: [],
@@ -120,6 +132,7 @@
     },
 
     computed: {
+      SystemSidebar,
       authorityCodeOptions() {
         return this.authorityCodes.map(code => ({
           text: code.authName, // 사용자에게 보여질 텍스트
@@ -281,6 +294,15 @@
   </script>
   
   <style>
+    .flex {
+    display: flex;
+  }
+
+  .sidebar {
+    width: 250px; /* 사이드바의 너비를 조절하세요 */
+    /* 필요에 따라 추가 스타일링 */
+  }
+
   .va-table-responsive {
     overflow: auto;
   }
@@ -296,5 +318,10 @@
   .va-table {
   min-width: 1000px;
 }
+
+.employees-list {
+    flex-grow: 1; /* 메인 콘텐츠가 남은 공간을 모두 차지하도록 함 */
+    /* 필요에 따라 추가 스타일링 */
+  }
 
   </style>
