@@ -19,7 +19,10 @@ const items = [
     { title: '사원 리스트 조회', icon: 'send', routeName: 'employeeslist' },
     { title: '사원 정보 수정', icon: 'drafts' }, // 이 항목에 대한 라우트가 없습니다.
   ]},
-  { title: '이상 온도 로그', icon: 'mail' }, // 이 항목에 대한 라우트가 없습니다.
+  { title: '이상 온도 로그', icon: 'mail',children: [
+    { title: '창고 이상 온도 조회', icon: 'send', routeName: '' },
+  ]
+ }, // 이 항목에 대한 라우트가 없습니다.
 ]
 </script>
 

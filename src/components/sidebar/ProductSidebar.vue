@@ -13,7 +13,10 @@ const navigateTo = (routeName) => {
 }
 
 const items = [
-  { title: '상품 리스트 조회', icon: 'mail', routeName: 'viewproduct' },
+  { title: '상품 관리', icon: 'mail', children: [
+      { title: '판매 리스트 조회', icon: 'drafts', routeName: 'viewproduct' }, 
+]
+    },
   {
     title: '거래처별 상품 관리', icon: 'dashboard', children: [
       { title: '판매 상품 등록', icon: 'drafts', routeName: 'ppccrud' },

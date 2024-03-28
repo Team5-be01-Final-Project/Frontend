@@ -14,7 +14,10 @@ const navigateTo = (routeName) => {
 
 
   const items = [
-  { title: '인센티브 현황 확인', icon: 'mail',routeName: 'incentivelist'  },
+  { title: '인센티브', icon: 'mail', children: [
+    { title: '인센티브 현황 조회', icon: 'drafts', routeName: 'incentiveList' },
+]
+  },
     { title: '거래처 관리', icon: 'dashboard' , children: [
     { title: '거래처 등록', icon: 'drafts', routeName: 'ppccrud' },
       { title: '거리처 관리(조회/삭제)', icon: 'drafts', routeName: 'ppcview' },
