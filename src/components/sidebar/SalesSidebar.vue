@@ -1,50 +1,34 @@
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+  import { ref } from 'vue'
+  import { useRouter } from 'vue-router'
 
-const router = useRouter()
-const activeElement = ref(null) // 현재 활성화된 요소를 추적하기 위한 ref
+  const router = useRouter() // useRouter 훅을 사용합니다.
 
-// 모든 아코디언 항목의 열림 상태를 제어하기 위한 ref 배열
-const collapseOpen = ref([true, true, true, true]) // 여기서 true의 개수는 아코디언 항목의 개수와 일치해야 합니다.
 
 const navigateTo = (routeName) => {
   router.push({ name: routeName })
 }
 
-const items = [
-  { title: '상품 리스트 조회', icon: 'mail', routeName: 'viewproduct' },
-  {
-    title: '거래처별 상품 관리', icon: 'dashboard', children: [
-      { title: '판매 상품 등록', icon: 'drafts', routeName: 'ppccrud' },
-      { title: '판매 상품 리스트', icon: 'drafts', routeName: 'ppcview' },
-    ]
-  },
-  {
-    title: '재고 관리', icon: 'dashboard', children: [
-      { title: '재고 조회 및 등록', icon: 'send', routeName: 'stockList' },
-    ]
-  },
-  {
-    title: '출고 관리', icon: 'dashboard', children: [
-      { title: '전표 등록', icon: 'send' },
-      { title: '전표 결재', icon: 'drafts' },
-      { title: '전표 리스트 조회', icon: 'drafts', routeName: 'viewvoucher' },
-    ]
-  }
+
+  const items = [
+  { title: '인센티브 현황 확인', icon: 'mail',routeName: 'incentivelist'  },
+    { title: '거래처 관리', icon: 'dashboard' , children: [
+    { title: '거래처 등록', icon: 'drafts', routeName: 'ppccrud' },
+      { title: '거리처 관리(조회/삭제)', icon: 'drafts', routeName: 'ppcview' },
+      { title: '거리처 수정', icon: 'drafts', routeName: 'ppcview' },
+    ] },
 ]
 </script>
 
 <template>
   <div style="height: 500px">
     <VaSidebar>
-      <VaAccordion multiple> <!-- 여기에 multiple 속성을 추가 -->
-        <template v-for="(item, index) in items">
+      <VaAccordion>
+        <template v-for="item in items">
           <VaCollapse
             v-if="item.children"
             :key="item.title + 'collapse'"
             body-color="#00000022"
-            v-model="collapseOpen[index]" 
           >
             <template #header="{ value: isCollapsed }">
               <VaSidebarItem :active="item.children.some((child) => child.title === activeElement)">

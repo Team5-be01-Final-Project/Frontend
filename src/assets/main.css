@@ -2,8 +2,7 @@
 
 #app {
   max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  margin: 0 ; /* 중앙 정렬을 유지합니다 */
   font-weight: normal;
 }
 
@@ -12,7 +11,7 @@ a,
   text-decoration: none;
   color: hsla(160, 100%, 37%, 1);
   transition: 0.4s;
-  padding: 3px;
+  padding: 3px; /* 링크와 .green 클래스에 적용된 요소들의 패딩은 유지합니다 */
 }
 
 @media (hover: hover) {
@@ -24,12 +23,12 @@ a,
 @media (min-width: 1024px) {
   body {
     display: flex;
-    place-items: center;
+    place-items: center; /* 본문을 중앙에 배치합니다 */
   }
 
   #app {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
+    grid-template-columns: 1fr 1fr; /* 1024px 이상의 화면에서 2열 그리드로 전환합니다 */
+    padding: 0; /* 가장자리 패딩을 제거합니다 */
   }
 }
