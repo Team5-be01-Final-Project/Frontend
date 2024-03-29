@@ -14,20 +14,16 @@ const navigateTo = (routeName) => {
 
 
   const items = [
-  { title: '인센티브', icon: 'mail', children: [
-    { title: '인센티브 현황 조회', icon: 'drafts', routeName: 'incentiveList' },
+  { title: '매출조회', icon: 'mail', children: [
+    { title: '상품별 매출 현황', icon: 'drafts', routeName: 'productsales' },
+    { title: '거래처별 매출 현황', icon: 'drafts', routeName: 'clientSales' },
 ]
   },
-    { title: '거래처 관리', icon: 'dashboard' , children: [
-    { title: '거래처 등록', icon: 'drafts', routeName: 'ppccrud' },
-      { title: '거리처 관리(조회/삭제)', icon: 'drafts', routeName: 'ppcview' },
-      { title: '거리처 수정', icon: 'drafts', routeName: 'ppcview' },
-    ] },
 ]
 </script>
 
 <template>
-  <div style="height: 500px">
+  <div style="height: 100vh">
     <VaSidebar>
       <VaAccordion multiple> <!-- 여기에 multiple 속성을 추가 -->
         <template v-for="(item, index) in items">

@@ -2,7 +2,7 @@
 <div class="flex">
     <!-- 사이드바 섹션 -->
     <div class="sidebar">
-      <SalesSidebar/>
+      <BusinessSidebar/>
     </div>
 
     <div class="va-table-responsive">
@@ -47,14 +47,14 @@
   
   <script>
   import axios from 'axios';
-  import { departmentOptions } from '../utils/departmentOptions.js'; 
-  import { monthOptions } from '../utils/monthOptions.js'; 
-  import formatNumberWithCommas from '../utils/formatNumberWithCommas.js';
-  import SalesSidebar from '@/components/sidebar/SalesSidebar.vue'
+  import { departmentOptions } from '@/utils/departmentOptions.js'; 
+  import { monthOptions } from '@/utils/monthOptions.js'; 
+  import formatNumberWithCommas from '@/utils/formatNumberWithCommas.js';
+  import BusinessSidebar from '@/components/sidebar/BusinessSidebar.vue'
   
   export default {
     components:{
-      SalesSidebar
+      BusinessSidebar
     },
     data() {
       const currentMonth = new Date().getMonth() + 1; // getMonth()는 0에서 시작하므로 +1
@@ -135,4 +135,4 @@
     flex-grow: 1; /* 메인 콘텐츠가 남은 공간을 모두 차지하도록 함 */
     /* 필요에 따라 추가 스타일링 */
   }
-  </style>../utils/departmentCodeOptions.js/index.js
+  </style>

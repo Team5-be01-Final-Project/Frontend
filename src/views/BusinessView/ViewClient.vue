@@ -1,4 +1,11 @@
 <template>
+  
+  <div class="flex">
+    <!-- 사이드바 섹션 -->
+    <div class="sidebar">
+      <BusinessSidebar/>
+    </div>
+
   <div class="client-list">
     <div class="va-table-responsive">
       <h3 class="va-h3">거래처 목록</h3>
@@ -52,6 +59,7 @@
       </div>
     </div>
   </div>
+  </div>
 </template>
 
 <script setup>
@@ -59,6 +67,8 @@ import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router'; 
 import { VaSelect, VaInput, VaButton } from 'vuestic-ui';
+import BusinessSidebar from '@/components/sidebar/BusinessSidebar.vue'
+
 const router = useRouter();
 const clients = ref([]);
 const selectedField = ref(null);

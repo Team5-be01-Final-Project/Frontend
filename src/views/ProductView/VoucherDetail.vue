@@ -1,5 +1,12 @@
 <!-- VoucherDetail.vue -->
 <template>
+
+<div class="flex">
+    <!-- 사이드바 섹션 -->
+    <div class="sidebar">
+      <ProductSidebar/>
+    </div>
+
   <div>
     <div class="header">
       <h3 class="va-h3">출고전표 결재</h3>
@@ -66,14 +73,16 @@
     </div>
     <p v-else>해당 전표번호에 대한 정보가 없습니다.</p>
   </div>
+  </div>
 </template>
 
 <script>
 import axios from "axios";
 import VoucherApproval from "@/components/VoucherApproval.vue";
+import ProductSidebar from '@/components/sidebar/ProductSidebar.vue'
 
 export default {
-  components: { VoucherApproval },
+  components: { VoucherApproval, ProductSidebar },
   data() {
     return {
       voucId: "",

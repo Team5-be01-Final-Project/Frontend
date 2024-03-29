@@ -13,28 +13,17 @@ const navigateTo = (routeName) => {
 }
 
 const items = [
-  { title: '상품 관리', icon: 'mail', children: [
-      { title: '판매 상품 리스트 조회', icon: 'drafts', routeName: 'viewproduct' }, 
-]
-    },
   {
-    title: '거래처별 상품 관리', icon: 'dashboard', children: [
-      { title: '거래처별 상품 등록 및수정', icon: 'drafts', routeName: 'ppccrud' },
-      { title: '거래처별 상품 리스트', icon: 'drafts', routeName: 'ppcview' },
+    title: '인센티브 확인', icon: 'mail', children: [
+      { title: '인센티브 현황 확인', icon: 'drafts', routeName: 'incentivelist' },
     ]
   },
   {
-    title: '재고 관리', icon: 'dashboard', children: [
-      { title: '재고 조회 및 등록', icon: 'send', routeName: 'stockList' },
+    title: '거래처별 관리', icon: 'dashboard', children: [
+      { title: '거래처 등록', icon: 'drafts', routeName: 'clientsave' },
+      { title: '거래처 관리', icon: 'drafts', routeName: 'viewclient' },
     ]
   },
-  {
-    title: '출고 관리', icon: 'dashboard', children: [
-      { title: '전표 등록', icon: 'send' },
-      { title: '전표 결재', icon: 'drafts' },
-      { title: '전표 리스트 조회', icon: 'drafts', routeName: 'viewvoucher' },
-    ]
-  }
 ]
 </script>
 

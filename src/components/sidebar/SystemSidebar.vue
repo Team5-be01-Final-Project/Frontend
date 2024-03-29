@@ -16,18 +16,18 @@ const navigateTo = (routeName) => {
 
 const items = [
   { title: '사원 관리', icon: 'dashboard', children: [
-    { title: '사원 리스트 조회', icon: 'send', routeName: 'employeeslist' },
-    { title: '사원 정보 수정', icon: 'drafts' }, // 이 항목에 대한 라우트가 없습니다.
+    { title: '사원 리스트 조회', icon: 'send',routeName: 'employeesview' },// 이 항목에 대한 라우트가 없습니다.
+    { title: '사원 정보 수정', icon: 'drafts' ,routeName: 'employeeslist'}, 
   ]},
   { title: '이상 온도 로그', icon: 'mail',children: [
-    { title: '창고 이상 온도 조회', icon: 'send', routeName: '' },
+    { title: '창고 이상 온도 조회', icon: 'send', routeName: 'templog' },
   ]
- }, // 이 항목에 대한 라우트가 없습니다.
+ }, 
 ]
 </script>
 
 <template>
-  <div style="height: 500px">
+  <div style="height: 100vh">
     <VaSidebar>
       <VaAccordion multiple> <!-- 여기에 multiple 속성을 추가 -->
         <template v-for="(item, index) in items">
@@ -49,7 +49,15 @@ const items = [
             </template>
 
             <template #body>
-              <VaSidebarItem v-for="child in item.children" :key="child.title" :active="child.title === activeElement" @click="() => { activeElement = child.title; navigateTo(child.routeName); }">
+              <VaSidebarItem
+                v-for="child in item.children"
+                :key="child.title"
+                :active="child.title === activeElement"
+                @click="() => {
+              activeElement = child.title;
+              if (child.routeName) navigateTo(child.routeName); // 라우팅 함수 호출
+            }"
+          >
                 <VaSidebarItemContent>
                   <VaIcon :name="child.icon" />
                   <VaSidebarItemTitle>{{ child.title }}</VaSidebarItemTitle>
@@ -58,7 +66,12 @@ const items = [
             </template>
           </VaCollapse>
 
-          <VaSidebarItem v-else :key="item.title + 'item'" :active="item.title === activeElement" @click="() => { activeElement = item.title }">
+          <VaSidebarItem
+            v-else
+            :key="item.title + 'item'"
+            :active="item.title === activeElement"
+            @click="activeElement = item.title"
+          >
             <VaSidebarItemContent>
               <VaIcon :name="item.icon" />
               <VaSidebarItemTitle>{{ item.title }}</VaSidebarItemTitle>
@@ -69,7 +82,10 @@ const items = [
 
       <VaSpacer />
 
-      <VaSidebarItem :active="'Settings' === activeElement" @click="() => { activeElement = 'Settings' }">
+      <VaSidebarItem
+        :active="'Settings' === activeElement"
+        @click="activeElement = 'Settings'"
+      >
         <VaSidebarItemContent>
           <VaIcon name="settings" />
           <VaSidebarItemTitle>My 영업</VaSidebarItemTitle>
