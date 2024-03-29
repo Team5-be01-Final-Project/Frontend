@@ -56,6 +56,7 @@
 
     </template>
     <template #right>
+      <VaButton @click="sitelogout">Logout</VaButton>
       <VaButton preset="secondary" color="textPrimary" href="https://github.com/Team5-be01-Final-Project"
         target="_blank" aria-label="Visit github">
         <VaIcon :component="VaIconGitHub" />
@@ -65,7 +66,29 @@
 </template>
 
 <script lang="ts" setup>
+import { defineComponent } from 'vue';
+import axios from 'axios';
 import VaIconGitHub from '@/components/icons/VaIconGitHub.vue'
+import { useRouter } from 'vue-router';
+
+
+
+const router = useRouter()
+
+const sitelogout = async () => {
+  try {
+    // 백엔드 서버에 로그아웃 요청
+    await axios.post('/api/logout')
+    // 로그아웃 성공 시, 로그인 페이지로 리다이렉트
+    router.push('/')
+  } catch (error) {
+    // 에러 처리
+    console.error('로그아웃 에러:', error)
+  }
+}
+
+
+
 </script>
 
 <style lang="scss" scoped>
@@ -106,5 +129,10 @@ import VaIconGitHub from '@/components/icons/VaIconGitHub.vue'
 .icon-fade-enter,
 .icon-fade-leave-to {
   transform: scale(0.5);
+}
+.va-navbar__item:hover{
+  // text-decoration: underline;
+  transition: 0.2s all;
+  border-bottom: 2px solid;
 }
 </style>
