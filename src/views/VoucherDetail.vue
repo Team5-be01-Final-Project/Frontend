@@ -127,7 +127,7 @@ export default {
       try {
         await axios.put(`/api/vouchers/${this.voucId}/approve`, {
           proCode: this.proCode,
-          empCode: this.empCode,
+          empCodeSign: this.empCodeSign,
         });
         console.log("Voucher approved");
         this.fetchVoucherDetails();
@@ -139,7 +139,7 @@ export default {
       try {
         await axios.put(`/api/vouchers/${this.voucId}/reject`, {
           proCode: this.proCode,
-          empCode: this.empCode,
+          empCodeSign: this.empCodeSign,
         });
         console.log("Voucher rejected");
         this.fetchVoucherDetails();
