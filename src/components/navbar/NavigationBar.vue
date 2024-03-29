@@ -60,24 +60,44 @@
 
     </template>
     <template #right>
-      <VaButton @click="sitelogout">Logout</VaButton>
+      <VaAvatar :src="empImg" />
+      <p>{{ empName }}님 안녕하세요!</p>
+  
       <VaButton preset="secondary" color="textPrimary" href="https://github.com/Team5-be01-Final-Project"
         target="_blank" aria-label="Visit github">
         <VaIcon :component="VaIconGitHub" />
       </VaButton>
+      <VaButton preset="primary" class="mr-6 mb-2" @click="sitelogout">Logout</VaButton>
+
     </template>
   </VaNavbar>
 </template>
 
+
 <script lang="ts" setup>
-import { defineComponent } from 'vue';
+import { defineComponent, ref, onMounted } from 'vue';
+import Cookies from 'js-cookie'; // js-cookie 임포트
+import { VaAvatar } from 'vuestic-ui'; // VaAvatar 컴포넌트 임포트
 import axios from 'axios';
-import VaIconGitHub from '@/components/icons/VaIconGitHub.vue'
+import VaIconGitHub from '@/components/icons/VaIconGitHub.vue';
 import { useRouter } from 'vue-router';
 
+const empName = ref('');
+const empImg = ref(''); // empImg 데이터 속성 추가
 
+const router = useRouter();
 
-const router = useRouter()
+onMounted(() => {
+  const name = Cookies.get('empName');
+  const img = Cookies.get('empImg'); // 쿠키에서 empImg 값을 읽어옴
+
+  if (name) {
+    empName.value = name;
+  }
+  if (img) {
+    empImg.value = img; // empImg 값이 존재하면 데이터 속성에 할당
+  }
+});
 
 const sitelogout = async () => {
   try {
@@ -89,10 +109,7 @@ const sitelogout = async () => {
     // 에러 처리
     console.error('로그아웃 에러:', error)
   }
-}
-
-
-
+};
 </script>
 
 <style lang="scss" scoped>
@@ -134,7 +151,8 @@ const sitelogout = async () => {
 .icon-fade-leave-to {
   transform: scale(0.5);
 }
-.va-navbar__item:hover{
+
+.va-navbar__item:hover {
   // text-decoration: underline;
   transition: 0.2s all;
   border-bottom: 2px solid;
