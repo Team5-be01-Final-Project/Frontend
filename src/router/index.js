@@ -7,8 +7,23 @@ const router = createRouter({
   routes: [
     {
       path: '/',
+      name: 'home',
+      beforeEnter: (to, from, next) => {
+        // 로그인 상태 확인
+        const isAuthenticated = !!Cookies.get('empAuthCode');
+        if (isAuthenticated) {
+          // 이미 로그인한 경우 대시보드로 
+          next({ name: 'dashboard' });
+        } else {
+          // 로그인하지 않은 경우 로그인 페이지로 
+          next({ name: 'login' });
+        }
+      }
+    },
+    {
+      path: '/login',
       name: 'login',
-      component: Login,
+      component: Login
     },
     {
       path: '/dashboard',
