@@ -18,8 +18,9 @@
           <tr>
             <!-- 테이블 헤더 -->
             <th>No.</th>
-            <th v-for="field in fields" :key="field.key" class="text-center">
+            <th v-for="field in fields" :key="field.key" class="text-center" @click="sortData(field.key)">
               {{ field.label }}
+              <span>{{ sortOrder === 'asc' ? '▲' : '▼' }}</span>
             </th>
           </tr>
         </thead>
@@ -84,6 +85,31 @@ const fields = [
   { key: 'grossProfit', label: '매출이익', class: 'text-center' },
   { key: 'profitMargin', label: '이익율', class: 'text-center' },
 ];
+
+// 정렬 상태
+const sortKey = ref('');
+const sortOrder = ref('');
+
+// 데이터 정렬 함수
+const sortData = (key) => {
+  if (sortKey.value === key) {
+    sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc';
+  } else {
+    sortKey.value = key;
+    sortOrder.value = 'asc';
+  }
+
+  filteredSalesData.value.sort((a, b) => {
+    if (sortOrder.value === 'asc') {
+      return a[sortKey.value] > b[sortKey.value] ? 1 : -1;
+    } else {
+      return a[sortKey.value] < b[sortKey.value] ? 1 : -1;
+    }
+  });
+
+  // 현재 페이지 데이터를 다시 계산
+  updateDisplayedSalesData();
+};
 
 // 데이터 가져오기 로직
 const fetchSalesData = async (year = currentYear, month = currentMonth) => {
