@@ -3,9 +3,24 @@
   <div>
     <div class="header">
       <h3 class="va-h3">출고전표 결재</h3>
-      <div class="button-container" v-if="showApproveButton || showRejectButton">
-        <button v-if="showApproveButton" @click="approveVoucher" class="approve-button">승인</button>
-        <button v-if="showRejectButton" @click="rejectVoucher" class="reject-button">반려</button>
+      <div
+        class="button-container"
+        v-if="showApproveButton || showRejectButton"
+      >
+        <button
+          v-if="showApproveButton"
+          @click="approveVoucher"
+          class="approve-button"
+        >
+          승인
+        </button>
+        <button
+          v-if="showRejectButton"
+          @click="rejectVoucher"
+          class="reject-button"
+        >
+          반려
+        </button>
       </div>
     </div>
     <div class="spacer" style="height: 20px"></div>
@@ -45,11 +60,11 @@
       <table class="va-table va-table--hoverable">
         <thead>
           <tr>
-            <th style="width: 10%;">No.</th>
-            <th style="width: 30%;">제품명</th>
-            <th style="width: 15%;">수량</th>
-            <th style="width: 20%;">판매가</th>
-            <th style="width: 25%;">합계</th>
+            <th style="width: 10%">No.</th>
+            <th style="width: 30%">제품명</th>
+            <th style="width: 15%">수량</th>
+            <th style="width: 20%">판매가</th>
+            <th style="width: 25%">합계</th>
           </tr>
         </thead>
         <tbody>
@@ -62,7 +77,9 @@
           </tr>
         </tbody>
       </table>
-      <div class="total-sales">총합계 : {{ totalVoucSales.toLocaleString() }}원</div>
+      <div class="total-sales">
+        총합계 : {{ totalVoucSales.toLocaleString() }}원
+      </div>
     </div>
     <p v-else>해당 전표번호에 대한 정보가 없습니다.</p>
   </div>
@@ -125,10 +142,16 @@ export default {
     },
     async approveVoucher() {
       try {
-        await axios.put(`/api/vouchers/${this.voucId}/approve`, {
-          proCode: this.proCode,
-          empCodeSign: this.empCodeSign,
-        });
+        const response = await axios.put(
+          `/api/vouchers/${this.voucId}/approve`,
+          {
+            proCode: this.proCode,
+            empCodeSign: this.empCodeSign,
+          }
+        );
+        const updatedVoucher = response.data;
+        this.showApproveButton = updatedVoucher.showApproveButton;
+        this.showRejectButton = updatedVoucher.showRejectButton;
         console.log("Voucher approved");
         this.fetchVoucherDetails();
       } catch (error) {
@@ -137,10 +160,16 @@ export default {
     },
     async rejectVoucher() {
       try {
-        await axios.put(`/api/vouchers/${this.voucId}/reject`, {
-          proCode: this.proCode,
-          empCodeSign: this.empCodeSign,
-        });
+        const response = await axios.put(
+          `/api/vouchers/${this.voucId}/reject`,
+          {
+            proCode: this.proCode,
+            empCodeSign: this.empCodeSign,
+          }
+        );
+        const updatedVoucher = response.data;
+        this.showApproveButton = updatedVoucher.showApproveButton;
+        this.showRejectButton = updatedVoucher.showRejectButton;
         console.log("Voucher rejected");
         this.fetchVoucherDetails();
       } catch (error) {
@@ -179,12 +208,12 @@ export default {
 }
 
 .approve-button {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
 }
 
 .reject-button {
-  background-color: #F44336;
+  background-color: #f44336;
   color: white;
 }
 
