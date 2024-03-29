@@ -4,41 +4,49 @@
     <div class="sidebar">
       <SalesSidebar />
     </div>
-  
-<va-select v-model="selectedYear" :options="yearOptions" placeholder="년도 선택" />
-  <va-select v-model="selectedMonth" :options="monthOptions1" placeholder="월 선택" />
-  <va-button @click="filterSalesData">조회</va-button>
-  <va-container>
-    <table class="va-table va-table--hoverable">
-      <thead>
-        <tr>
-          <th>No.</th>
-          <th v-for="field in fields" :key="field.key" class="text-center">
-            {{ field.label }}
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(item, index) in displayedSalesData" :key="item.clientName + item.proName">
-          <td>{{ index + 1 }}</td>
-          <td>{{ item.clientName }}</td>
-          <td>{{ item.proName || '-' }}</td>
-          <td>{{ item.proUnit ? `${item.proUnit.toLocaleString()}` : '-' }}</td>
-          <td>{{ item.voucSale ? `${item.voucSale.toLocaleString()}` : '-' }}</td>
-          <td>{{ item.voucAmount || '-' }}</td>
-          <td>{{ item.costOfSales ? `${item.costOfSales.toLocaleString()}` : '-' }}</td>
-          <td>{{ item.voucSales ? `${item.voucSales.toLocaleString()}` : '-' }}</td>
-          <td>{{ item.grossProfit ? `${item.grossProfit.toLocaleString()}` : '-' }}</td>
-          <td>{{ item.profitMargin || '-' }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </va-container>
-  <div>
-    <va-button @click="prevPage" :disabled="currentPage === 1">이전</va-button>
-    <span>{{ currentPage }} / {{ totalPages }}</span>
-    <va-button @click="nextPage" :disabled="currentPage === totalPages">다음</va-button>
-  </div>
+
+
+    <va-container>
+      <h3 class="va-h3">거래처별 판매상품 목록</h3>
+      
+    <div>
+      <va-select v-model="selectedYear" :options="yearOptions" placeholder="년도 선택" />
+      <va-select v-model="selectedMonth" :options="monthOptions1" placeholder="월 선택" />
+      <va-input v-model="clientNameFilter" placeholder="거래처명 검색" />
+      <va-button @click="filterSalesData">조회</va-button>
+    </div>
+      <table class="va-table va-table--hoverable">
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th v-for="field in fields" :key="field.key" class="text-center">
+              {{ field.label }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(item, index) in displayedSalesData" :key="item.clientName + item.proName">
+            <td>{{ index + 1 }}</td>
+            <td>{{ item.clientName }}</td>
+            <td>{{ item.proName || '-' }}</td>
+            <td>{{ item.proUnit ? `${item.proUnit.toLocaleString()}` : '-' }}</td>
+            <td>{{ item.voucSale ? `${item.voucSale.toLocaleString()}` : '-' }}</td>
+            <td>{{ item.voucAmount || '-' }}</td>
+            <td>{{ item.costOfSales ? `${item.costOfSales.toLocaleString()}` : '-' }}</td>
+            <td>{{ item.voucSales ? `${item.voucSales.toLocaleString()}` : '-' }}</td>
+            <td>{{ item.grossProfit ? `${item.grossProfit.toLocaleString()}` : '-' }}</td>
+            <td>{{ formatProfitMargin(item.profitMargin)}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div>
+      <va-button @click="prevPage" :disabled="currentPage === 1">이전</va-button>
+      <span>{{ currentPage }} / {{ totalPages }}</span>
+      <va-button @click="nextPage" :disabled="currentPage === totalPages">다음</va-button>
+    </div>
+    </va-container>
+
+
   </div>
 </template>
 
@@ -64,6 +72,8 @@ const totalPages = ref(0);
 const pageSize = 20;
 const filteredSalesData = ref([]);
 const displayedSalesData = ref([]);
+const clientNameFilter = ref('');
+
 const fields = [
   { key: 'clientName', label: '거래처', class: 'text-center' },
   { key: 'proName', label: '상품명', class: 'text-center' },
@@ -77,7 +87,7 @@ const fields = [
 ];
 
 // 데이터 가져오기
-const fetchSalesData = async (year = 2024, month = '03') => {
+const fetchSalesData = async (year = currentYear, month = currentMonth) => {
   let url = '/sales/Clientsales';
   let params = {};
 
@@ -91,12 +101,21 @@ const fetchSalesData = async (year = 2024, month = '03') => {
 
   try {
     const response = await axios.get(url, { params });
-    filteredSalesData.value = response.data;
+    filteredSalesData.value = filterByClientName(response.data, clientNameFilter.value); // 거래처 필터링 추가
     totalPages.value = Math.ceil(filteredSalesData.value.length / pageSize);
     currentPage.value = 1; // 데이터 로드 시 항상 첫 페이지로 초기화
     updateDisplayedSalesData();
   } catch (error) {
     console.error('Error fetching sales data:', error);
+  }
+};
+
+// 이익율을 반올림하여 소수점 둘째 자리까지 표시하고 '%'를 붙여주는 함수
+const formatProfitMargin = (profitMargin) => {
+  if (profitMargin === null || profitMargin === undefined) {
+    return '-';
+  } else {
+    return (Math.round(profitMargin * 10) / 10).toFixed(1) + '%';
   }
 };
 
@@ -133,6 +152,14 @@ const filterSalesData = () => {
 onMounted(() => {
   fetchSalesData();
 });
+
+// 거래처를 필터링하는 함수
+const filterByClientName = (data, clientName) => {
+  if (!clientName) {
+    return data;
+  }
+  return data.filter(item => item.clientName.toLowerCase().includes(clientName.toLowerCase()));
+};
 </script>
 
 <style>
