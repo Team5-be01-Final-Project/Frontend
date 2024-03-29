@@ -34,6 +34,7 @@
     </div>
     <EditDeleteModal :isVisible="isModalVisible" :currentItem="currentItem" :isEditing="isEditing" @close="closeModal"
       @edit="updatePpc" @delete="deletePpc" />
+
     <RegisterModal :isVisible="isRegisterModalVisible" @close="closeRegisterModal" @register="registerPpc" />
   </div>
 </template>
