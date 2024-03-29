@@ -89,10 +89,16 @@ const router = createRouter({
       path: '/incentivelist',
       name: 'incentivelist',
       component: () => import('../views/BusinessView/IncentiveList.vue')
-    }, {
+    },
+    {
       path: '/productsales',
       name: 'productsales',
       component: () => import('../views/SalesView/ProductSales.vue')
+    },
+    {
+      path: '/templog',
+      name: 'templog',
+      component: () => import('../views/SystemView/TempLog.vue')
     }
   ]
 })
