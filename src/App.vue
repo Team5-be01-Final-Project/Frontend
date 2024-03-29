@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <NavigationBar class="navigation-bar" />
+    <NavigationBar v-if="!isLoginPage" class="navigation-bar" />
     <div class="main-content">
       <RouterView/>
       <!-- 메인 콘텐츠 영역, 현재 라우트에 해당하는 컴포넌트가 여기에 렌더링됩니다 -->
@@ -11,9 +11,19 @@
 
 
 <script setup>
-import { RouterView } from 'vue-router'
+import { computed } from 'vue';
+import Cookies from 'js-cookie';
+import { useRoute } from 'vue-router'
 import NavigationBar from '@/components/navbar/NavigationBar.vue'
+
+
+// 로그인페이지인지 판별
+// 현재 페이지가 로그인 페이지인지 판별하는 computed 속성
+const route = useRoute();
+const isLoginPage = computed(() => route.name === 'login');
+
 </script>
+
 
 <style>
 
