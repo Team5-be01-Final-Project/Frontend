@@ -1,35 +1,62 @@
 @import './base.css';
 
 #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  max-width: 100%;
+  margin: 0 ; /* 중앙 정렬을 유지합니다 */
   font-weight: normal;
 }
 
 a,
 .green {
   text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
+  color: hsl(0, 1%, 2%);
   transition: 0.4s;
-  padding: 3px;
+  padding: 3px; /* 링크와 .green 클래스에 적용된 요소들의 패딩은 유지합니다 */
 }
 
 @media (hover: hover) {
   a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
+    background-color: hsla(163, 100%, 1%, 0);
   }
 }
 
 @media (min-width: 1024px) {
   body {
     display: flex;
-    place-items: center;
+    place-items: center; /* 본문을 중앙에 배치합니다 */
   }
 
   #app {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
+    grid-template-columns: 1fr; /* 1024px 이상의 화면에서 2열 그리드로 전환합니다 */
+    padding: 0; /* 가장자리 패딩을 제거합니다 */
   }
 }
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: calc(100vh - 60px); /* 높이 설정 */
+  position: fixed;
+  top: 60px;
+  left: 0;
+  width: 250px;
+  overflow-y: auto; /* 필요한 경우 스크롤 */
+}
+.sidebar-top {
+  /* 필요한 스타일링 추가 */
+}
+
+.sidebar-bottom {
+  margin-top: auto; /* 하단 컨테이너를 사이드바 바닥에 붙임 */
+}
+
+.main-content {
+  width: calc(100% - 270px);
+  margin-top: 60px; /* 네비게이션 바 높이만큼 상단 여백을 추가하여 하단에 위치하도록 설정 */
+  margin-left: 270px; /* 사이드바 너비 + 20px의 여백 */
+  padding-right: 0; /* 메인 컨텐츠 우측 패딩 제거 */
+  /* 기존에 적용된 다른 스타일이 있다면 그대로 유지 */
+}
+/* 네비게이션 바 스타일 */
+

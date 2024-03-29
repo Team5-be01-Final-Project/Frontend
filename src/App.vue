@@ -1,89 +1,42 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-// import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <!-- <nav>
-        <RouterLink to="/viewproduct">판매상품 조회</RouterLink>
-        <RouterLink to="/employeeslist">사원리스트 조회</RouterLink>
-        <RouterLink to="/ppcview">거래처별 판매상품 리스트 조회</RouterLink>
-        <RouterLink to="/ppccrud">거래처별 판매상품 리스트 등록</RouterLink>
-        <RouterLink to="/Clientsave">매출 거래처 등록</RouterLink>
-        <RouterLink to="/viewclient">매출 거래처 조회</RouterLink>
-      </nav> -->
+  <div id="app">
+    <NavigationBar v-if="!isLoginPage" class="navigation-bar" />
+    <div class="main-content">
+      <RouterView/>
+      <!-- 메인 콘텐츠 영역, 현재 라우트에 해당하는 컴포넌트가 여기에 렌더링됩니다 -->
     </div>
-  </header>
-
-  <RouterView />
+  </div>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+
+
+<script setup>
+import { computed } from 'vue';
+import Cookies from 'js-cookie';
+import { useRoute } from 'vue-router'
+import NavigationBar from '@/components/navbar/NavigationBar.vue'
+
+
+// 로그인페이지인지 판별
+// 현재 페이지가 로그인 페이지인지 판별하는 computed 속성
+const route = useRoute();
+const isLoginPage = computed(() => route.name === 'login');
+
+</script>
+
+
+<style>
+
+/* 네비게이션 바 스타일 */
+.navigation-bar {
+  height: 60px; /* 네비게이션 바의 높이를 60px로 설정 */
+  position: fixed; /* 고정 위치 */
+  top: 0; /* 상단에 배치 */
+  left: 0; /* 왼쪽에 배치 */
+  width: 100%; /* 전체 너비 */
+  z-index: 1000; /* 다른 요소들 위에 오도록 z-index 설정 */
+  padding: 0; /* 네비게이션 바의 패딩 제거 */
+  /* 추가 스타일링(배경색, 그림자 등) */
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
 </style>

@@ -1,6 +1,5 @@
 <script setup>
-// import TheWelcome from '../components/TheWelcome.vue'
-import Login from '../components/Login.vue';
+import TheWelcome from '../components/TheWelcome.vue'
 
 </script>
 

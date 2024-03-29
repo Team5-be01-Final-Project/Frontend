@@ -1,5 +1,12 @@
 <template>
-  <div>
+   <div class="flex">
+    <!-- 사이드바 섹션 -->
+    <div class="sidebar">
+      <ProductSidebar/>
+    </div>
+
+
+  <div class="Main">
     <VaSelect
   v-model="selectedFilterField"
   placeholder="Select filter fields"
@@ -108,16 +115,19 @@
     />
   </div>
   </div>
+  </div>
 </template>
 
 <script>
 import axios from 'axios';
 import Modal from '@/components/Modal.vue'; // 모달 컴포넌트 경로가 확인하세요.
 import { VaButton, VaSelect } from 'vuestic-ui/web-components';
+import ProductSidebar from '@/components/sidebar/ProductSidebar.vue'
 
 export default {
   components: {
     Modal,
+    ProductSidebar,
   },
   data() {
     return {
@@ -286,6 +296,14 @@ async fetchPPCData() {
 </script>
 
 <style scoped>
+.flex {
+    display: flex;
+  }
+
+  .sidebar {
+    width: 250px; /* 사이드바의 너비를 조절하세요 */
+    /* 필요에 따라 추가 스타일링 */
+  }
 .va-table-responsive {
   overflow: auto;
 }
@@ -297,4 +315,8 @@ async fetchPPCData() {
   padding: 5px 10px;
   margin-right: 5px;
 }
+.Main{
+    flex-grow: 1; /* 메인 콘텐츠가 남은 공간을 모두 차지하도록 함 */
+    /* 필요에 따라 추가 스타일링 */
+  }
 </style>

@@ -7,8 +7,8 @@
         <p>상품명: {{ currentItem.product.proName }}</p>
         <p v-if="isEditing">판매가: <input type="number" v-model="currentItem.ppcSale" /></p>
         <p v-else>판매가: {{ currentItem.ppcSale }}</p>
-        <button v-if="isEditing" @click="confirmEdit">수정하기</button>
-        <button v-else @click="confirmDelete">삭제하기</button>
+        <VaButton v-if="isEditing" @click="confirmEdit">수정하기</VaButton>
+        <VaButton v-else @click="confirmDelete">삭제하기</VaButton>
       </div>
     </div>
   </template>
@@ -51,9 +51,9 @@
   .modal-content {
     background-color: #fefefe;
     margin: 15% auto;
-    padding: 20px;
+    padding: 30px;
     border: 1px solid #888;
-    width: 80%;
+    width: 60%;
   }
   
   .close {
