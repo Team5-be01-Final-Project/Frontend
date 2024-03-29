@@ -7,7 +7,7 @@
 
 
     <va-container>
-      <h3 class="va-h3">거래처별 판매상품 목록</h3>
+      <h3 class="va-h3">거래처별 매출 현황</h3>
       
     <div>
       <va-select v-model="selectedYear" :options="yearOptions" placeholder="년도 선택" />
