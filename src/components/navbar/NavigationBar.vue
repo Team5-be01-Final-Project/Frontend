@@ -157,4 +157,8 @@ const sitelogout = async () => {
   transition: 0.2s all;
   border-bottom: 2px solid;
 }
+.va-navbar__item.logo:hover {
+  border-bottom:0
+}
+
 </style>
