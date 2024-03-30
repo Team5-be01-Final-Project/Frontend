@@ -23,8 +23,8 @@
           <label for="salePrice">판매가:</label>
           <input type="number" v-model.number="salePrice" id="salePrice" />
         </div>
-        <button @click="registerProduct">등록</button>
-        <button @click="closeModal">취소</button> <!-- 취소 버튼 추가 -->
+        <button type="submit" @click="registerProduct">등록</button>
+        <button type="button" @click="closeModal">취소</button> <!-- 취소 버튼 추가 -->
         <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
       </div>
     </div>

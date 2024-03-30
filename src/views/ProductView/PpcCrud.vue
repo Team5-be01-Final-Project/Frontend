@@ -5,13 +5,13 @@
       <ProductSidebar />
     </div>
     <div class="ppc-page">
-      <h1>거래처별 상품 가격 정보</h1>
+      <h2>거래처별 상품 가격 정보</h2>
       <div class="register-button-container">
-        <button @click="openRegisterModal" class="register-button">
+        <VaButton @click="openRegisterModal" class="register-button">
           판매상품 등록
-        </button>
+        </VaButton>
       </div>
-      <table class="ppc-table">
+      <table class="va-table va-table--hoverable">
         <thead>
           <tr>
             <th>거래처명</th>
@@ -26,25 +26,19 @@
             <td>{{ ppc.clientName }}</td>
             <td>{{ ppc.proName }}</td>
             <td>{{ ppc.ppcSale }}</td>
-            <td><button @click="openEditModal(ppc)">수정</button></td>
-            <td><button @click="openDeleteModal(ppc)">삭제</button></td>
+            <td>
+              <VaButton color="warning" class="mr-6 mb-2" @click="openEditModal(ppc)">수정</VaButton>
+            </td>
+            <td>
+              <VaButton color="danger" class="mr-6 mb-2" @click="openDeleteModal(ppc)">삭제</VaButton>
+            </td>
           </tr>
         </tbody>
-      </table>
+      </Table>
     </div>
-    <EditDeleteModal
-      :isVisible="isModalVisible"
-      :currentItem="currentItem"
-      :isEditing="isEditing"
-      @close="closeModal"
-      @edit="updatePpc"
-      @delete="deletePpc"
-    />
-    <RegisterModal
-      :isVisible="isRegisterModalVisible"
-      @close="closeRegisterModal"
-      @register="registerPpc"
-    />
+    <EditDeleteModal :isVisible="isModalVisible" :currentItem="currentItem" :isEditing="isEditing" @close="closeModal"
+      @edit="updatePpc" @delete="deletePpc" />
+    <RegisterModal :isVisible="isRegisterModalVisible" @close="closeRegisterModal" @register="registerPpc" />
   </div>
 </template>
 
@@ -106,16 +100,16 @@ export default {
         });
     },
     deletePpc(deletedPpc) {
-  axios.delete(`/ppc/${deletedPpc.proCode}`)
-    .then(() => {
-      this.fetchPpcs();
-      this.closeModal();
-    })
-    .catch((error) => {
-      console.error('상품 가격 정보를 삭제하는데 실패했습니다:', error);
-    });
-}
-,
+      axios.delete(`/ppc/${deletedPpc.proCode}`)
+        .then(() => {
+          this.fetchPpcs();
+          this.closeModal();
+        })
+        .catch((error) => {
+          console.error('상품 가격 정보를 삭제하는데 실패했습니다:', error);
+        });
+    }
+    ,
     openRegisterModal() {
       this.isRegisterModalVisible = true;
     },
