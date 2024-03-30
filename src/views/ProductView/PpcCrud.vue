@@ -27,15 +27,24 @@
             <td>{{ ppc.proName }}</td>
             <td>{{ ppc.ppcSale }}</td>
             <td><button @click="openEditModal(ppc)">수정</button></td>
-            <td><button @click="openDeleteModal(ppc.proCode)">삭제</button></td>
+            <td><button @click="openDeleteModal(ppc)">삭제</button></td>
           </tr>
         </tbody>
       </table>
     </div>
-    <EditDeleteModal :isVisible="isModalVisible" :currentItem="currentItem" :isEditing="isEditing" @close="closeModal"
-      @edit="updatePpc" @delete="deletePpc" />
-
-    <RegisterModal :isVisible="isRegisterModalVisible" @close="closeRegisterModal" @register="registerPpc" />
+    <EditDeleteModal
+      :isVisible="isModalVisible"
+      :currentItem="currentItem"
+      :isEditing="isEditing"
+      @close="closeModal"
+      @edit="updatePpc"
+      @delete="deletePpc"
+    />
+    <RegisterModal
+      :isVisible="isRegisterModalVisible"
+      @close="closeRegisterModal"
+      @register="registerPpc"
+    />
   </div>
 </template>
 
@@ -64,10 +73,10 @@ export default {
     fetchPpcs() {
       axios
         .get('/ppc/all')
-        .then(response => {
+        .then((response) => {
           this.ppcs = response.data;
         })
-        .catch(error => {
+        .catch((error) => {
           console.error('상품 가격 정보를 가져오는데 실패했습니다:', error);
         });
     },
@@ -76,8 +85,8 @@ export default {
       this.isEditing = true;
       this.isModalVisible = true;
     },
-    openDeleteModal(proCode) {
-      this.currentItem = { proCode };
+    openDeleteModal(ppc) {
+      this.currentItem = { ...ppc };
       this.isEditing = false;
       this.isModalVisible = true;
     },
@@ -92,21 +101,21 @@ export default {
           this.fetchPpcs();
           this.closeModal();
         })
-        .catch(error => {
+        .catch((error) => {
           console.error('상품 가격 정보를 업데이트하는데 실패했습니다:', error);
         });
     },
-    deletePpc(proCode) {
-      axios
-        .delete(`/ppc/${proCode}`)
-        .then(() => {
-          this.fetchPpcs();
-          this.closeModal();
-        })
-        .catch(error => {
-          console.error('상품 가격 정보를 삭제하는데 실패했습니다:', error);
-        });
-    },
+    deletePpc(deletedPpc) {
+  axios.delete(`/ppc/${deletedPpc.proCode}`)
+    .then(() => {
+      this.fetchPpcs();
+      this.closeModal();
+    })
+    .catch((error) => {
+      console.error('상품 가격 정보를 삭제하는데 실패했습니다:', error);
+    });
+}
+,
     openRegisterModal() {
       this.isRegisterModalVisible = true;
     },
@@ -114,24 +123,18 @@ export default {
       this.isRegisterModalVisible = false;
     },
     registerPpc(newPpc) {
-      // 서버로 등록 요청을 보냅니다.
-      axios.post('/ppc/register', newPpc)
+      axios
+        .post('/ppc/register', newPpc)
         .then(() => {
-          // 요청이 성공하면 등록된 상품 목록을 다시 가져옵니다.
           this.fetchPpcs();
-          // 등록 모달을 닫습니다.
           this.closeRegisterModal();
         })
-        .catch(error => {
-          // 요청이 실패하면 오류 메시지를 콘솔에 기록합니다.
+        .catch((error) => {
           console.error('상품 가격 정보를 등록하는데 실패했습니다:', error);
-          // 실패한 경우 사용자에게 알립니다.
           alert('상품 가격 정보를 등록하는데 실패했습니다.');
         });
     },
-
   },
-
   mounted() {
     this.fetchPpcs();
   },

@@ -5,9 +5,9 @@
       <h3>{{ isEditing ? '상품 수정' : '상품 삭제' }}</h3>
       <p>거래처명: {{ currentItem.clientName }}</p>
       <p>상품명: {{ currentItem.proName }}</p>
-      <p>판매가: {{ currentItem.ppcSale }}</p>
+      
       <p v-if="isEditing">판매가: <input type="number" v-model="currentItem.ppcSale" /></p>
-        <p v-else>판매가: {{ currentItem.ppcSale }}</p>
+      <p v-else>판매가: {{ currentItem.ppcSale }}</p>
       <button v-if="isEditing" @click="confirmEdit">수정하기</button>
       <button v-else @click="confirmDelete">삭제하기</button>
     </div>
@@ -29,7 +29,9 @@ export default {
       this.$emit('edit', this.currentItem);
     },
     confirmDelete() {
-      this.$emit('delete', this.currentItem.proCode); // 수정
+   // Modal.vue 내에서
+this.$emit('delete', this.currentItem);
+
     },
   },
 };
