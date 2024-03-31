@@ -35,10 +35,11 @@ export default {
             if (this.chart) {
                 this.chart.destroy(); // 기존 차트가 있으면 삭제
             }
-            // storageCode를 숫자 부분에 따라 정렬
-            const sortedKeys = Object.keys(data).sort((a, b) => {
-                return parseInt(a.substring(3)) - parseInt(b.substring(3));
-            });
+
+            // SRG10을 제외하고 storageCode를 숫자 부분에 따라 정렬
+            const sortedKeys = Object.keys(data)
+                .filter(key => key !== 'SRG10') // SRG10 제외
+                .sort((a, b) => parseInt(a.substring(3)) - parseInt(b.substring(3)));
 
             // 정렬된 키에 따라 온도 값도 정렬
             const sortedTemps = sortedKeys.map(key => data[key]);

@@ -4,14 +4,16 @@
   </div>
   <div>
     <!-- 기타 대시보드 내용 -->
+    <Warehouse />
     <CarTempBarchart />
+    
   </div>
 </template>
 
 <script setup>
 import axios from 'axios';
 import CarTempBarchart from '@/components/charts/CarTempBarchart.vue';
-
+import Warehouse from '@/components/charts/Warehouse.vue';
 </script>
 
 <style>
