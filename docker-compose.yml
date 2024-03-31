@@ -1,0 +1,13 @@
+version: '3'
+services:
+  bps:
+    build: ./bps
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./bps:/app
+      - /app/node_modules
+    command: npm run dev
+    environment:
+      - NODE_ENV=development
+
