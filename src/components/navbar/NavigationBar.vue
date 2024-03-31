@@ -21,7 +21,7 @@
 
       </VaNavbarItem>
 
-      <router-link to="/employeeslist" class="hidden sm:block text-gray-600">
+      <router-link to="/system/employeeslist" class="hidden sm:block text-gray-600">
         <VaNavbarItem class="hidden sm:block">
           시스템 관리
         </VaNavbarItem>
@@ -31,7 +31,7 @@
 
       </VaNavbarItem>
 
-      <router-link to="/viewproduct" class="hidden sm:block">
+      <router-link to="/product/viewproduct" class="hidden sm:block">
         <VaNavbarItem class="hidden sm:block">
           상품 관리
         </VaNavbarItem>
@@ -41,7 +41,7 @@
 
       </VaNavbarItem>
 
-      <router-link to="/productsales" class="hidden sm:block">
+      <router-link to="/sales/productsales" class="hidden sm:block">
         <VaNavbarItem class="hidden sm:block">
           판매 관리
         </VaNavbarItem>
@@ -52,7 +52,7 @@
 
       </VaNavbarItem>
 
-      <router-link to="/incentivelist" class="hidden sm:block">
+      <router-link to="/business/incentivelist" class="hidden sm:block">
         <VaNavbarItem class="hidden sm:block">
           영업 관리
         </VaNavbarItem>
