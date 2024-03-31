@@ -9,13 +9,18 @@
     <div class="product-list">
       <div class="va-table-responsive">
         <h3 class="va-h3">거래처별 판매상품 목록</h3>
-        <div class="grid md:grid-cols-2 gap-6 mb-6">
+        <div class="grid md:grid-cols-3 gap-6 mb-6">
           <VaSelect
             v-model="selectedField"
             placeholder="필터링할 필드 선택"
             :options="filterOptions"
           />
-          <VaInput v-model="filter" placeholder="필터링..." class="w-full" />
+          <VaInput
+            v-model="filter"
+            placeholder="필터링..."
+            class="w-full"
+          />
+          <VaButton @click="applyFilter">검색</VaButton>
         </div>
         <table class="va-table va-table--hoverable">
           <thead>
@@ -41,10 +46,16 @@
             </tr>
           </tbody>
         </table>
+
         <!-- 페이지네이션 -->
         <div class="pagination">
           <VaButton @click="prevPage" :disabled="currentPage === 1">이전</VaButton>
-          <VaButton class="mr-6 mb-2" preset="secondary" hover-behavior="opacity" :hover-opacity="0.4">
+          <VaButton
+            class="mr-6 mb-2"
+            preset="secondary"
+            hover-behavior="opacity"
+            :hover-opacity="0.4"
+          >
             {{ currentPage }}
           </VaButton>
           <VaButton @click="nextPage" :disabled="currentPage === pageCount">다음</VaButton>
@@ -64,11 +75,12 @@ export default {
     ProductSidebar,
     VaButton,
     VaSelect,
-    VaInput
+    VaInput,
   },
   data() {
     return {
       products: [],
+      filteredProducts: [],
       filter: '',
       selectedField: '',
       currentPage: 1,
@@ -76,17 +88,11 @@ export default {
       filterOptions: [
         { text: '거래처명', value: 'clientName' },
         { text: '제품명', value: 'proName' },
-        { text: '분류', value: 'proCat' }
-      ]
+        { text: '분류', value: 'proCat' },
+      ],
     };
   },
   computed: {
-    filteredProducts() {
-      if (!this.filter || !this.selectedField) return this.products;
-      return this.products.filter(product =>
-        product[this.selectedField].toString().toLowerCase().includes(this.filter.toLowerCase())
-      );
-    },
     paginatedProducts() {
       const start = (this.currentPage - 1) * this.perPage;
       return this.filteredProducts.slice(start, start + this.perPage);
@@ -100,28 +106,64 @@ export default {
       try {
         const response = await axios.get('/ppc/all'); // 백엔드 엔드포인트의 실제 URL로 대체
         this.products = response.data;
+        this.filteredProducts = response.data; // 초기에는 모든 제품을 표시
       } catch (error) {
         console.error('Failed to fetch products:', error);
       }
     },
+    applyFilter() {
+      if (!this.filter || !this.selectedField) {
+        // 검색어나 필터링 필드가 선택되지 않은 경우 전체 제품 목록을 보여줌
+        this.filteredProducts = this.products;
+      } else {
+        // 선택된 필드와 검색어를 기준으로 제품 목록을 필터링
+        this.filteredProducts = this.products.filter(product =>
+          product[this.selectedField].toString().toLowerCase().includes(this.filter.toLowerCase())
+        );
+      }
+      this.currentPage = 1; // 검색 후 현재 페이지를 1로 초기화
+    },
     nextPage() {
-      if (this.currentPage < this.pageCount) this.currentPage++;
+      if (this.currentPage < this.pageCount) {
+        this.currentPage++;
+      }
     },
     prevPage() {
-      if (this.currentPage > 1) this.currentPage--;
-    }
+      if (this.currentPage > 1) {
+        this.currentPage--;
+      }
+    },
   },
   created() {
     this.fetchProducts();
-  }
+  },
 };
 </script>
 
 <style scoped>
-.flex { display: flex; }
-.sidebar { width: 250px; /* 사이드바 너비 조절 */ }
-.va-table-responsive { overflow: auto; }
-.pagination { margin-top: 20px; }
-.pagination button { cursor: pointer; padding: 5px 10px; margin-right: 5px; }
-.product-list { flex-grow: 1; /* 남은 공간 차지 */ }
+.flex {
+  display: flex;
+}
+
+.sidebar {
+  width: 250px; /* 사이드바 너비 조절 */
+}
+
+.va-table-responsive {
+  overflow: auto;
+}
+
+.pagination {
+  margin-top: 20px;
+}
+
+.pagination button {
+  cursor: pointer;
+  padding: 5px 10px;
+  margin-right: 5px;
+}
+
+.product-list {
+  flex-grow: 1; /* 남은 공간 차지 */
+}
 </style>
