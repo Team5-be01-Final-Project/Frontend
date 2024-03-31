@@ -9,7 +9,7 @@
     <div class="product-list">
       <div class="va-table-responsive">
         <h3 class="va-h3">제품 목록</h3>
-        <div class="grid md:grid-cols-2 gap-6 mb-6">
+        <div class="grid md:grid-cols-3 gap-6 mb-6">
           <VaSelect
             v-model="selectedField"
             placeholder="Select filter fields"
@@ -22,6 +22,7 @@
             value-by="value"
           />
           <VaInput v-model="filter" placeholder="Filter..." class="w-full" />
+          <VaButton @click="filterProducts">검색</VaButton>
         </div>
         <table class="va-table va-table--hoverable">
           <thead>
@@ -92,18 +93,12 @@ export default {
   created() {
     this.fetchProductList();
   },
-  watch: {
-    filter() {
-      // VaInput 필터 값이 변경될 때마다 필터링된 제품 목록을 업데이트
-      this.filterProducts();
-    }
-  },
   methods: {
     async fetchProductList() {      
       try {
         const response = await this.axios.get('api/products');
         this.products = response.data;
-        this.filterProducts(); // 페이지 로드 시 필터링된 제품 목록 업데이트
+        this.filteredProducts = response.data; // 초기에는 모든 제품 목록을 filteredProducts에 할당
       } catch (error) {
         console.error('데이터 가져오기 실패:', error);
       }
@@ -116,9 +111,10 @@ export default {
       } else {
         // 선택한 필드에 따라 제품을 필터링
         this.filteredProducts = this.products.filter(product => {
-          return product[this.selectedField] && product[this.selectedField].includes(this.filter);
+          return product[this.selectedField] && product[this.selectedField].toLowerCase().includes(this.filter.toLowerCase());
         });
       }
+      this.currentPage = 1; // 필터링 후 현재 페이지를 1로 초기화
     },
     nextPage() {
       if (this.currentPage < this.pageCount) {
