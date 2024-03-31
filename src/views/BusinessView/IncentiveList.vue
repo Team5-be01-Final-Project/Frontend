@@ -62,8 +62,8 @@
         incentives: [],
         selectedDepartment: '',
         deptOption: departmentOptions.map(dept => ({ text: dept.text, value: dept.value })),
-        selectedMonth: currentMonth.toString() ,
-        selectedMonthhistory: currentMonth.toString(),
+        selectedMonth: currentMonth + "월",
+        selectedMonthhistory: currentMonth,
         monthOption: monthOptions.map(dept => ({ text: dept.text, value: dept.value })),
         filteredData: [] // 필터링된 데이터를 저장할 배열
       }
