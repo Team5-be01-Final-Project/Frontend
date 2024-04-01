@@ -63,18 +63,21 @@
       BusinessSidebar
     },
     data() {
-      const currentYear = new Date().getFullYear();
-      const currentMonth = new Date().getMonth() + 1; // getMonth()는 0에서 시작하므로 +1
+      // const currentYear = new Date().getFullYear();
+      // const currentMonth = new Date().getMonth() + 1; // getMonth()는 0에서 시작하므로 +1
+      const defaultYearOption = yearOptions.find(option => option.value === new Date().getFullYear());
+      const defaultMonthOption = monthOptions.find(option => option.value === new Date().getMonth() + 1);
+
       return {
         incentives: [],
         selectedDepartment: '',
-        deptOption: departmentOptions.map(dept => ({ text: dept.text, value: dept.value })),
-        selectedYear: currentYear,
-        selectedYearhistory: currentYear,
-        yearOption: yearOptions.map(y => ({ text: y.text, value: y.value })),
-        selectedMonth: currentMonth,
-        selectedMonthhistory: currentMonth,
-        monthOption: monthOptions.map(m => ({ text: m.text, value: m.value })),
+        deptOption: departmentOptions,
+        selectedYear: defaultYearOption,
+        selectedYearhistory: defaultYearOption,
+        yearOption: yearOptions,
+        selectedMonth: defaultMonthOption,
+        selectedMonthhistory: defaultMonthOption,
+        monthOption: monthOptions,
         filteredData: [] // 필터링된 데이터를 저장할 배열
       }
     },
@@ -84,7 +87,7 @@
     methods: {
       async fetchIncentives(year, month) {
         try {
-          const response = await axios.get(`/incentive/list?year=${year}&month=${month}`);
+          const response = await axios.get(`/incentive/list?year=${year.value}&month=${month.value}`);
           this.incentives = response.data;
           this.filteredData = response.data; // 초기 상태에서는 모든 데이터를 표시
         } catch (error) {
@@ -100,8 +103,8 @@
         const monthChanged = this.selectedMonth !== this.selectedMonthhistory;
 
         if (yearChanged || monthChanged) {
-          console.log(this.selectedYear);
-          await this.fetchIncentives(this.selectedYear, this.selectedMonth.value);
+          // console.log(this.selectedYear);
+          await this.fetchIncentives(this.selectedYear, this.selectedMonth);
         }
 
         this.fetchFilterDept();
