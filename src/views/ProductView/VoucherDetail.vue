@@ -142,6 +142,9 @@ export default {
         this.empCode = data.empCode;
         this.showApproveButton = data.showApproveButton;
         this.showRejectButton = data.showRejectButton;
+        // ... 다른 데이터 할당
+        this.voucherDetails = response.data;
+        console.log("voucherDetails:", this.voucherDetails); // 로그 추가
         console.log("showApproveButton:", data.showApproveButton);
         console.log("showRejectButton:", data.showRejectButton);
       } catch (error) {
@@ -150,30 +153,28 @@ export default {
     },
     async approveVoucher() {
       try {
-        const response = await axios.put(
-          `/api/vouchers/${this.voucId}/approve`,
-          {
-            proCode: this.proCode,
-            empCodeSign: this.loggedInUserEmpCode,
-          }
-        );
+        const proCode = this.voucherDetails[0].proCode;
+        console.log("voucId:", this.voucId); // 로그 추가
+        console.log("proCode:", proCode); // 로그 추가
+        await axios.put(`/api/vouchers/${this.voucId}/approve`, {
+          proCode: proCode,
+        });
         console.log("Voucher approved");
-        await this.fetchVoucherDetails();
+        this.fetchVoucherDetails();
       } catch (error) {
         console.error("Error approving voucher:", error);
       }
     },
     async rejectVoucher() {
       try {
-        const response = await axios.put(
-          `/api/vouchers/${this.voucId}/reject`,
-          {
-            proCode: this.proCode,
-            empCodeSign: this.loggedInUserEmpCode,
-          }
-        );
+        const proCode = this.voucherDetails[0].proCode;
+        console.log("voucId:", this.voucId); // 로그 추가
+        console.log("proCode:", proCode); // 로그 추가
+        await axios.put(`/api/vouchers/${this.voucId}/reject`, {
+          proCode: proCode,
+        });
         console.log("Voucher rejected");
-        await this.fetchVoucherDetails(); // 데이터 갱신
+        this.fetchVoucherDetails();
       } catch (error) {
         console.error("Error rejecting voucher:", error);
       }
