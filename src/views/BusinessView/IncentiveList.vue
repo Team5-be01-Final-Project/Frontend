@@ -14,6 +14,11 @@
           :options="deptOption"
         />
         <va-select
+          v-model="selectedYear"
+          placeholder="연도 선택"
+          :options="yearOption"
+        />
+        <va-select
           v-model="selectedMonth"
           placeholder="월 선택"
           :options="monthOption"
@@ -48,6 +53,7 @@
   <script>
   import axios from 'axios';
   import { departmentOptions } from '@/utils/departmentOptions.js'; 
+  import { yearOptions } from '@/utils/yearOptions.js'; 
   import { monthOptions } from '@/utils/monthOptions.js'; 
   import formatNumberWithCommas from '@/utils/formatNumberWithCommas.js';
   import BusinessSidebar from '@/components/sidebar/BusinessSidebar.vue'
@@ -57,37 +63,47 @@
       BusinessSidebar
     },
     data() {
+      const currentYear = new Date().getFullYear();
       const currentMonth = new Date().getMonth() + 1; // getMonth()는 0에서 시작하므로 +1
       return {
         incentives: [],
         selectedDepartment: '',
         deptOption: departmentOptions.map(dept => ({ text: dept.text, value: dept.value })),
-        selectedMonth: currentMonth + "월",
+        selectedYear: currentYear,
+        selectedYearhistory: currentYear,
+        yearOption: yearOptions.map(y => ({ text: y.text, value: y.value })),
+        selectedMonth: currentMonth,
         selectedMonthhistory: currentMonth,
-        monthOption: monthOptions.map(dept => ({ text: dept.text, value: dept.value })),
+        monthOption: monthOptions.map(m => ({ text: m.text, value: m.value })),
         filteredData: [] // 필터링된 데이터를 저장할 배열
       }
     },
     mounted() {
-      this.fetchIncentives(this.selectedMonth);
+      this.fetchIncentives(this.selectedYear, this.selectedMonth);
     },
     methods: {
-      async fetchIncentives(month) {
+      async fetchIncentives(year, month) {
         try {
-          const response = await axios.get(`/incentive/list?month=${month}`);
+          const response = await axios.get(`/incentive/list?year=${year}&month=${month}`);
           this.incentives = response.data;
           this.filteredData = response.data; // 초기 상태에서는 모든 데이터를 표시
         } catch (error) {
           console.error("인센티브 데이터를 가져오는 중 에러가 발생했습니다.", error);
         }
+        this.selectedYearhistory = this.selectedYear;
         this.selectedMonthhistory = this.selectedMonth; // 비동기 호출이 성공한 후 업데이트
       },
       formatNumberWithCommas,
       async applyFilter() {
-          // 월 변경 시 데이터 다시 가져오기
-        if(this.selectedMonth !== this.selectedMonthhistory){
-          await this.fetchIncentives(this.selectedMonth.value);
+        // 연도나 월 변경 시 데이터 다시 가져오기
+        const yearChanged = this.selectedYear !== this.selectedYearhistory;
+        const monthChanged = this.selectedMonth !== this.selectedMonthhistory;
+
+        if (yearChanged || monthChanged) {
+          console.log(this.selectedYear);
+          await this.fetchIncentives(this.selectedYear, this.selectedMonth.value);
         }
+
         this.fetchFilterDept();
       },
 
