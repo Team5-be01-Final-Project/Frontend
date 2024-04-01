@@ -6,6 +6,7 @@
     <!-- 기타 대시보드 내용 -->
     <Warehouse />
     <CarTempBarchart />
+    <MonthSale/>
     
   </div>
 </template>
@@ -14,6 +15,7 @@
 import axios from 'axios';
 import CarTempBarchart from '@/components/charts/CarTempBarchart.vue';
 import Warehouse from '@/components/charts/Warehouse.vue';
+import MonthSale from '@/components/charts/MonthSale.vue';
 </script>
 
 <style>
