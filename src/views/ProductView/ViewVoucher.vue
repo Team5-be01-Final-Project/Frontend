@@ -85,7 +85,7 @@
         }
       },
       navigateToDetail(voucId) {
-        this.$router.push(`/voucherdetail/${voucId}`);
+        this.$router.push(`/product/voucherdetail/${voucId}`);
       },
       prevPage() {
         if (this.currentPage > 1) {
