@@ -6,14 +6,17 @@
     <!-- 기타 대시보드 내용 -->
     <Warehouse />
     <CarTempBarchart />
-    
   </div>
+  <div><POI /><POIMap /></div>
 </template>
 
 <script setup>
 import axios from 'axios';
 import CarTempBarchart from '@/components/charts/CarTempBarchart.vue';
 import Warehouse from '@/components/charts/Warehouse.vue';
+import POI from '@/components/charts/POI.vue';
+import POIMap from '@/components/charts/POIMap.vue';
+
 </script>
 
 <style>
