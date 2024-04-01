@@ -13,7 +13,7 @@
       <va-select v-model="selectedYear" :options="yearOptions" placeholder="년도 선택" />
       <va-select v-model="selectedMonth" :options="monthOptions1" placeholder="월 선택" />
       <va-input v-model="clientNameFilter" placeholder="거래처명 검색" />
-      <va-button @click="filterSalesData">조회</va-button>
+      <va-button @click="filterSalesData">검색</va-button>
     </div>
       <table class="va-table va-table--hoverable">
         <thead>
