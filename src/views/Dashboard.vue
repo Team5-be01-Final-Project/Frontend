@@ -6,6 +6,7 @@
     <!-- 기타 대시보드 내용 -->
     <Warehouse />
     <CarTempBarchart />
+    <MonthSale/>  
   </div>
   <div><POI /><POIMap /></div>
 </template>
@@ -16,6 +17,7 @@ import CarTempBarchart from '@/components/charts/CarTempBarchart.vue';
 import Warehouse from '@/components/charts/Warehouse.vue';
 import POI from '@/components/charts/POI.vue';
 import POIMap from '@/components/charts/POIMap.vue';
+import MonthSale from '@/components/charts/MonthSale.vue';
 
 </script>
 
