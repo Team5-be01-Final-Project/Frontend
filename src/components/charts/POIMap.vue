@@ -6,16 +6,37 @@
 import { onMounted } from 'vue';
 import axios from 'axios';
 
-onMounted(async () => {
+function loadKakaoMapScript() {
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.onload = () => resolve(kakao.maps);
+    script.onerror = (error) => reject(error);
+    script.src = 'https://dapi.kakao.com/v2/maps/sdk.js?appkey=ec0714c866621428e42482a5174cd49c&libraries=services,clusterer,drawing&autoload=false';
+    document.head.appendChild(script);
+  });
+}
+
+async function fetchClients() {
   try {
-    const { data: clients } = await axios.get('http://localhost:8081/clients/list');
+    const response = await axios.get('http://localhost:8081/clients/list');
+    return response.data;
+  } catch (error) {
+    console.error('거래처 정보를 가져오는 중 오류가 발생했습니다:', error);
+    return [];
+  }
+}
+
+async function displayMapWithClients() {
+  await loadKakaoMapScript();
+  kakao.maps.load(async () => {
     const mapContainer = document.getElementById('map');
     const mapOption = {
-      center: new kakao.maps.LatLng(37.5665, 126.9780), // 서울 시청을 기본 중심 좌표로 설정
-      level: 7 // 지도의 확대 레벨 설정
+      center: new kakao.maps.LatLng(37.5665, 126.9780), // 서울 시청 좌표
+      level: 3
     };
-    
-    const map = new kakao.maps.Map(mapContainer, mapOption); // 지도 생성
+
+    const map = new kakao.maps.Map(mapContainer, mapOption);
+    const clients = await fetchClients();
 
     clients.forEach(client => {
       new kakao.maps.services.Geocoder().addressSearch(client.clientWhere, (result, status) => {
@@ -23,15 +44,17 @@ onMounted(async () => {
           const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
           new kakao.maps.Marker({
             map: map,
-            position: coords
+            position: coords,
+            title: client.clientName
           });
-          map.setCenter(coords); // 첫 번째 거래처 위치로 지도 중심 이동
         }
       });
     });
-  } catch (error) {
-    console.error('거래처 정보를 가져오는 중 오류가 발생했습니다:', error);
-  }
+  });
+}
+
+onMounted(() => {
+  displayMapWithClients();
 });
 </script>
 
