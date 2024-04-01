@@ -93,6 +93,11 @@ const router = createRouter({
           path: 'voucherdetail/:voucherID',
           name: 'VoucherDetail',
           component: () => import('../views/ProductView/VoucherDetail.vue')
+        },
+        {
+          path: 'voucherrgistration',
+          name: 'voucherrgistration',
+          component: () => import('../views/ProductView/VoucherRegistration.vue')
         }
       ]
     },
