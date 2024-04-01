@@ -102,7 +102,7 @@ const pageCount = computed(() => {
 });
 
 function clientClassText(clientClass) {
-  const classes = { 1: '1등급', 2: '2등급', 3: '3등급' };
+  const classes = { 1: '1차 병원', 2: '2차 병원', 3: '3차 병원' };
   return classes[clientClass] || '미분류';
 }
 
@@ -118,7 +118,7 @@ function fetchClients() {
 
 function navigateToDetail(clientCode) {
   // 프로그래매틱 네비게이션으로 상세 페이지로 이동
-  router.push(`/clientdetail/${clientCode}`);
+  router.push(`/business/clientdetail/${clientCode}`);
 }
 
 function nextPage() {
