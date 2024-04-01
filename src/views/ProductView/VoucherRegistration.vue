@@ -1,47 +1,47 @@
 <template>
-    <div class="flex">
+  <div class="flex">
     <!-- 사이드바 섹션 -->
     <div class="sidebar">
       <ProductSidebar />
     </div>
 
     <div>
-    <h1>매출 전표 등록</h1>
-    <div>
-      <label for="employee">담당자:</label>
-      <select id="employee" v-model="selectedEmployee.value">
-        <option v-for="employee in employees" :key="employee.empCode" :value="employee">
-          {{ employee.name }}
-        </option>
-      </select>
+      <h1>매출 전표 등록</h1>
+      <div>
+        <label for="employee">담당자:</label>
+        <select id="employee" v-model="selectedEmployee.value">
+          <option v-for="employee in employees" :key="employee.empCode" :value="employee">
+            {{ employee.name }}
+          </option>
+        </select>
+      </div>
+      <div>
+        <label for="client">거래처:</label>
+        <select id="client" v-model="selectedClient.value">
+          <option v-for="client in clients" :key="client.code" :value="client">
+            {{ client.name }}
+          </option>
+        </select>
+      </div>
+      <div>
+        <label for="product">상품:</label>
+        <select id="product" v-model="selectedProduct.value">
+          <option v-for="product in products" :key="product.id" :value="product">
+            {{ product.name }}
+          </option>
+        </select>
+        <input type="number" v-model="quantity.value" placeholder="수량" />
+        <button @click="addItem">추가</button>
+      </div>
+      <ul>
+        <li v-for="(item, index) in items" :key="index">
+          {{ item.product.name }} - 수량: {{ item.quantity }} - 판매가: {{ item.salePrice }} - 총액: {{ item.totalPrice }}
+        </li>
+      </ul>
+      <div>총 매출액: {{ totalSales.value }}</div>
+      <button @click="registerVoucher">등록</button>
     </div>
-    <div>
-      <label for="client">거래처:</label>
-      <select id="client" v-model="selectedClient.value">
-        <option v-for="client in clients" :key="client.code" :value="client">
-          {{ client.name }}
-        </option>
-      </select>
-    </div>
-    <div>
-      <label for="product">상품:</label>
-      <select id="product" v-model="selectedProduct.value">
-        <option v-for="product in products" :key="product.id" :value="product">
-          {{ product.name }}
-        </option>
-      </select>
-      <input type="number" v-model="quantity.value" placeholder="수량" />
-      <button @click="addItem">추가</button>
-    </div>
-    <ul>
-      <li v-for="(item, index) in items" :key="index">
-        {{ item.product.name }} - 수량: {{ item.quantity }} - 판매가: {{ item.salePrice }} - 총액: {{ item.totalPrice }}
-      </li>
-    </ul>
-    <div>총 매출액: {{ totalSales.value }}</div>
-    <button @click="registerVoucher">등록</button>
   </div>
-</div>
 </template>
 
 <script>
@@ -50,6 +50,7 @@ import axios from 'axios';
 import ProductSidebar from '@/components/sidebar/ProductSidebar.vue';
 
 export default {
+  components: { ProductSidebar },
   setup() {
     const employees = ref([]);
     const clients = ref([]);

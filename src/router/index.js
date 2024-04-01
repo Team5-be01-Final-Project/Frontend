@@ -95,8 +95,8 @@ const router = createRouter({
           component: () => import('../views/ProductView/VoucherDetail.vue')
         },
         {
-          path: 'voucherrgistration',
-          name: 'voucherrgistration',
+          path: 'voucherregistration',
+          name: 'voucherregistration',
           component: () => import('../views/ProductView/VoucherRegistration.vue')
         }
       ]
