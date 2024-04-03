@@ -10,7 +10,7 @@
           <div class="header">
               <h3 class="va-h3">출고전표 등록</h3>
               <div class="button-container">
-                  <button @click="SVGAElementVoucher" class="approve-button">등록</button>
+                  <button @click="SaveVoucher" class="approve-button">등록</button>
               </div>
           </div>
           <div class="spacer" style="height: 20px"></div>
@@ -18,7 +18,7 @@
               <div class="voucher-info-row">
                   <div class="voucher-info-item">
                       <span class="voucher-info-label">전표번호:</span>
-                      <span class="voucher-info-value">{{  }}</span>
+                      <span class="voucher-info-value">{{ voucId  }}</span>
                   </div>
                   <div class="voucher-info-item">
                       <span class="voucher-info-label">등록일:</span>
@@ -108,6 +108,7 @@
             approverName: "",
             approverCode: "",
             dateString,
+            voucId: "",
             clients: [],
             products: [],
             clientOptions: [],
@@ -123,6 +124,7 @@
       created() {
         this.fetchClients();
         this.fetchApprover();
+        this.fetchVoucherId();
       },
       mounted() {
         
@@ -131,8 +133,7 @@
         
       },
       methods: {
-        fetchApprover() {
-          // empCode를 사용하여 결재자 정보를 조회
+        fetchApprover() {// 담당자의 부서의 팀장(결재자) 가져오기
           axios.get(`/employees/${this.empCode}/approver`)
           // console.log(response)
             .then(response => {
@@ -144,7 +145,7 @@
               this.approverName = '결재자 정보를 불러오는데 실패했습니다.';
             });
         },
-        fetchClients() {
+        fetchClients() { // 담당자의 거래처 리스트 가져오기
         // 예시 empCode
         const empCode = 2016101542;
         axios.get(`/employees/${empCode}/clients`)
@@ -157,7 +158,7 @@
             })
             .catch(error => console.error("Error fetching clients:", error));
         },
-        fetchProducts() {
+        fetchProducts() { //선택한 거래처의 상품리스트 가져오기
           if (!this.selectedClient) return;
           console.log(this.selectedClient)
           axios.get(`/api/products/${this.selectedClient.value}/ppcs`)
@@ -176,7 +177,7 @@
             })
             .catch(error => console.error("Error fetching products:", error));
         },
-        fetchProductStock() {
+        fetchProductStock() { //선택한 상품의 재고량 가져오기
           // console.log(this.selectedProduct)
           // console.log(this.products);
           const productInfo = this.products.find(product => product.value === this.selectedProduct.value);
@@ -186,7 +187,7 @@
             console.log("Product info is undefined or ppcStock is not available.");
           }
         },
-        addProduct() {
+        addProduct() { //전표에 판매 상품 추가
           console.log(this.selectedProduct)
           console.log(this.products);
           console.log(this.selectedQuantity);
@@ -206,7 +207,15 @@
             alert("상품을 선택하고, 유효한 수량을 입력하세요.");
           }
         },
-  
+        fetchVoucherId(){//전표 번호 가져오기
+          axios.get('/api/vouchers/voucId')
+          .then(response => {
+            this.voucId = response.data.voucId; // 백엔드로부터 받은 전표번호를 저장
+          })
+          .catch(error => {
+            console.error('전표번호 생성 중 오류:', error);
+          });
+        }
       }
     };
 </script>
