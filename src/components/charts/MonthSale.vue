@@ -102,7 +102,7 @@
   
   <style>
 .chart-container {
-  height: 700px; /* 또는 적절한 높이로 설정 */
-  width: 1000px;
+  height: 500px; /* 또는 적절한 높이로 설정 */
+  width: 800px;
 }
 </style>
