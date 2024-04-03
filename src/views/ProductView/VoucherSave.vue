@@ -1,62 +1,73 @@
 <!-- VoucherDetail.vue -->
 <template>
 
-    <div class="flex">
-        <!-- 사이드바 섹션 -->
-        <div class="sidebar">
+  <div class="flex">
+      <!-- 사이드바 섹션 -->
+      <div class="sidebar">
           <ProductSidebar/>
-        </div>
-    
+      </div>
       <div>
-        <div class="header">
-          <h3 class="va-h3">출고전표 등록</h3>
-          <div class="button-container">
-            <button @click="SVGAElementVoucher" class="approve-button">등록</button>
+          <div class="header">
+              <h3 class="va-h3">출고전표 등록</h3>
+              <div class="button-container">
+                  <button @click="SVGAElementVoucher" class="approve-button">등록</button>
+              </div>
           </div>
-        </div>
-        <div class="spacer" style="height: 20px"></div>
-        <div class="voucher-info">
-          <div class="voucher-info-row">
-            <div class="voucher-info-item">
-              <span class="voucher-info-label">담당자:</span>
-              <span class="voucher-info-value">{{ empName }}</span>
-            </div>
-            <div class="voucher-info-item">
-              <span class="voucher-info-label">차량번호:</span>
-              <span class="voucher-info-value">{{ storageCar }}</span>
-            </div>
+          <div class="spacer" style="height: 20px"></div>
+          <div class="voucher-info">
+              <div class="voucher-info-row">
+                  <div class="voucher-info-item">
+                      <span class="voucher-info-label">담당자:</span>
+                      <span class="voucher-info-value">{{ empName }}</span>
+                  </div>
+                  <div class="voucher-info-item">
+                      <span class="voucher-info-label">차량번호:</span>
+                      <span class="voucher-info-value">{{ storageCar }}</span>
+                  </div>
+              </div>
           </div>
-        </div>
-        <div class="voucher-info">
-          <div class="voucher-info-row">
-            <va-select
-            v-model="selectedClient"
-            placeholder="거래처 선택"
-            :options="clientOptions"
-            @update:modelValue="fetchProducts()"
-            />
+          <div class="voucher-info">
+              <div class="voucher-info-row">
+                  <va-select v-model="selectedClient" placeholder="거래처 선택" :options="clientOptions" @update:modelValue="fetchProducts()" />
+              </div>
+              <div class="voucher-info-row">
+                  <va-select v-model="selectedProduct" placeholder="상품 선택" :options="productOptions" @update:modelValue="fetchProductStock()" />
+                  <div v-if="selectedProduct">
+                      <span class="voucher-info-label">재고량:</span>
+                      <span class="voucher-info-value">{{ selectedProductStock }}</span>
+                      <input type="number" v-model.number="selectedQuantity" placeholder="수량" />
+                      <button @click="addProduct">추가</button>
+                  </div>
+              </div>
           </div>
-          <div class="voucher-info-row">
-            <va-select
-            v-model="selectedProduct"
-            placeholder="상품 선택"
-            :options="productOptions"
-            @update:modelValue="fetchProductStock()"
-            />
-            <div v-if="selectedProduct">
-              <span class="voucher-info-label">재고량:</span>
-              <span class="voucher-info-value">{{ selectedProductStock }}</span>
-            </div>
-          </div>
-        </div>
-        <hr />
-        <div class="spacer" style="height: 20px"></div>
+          <hr />
+          <div class="spacer" style="height: 20px"></div>
+          <table class="va-table va-table--hoverable">
+              <thead>
+                  <tr>
+                      <th>상품코드</th>
+                      <th>상품명</th>
+                      <th>판매가</th>
+                      <th>수량</th>
+                      <th>금액</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr v-for="(product, index) in addproductlist" :key="index">
+                      <td>{{ product.proCode }}</td>
+                      <td>{{ product.proName }}</td>
+                      <td>{{ product.voucSale }}</td>
+                      <td>{{ product.voucAmount }}</td>
+                      <td>{{ product.voucSales }}</td>
+                  </tr>
+              </tbody>
+          </table>
       </div>
-      </div>
-    </template>
-    
-    <script>
-    import axios from "axios";
+  </div>
+</template>
+
+<script>
+  import axios from "axios";
     import VoucherApproval from "@/components/VoucherApproval.vue";
     import ProductSidebar from '@/components/sidebar/ProductSidebar.vue'
     
@@ -75,6 +86,7 @@
             selectedProduct: null,
             selectedProductDetails: null,
             selectedProductStock: -1,
+            addproductlist: []
         };
       },
       created() {
@@ -120,8 +132,8 @@
             .catch(error => console.error("Error fetching products:", error));
         },
         fetchProductStock() {
-          console.log(this.selectedProduct)
-          console.log(this.products);
+          // console.log(this.selectedProduct)
+          // console.log(this.products);
           const productInfo = this.products.find(product => product.value === this.selectedProduct.value);
           if (productInfo && productInfo.ppcStock !== undefined) {
             this.selectedProductStock = productInfo.ppcStock; // 재고량 업데이트
@@ -129,15 +141,33 @@
             console.log("Product info is undefined or ppcStock is not available.");
           }
         },
-        
-
+        addProduct() {
+          console.log(this.selectedProduct)
+          console.log(this.products);
+          console.log(this.selectedQuantity);
+          const productInfo = this.products.find(product => product.value === this.selectedProduct.value);
+          if (productInfo && this.selectedQuantity > 0) {
+            const newProduct = {
+              proCode: productInfo.proCode,
+              proName: productInfo.proName,
+              voucSale: productInfo.ppcSale,//판매가
+              voucAmount: this.selectedQuantity,//수량
+              voucSales: productInfo.ppcSale * this.selectedQuantity,
+            };
+            this.addproductlist.push(newProduct);
+            // 입력 필드 초기화
+            this.selectedQuantity = 0;
+          } else {
+            alert("상품을 선택하고, 유효한 수량을 입력하세요.");
+          }
+        },
+  
       }
-
     };
-    </script>
-    
-    <style scoped>
-    .spacer {
+</script>
+
+<style scoped>
+  .spacer {
       height: 20px;
     }
     
@@ -219,4 +249,4 @@
     .va-table tr:hover {
       background-color: #f5f5f5;
     }
-    </style>
+</style>
