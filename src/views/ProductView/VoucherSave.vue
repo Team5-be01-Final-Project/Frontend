@@ -29,10 +29,18 @@
         </div>
         <div class="voucher-info">
           <div class="voucher-info-row">
-                <va-select
+            <va-select
             v-model="selectedClient"
             placeholder="거래처 선택"
             :options="clientOptions"
+            @update:modelValue="fetchProducts()"
+            />
+          </div>
+          <div class="voucher-info-row">
+            <va-select
+            v-model="selectedProduct"
+            placeholder="상품 선택"
+            :options="productOptions"
             />
           </div>
         </div>
@@ -91,6 +99,35 @@
             .catch(error => console.error("Error fetching clients:", error));
         },
 
+        fetchProducts() {
+          if (!this.selectedClient) return;
+          console.log(this.selectedClient)
+          axios.get(`/api/products/${this.selectedClient.value}/ppcs`)
+            .then(response => {
+              this.products = response.data.map(product => ({
+                ...product,
+                text: product.proName, // 상품 이름
+                value: product.proCode, // 상품 코드
+              }));
+              // 상품 옵션 업데이트
+              this.productOptions = this.products.map(product => ({
+                text: product.text, // 상품 이름
+                value: product.value, // 상품 코드
+              }));
+              this.selectedProduct = null; // 상품 선택 초기화
+            })
+            .catch(error => console.error("Error fetching products:", error));
+        },
+        fetchProductDetails() {
+          const selectedProductInfo = this.products.find(product => product.proCode === this.selectedProduct);
+          if (selectedProductInfo) {
+            // 이미 가져온 재고량 정보 사용
+            this.selectedProductDetails = {
+              stock: selectedProductInfo.ppcStock, // 이미 저장된 재고량
+              ppcSale: selectedProductInfo.ppcSale, // 가격
+            };
+          }
+        },
       }
 
     };
