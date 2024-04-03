@@ -1,45 +1,54 @@
 <script setup>
-  import { ref } from 'vue'
-  import { useRouter } from 'vue-router'
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 
-  const router = useRouter() // useRouter 훅을 사용합니다.
-  const activeElement = ref(null) // 현재 활성화된 요소를 추적하기 위한 ref
+const router = useRouter(); // useRouter 훅을 사용합니다.
+const activeElement = ref(null); // 현재 활성화된 요소를 추적하기 위한 ref
 
-  // 모든 아코디언 항목의 열림 상태를 제어하기 위한 ref 배열
-const collapseOpen = ref([true, true,]) // 여기서 true의 개수는 아코디언 항목의 개수와 일치해야 합니다
+// 모든 아코디언 항목의 열림 상태를 제어하기 위한 ref 배열
+const collapseOpen = ref([true, true]); // 여기서 true의 개수는 아코디언 항목의 개수와 일치해야 합니다
 
 const navigateTo = (routeName) => {
-  router.push({ name: routeName })
-}
+  router.push({ name: routeName });
+};
 
-
-  const items = [
-  { title: '매출조회', icon: 'mail', children: [
-    { title: '상품별 매출 현황', icon: 'drafts', routeName: 'productsales' },
-    { title: '거래처별 매출 현황', icon: 'drafts', routeName: 'clientSales' },
-]
+const items = [
+  {
+    title: "매출조회",
+    icon: "mail",
+    children: [
+      { title: "상품별 매출 현황", icon: "drafts", routeName: "productsales" },
+      { title: "거래처별 매출 현황", icon: "drafts", routeName: "clientSales" },
+    ],
   },
-]
+];
 </script>
 
 <template>
   <div style="height: 100vh">
     <VaSidebar>
-      <VaAccordion multiple> <!-- 여기에 multiple 속성을 추가 -->
+      <VaAccordion multiple>
+        <!-- 여기에 multiple 속성을 추가 -->
         <template v-for="(item, index) in items">
           <VaCollapse
             v-if="item.children"
             :key="item.title + 'collapse'"
             body-color="#00000022"
-            v-model="collapseOpen[index]" 
+            v-model="collapseOpen[index]"
           >
             <template #header="{ value: isCollapsed }">
-              <VaSidebarItem :active="item.children.some((child) => child.title === activeElement)">
+              <VaSidebarItem
+                :active="
+                  item.children.some((child) => child.title === activeElement)
+                "
+              >
                 <VaSidebarItemContent>
                   <VaIcon :name="item.icon" />
                   <VaSidebarItemTitle>{{ item.title }}</VaSidebarItemTitle>
                   <VaSpacer />
-                  <VaIcon :name="isCollapsed ? 'va-arrow-up' : 'va-arrow-down'" />
+                  <VaIcon
+                    :name="isCollapsed ? 'va-arrow-up' : 'va-arrow-down'"
+                  />
                 </VaSidebarItemContent>
               </VaSidebarItem>
             </template>
@@ -49,11 +58,13 @@ const navigateTo = (routeName) => {
                 v-for="child in item.children"
                 :key="child.title"
                 :active="child.title === activeElement"
-                @click="() => {
-              activeElement = child.title;
-              if (child.routeName) navigateTo(child.routeName); // 라우팅 함수 호출
-            }"
-          >
+                @click="
+                  () => {
+                    activeElement = child.title;
+                    if (child.routeName) navigateTo(child.routeName); // 라우팅 함수 호출
+                  }
+                "
+              >
                 <VaSidebarItemContent>
                   <VaIcon :name="child.icon" />
                   <VaSidebarItemTitle>{{ child.title }}</VaSidebarItemTitle>
@@ -79,8 +90,8 @@ const navigateTo = (routeName) => {
       <VaSpacer />
 
       <VaSidebarItem
-        :active="'Settings' === activeElement"
-        @click="activeElement = 'Settings'"
+        :active="$route.path === '/mysales'"
+        @click="$router.push('/mysales')"
       >
         <VaSidebarItemContent>
           <VaIcon name="settings" />

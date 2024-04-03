@@ -32,6 +32,12 @@ const router = createRouter({
       name: 'dashboard',
       component: () => import('../views/Dashboard.vue')
     },
+    // router/index.js
+    {
+      path: '/mysales',
+      name: 'mysales',
+      component: () => import('../views/MySales.vue')
+    },
     {
       path: '/business',
       name: 'business',
