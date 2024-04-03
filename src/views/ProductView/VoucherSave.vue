@@ -17,6 +17,22 @@
           <div class="voucher-info">
               <div class="voucher-info-row">
                   <div class="voucher-info-item">
+                      <span class="voucher-info-label">전표번호:</span>
+                      <span class="voucher-info-value">{{  }}</span>
+                  </div>
+                  <div class="voucher-info-item">
+                      <span class="voucher-info-label">등록일:</span>
+                      <span class="voucher-info-value">{{ dateString }}</span>
+                  </div>
+                  <div class="voucher-info-item">
+                    <span class="voucher-info-label">거래처:</span>
+                    <span class="voucher-info-value">{{ selectedClient.text }}</span>
+                  </div>
+              </div>
+          </div>
+          <div class="voucher-info">
+              <div class="voucher-info-row">
+                  <div class="voucher-info-item">
                       <span class="voucher-info-label">담당자:</span>
                       <span class="voucher-info-value">{{ empName }}</span>
                   </div>
@@ -37,33 +53,35 @@
               <div class="voucher-info-row">
                   <va-select v-model="selectedProduct" placeholder="상품 선택" :options="productOptions" @update:modelValue="fetchProductStock()" />
                   <div v-if="selectedProduct">
-                      <span class="voucher-info-label">재고량:</span>
+                      <span class="voucher-info-label">재고량: </span>
                       <span class="voucher-info-value">{{ selectedProductStock }}</span>
-                      <input type="number" v-model.number="selectedQuantity" placeholder="수량" />
-                      <button @click="addProduct">추가</button>
                   </div>
+                  <va-input type="number" v-model.number="selectedQuantity" placeholder="수량" />
+                  <button @click="addProduct" class="approve-button">추가</button>
               </div>
           </div>
           <hr />
           <div class="spacer" style="height: 20px"></div>
           <table class="va-table va-table--hoverable">
               <thead>
-                  <tr>
-                      <th>상품코드</th>
-                      <th>상품명</th>
-                      <th>판매가</th>
-                      <th>수량</th>
-                      <th>금액</th>
-                  </tr>
+                <tr>
+                  <th>No</th>
+                  <th>상품코드</th>
+                  <th>상품명</th>
+                  <th>판매가</th>
+                  <th>수량</th>
+                  <th>금액</th>
+                </tr>
               </thead>
               <tbody>
-                  <tr v-for="(product, index) in addproductlist" :key="index">
-                      <td>{{ product.proCode }}</td>
-                      <td>{{ product.proName }}</td>
-                      <td>{{ product.voucSale }}</td>
-                      <td>{{ product.voucAmount }}</td>
-                      <td>{{ product.voucSales }}</td>
-                  </tr>
+                <tr v-for="(product, index) in addproductlist" :key="index">
+                  <td>{{ index+1 }}</td>
+                  <td>{{ product.proCode }}</td>
+                  <td>{{ product.proName }}</td>
+                  <td>{{ product.voucSale }}</td>
+                  <td>{{ product.voucAmount }}</td>
+                  <td>{{ product.voucSales }}</td>
+                </tr>
               </tbody>
           </table>
       </div>
@@ -78,24 +96,30 @@
     export default {
       components: { VoucherApproval, ProductSidebar },
       data() {
-        const empCode = 2016101542
-        const storageCar = ""
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = ('0' + (today.getMonth() + 1)).slice(-2);
+        const day = ('0' + today.getDate()).slice(-2);
+        const dateString = `${year}-${month}-${day}`;
+
         return {
             empName: "서현진",
             empCode: 2016101542,
             approverName: "",
             approverCode: "",
+            dateString,
             clients: [],
             products: [],
             clientOptions: [],
             productOptions: [],
-            selectedClient: null,
+            selectedClient: "",
             selectedProduct: null,
             selectedProductDetails: null,
             selectedProductStock: -1,
             addproductlist: []
         };
       },
+
       created() {
         this.fetchClients();
         this.fetchApprover();
