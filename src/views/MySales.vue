@@ -5,13 +5,13 @@
       <div class="employee-info-container">
         <h3>사원 정보</h3>
         <div class="employee-info">
-          <img :src="empImg" alt="사원 사진" />
-          <p>사원명: {{ empName }}</p>
-          <p>사원코드: {{ empCode }}</p>
-          <p>연락처: {{ empTel }}</p>
-          <p>이메일: {{ empEmail }}</p>
-          <p>부서: {{ department }}</p>
-          <p>직급: {{ position }}</p>
+          <img :src="employee.empImg" alt="사원 사진" />
+          <p>사원명: {{ employee.empName }}</p>
+          <p>사원코드: {{ employee.empCode }}</p>
+          <p>연락처: {{ employee.empTel }}</p>
+          <p>이메일: {{ employee.empEmail }}</p>
+          <p>부서: {{ employee.department?.deptName }}</p>
+          <p>직급: {{ employee.positions?.posName }}</p>
         </div>
       </div>
       <div class="client-list-container">
@@ -32,7 +32,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="client in clientList" :key="client.clientCode">
+            <tr v-for="client in clients" :key="client.clientCode">
               <td>{{ client.clientCode }}</td>
               <td>{{ client.clientName }}</td>
               <td>{{ client.clientClass }}</td>
@@ -55,35 +55,20 @@
   import axios from 'axios';
   import Cookies from 'js-cookie';
   
-  const empCode = ref('');
-  const empName = ref('');
-  const empTel = ref('');
-  const empEmail = ref('');
-  const empImg = ref('');
-  const department = ref('');
-  const position = ref('');
-  const clientList = ref([]);
+  const employee = ref({});
+  const clients = ref([]);
   
   onMounted(async () => {
-    // 쿠키에서 사원 정보 가져오기
-    empCode.value = Cookies.get('empCode');
-    empName.value = Cookies.get('empName');
-    empImg.value = Cookies.get('empImg');
+    const empCode = Cookies.get('empCode');
   
     try {
-      // 사원 정보 조회 API 호출
-      const employeeResponse = await axios.get(`/api/employees/${empCode.value}`);
-      const employeeData = employeeResponse.data;
-      empTel.value = employeeData.empTel;
-      empEmail.value = employeeData.empEmail;
-      department.value = employeeData.department.deptName;
-      position.value = employeeData.positions.posName;
-  
-      // 담당 거래처 목록 조회 API 호출
-      const clientResponse = await axios.get(`/api/clients/employee/${empCode.value}`);
-      clientList.value = clientResponse.data;
+      // My 영업 정보 조회 API 호출
+      const response = await axios.get(`/mysales/${empCode}`);
+      const data = response.data;
+      employee.value = data.employee;
+      clients.value = data.clients;
     } catch (error) {
-      console.error('사원 정보 또는 거래처 목록을 가져오는데 실패했습니다.', error);
+      console.error('My 영업 정보를 가져오는데 실패했습니다.', error);
     }
   });
   
@@ -101,4 +86,3 @@
   <style scoped>
   /* 스타일 추가 */
   </style>
-  
