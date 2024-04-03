@@ -41,15 +41,16 @@
             v-model="selectedProduct"
             placeholder="상품 선택"
             :options="productOptions"
+            @update:modelValue="fetchProductStock()"
             />
+            <div v-if="selectedProduct">
+              <span class="voucher-info-label">재고량:</span>
+              <span class="voucher-info-value">{{ selectedProductStock }}</span>
+            </div>
           </div>
         </div>
-
-
-
         <hr />
         <div class="spacer" style="height: 20px"></div>
-
       </div>
       </div>
     </template>
@@ -72,7 +73,8 @@
             productOptions: [],
             selectedClient: null,
             selectedProduct: null,
-            selectedProductDetails: null
+            selectedProductDetails: null,
+            selectedProductStock: -1,
         };
       },
       created() {
@@ -98,7 +100,6 @@
             })
             .catch(error => console.error("Error fetching clients:", error));
         },
-
         fetchProducts() {
           if (!this.selectedClient) return;
           console.log(this.selectedClient)
@@ -114,20 +115,22 @@
                 text: product.text, // 상품 이름
                 value: product.value, // 상품 코드
               }));
-              this.selectedProduct = null; // 상품 선택 초기화
+              // this.selectedProduct = null; // 상품 선택 초기화
             })
             .catch(error => console.error("Error fetching products:", error));
         },
-        fetchProductDetails() {
-          const selectedProductInfo = this.products.find(product => product.proCode === this.selectedProduct);
-          if (selectedProductInfo) {
-            // 이미 가져온 재고량 정보 사용
-            this.selectedProductDetails = {
-              stock: selectedProductInfo.ppcStock, // 이미 저장된 재고량
-              ppcSale: selectedProductInfo.ppcSale, // 가격
-            };
+        fetchProductStock() {
+          console.log(this.selectedProduct)
+          console.log(this.products);
+          const productInfo = this.products.find(product => product.value === this.selectedProduct.value);
+          if (productInfo && productInfo.ppcStock !== undefined) {
+            this.selectedProductStock = productInfo.ppcStock; // 재고량 업데이트
+          } else {
+            console.log("Product info is undefined or ppcStock is not available.");
           }
         },
+        
+
       }
 
     };
