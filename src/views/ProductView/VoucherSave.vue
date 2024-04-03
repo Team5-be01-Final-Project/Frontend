@@ -24,6 +24,10 @@
                       <span class="voucher-info-label">차량번호:</span>
                       <span class="voucher-info-value">{{ storageCar }}</span>
                   </div>
+                  <div class="voucher-info-item">
+                    <span class="voucher-info-label">결재자:</span>
+                    <span class="voucher-info-value">{{ approverName }}</span>
+                  </div>
               </div>
           </div>
           <div class="voucher-info">
@@ -78,6 +82,9 @@
         const storageCar = ""
         return {
             empName: "서현진",
+            empCode: 2016101542,
+            approverName: "",
+            approverCode: "",
             clients: [],
             products: [],
             clientOptions: [],
@@ -91,6 +98,7 @@
       },
       created() {
         this.fetchClients();
+        this.fetchApprover();
       },
       mounted() {
         
@@ -99,6 +107,19 @@
         
       },
       methods: {
+        fetchApprover() {
+          // empCode를 사용하여 결재자 정보를 조회
+          axios.get(`/employees/${this.empCode}/approver`)
+          // console.log(response)
+            .then(response => {
+              this.approverName = response.data.approverName;
+              this.approverCode = response.data.approverCode;
+            })
+            .catch(error => {
+              console.error("Error fetching approver:", error);
+              this.approverName = '결재자 정보를 불러오는데 실패했습니다.';
+            });
+        },
         fetchClients() {
         // 예시 empCode
         const empCode = 2016101542;
