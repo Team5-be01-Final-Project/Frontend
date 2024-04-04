@@ -15,7 +15,7 @@ services:
     build: .
     ports:
       - "5173:5173"
-    command: npm run build
+    command: npm run start
     volumes:
       - .:/app
       - /app/node_modules
