@@ -1,10 +1,28 @@
-version: '3'
+version: '3.8'  # Docker Compose 파일 버전을 최신으로 업데이트
+
 services:
   nginx_server:
     image: nginx:latest
+    container_name: nginx_server  # 컨테이너 이름을 명시적으로 설정
     volumes:
-      - ./dist:/usr/share/nginx/html
-      - ./nginx/conf/:/etc/nginx/conf.d
+      - ./dist:/usr/share/nginx/html:ro  # 읽기 전용으로 설정하여 보안 강화
+      - ./nginx/conf:/etc/nginx/conf.d:ro  # 마찬가지로 읽기 전용
     ports:
       - "5174:80"
-    restart: always
+    restart: always  # 컨테이너가 실패할 경우 자동으로 재시작
+    depends_on:  # 'app' 서비스가 먼저 시작되도록 설정 (app 서비스가 있다면)
+      - app
+
+  app:  # 예시 Node.js 애플리케이션 서비스 추가
+    build:
+      context: .
+      dockerfile: Dockerfile  # 사용할 Dockerfile 지정
+    container_name: app
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    restart: on-failure  # 실패 시 재시작
+    environment:
+      NODE_ENV: development
