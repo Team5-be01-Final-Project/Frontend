@@ -10,4 +10,4 @@ services:
       - /app/node_modules  # node_modules 디렉토리를 마운트하여 오버라이드 방지
     environment:
       - NODE_ENV=development  # 필요한 환경 변수를 설정할 수 있습니다.
-     restart: always
+    restart: always
