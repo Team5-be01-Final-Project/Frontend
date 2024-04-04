@@ -10,6 +10,9 @@ set -x
 cd /home/ubuntu/app/bps
 
 # Vue 프로젝트 빌드
+curl -sL https://deb.nodesource.com/setup_20.x | sudo -E bash -  # Node.js 14 LTS 버전 설치 스크립트 실행
+sudo apt-get install -y nodejs  # Node.js와 npm 설치
+
 npm install --silent  # 로그 출력 감소
 npm run build
 
