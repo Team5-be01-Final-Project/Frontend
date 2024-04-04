@@ -30,7 +30,7 @@ const items = [
   },
   {
     title: '출고 관리', icon: 'dashboard', children: [
-      { title: '전표 등록', icon: 'send' },
+      { title: '전표 등록', icon: 'send' , routeName: 'vouchersave'},
       { title: '전표 결재', icon: 'drafts' },
       { title: '전표 리스트 조회', icon: 'drafts', routeName: 'viewvoucher' },
     ]
