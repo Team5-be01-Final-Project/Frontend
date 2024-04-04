@@ -1,5 +1,6 @@
 FROM node:20.11.0
 WORKDIR /app
-COPY . .
+COPY package.json /app/package.json
 RUN npm install
-CMD ["npm", "run", "build"]
+COPY . /app
+RUN npm run build
