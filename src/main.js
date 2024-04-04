@@ -9,7 +9,7 @@ import router from './router'
 import axios from "axios"
 
 
-axios.defaults.baseURL="https://limlim.shop:8081/"
+axios.defaults.baseURL="https://limlim.shop"
 axios.defaults.withCredentials = true; // withCredentials 전역 설정
 
 
