@@ -1,15 +1,12 @@
-version: '3'  # Docker Compose 파일 버전을 최신으로 업데이트
-
+version: '3'
 services:
-  nginx_server:
-    image: nginx:latest
-    container_name: nginx_server  # 컨테이너 이름을 명시적으로 설정
-    volumes:
-      - ./dist:/usr/share/nginx/html:ro  # 읽기 전용으로 설정하여 보안 강화
-      - ./nginx/conf:/etc/nginx/conf.d:ro  # 마찬가지로 읽기 전용
+  app:  # 'app'은 서비스 이름으로, 원하는 대로 변경할 수 있습니다.
+    build: .  # 현재 디렉토리의 Dockerfile을 사용하여 이미지를 빌드합니다.
     ports:
-      - "5174:80"
-    restart: always  # 컨테이너가 실패할 경우 자동으로 재시작
-    depends_on:  # 'app' 서비스가 먼저 시작되도록 설정 (app 서비스가 있다면)
-
-
+      - "5173:5173"  
+    command: npm run dev  # 컨테이너가 시작될 때 실행될 커맨드를 정의합니다.
+    volumes:
+      - .:/app  # 현재 디렉토리를 컨테이너의 /app 디렉토리에 마운트합니다.
+      - /app/node_modules  # node_modules 디렉토리를 마운트하여 오버라이드 방지
+    environment:
+      - NODE_ENV=development  # 필요한 환경 변수를 설정할 수 있습니다.
