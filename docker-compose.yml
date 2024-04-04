@@ -8,16 +8,3 @@ services:
     ports:
       - "5174:80"
     restart: always
-    depends_on:
-      - app
-
-  app:
-    build: .
-    ports:
-      - "5173:5173"
-    command: npm run start
-    volumes:
-      - .:/app
-      - /app/node_modules
-    environment:
-      - NODE_ENV=development
