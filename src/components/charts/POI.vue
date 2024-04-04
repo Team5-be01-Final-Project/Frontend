@@ -60,7 +60,7 @@
   
   <style>
   .va-table {
-    width: 100%;
+    width: 800px;
     border-collapse: collapse;
   }
   
