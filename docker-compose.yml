@@ -8,6 +8,8 @@ services:
     ports:
       - "5174:80"
     restart: always
+    depends_on:
+      - app
 
   app:
     build: .
