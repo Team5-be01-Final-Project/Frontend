@@ -44,8 +44,11 @@ export default {
           empPw: this.empPw
         });
         if (response.status === 200) {
-          this.$router.push('/dashboard'); // 로그인 성공 시 /home 경로로 이동
+          console.log("Login successful, redirecting to dashboard...");
+          this.$router.push('/dashboard');
+          console.log("Redirect attempted.");
         }
+
       } catch (error) {
         this.loginError = true;
       }

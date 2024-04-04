@@ -107,7 +107,8 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const authCode = Cookies.get('empAuthCode'); // js-cookie를 사용해 쿠키에서 권한 코드를 가져옵니다.
-  
+  console.log(authCode)
+  console.log(this.authCode)
   // 로그인 페이지는 항상 접근 가능하게 합니다.
   if (to.name === 'login') {
     next();
