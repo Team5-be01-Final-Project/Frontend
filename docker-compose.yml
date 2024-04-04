@@ -1,4 +1,4 @@
-version: '3.8'  # Docker Compose 파일 버전을 최신으로 업데이트
+version: '3'  # Docker Compose 파일 버전을 최신으로 업데이트
 
 services:
   nginx_server:
@@ -12,4 +12,4 @@ services:
     restart: always  # 컨테이너가 실패할 경우 자동으로 재시작
     depends_on:  # 'app' 서비스가 먼저 시작되도록 설정 (app 서비스가 있다면)
 
- 
+
