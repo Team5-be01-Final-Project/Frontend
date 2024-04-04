@@ -9,7 +9,7 @@ import router from './router'
 import axios from "axios"
 
 
-axios.defaults.baseURL="http:13.209.207.115:8081/"
+axios.defaults.baseURL="https://13.209.207.115:8081/"
 axios.defaults.withCredentials = true; // withCredentials 전역 설정
 
 
