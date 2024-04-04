@@ -92,7 +92,8 @@
   import axios from "axios";
     import VoucherApproval from "@/components/VoucherApproval.vue";
     import ProductSidebar from '@/components/sidebar/ProductSidebar.vue'
-    
+    import Cookies from 'js-cookie'
+
     export default {
       components: { VoucherApproval, ProductSidebar },
       data() {
@@ -103,8 +104,8 @@
         const dateString = `${year}-${month}-${day}`;
 
         return {
-            empName: "서현진",
-            empCode: 2016101542,
+            empName: "",
+            empCode: "",
             signerName: "",
             signerCode: "",
             dateString,
@@ -122,12 +123,13 @@
       },
 
       created() {
-        this.fetchClients();
-        this.fetchApprover();
-        this.fetchVoucherId();
       },
       mounted() {
-        
+        this.initialize().then(() => {
+          this.fetchClients();
+          this.fetchApprover();
+          this.fetchVoucherId();
+        });
       },
       computed: {
         
@@ -144,6 +146,13 @@
               console.error("Error fetching approver:", error);
               this.signerName = '결재자 정보를 불러오는데 실패했습니다.';
             });
+        },
+        async initialize(){
+          const empName = Cookies.get('empName');
+          const empCode = Cookies.get('empCode');
+
+          this.empName = empName;
+          this.empCode = empCode;
         },
         fetchClients() { // 담당자의 거래처 리스트 가져오기
         // 예시 empCode
