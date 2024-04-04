@@ -11,18 +11,5 @@ services:
       - "5174:80"
     restart: always  # 컨테이너가 실패할 경우 자동으로 재시작
     depends_on:  # 'app' 서비스가 먼저 시작되도록 설정 (app 서비스가 있다면)
-      - app
 
-  app:  # 예시 Node.js 애플리케이션 서비스 추가
-    build:
-      context: .
-      dockerfile: Dockerfile  # 사용할 Dockerfile 지정
-    container_name: app
-    volumes:
-      - .:/app
-      - /app/node_modules
-    ports:
-      - "5173:5173"
-    restart: on-failure  # 실패 시 재시작
-    environment:
-      NODE_ENV: development
+ 
