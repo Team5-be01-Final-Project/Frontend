@@ -1,5 +1,14 @@
 version: '3'
 services:
+nginx_server:
+    image: nginx:latest
+    volumes:
+      - ./dist:/usr/share/nginx/html
+      - ./nginx/conf/:/etc/nginx/conf.d
+    ports:
+      - "5174:80"
+    restart: always
+
 app:  # 'app'은 서비스 이름으로, 원하는 대로 변경할 수 있습니다.
     build: .  # 현재 디렉토리의 Dockerfile을 사용하여 이미지를 빌드합니다.
     ports:
@@ -11,11 +20,3 @@ app:  # 'app'은 서비스 이름으로, 원하는 대로 변경할 수 있습�
     environment:
       - NODE_ENV=development  # 필요한 환경 변수를 설정할 수 있습니다.
 
-  nginx_server:
-    image: nginx:latest
-    volumes:
-      - ./dist:/usr/share/nginx/html
-      - ./nginx/conf/:/etc/nginx/conf.d
-    ports:
-      - "5174:80"
-    restart: always
