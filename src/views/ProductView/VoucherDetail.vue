@@ -1,88 +1,70 @@
-<!-- VoucherDetail.vue -->
 <template>
-
-<div class="flex">
-    <!-- 사이드바 섹션 -->
+  <div class="flex">
     <div class="sidebar">
-      <ProductSidebar/>
+      <ProductSidebar />
     </div>
 
-  <div>
-    <div class="header">
-      <h3 class="va-h3">출고전표 결재</h3>
-      <div class="button-container" v-if="showApproveButton || showRejectButton">
-        <button v-if="showApproveButton" @click="approveVoucher" class="approve-button">승인</button>
-        <button v-if="showRejectButton" @click="rejectVoucher" class="reject-button">반려</button>
-      </div>
-    </div>
-    <div class="spacer" style="height: 20px"></div>
-    <div class="voucher-info">
-      <div class="voucher-info-row">
-        <div class="voucher-info-item">
-          <span class="voucher-info-label">전표번호:</span>
-          <span class="voucher-info-value">{{ voucId }}</span>
-        </div>
-        <div class="voucher-info-item">
-          <span class="voucher-info-label">등록일:</span>
-          <span class="voucher-info-value">{{ voucDate }}</span>
-        </div>
-        <div class="voucher-info-item">
-          <span class="voucher-info-label">담당자:</span>
-          <span class="voucher-info-value">{{ empName }}</span>
+    <div>
+      <div class="header">
+        <h3 class="va-h3">출고전표 결재</h3>
+        <div class="button-container" v-if="showApproveButton || showRejectButton">
+          <button v-if="showApproveButton" @click="approveVoucherDetails" class="approve-button">승인</button>
+          <button v-if="showRejectButton" @click="rejectVoucherDetails" class="reject-button">반려</button>
         </div>
       </div>
-      <div class="voucher-info-row">
-        <div class="voucher-info-item">
-          <span class="voucher-info-label">결재자:</span>
-          <span class="voucher-info-value">{{ signerName }}</span>
-        </div>
-        <div class="voucher-info-item">
-          <span class="voucher-info-label">거래처:</span>
-          <span class="voucher-info-value">{{ clientName }}</span>
-        </div>
-        <div class="voucher-info-item">
-          <span class="voucher-info-label">차량 번호:</span>
-          <span class="voucher-info-value">{{ storageCar }}</span>
+      <div class="spacer" style="height: 20px"></div>
+      <div class="voucher-info">
+        <div class="voucher-info-row">
+          <div class="voucher-info-item"><span class="voucher-info-label">전표번호:</span><span
+              class="voucher-info-value">{{ voucId }}</span></div>
+          <div class="voucher-info-item"><span class="voucher-info-label">등록일:</span><span class="voucher-info-value">{{
+          voucDate }}</span></div>
+          <div class="voucher-info-item"><span class="voucher-info-label">담당자:</span><span class="voucher-info-value">{{
+          empName }}</span></div>
+          <div class="voucher-info-item"><span class="voucher-info-label">결재자:</span><span class="voucher-info-value">{{
+          signerName }}</span></div>
+          <div class="voucher-info-item"><span class="voucher-info-label">거래처:</span><span class="voucher-info-value">{{
+          clientName }}</span></div>
+          <div class="voucher-info-item"><span class="voucher-info-label">차량 번호:</span><span
+              class="voucher-info-value">{{ storageCar }}</span></div>
         </div>
       </div>
+      <hr />
+      <div class="spacer" style="height: 20px"></div>
+      <div v-if="voucherDetails.length > 0">
+        <table class="va-table">
+          <thead>
+            <tr>
+              <th>제품 코드</th>
+              <th>제품명</th>
+              <th>수량</th>
+              <th>판매가</th>
+              <th>합계</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(detail, index) in voucherDetails" :key="index">
+              <td>{{ detail.proCode }}</td>
+              <td>{{ detail.proName }}</td>
+              <td>{{ detail.voucAmount }}</td>
+              <td>{{ detail.voucSale.toLocaleString() }}원</td>
+              <td>{{ detail.voucSales.toLocaleString() }}원</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="total-sales">총합계: {{ totalVoucSales.toLocaleString() }}원</div>
+      </div>
+      <p v-else>해당 전표번호에 대한 정보가 없습니다.</p>
     </div>
-    <hr />
-    <div class="spacer" style="height: 20px"></div>
-    <div v-if="voucherDetails.length > 0">
-      <table class="va-table va-table--hoverable">
-        <thead>
-          <tr>
-            <th style="width: 10%;">No.</th>
-            <th style="width: 30%;">제품명</th>
-            <th style="width: 15%;">수량</th>
-            <th style="width: 20%;">판매가</th>
-            <th style="width: 25%;">합계</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(detail, index) in voucherDetails" :key="detail.voucId">
-            <td>{{ index + 1 }}</td>
-            <td>{{ detail.proName }}</td>
-            <td>{{ detail.voucAmount }}</td>
-            <td>{{ detail.voucSale.toLocaleString() }}원</td>
-            <td>{{ detail.voucSales.toLocaleString() }}원</td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="total-sales">총합계 : {{ totalVoucSales.toLocaleString() }}원</div>
-    </div>
-    <p v-else>해당 전표번호에 대한 정보가 없습니다.</p>
-  </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import VoucherApproval from "@/components/VoucherApproval.vue";
-import ProductSidebar from '@/components/sidebar/ProductSidebar.vue'
+import ProductSidebar from '@/components/sidebar/ProductSidebar.vue';
 
 export default {
-  components: { VoucherApproval, ProductSidebar },
+  components: { ProductSidebar },
   data() {
     return {
       voucId: "",
@@ -92,10 +74,9 @@ export default {
       clientName: "",
       storageCar: "",
       voucherDetails: [],
-      proCode: null,
-      empCodeSign: null,
       showApproveButton: false,
       showRejectButton: false,
+      proCode: null,
     };
   },
   mounted() {
@@ -103,57 +84,74 @@ export default {
   },
   computed: {
     totalVoucSales() {
-      return this.voucherDetails.reduce((total, detail) => {
-        return total + (detail.voucSales || 0);
-      }, 0);
+      return this.voucherDetails.reduce((total, detail) => total + (detail.voucSales || 0), 0);
     },
   },
   methods: {
     async fetchVoucherDetails() {
       try {
-        const response = await axios.get(
-          `/api/vouchers/${this.$route.params.voucherID}/details`
-        );
-        const data = response.data[0];
-        this.voucId = data.voucId;
-        this.voucDate = data.voucDate;
-        this.empName = data.empName;
-        this.signerName = data.signerName;
-        this.clientName = data.clientName;
-        this.storageCar = data.storageCar;
+        const response = await axios.get(`/api/vouchers/${this.$route.params.voucherID}/details`);
         this.voucherDetails = response.data;
-        this.proCode = data.proCode;
-        this.empCode = data.empCode;
-        this.showApproveButton = data.showApproveButton;
-        this.showRejectButton = data.showRejectButton;
-        console.log("showApproveButton:", data.showApproveButton);
-        console.log("showRejectButton:", data.showRejectButton);
+        if (this.voucherDetails.length > 0) {
+          const firstDetail = this.voucherDetails[0];
+          this.voucId = firstDetail.voucId;
+          this.voucDate = firstDetail.voucDate;
+          this.empName = firstDetail.empName;
+          this.signerName = firstDetail.signerName;
+          this.clientName = firstDetail.clientName;
+          this.storageCar = firstDetail.storageCar;
+          this.showApproveButton = firstDetail.showApproveButton;
+          this.showRejectButton = firstDetail.showRejectButton;
+          this.proCode = firstDetail.proCode;
+        }
       } catch (error) {
         console.error("Error fetching voucher details:", error);
       }
     },
-    async approveVoucher() {
+    // async approveVoucher() {
+    //   try {
+    //     await axios.put(`/api/vouchers/${this.voucId}/approve`);
+    //     console.log("Voucher approved");
+    //     this.fetchVoucherDetails();
+    //   } catch (error) {
+    //     console.error("Error approving voucher:", error);
+    //   }
+    // },   
+    async approveVoucherDetails() {
       try {
-        await axios.put(`/api/vouchers/${this.voucId}/approve`, {
-          proCode: this.proCode,
-          empCode: this.empCode,
-        });
-        console.log("Voucher approved");
+        if (!this.voucId) {
+          console.error("voucId is required for approving voucher details.");
+          return;
+        }
+
+        // /api/vouchers/{voucId}/approve/details에 PUT 요청 보내기
+        await axios.put(`/api/vouchers/${this.voucId}/approve/details`);
+        console.log("Voucher details approveded successfully");
+
+        // 세부 정보 재로드
         this.fetchVoucherDetails();
       } catch (error) {
-        console.error("Error approving voucher:", error);
+        console.error("Error rapproving voucher details:", error);
       }
     },
-    async rejectVoucher() {
+
+
+
+    async rejectVoucherDetails() {
       try {
-        await axios.put(`/api/vouchers/${this.voucId}/reject`, {
-          proCode: this.proCode,
-          empCode: this.empCode,
-        });
-        console.log("Voucher rejected");
+        if (!this.voucId) {
+          console.error("voucId is required for rejecting voucher details.");
+          return;
+        }
+
+        // /api/vouchers/{voucId}/reject/details에 PUT 요청 보내기
+        await axios.put(`/api/vouchers/${this.voucId}/reject/details`);
+        console.log("Voucher details rejected successfully");
+
+        // 세부 정보 재로드
         this.fetchVoucherDetails();
       } catch (error) {
-        console.error("Error rejecting voucher:", error);
+        console.error("Error rejecting voucher details:", error);
       }
     },
   },
@@ -179,7 +177,8 @@ export default {
 }
 
 .approve-button,
-.reject-button {
+.reject-button,
+.reject-details-button {
   padding: 8px 16px;
   border-radius: 4px;
   font-size: 14px;
@@ -192,7 +191,8 @@ export default {
   color: white;
 }
 
-.reject-button {
+.reject-button,
+.reject-details-button {
   background-color: #F44336;
   color: white;
 }
