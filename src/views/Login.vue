@@ -36,7 +36,7 @@ export default {
     };
   },
   methods: {
-    login: async () => { 
+    async login() {
       console.log(`Logging in with Employee Code: ${this.empCode}, Password: ${this.empPw}`);
       try {
         const response = await axios.post('/api/login', {
@@ -53,6 +53,9 @@ export default {
         this.loginError = true;
       }
     }
+  },
+  created() {
+    this.login = this.login.bind(this);
   }
 };
 </script>
