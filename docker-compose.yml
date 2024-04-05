@@ -1,18 +1,3 @@
-# version: '3'
-# services:
-#   app:  # 'app'은 서비스 이름으로, 원하는 대로 변경할 수 있습니다.
-#     build: .  # 현재 디렉토리의 Dockerfile을 사용하여 이미지를 빌드합니다.
-#     ports:
-#       - "5173:5173"  
-#     #command: npm run dev  # 컨테이너가 시작될 때 실행될 커맨드를 정의합니다.
-#     volumes:
-#       - .:/app  # 현재 디렉토리를 컨테이너의 /app 디렉토리에 마운트합니다.
-#       - /app/node_modules  # node_modules 디렉토리를 마운트하여 오버라이드 방지
-#     environment:
-#       - NODE_ENV=development  # 필요한 환경 변수를 설정할 수 있습니다.
-#     restart: always
-
-
 version: '3'
 services:
   nginx_server:
@@ -22,4 +7,15 @@ services:
       - ./nginx/conf/:/etc/nginx/conf.d
     ports:
       - "5174:80"
+    restart: always
+  app:  # 'app'은 서비스 이름으로, 원하는 대로 변경할 수 있습니다.
+    build: .  # 현재 디렉토리의 Dockerfile을 사용하여 이미지를 빌드합니다.
+    ports:
+      - "5173:5173"  
+    # command: npm run build  # 컨테이너가 시작될 때 실행될 커맨드를 정의합니다.
+    volumes:
+      - .:/app  # 현재 디렉토리를 컨테이너의 /app 디렉토리에 마운트합니다.
+      - /app/node_modules  # node_modules 디렉토리를 마운트하여 오버라이드 방지
+    environment:
+      - NODE_ENV=development  # 필요한 환경 변수를 설정할 수 있습니다.
     restart: always
