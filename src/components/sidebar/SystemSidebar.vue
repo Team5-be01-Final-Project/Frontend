@@ -16,7 +16,7 @@ const navigateTo = (routeName) => {
 
 const items = [
   { title: '사원 관리', icon: 'dashboard', children: [
-    { title: '사원 리스트 조회', icon: 'send',routeName: 'employeesview' },// 이 항목에 대한 라우트가 없습니다.
+    { title: '사원 리스트 조회', icon: 'send',routeName: 'employeesspec' },// 이 항목에 대한 라우트가 없습니다.
     { title: '사원 정보 수정', icon: 'drafts' ,routeName: 'employeeslist'}, 
   ]},
   { title: '이상 온도 로그', icon: 'mail',children: [

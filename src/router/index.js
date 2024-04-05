@@ -124,6 +124,11 @@ const router = createRouter({
       component: () => import('../views/SystemView/SystemLayout.vue'), // SystemLayout.vue 추가
       children: [
         {
+          path: 'employeesspec',
+          name: 'employeesspec',
+          component: () => import('../views/SystemView/EmployeesSpec.vue')
+        },
+        {
           path: 'employeeslist',
           name: 'employeeslist',
           component: () => import('../views/SystemView/EmployeesList.vue')
