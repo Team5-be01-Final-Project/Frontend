@@ -42,31 +42,28 @@
         <table class="va-table va-table--hoverable">
           <thead>
             <tr>
+              <th>사진</th>
               <th>사번</th>
               <th>이름</th>
               <th>직급</th>
               <th>부서</th>
               <th>전화번호</th>
-              <th>권한</th>
-              <th>알림설정</th>
+              <th>이메일</th>
+              <th>입사일</th>
+              <th>퇴사일</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="employee in employees" :key="employee.empCode">
+              <td><img :src="employee.empImg" alt="Employee Image" class="employee-image"/></td>
               <td>{{ employee.empCode }}</td>
               <td>{{ employee.empName }}</td>
               <td>{{ employee.posName }}</td>
               <td>{{ employee.deptName }}</td>
+              <td>{{ employee.empTel }}</td>
               <td>{{ employee.empEmail }}</td>
-              <td>
-                <va-select
-                v-model="employee.selectedAuthorityCode"
-                placeholder="권한 선택"
-                :options="authorityCodeOptions"
-                @update:modelValue="authorityChange(employee)"
-                /> 
-              </td>
-              <td><VaButton @click="openAlarmSettingsModal(employee)">알림 설정</VaButton></td>
+              <td>{{ employee.empStartDate }}</td>
+              <td>{{ employee.empEndDate }}</td>
             </tr>
           </tbody>
         </table>
@@ -173,7 +170,7 @@
         },
         async fetchEmployeesList() {
             try {
-            const response = await axios.get(`/employees/list?`);
+            const response = await axios.get(`/employees/specs`);
             this.employees = response.data; // 응답 데이터 할당
             this.employees = response.data.map(employee => ({
               ...employee,
@@ -202,91 +199,6 @@
           }
         },
 
-        authorityChange(employee) {
-          console.log('authorityChange called', employee);
-          this.changingEmployee = employee; // 변경할 직원 정보 저장
-          this.isAuthorityChangeModalOpen = true; // 모달 열기
-        },
-
-        async AuthorityChangeModalproceedChange() {
-          if (this.changingEmployee) {
-            try {
-              await this.updateEmployeeAuthority(this.changingEmployee);
-              this.fetchFilteredEmployees(); // 변경 사항 반영을 위해 직원 목록 새로고침
-            } catch (error) {
-              console.error('권한 변경 처리 실패:', error);
-            }
-          }
-          this.isAuthorityChangeModalOpen = false; // 모달 닫기
-        },
-
-        AuthorityChangeModalcancelChange() {
-            this.fetchFilteredEmployees(); // 변경 사항 반영을 위해 직원 목록 새로고침
-            this.isAuthorityChangeModalOpen = false; // 모달 닫기
-        },
-
-        async updateEmployeeAuthority(employee) {
-          try {
-            const requestData = {
-              empCode: employee.empCode,
-              authCode: employee.authCode, // 기존 권한 코드. 
-              newAuthCode: employee.selectedAuthorityCode.value // 새로운 권한 코드
-            };
-
-            console.log(requestData);
-            await axios.post(`/authorities/changeAuthority`, requestData);
-            console.log('권한이 성공적으로 업데이트되었습니다.'); // 성공 메시지 표시, toast 사용 예시
-          } catch (error) {
-            console.error('권한 업데이트 실패:', error);
-          }
-        },
-
-      openAlarmSettingsModal(employee) {
-        console.log("알림 설정 모달 열림", employee);
-          this.selectedEmployee = employee;
-          // 모든 알람 설정을 먼저 false로 초기화
-          Object.keys(this.alarmSettings).forEach(key => {
-            this.alarmSettings[key] = false;
-          });
-          // 사용자의 알람 설정을 조회하는 백엔드 API 호출
-          axios.get(`/alarms/settings/${employee.empCode}`)
-              .then(response => {
-                  // 응답으로 받은 알람 설정으로 alarmSettings 업데이트
-                  response.data.forEach(setting => {
-                    if (this.alarmSettings.hasOwnProperty(setting.alarmCode)) {
-                      this.alarmSettings[setting.alarmCode] = setting.alarmSetting;
-                    }
-                  });
-              })
-              .catch(error => console.error("알람 설정 조회 실패:", error));
-          this.isAlarmSettingsModalOpen = true;
-        },
-
-        async saveAlarmSettings() {
-          try {
-            const empCode = this.selectedEmployee.empCode;
-
-            const requests = Object.entries(this.alarmSettings).map(([alarmCode, alarmSetting]) => {
-              const requestData = {
-                empCode: empCode,
-                alarmCode: alarmCode,
-                alarmSetting: alarmSetting
-              };
-              console.log(requestData); // 요청 데이터 로깅
-              // 백엔드로 POST 요청 보내기
-              return axios.post(`/alarms/update`, requestData);
-            });
-
-            await Promise.all(requests);
-            console.log("모든 알람 설정 저장 성공");
-            this.isAlarmSettingsModalOpen = false; // 모달 닫기
-            this.fetchEmployeesList(); // 직원 목록 새로고침
-            // 추가적인 처리...
-          } catch (error) {
-            console.error("알람 설정 저장 실패:", error);
-            // 오류 처리...
-          }
-        },
 
     }
   };
@@ -323,5 +235,12 @@
     flex-grow: 1; /* 메인 콘텐츠가 남은 공간을 모두 차지하도록 함 */
     /* 필요에 따라 추가 스타일링 */
   }
+  .employee-image {
+  width: 50px; /* 이미지의 너비 */
+  height: 50px; /* 이미지의 높이 */
+  border-radius: 50%; /* 이미지를 원형으로 표시 */
+  object-fit: cover; /* 이미지 비율 유지 */
+}
+
 
   </style>
