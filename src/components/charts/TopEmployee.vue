@@ -42,25 +42,17 @@ const salesRankTopEmployee = ref(null);
 // 최우수 사원 정보를 가져오는 함수
 const fetchSalesRankTopEmployee = async () => {
   try {
-    const response = await axios.get(`/incentive/list?year=${props.year}&month=${props.month}`);
-    let incentiveList = response.data;
-
-    // 데이터가 배열이 아니면 빈 배열 할당
-    if (!Array.isArray(incentiveList)) {
-      console.error("인센티브 리스트가 배열 형태가 아닙니다:", incentiveList);
-      incentiveList = []; // 배열이 아닌 경우 빈 배열로 초기화
-    }
-    
+    // 인센티브 정보 API 호출
+    const response = await axios.get(
+      `/incentive/list?year=${props.year}&month=${props.month}`
+    );
+    const incentiveList = response.data;
     // 인센티브 정보에서 salesRank가 1인 사원 찾기
-    salesRankTopEmployee.value = incentiveList.find((dto) => dto.salesRank === 1);
-    
-    // 만약 salesRank가 1인 사원이 없다면
-    if (!salesRankTopEmployee.value) {
-      console.log("이달의 최우수 사원이 없습니다.");
-    }
+    salesRankTopEmployee.value = incentiveList.find(
+      (dto) => dto.salesRank === 1
+    );
   } catch (error) {
     console.error("인센티브 정보를 가져오는데 실패했습니다.", error);
-    salesRankTopEmployee.value = null; // 에러 발생 시 최우수 사원 정보를 null로 초기화
   }
 };
 
