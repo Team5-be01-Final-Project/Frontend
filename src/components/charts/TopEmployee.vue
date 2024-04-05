@@ -21,10 +21,9 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref, onMounted } from "vue";
 import axios from "axios";
 
-// 부모 컴포넌트로부터 year와 month props 받기
 const props = defineProps({
   year: {
     type: Number,
@@ -36,18 +35,14 @@ const props = defineProps({
   },
 });
 
-// 최우수 사원 정보를 저장할 reactive 변수
 const salesRankTopEmployee = ref(null);
 
-// 최우수 사원 정보를 가져오는 함수
 const fetchSalesRankTopEmployee = async () => {
   try {
-    // 인센티브 정보 API 호출
     const response = await axios.get(
       `/incentive/list?year=${props.year}&month=${props.month}`
     );
     const incentiveList = response.data;
-    // 인센티브 정보에서 salesRank가 1인 사원 찾기
     salesRankTopEmployee.value = incentiveList.find(
       (dto) => dto.salesRank === 1
     );
@@ -56,12 +51,9 @@ const fetchSalesRankTopEmployee = async () => {
   }
 };
 
-// year 또는 month props가 변경될 때마다 최우수 사원 정보 갱신
-watch(() => [props.year, props.month], fetchSalesRankTopEmployee, {
-  immediate: true,
-});
+// onMounted 훅을 사용하여 컴포넌트가 마운트된 후 최우수 사원 정보를 가져옵니다.
+onMounted(fetchSalesRankTopEmployee);
 
-// 금액을 통화 형식으로 포매팅하는 함수
 function formatCurrency(amount) {
   return new Intl.NumberFormat("ko-KR", {
     style: "currency",
