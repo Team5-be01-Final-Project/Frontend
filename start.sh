@@ -6,5 +6,4 @@ cd /home/ubuntu/app/bps
 # vue 프로젝트 빌드
 npm run build
 
-
 sudo docker compose -f docker-compose.yml up -d --build --force-recreate
