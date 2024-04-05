@@ -26,6 +26,7 @@
 import axios from 'axios';
 import loginImgPath from '@/assets/loginImg/1.jpg';
 import Cookies from 'js-cookie';
+Cookies.set('cookieName', 'value', { path: '/' });
 
 export default {
   name: 'LoginView',
