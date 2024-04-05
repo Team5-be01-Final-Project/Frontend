@@ -2,7 +2,7 @@
 FROM nginx:latest 
 RUN mkdir /app
 COPY /app/dist /app
-COPY /nginx/conf/default.conf /etc/nginx/
+COPY /nginx/conf/default.conf /etc/nginx/conf/
 
 
 FROM node:20.11.0
