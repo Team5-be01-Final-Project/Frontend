@@ -42,31 +42,28 @@
         <table class="va-table va-table--hoverable">
           <thead>
             <tr>
+              <th>사진</th>
               <th>사번</th>
               <th>이름</th>
               <th>직급</th>
               <th>부서</th>
               <th>전화번호</th>
-              <th>권한</th>
-              <th>알림설정</th>
+              <th>이메일</th>
+              <th>입사일</th>
+              <th>퇴사일</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="employee in employees" :key="employee.empCode">
+              <td><img :src="employee.empImg" alt="Employee Image" class="employee-image"/></td>
               <td>{{ employee.empCode }}</td>
               <td>{{ employee.empName }}</td>
               <td>{{ employee.posName }}</td>
               <td>{{ employee.deptName }}</td>
+              <td>{{ employee.empTel }}</td>
               <td>{{ employee.empEmail }}</td>
-              <td>
-                <va-select
-                v-model="employee.selectedAuthorityCode"
-                placeholder="권한 선택"
-                :options="authorityCodeOptions"
-                @update:modelValue="authorityChange(employee)"
-                /> 
-              </td>
-              <td><VaButton @click="openAlarmSettingsModal(employee)">알림 설정</VaButton></td>
+              <td>{{ employee.empStartDate }}</td>
+              <td>{{ employee.empEndDate }}</td>
             </tr>
           </tbody>
         </table>
@@ -173,7 +170,7 @@
         },
         async fetchEmployeesList() {
             try {
-            const response = await axios.get(`/employees/list?`);
+            const response = await axios.get(`/employees/specs`);
             this.employees = response.data; // 응답 데이터 할당
             this.employees = response.data.map(employee => ({
               ...employee,
@@ -323,5 +320,12 @@
     flex-grow: 1; /* 메인 콘텐츠가 남은 공간을 모두 차지하도록 함 */
     /* 필요에 따라 추가 스타일링 */
   }
+  .employee-image {
+  width: 50px; /* 이미지의 너비 */
+  height: 50px; /* 이미지의 높이 */
+  border-radius: 50%; /* 이미지를 원형으로 표시 */
+  object-fit: cover; /* 이미지 비율 유지 */
+}
+
 
   </style>
