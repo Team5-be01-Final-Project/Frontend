@@ -117,8 +117,9 @@
         // 'AL02': false, // 이상 압력 알림
         },
       };
-    },
 
+  
+    },
     computed: {
       authorityCodeOptions() {
         return this.authorityCodes.map(code => ({
