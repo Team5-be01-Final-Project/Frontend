@@ -24,12 +24,8 @@
     try {
       const response = await axios.get(`/sales/monthlySales?year=${selectedYear.value}`);
       const monthlySalesData = response.data;
-      if (Array.isArray(monthlySalesData)) {
       const filledData = fillMissingMonths(monthlySalesData, selectedYear.value);
       updateChart(filledData);
-    } else {
-      console.error("monthlySalesData is not an array:", monthlySalesData);
-    }
     } catch (error) {
       console.error("Failed to fetch monthly sales data:", error);
     }
