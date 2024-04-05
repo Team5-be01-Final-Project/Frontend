@@ -6,12 +6,13 @@
         <h3>사원 정보</h3>
         <div class="employee-info">
           <img :src="employee.empImg" alt="사원 사진" />
-          <p>사원명: {{ employee.empName }}</p>
-          <p>사원코드: {{ employee.empCode }}</p>
-          <p>연락처: {{ employee.empTel }}</p>
-          <p>이메일: {{ employee.empEmail }}</p>
-          <p>부서: {{ employee.department?.deptName }}</p>
-          <p>직급: {{ employee.positions?.posName }}</p>
+          <p>사 원 명 : {{ employee.empName }}</p>
+          <p>사원코드 : {{ employee.empCode }}</p>
+          <p>연 락 처 : {{ employee.empTel }}</p>
+          <p>이 메 일 : {{ employee.empEmail }}</p>
+          <p>직    급 : {{ employee.positions?.posName }}</p>
+          <p>부    서 : {{ employee.department?.deptName }}</p>
+
         </div>
       </div>
       <div class="client-list-container">
@@ -19,30 +20,20 @@
         <table>
           <thead>
             <tr>
-              <th>거래처코드</th>
               <th>거래처명</th>
-              <th>거래처분류</th>
               <th>대표자</th>
               <th>주소</th>
               <th>담당자</th>
               <th>전화번호</th>
-              <th>거래시작일</th>
-              <th>거래종료일</th>
-              <th>비고</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="client in clients" :key="client.clientCode">
-              <td>{{ client.clientCode }}</td>
               <td>{{ client.clientName }}</td>
-              <td>{{ client.clientClass }}</td>
               <td>{{ client.clientBoss }}</td>
               <td>{{ client.clientWhere }}</td>
               <td>{{ client.clientEmp }}</td>
               <td>{{ client.clientEmpTel }}</td>
-              <td>{{ formatDate(client.clientStart) }}</td>
-              <td>{{ formatDate(client.clientEnd) }}</td>
-              <td>{{ client.clientNote }}</td>
             </tr>
           </tbody>
         </table>
