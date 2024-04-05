@@ -26,7 +26,7 @@
 import axios from 'axios';
 import loginImgPath from '@/assets/loginImg/1.jpg';
 import Cookies from 'js-cookie';
-Cookies.set('cookieName', 'value', { path: '/' });
+// Cookies.set('cookieName', 'value', { path: '/' }); 없어도 되는지 test
 
 export default {
   name: 'LoginView',
