@@ -21,7 +21,7 @@
 
       </VaNavbarItem>
 
-      <router-link to="/system/employeeslist" class="hidden sm:block text-gray-600">
+      <router-link to="/system/employeesspec" class="hidden sm:block text-gray-600">
         <VaNavbarItem class="hidden sm:block">
           시스템 관리
         </VaNavbarItem>
