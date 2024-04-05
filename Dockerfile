@@ -2,7 +2,7 @@
 FROM nginx:latest as production-stage
 RUN mkdir /app
 COPY --from=build-stage /app/dist /app
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY /nginx/conf/default.conf /etc/nginx/
 
 FROM node:20.11.0
 WORKDIR /app
