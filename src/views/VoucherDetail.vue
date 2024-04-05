@@ -1,4 +1,3 @@
-<!-- VoucherDetail.vue -->
 <template>
   <div>
     <div class="header">
@@ -102,9 +101,8 @@ export default {
   methods: {
     async fetchVoucherDetails() {
       try {
-        const response = await axios.get(
-          `/api/vouchers/${this.$route.params.voucherID}/details`
-        );
+        const response = await axios.get(`/api/vouchers/${this.$route.params.voucId}/details`);
+
         const data = response.data[0];
         this.voucId = data.voucId;
         this.voucDate = data.voucDate;
@@ -117,17 +115,15 @@ export default {
         this.empCode = data.empCode;
         this.showApproveButton = data.showApproveButton;
         this.showRejectButton = data.showRejectButton;
-        console.log("showApproveButton:", data.showApproveButton);
-        console.log("showRejectButton:", data.showRejectButton);
       } catch (error) {
         console.error("Error fetching voucher details:", error);
       }
     },
     async approveVoucher() {
       try {
-        await axios.put(`/api/vouchers/${this.voucId}/approve`, {
+        const response = await axios.put(`/api/vouchers/${this.voucId}/approve`, {
           proCode: this.proCode,
-          empCode: this.empCode,
+          empCode: this.empCodeSign,
         });
         console.log("Voucher approved");
         this.fetchVoucherDetails();
@@ -137,9 +133,9 @@ export default {
     },
     async rejectVoucher() {
       try {
-        await axios.put(`/api/vouchers/${this.voucId}/reject`, {
+        const response = await axios.put(`/api/vouchers/${this.voucId}/reject`, {
           proCode: this.proCode,
-          empCode: this.empCode,
+          empCode: this.empCodeSign,
         });
         console.log("Voucher rejected");
         this.fetchVoucherDetails();
