@@ -4,7 +4,7 @@ services:
     build: .  # 현재 디렉토리의 Dockerfile을 사용하여 이미지를 빌드합니다.
     ports:
       - "5173:5173"  
-     command: npm run dev  # 컨테이너가 시작될 때 실행될 커맨드를 정의합니다.
+     #command: npm run dev  # 컨테이너가 시작될 때 실행될 커맨드를 정의합니다.
     volumes:
       - .:/app  # 현재 디렉토리를 컨테이너의 /app 디렉토리에 마운트합니다.
       - /app/node_modules  # node_modules 디렉토리를 마운트하여 오버라이드 방지
