@@ -42,6 +42,6 @@ npm run build
 ## Release History
 - v2.0.0
 
-- v1.0.0
+- [v1.0.0](https://github.com/Team5-be01-Final-Project/Frontend2/releases/tag/v1.0.0)
   - Github Flow를 통해 EC2로 CI/CD 구축. (Docker 및 nginx는 사용하지 않고, npm run dev로 실행 확인)
-  - https://github.com/Team5-be01-Final-Project/Frontend2/releases/tag/v1.0.0
+
