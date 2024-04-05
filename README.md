@@ -1,7 +1,7 @@
 # BPS_Frontend Sever
 
 
-## 환경설정
+## Project Setup
 
 ```sh
 $ npm install -g npm@10.5.0
