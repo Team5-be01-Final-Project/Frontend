@@ -25,6 +25,8 @@
 <script>
 import axios from 'axios';
 import loginImgPath from '@/assets/loginImg/1.jpg';
+import Cookies from 'js-cookie';
+
 export default {
   name: 'LoginView',
   data() {
@@ -45,6 +47,12 @@ export default {
         });
         if (response.status === 200) {
           console.log("Login successful, redirecting to dashboard...");
+          // 쿠키 값 읽기
+          const empCode = Cookies.get('empCode');
+          const empName = Cookies.get('empName');
+          const empImg = Cookies.get('empImg');
+          const empAuthCode = Cookies.get('empAuthCode');
+          console.log('Cookies:', empCode, empName, empImg, empAuthCode);
           this.$router.push('/dashboard');
           console.log("Redirect attempted.");
         }
