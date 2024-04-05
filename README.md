@@ -40,8 +40,8 @@ npm run build
 ![CI_CD FLOW](https://github.com/Team5-be01-Final-Project/Frontend2/assets/148880521/9a938183-64a8-4691-b0b9-7cd1308fee0e)
 
 ## Release History
-- v2.0.0
-
+- [v2.0.0](https://github.com/Team5-be01-Final-Project/Frontend2/releases/tag/v2.0.0)
+  - Docker, Nginx 사용, npm run build로 수정 및 쿠키 들어오는거 확인
 - [v1.0.0](https://github.com/Team5-be01-Final-Project/Frontend2/releases/tag/v1.0.0)
   - Github Flow를 통해 EC2로 CI/CD 구축. (Docker 및 nginx는 사용하지 않고, npm run dev로 실행 확인)
 
