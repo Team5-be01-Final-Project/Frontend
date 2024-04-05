@@ -1,16 +1,12 @@
-# 실행 단계
-FROM nginx:latest 
-RUN mkdir /app
-COPY /app/dist /app
-COPY /nginx/conf/default.conf /etc/nginx/conf/
-
-
-FROM node:20.11.0
+# 빌드 스테이지
+FROM node:20.11.0 AS build-stage
 WORKDIR /app
-COPY package.json /app/package.json
+COPY package*.json ./
 RUN npm install
-RUN npm install vite
-RUN npm install chart.js
-COPY . /app
+COPY . .
 RUN npm run build
 
+# 서빙 스테이지
+FROM nginx:latest
+COPY --from=build-stage /app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
