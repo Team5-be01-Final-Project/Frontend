@@ -9,7 +9,7 @@ import router from './router'
 import axios from "axios"
 
 
-axios.defaults.baseURL="http://bpssystem.store/"
+axios.defaults.baseURL="https://bpssystem.store/"
 axios.defaults.withCredentials = true; // withCredentials 전역 설정
 
 
