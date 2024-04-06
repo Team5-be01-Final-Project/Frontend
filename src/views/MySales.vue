@@ -5,25 +5,31 @@
     <div class="info-section">
       <MyEmployeeInfo :employee="employee" />
     </div>
-    <div class="client-section">
-      <MyClientList :clients="clients" />
+    <div class="second-row">
+      <div class="client-section">
+        <MyClientList :clients="clients" />
+      </div>
+      <div class="sales-container">
+        <MyEmployeeSales :empCode="employee.empCode" />
+      </div>
     </div>
   </div>
 </template>
 
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import axios from 'axios';
-import Cookies from 'js-cookie';
-import MyEmployeeInfo from '@/components/my/MyEmployeeInfo.vue';
-import MyClientList from '@/components/my/MyClientList.vue';
+import { ref, onMounted } from "vue";
+import axios from "axios";
+import Cookies from "js-cookie";
+import MyEmployeeInfo from "@/components/my/MyEmployeeInfo.vue";
+import MyClientList from "@/components/my/MyClientList.vue";
+import MyEmployeeSales from '@/components/my/MyEmployeeSales.vue';
 
 const employee = ref({});
 const clients = ref([]);
 
 onMounted(async () => {
-  const empCode = Cookies.get('empCode');
+  const empCode = Cookies.get("empCode");
   try {
     // My 영업 정보 조회 API 호출
     const response = await axios.get(`/mysales/${empCode}`);
@@ -31,7 +37,7 @@ onMounted(async () => {
     employee.value = data.employee;
     clients.value = data.clients;
   } catch (error) {
-    console.error('My 영업 정보를 가져오는데 실패했습니다.', error);
+    console.error("My 영업 정보를 가져오는데 실패했습니다.", error);
   }
 });
 </script>
@@ -45,14 +51,13 @@ onMounted(async () => {
 .info-section {
   display: flex;
   align-items: center;
-  margin-bottom: 20px; /* 추가 간격 */
+  margin-bottom: 20px;
 }
 
 .employee-photo {
-  margin-right: 20px; /* 사진과 정보 사이의 간격 */
+  margin-right: 20px;
 }
 
-/* 이미지와 정보를 수평 정렬 */
 .employee-info-container {
   display: flex;
   align-items: center;
@@ -63,8 +68,39 @@ onMounted(async () => {
   flex-direction: column;
 }
 
-.client-section {
-  margin-top: 20px; /* 거래처 목록이 다음 섹션으로 나뉘어질 수 있도록 여백을 추가 */
+.second-row {
+  display: flex;
+  /* justify-content: space-between; */
 }
 
+.client-section {
+  flex: 0 0 auto; /* flex-grow를 0으로 설정하여 요소의 크기가 늘어나지 않도록 함 */
+  width: 350px; /* 원하는 너비를 픽셀 값으로 설정 */
+  max-width: 100%; /* 부모 컨테이너를 넘어서지 않도록 함 */
+  overflow-x: auto; /* 내용이 넘칠 경우 스크롤 표시 */
+  height: 500px; /* 원하는 높이를 픽셀 값으로 설정 */
+  overflow-y: auto; /* 내용이 높이를 넘칠 경우 스크롤 표시 */
+  margin-right: 20px; /* 원하는 간격을 설정 */
+}
+
+.sales-container {
+  flex: 1;
+  max-width: 50%;
+  overflow-x: auto;
+}
+
+.sales-table {
+  width: 100%;
+  table-layout: fixed;
+  white-space: nowrap;
+}
+
+.sales-table th,
+.sales-table td {
+  padding: 8px;
+  border: 1px solid #ddd;
+  text-align: center;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
 </style>
