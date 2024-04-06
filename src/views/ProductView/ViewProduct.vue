@@ -97,7 +97,9 @@ export default {
     async fetchProductList() {      
       try {
         const response = await this.axios.get('api/products');
+        console.log("로깅 response: ", response)
         this.products = response.data;
+        console.log("로깅: this.products: ", this.products)
         this.filteredProducts = response.data; // 초기에는 모든 제품 목록을 filteredProducts에 할당
       } catch (error) {
         console.error('데이터 가져오기 실패:', error);

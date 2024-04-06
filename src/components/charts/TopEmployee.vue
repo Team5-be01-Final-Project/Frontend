@@ -46,8 +46,10 @@ const fetchSalesRankTopEmployee = async () => {
     const response = await axios.get(
       `/incentive/list?year=${props.year}&month=${props.month}`
     );
-    console.log("로깅: ", response)
+    console.log("로깅 response: ", response)
     const incentiveList = response.data;
+
+    console.log("로깅 incentiveList: ", incentiveList)
     // 인센티브 정보에서 salesRank가 1인 사원 찾기
     salesRankTopEmployee.value = incentiveList.find(
       (dto) => dto.salesRank === 1
