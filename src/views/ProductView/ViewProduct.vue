@@ -2,29 +2,24 @@
   <div class="flex">
     <!-- 사이드바 섹션 -->
     <div class="sidebar">
-      <ProductSidebar/>
+      <ProductSidebar />
     </div>
 
     <!-- 제품 목록 섹션 -->
-    <div class="product-list">
+    <div class="Main">
       <div class="va-table-responsive">
         <h3 class="va-h3">제품 목록</h3>
         <div class="grid md:grid-cols-3 gap-6 mb-6">
-          <VaSelect
-            v-model="selectedField"
-            placeholder="Select filter fields"
-            :options="[
-              { text: '제품명', value: 'proName' },
-              { text: '품목 구분', value: 'proSeg' },
-              { text: '주성분', value: 'proIngre' },
-              { text: 'ATC 코드', value: 'proAtc' }
-            ]"
-            value-by="value"
-          />
+          <VaSelect v-model="selectedField" placeholder="Select filter fields" :options="[
+            { text: '제품명', value: 'proName' },
+            { text: '품목 구분', value: 'proSeg' },
+            { text: '주성분', value: 'proIngre' },
+            { text: 'ATC 코드', value: 'proAtc' }
+          ]" value-by="value" />
           <VaInput v-model="filter" placeholder="Filter..." class="w-full" />
           <VaButton @click="filterProducts">검색</VaButton>
         </div>
-        <table class="va-table va-table--hoverable">
+        <table class="va-table va-table--hoverable full-width">
           <thead>
             <tr>
               <th>No.</th>
@@ -52,7 +47,8 @@
         </table>
         <div class="pagination">
           <VaButton @click="prevPage" :disabled="currentPage === 1">이전</VaButton>
-          <VaButton class="mr-6 mb-2" preset="secondary" hover-behavior="opacity" :hover-opacity="0.4">{{ currentPage }}</VaButton>
+          <VaButton class="mr-6 mb-2" preset="secondary" hover-behavior="opacity" :hover-opacity="0.4">{{ currentPage }}
+          </VaButton>
           <VaButton @click="nextPage" :disabled="currentPage === pageCount">다음</VaButton>
         </div>
       </div>
@@ -66,10 +62,10 @@ import ProductSidebar from '@/components/sidebar/ProductSidebar.vue'
 import NavigationBar from '@/components/navbar/NavigationBar.vue'
 
 export default {
-  components:{
-      ProductSidebar,
-      NavigationBar
-    },
+  components: {
+    ProductSidebar,
+    NavigationBar
+  },
   data() {
     return {
       products: [], // 모든 제품 목록
@@ -94,7 +90,7 @@ export default {
     this.fetchProductList();
   },
   methods: {
-    async fetchProductList() {      
+    async fetchProductList() {
       try {
         const response = await this.axios.get('api/products');
         this.products = response.data;
@@ -140,22 +136,15 @@ export default {
 }
 
 .sidebar {
-  width: 250px; /* 사이드바의 고정 너비 */
+  width: 250px;
+  /* 사이드바의 고정 너비 */
   /* 추가적으로 필요한 스타일링이 있다면 여기에 추가하세요 */
-}
-
-.product-list {
-  flex-grow: 1; /* 제품 목록 섹션이 남은 공간을 모두 차지하도록 설정 */
-  /* 추가적으로 필요한 스타일링이 있다면 여기에 추가하세요 */
-}
-
-.va-table-responsive {
-  overflow-x: auto; /* 테이블이 너무 클 경우 스크롤바가 나타나도록 설정 */
 }
 
 .pagination {
   display: flex;
-  justify-content: center; /* 페이지네이션 버튼을 중앙에 위치시키기 */
+  justify-content: center;
+  /* 페이지네이션 버튼을 중앙에 위치시키기 */
   margin-top: 20px;
 }
 
@@ -164,17 +153,21 @@ export default {
   padding: 5px 10px;
   margin-right: 5px;
 }
+
 .sidebar {
   width: 250px;
-  margin: 0; /* 사이드바의 마진 제거 */
+  margin: 0;
+  /* 사이드바의 마진 제거 */
 }
 
-.flex {
-  display: flex;
-  padding: 0; /* 부모 컨테이너의 패딩 제거 */
+.Main {
+  flex-grow: 1;
+  /* 메인 콘텐츠가 남은 공간을 모두 차지하도록 함 */
+  /* 필요에 따라 추가 스타일링 */
 }
-.body, html {
-  margin: 0; /* body와 html의 기본 마진 제거 */
-  padding: 0; /* 필요한 경우 패딩도 제거 */
+
+.full-width {
+  width: 100%;
+  /* 테이블이 화면에 꽉 차도록 설정 */
 }
 </style>
