@@ -5,8 +5,8 @@
             <SystemSidebar />
         </div>
   
-        <div>
-            <table class="va-table va-table--hoverable">
+        <div class = "Main">
+            <table class="va-table va-table--hoverable full-width">
                 <thead>
                     <tr>
                         <th>이상온도코드</th>
@@ -72,9 +72,7 @@
     /* 필요에 따라 추가 스타일링 */
 }
 
-.va-table-responsive {
-    overflow: auto;
-}
+
 
 .pagination {
     margin-top: 20px;
@@ -86,17 +84,18 @@
     margin-right: 5px;
 }
 
-.va-table {
-    /* min-width: 1000px; */
-}
-
 td.money-right {
     text-align: right;
 }
-
-.va-table-responsive {
-    flex-grow: 1;
-    /* 메인 콘텐츠가 남은 공간을 모두 차지하도록 함 */
-    /* 필요에 따라 추가 스타일링 */
+.Main {
+  flex-grow: 1;
+  /* 메인 콘텐츠가 남은 공간을 모두 차지하도록 함 */
+  /* 필요에 따라 추가 스타일링 */
 }
+
+.full-width {
+  width: 100%;
+  /* 테이블이 화면에 꽉 차도록 설정 */
+}
+
 </style>

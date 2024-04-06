@@ -22,7 +22,7 @@ a,
 
 @media (min-width: 1024px) {
   body {
-    display: flex;
+    /* display: flex; */  /*기존에 방해하던 레이아웃 제거*/
     place-items: center; /* 본문을 중앙에 배치합니다 */
   }
 
