@@ -61,7 +61,7 @@ export default {
   background-repeat: no-repeat; /* 이미지 반복 없음 */
   position: fixed;
   left: 0;
-  top: 60px; /* 네비게이션 바 아래에 위치하도록 설정 */
+  top: 0px; /* 네비게이션 바 아래에 위치하도록 설정 */
   width: 100%; /* 전체 너비 */
   height: calc(100vh - 60px); /* 전체 높이에서 네비게이션 바 높이를 뺀 값 */
   z-index: -1;
