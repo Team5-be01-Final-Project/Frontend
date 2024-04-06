@@ -6,7 +6,7 @@
       <BusinessSidebar />
     </div>
 
-    <div>
+    <div class = "Main">
       <h3>거래처 정보 수정</h3>
       <div class="form-container">
         <form @submit.prevent="submitForm">

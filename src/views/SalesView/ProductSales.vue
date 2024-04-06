@@ -4,53 +4,54 @@
     <div class="sidebar">
       <SalesSidebar />
     </div>
-
-    <va-container>
-      <h3 class="va-h3">상품별 매출 현황</h3>
-      <div>
-        <va-select v-model="selectedYear" :options="yearOptions" placeholder="년도 선택" />
-        <va-select v-model="selectedMonth" :options="monthOptions1" placeholder="월 선택" />
-        <va-input v-model="proNameFilter" placeholder="상품명 검색" />
-        <va-button @click="filterSalesData">검색</va-button>
-      </div>
-      <table class="va-table va-table--hoverable">
-        <thead>
-          <tr>
-            <!-- 테이블 헤더 -->
-            <th>No.</th>
-            <th v-for="field in fields" :key="field.key" class="text-center" @click="sortData(field.key)">
-              {{ field.label }}
-              <span>{{ sortOrder === 'asc' ? '▲' : '▼' }}</span>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- 데이터 행 -->
-          <tr v-for="(item, index) in displayedSalesData" :key="item.proName">
-            <td>{{ index + 1 }}</td>
-            <td>{{ item.proName || '-' }}</td>
-            <td>{{ item.proUnit ? `${item.proUnit.toLocaleString()}` : '-' }}</td>
-            <td>{{ item.voucAmount || '-' }}</td>
-            <td>{{ item.costOfSales ? `${item.costOfSales.toLocaleString()}` : '-' }}</td>
-            <td>{{ item.voucSales ? `${item.voucSales.toLocaleString()}` : '-' }}</td>
-            <td>{{ item.grossProfit ? `${item.grossProfit.toLocaleString()}` : '-' }}</td>
-            <td>{{ formatProfitMargin(item.profitMargin) }}</td>
-          </tr>
-          <tr>
-            <td colspan="4" class="text-center"><strong>총합계</strong></td>
-            <td>{{ totalCostOfSales.toLocaleString() }}</td>
-            <td>{{ totalVoucSales.toLocaleString() }}</td>
-            <td>{{ totalGrossProfit.toLocaleString() }}</td>
-            <td>{{ formatProfitMargin(totalprofitMargin) }}</td>
-          </tr>
-        </tbody>
-      </table>
-      <div>
-        <va-button @click="prevPage" :disabled="currentPage === 1">이전</va-button>
-        <span>{{ currentPage }} / {{ totalPages }}</span>
-        <va-button @click="nextPage" :disabled="currentPage === totalPages">다음</va-button>
-      </div>
-    </va-container>
+    <div class="Main">
+      <va-container>
+        <h3 class="va-h3">상품별 매출 현황</h3>
+        <div>
+          <va-select v-model="selectedYear" :options="yearOptions" placeholder="년도 선택" />
+          <va-select v-model="selectedMonth" :options="monthOptions1" placeholder="월 선택" />
+          <va-input v-model="proNameFilter" placeholder="상품명 검색" />
+          <va-button @click="filterSalesData">검색</va-button>
+        </div>
+        <table class="va-table va-table--hoverable full-width">
+          <thead>
+            <tr>
+              <!-- 테이블 헤더 -->
+              <th>No.</th>
+              <th v-for="field in fields" :key="field.key" class="text-center" @click="sortData(field.key)">
+                {{ field.label }}
+                <span>{{ sortOrder === 'asc' ? '▲' : '▼' }}</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- 데이터 행 -->
+            <tr v-for="(item, index) in displayedSalesData" :key="item.proName">
+              <td>{{ index + 1 }}</td>
+              <td>{{ item.proName || '-' }}</td>
+              <td>{{ item.proUnit ? `${item.proUnit.toLocaleString()}` : '-' }}</td>
+              <td>{{ item.voucAmount || '-' }}</td>
+              <td>{{ item.costOfSales ? `${item.costOfSales.toLocaleString()}` : '-' }}</td>
+              <td>{{ item.voucSales ? `${item.voucSales.toLocaleString()}` : '-' }}</td>
+              <td>{{ item.grossProfit ? `${item.grossProfit.toLocaleString()}` : '-' }}</td>
+              <td>{{ formatProfitMargin(item.profitMargin) }}</td>
+            </tr>
+            <tr>
+              <td colspan="4" class="text-center"><strong>총합계</strong></td>
+              <td>{{ totalCostOfSales.toLocaleString() }}</td>
+              <td>{{ totalVoucSales.toLocaleString() }}</td>
+              <td>{{ totalGrossProfit.toLocaleString() }}</td>
+              <td>{{ formatProfitMargin(totalprofitMargin) }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div>
+          <va-button @click="prevPage" :disabled="currentPage === 1">이전</va-button>
+          <span>{{ currentPage }} / {{ totalPages }}</span>
+          <va-button @click="nextPage" :disabled="currentPage === totalPages">다음</va-button>
+        </div>
+      </va-container>
+    </div>
   </div>
 </template>
 
@@ -202,3 +203,26 @@ const totalprofitMargin = computed(() => {
   return (totalGrossProfit.value / totalVoucSales.value) * 100;
 });
 </script>
+
+<style scoped>
+.flex {
+  display: flex;
+}
+
+.sidebar {
+  width: 250px;
+  /* 사이드바의 너비를 조절하세요 */
+  /* 필요에 따라 추가 스타일링 */
+}
+
+.Main {
+  flex-grow: 1;
+  /* 메인 콘텐츠가 남은 공간을 모두 차지하도록 함 */
+  /* 필요에 따라 추가 스타일링 */
+}
+
+.full-width {
+  width: 100%;
+  /* 테이블이 화면에 꽉 차도록 설정 */
+}
+</style>
