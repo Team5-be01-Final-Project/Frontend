@@ -87,7 +87,7 @@
     methods: {
       async fetchIncentives(year, month) {
         try {
-          const response = await axios.get(`/incentive/list?year=${year.value}&month=${month.value}`);
+          const response = await axios.get(`/api/incentive/list?year=${year.value}&month=${month.value}`);
           this.incentives = response.data;
           this.filteredData = response.data; // 초기 상태에서는 모든 데이터를 표시
         } catch (error) {
