@@ -10,13 +10,13 @@
       <div class="va-table-responsive">
         <h3 class="va-h3">제품 목록</h3>
         <div class="grid md:grid-cols-3 gap-6 mb-6">
-          <VaSelect v-model="selectedField" placeholder="Select filter fields" :options="[
+          <VaSelect v-model="selectedField" placeholder="검색 조건" :options="[
             { text: '제품명', value: 'proName' },
             { text: '품목 구분', value: 'proSeg' },
             { text: '주성분', value: 'proIngre' },
             { text: 'ATC 코드', value: 'proAtc' }
           ]" value-by="value" />
-          <VaInput v-model="filter" placeholder="Filter..." class="w-full" />
+          <VaInput v-model="filter" placeholder="검색어 입력" class="w-full" />
           <VaButton @click="filterProducts">검색</VaButton>
         </div>
         <table class="va-table va-table--hoverable full-width">
