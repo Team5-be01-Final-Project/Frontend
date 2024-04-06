@@ -47,7 +47,7 @@ const items = [
     title: "출고 관리",
     icon: "dashboard",
     children: [
-      { title: "전표 등록", icon: "send" },
+      { title: "전표 등록", icon: "drafts", routeName: "vouchersave" },
       { title: "전표 결재", icon: "drafts" },
       { title: "전표 리스트 조회", icon: "drafts", routeName: "viewvoucher" },
     ],
@@ -61,41 +61,27 @@ const items = [
       <VaAccordion multiple>
         <!-- 여기에 multiple 속성을 추가 -->
         <template v-for="(item, index) in items">
-          <VaCollapse
-            v-if="item.children"
-            :key="item.title + 'collapse'"
-            body-color="#00000022"
-            v-model="collapseOpen[index]"
-          >
+          <VaCollapse v-if="item.children" :key="item.title + 'collapse'" body-color="#00000022"
+            v-model="collapseOpen[index]">
             <template #header="{ value: isCollapsed }">
-              <VaSidebarItem
-                :active="
-                  item.children.some((child) => child.title === activeElement)
-                "
-              >
+              <VaSidebarItem :active="item.children.some((child) => child.title === activeElement)
+                ">
                 <VaSidebarItemContent>
                   <VaIcon :name="item.icon" />
                   <VaSidebarItemTitle>{{ item.title }}</VaSidebarItemTitle>
                   <VaSpacer />
-                  <VaIcon
-                    :name="isCollapsed ? 'va-arrow-up' : 'va-arrow-down'"
-                  />
+                  <VaIcon :name="isCollapsed ? 'va-arrow-up' : 'va-arrow-down'" />
                 </VaSidebarItemContent>
               </VaSidebarItem>
             </template>
 
             <template #body>
-              <VaSidebarItem
-                v-for="child in item.children"
-                :key="child.title"
-                :active="child.title === activeElement"
-                @click="
-                  () => {
+              <VaSidebarItem v-for="child in item.children" :key="child.title" :active="child.title === activeElement"
+                @click="() => {
                     activeElement = child.title;
                     if (child.routeName) navigateTo(child.routeName); // 라우팅 함수 호출
                   }
-                "
-              >
+                  ">
                 <VaSidebarItemContent>
                   <VaIcon :name="child.icon" />
                   <VaSidebarItemTitle>{{ child.title }}</VaSidebarItemTitle>
@@ -104,12 +90,8 @@ const items = [
             </template>
           </VaCollapse>
 
-          <VaSidebarItem
-            v-else
-            :key="item.title + 'item'"
-            :active="item.title === activeElement"
-            @click="activeElement = item.title"
-          >
+          <VaSidebarItem v-else :key="item.title + 'item'" :active="item.title === activeElement"
+            @click="activeElement = item.title">
             <VaSidebarItemContent>
               <VaIcon :name="item.icon" />
               <VaSidebarItemTitle>{{ item.title }}</VaSidebarItemTitle>
@@ -120,10 +102,7 @@ const items = [
 
       <VaSpacer />
 
-      <VaSidebarItem
-        :active="$route.path === '/mysales'"
-        @click="$router.push('/mysales')"
-      >
+      <VaSidebarItem :active="$route.path === '/mysales'" @click="$router.push('/mysales')">
         <VaSidebarItemContent>
           <VaIcon name="settings" />
           <VaSidebarItemTitle>My 영업</VaSidebarItemTitle>

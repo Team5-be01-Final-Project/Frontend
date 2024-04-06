@@ -6,7 +6,7 @@
       <BusinessSidebar />
     </div>
 
-    <div class="client-list">
+    <div class="Main">
       <div class="va-table-responsive">
         <h3 class="va-h3">거래처 목록</h3>
         <div class="grid md:grid-cols-3 gap-6 mb-6 items-center">
@@ -23,7 +23,7 @@
           />
           <VaButton @click="searchClients" class="search-button">검색</VaButton>
         </div>
-        <table class="va-table va-table--hoverable">
+        <table class="va-table va-table--hoverable full-width">
           <thead>
             <tr>
               <th>사업자등록번호</th>
@@ -166,10 +166,6 @@ onMounted(() => {
 </script>
 
 <style>
-.va-table-responsive {
-  overflow: auto;
-}
-
 .search-input {
     margin-right: 16px; /* 오른쪽 마진 추가 */
   }
@@ -186,6 +182,26 @@ onMounted(() => {
 
 .clickable {
   cursor: pointer;
+}
+
+.flex {
+    display: flex;
+}
+
+.sidebar {
+    width: 250px;
+    /* 사이드바의 너비를 조절하세요 */
+    /* 필요에 따라 추가 스타일링 */
+}
+.Main {
+  flex-grow: 1;
+  /* 메인 콘텐츠가 남은 공간을 모두 차지하도록 함 */
+  /* 필요에 따라 추가 스타일링 */
+}
+
+.full-width {
+  width: 100%;
+  /* 테이블이 화면에 꽉 차도록 설정 */
 }
 
 </style>

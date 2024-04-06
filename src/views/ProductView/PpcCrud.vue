@@ -4,14 +4,15 @@
     <div class="sidebar">
       <ProductSidebar />
     </div>
-    <div class="ppc-page">
+
+    <div class="Main">
       <h2>거래처별 상품 가격 정보</h2>
       <div class="register-button-container">
         <VaButton @click="openRegisterModal" class="register-button">
           판매상품 등록
         </VaButton>
       </div>
-      <table class="va-table va-table--hoverable">
+      <table class="va-table va-table--hoverable full-width">
         <thead>
           <tr>
             <th>거래처명</th>
@@ -136,5 +137,23 @@ export default {
 </script>
 
 <style scoped>
-/* 스타일 코드는 이전과 동일하므로 생략 */
+.flex {
+    display: flex;
+}
+
+.sidebar {
+    width: 250px;
+    /* 사이드바의 너비를 조절하세요 */
+    /* 필요에 따라 추가 스타일링 */
+}
+.Main {
+  flex-grow: 1;
+  /* 메인 콘텐츠가 남은 공간을 모두 차지하도록 함 */
+  /* 필요에 따라 추가 스타일링 */
+}
+
+.full-width {
+  width: 100%;
+  /* 테이블이 화면에 꽉 차도록 설정 */
+}
 </style>

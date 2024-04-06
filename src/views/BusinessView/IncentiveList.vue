@@ -5,7 +5,7 @@
       <BusinessSidebar/>
     </div>
 
-    <div class="va-table-responsive">
+    <div class="Main">
       <h3 class="va-h3">인센티브 현황</h3>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4 items-end">
         <va-select
@@ -26,7 +26,7 @@
         <VaButton @click="applyFilter">검색</VaButton>
       </div>
 
-      <table class="va-table va-table--hoverable">
+      <table class="va-table va-table--hoverable full-width">
         <thead>
           <tr>
             <th>직원 이름</th>
@@ -130,9 +130,7 @@
     width: 250px; /* 사이드바의 너비를 조절하세요 */
     /* 필요에 따라 추가 스타일링 */
   }
-  .va-table-responsive {
-    overflow: auto;
-  }
+  
   .pagination {
     margin-top: 20px;
   }
@@ -142,16 +140,21 @@
     margin-right: 5px;
   }
 
-  .va-table {
-  /* min-width: 1000px; */
-  }
-
+ 
   td.money-right {
     text-align: right;
   }
 
-  .va-table-responsive {
-    flex-grow: 1; /* 메인 콘텐츠가 남은 공간을 모두 차지하도록 함 */
-    /* 필요에 따라 추가 스타일링 */
-  }
+ 
+
+.Main {
+  flex-grow: 1;
+  /* 메인 콘텐츠가 남은 공간을 모두 차지하도록 함 */
+  /* 필요에 따라 추가 스타일링 */
+}
+
+.full-width {
+  width: 100%;
+  /* 테이블이 화면에 꽉 차도록 설정 */
+}
   </style>

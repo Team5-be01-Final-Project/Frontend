@@ -2,27 +2,19 @@
   <div class="flex">
     <!-- 사이드바 섹션 -->
     <div class="sidebar">
-      <ProductSidebar/>
+      <ProductSidebar />
     </div>
 
     <!-- 제품 목록 섹션 -->
-    <div class="product-list">
+    <div class="Main">
       <div class="va-table-responsive">
         <h3 class="va-h3">거래처별 판매상품 목록</h3>
         <div class="grid md:grid-cols-3 gap-6 mb-6">
-          <VaSelect
-            v-model="selectedField"
-            placeholder="필터링할 필드 선택"
-            :options="filterOptions"
-          />
-          <VaInput
-            v-model="filter"
-            placeholder="필터링..."
-            class="w-full"
-          />
+          <VaSelect v-model="selectedField" placeholder="필터링할 필드 선택" :options="filterOptions" />
+          <VaInput v-model="filter" placeholder="필터링..." class="w-full" />
           <VaButton @click="applyFilter">검색</VaButton>
         </div>
-        <table class="va-table va-table--hoverable">
+        <table class="va-table va-table--hoverable full-width">
           <thead>
             <tr>
               <th>#</th>
@@ -50,12 +42,7 @@
         <!-- 페이지네이션 -->
         <div class="pagination">
           <VaButton @click="prevPage" :disabled="currentPage === 1">이전</VaButton>
-          <VaButton
-            class="mr-6 mb-2"
-            preset="secondary"
-            hover-behavior="opacity"
-            :hover-opacity="0.4"
-          >
+          <VaButton class="mr-6 mb-2" preset="secondary" hover-behavior="opacity" :hover-opacity="0.4">
             {{ currentPage }}
           </VaButton>
           <VaButton @click="nextPage" :disabled="currentPage === pageCount">다음</VaButton>
@@ -146,12 +133,10 @@ export default {
 }
 
 .sidebar {
-  width: 250px; /* 사이드바 너비 조절 */
+  width: 250px;
+  /* 사이드바 너비 조절 */
 }
 
-.va-table-responsive {
-  overflow: auto;
-}
 
 .pagination {
   margin-top: 20px;
@@ -163,7 +148,14 @@ export default {
   margin-right: 5px;
 }
 
-.product-list {
-  flex-grow: 1; /* 남은 공간 차지 */
+.Main {
+  flex-grow: 1;
+  /* 메인 콘텐츠가 남은 공간을 모두 차지하도록 함 */
+  /* 필요에 따라 추가 스타일링 */
+}
+
+.full-width {
+  width: 100%;
+  /* 테이블이 화면에 꽉 차도록 설정 */
 }
 </style>

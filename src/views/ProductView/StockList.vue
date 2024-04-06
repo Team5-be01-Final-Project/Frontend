@@ -6,7 +6,7 @@
       <ProductSidebar />
     </div>
 
-    <div class="stock-list">
+    <div class="Main">
       <div class="flex justify-between items-center mb-6">
         <h3 class="va-h3">재고 조회</h3>
         <VaButton @click="openRegisterModal" class="register-button">재고 등록</VaButton>
@@ -23,7 +23,7 @@
         <VaButton @click="searchStockList" class="search-button col-span-2">검색</VaButton>
       </div>
       <div class="va-table-responsive">
-        <table class="va-table va-table--hoverable">
+        <table class="va-table va-table--hoverable full-width">
           <thead>
             <tr>
               <th class="text-center w-aaa">품목기준코드</th>
@@ -168,18 +168,6 @@ onMounted(() => {
   /* 필요에 따라 추가 스타일링 */
 }
 
-/* 테이블과 필터 옵션 컨테이너의 스타일 */
-.va-table-responsive {
-  overflow: auto; /* 가로 스크롤이 필요한 경우 오버플로우 설정 */
-  min-height: 2000px; /* 최소 높이 설정 */
-}
-
-.va-table {
-  width: 800px; /* 테이블 너비 고정 */
-  table-layout: fixed; /* 테이블 너비 고정 */
-  overflow-y: auto; /* 세로 스크롤이 필요한 경우 오버플로우 설정 */
-}
-
 .filter-options-container {
   display: flex; /* 요소들을 가로로 나란히 표시하기 위해 flex 사용 */
   align-items: center; /* 세로 중앙 정렬을 위해 요소들을 수직 정렬 */
@@ -251,10 +239,6 @@ onMounted(() => {
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3); /* 그림자 설정 */
 }
 
-/* 필터링 필드 선택과 검색 입력 간격 조절 */
-.va-table-responsive .va-input {
-  margin-left: 10px; /* 왼쪽 여백 설정 */
-}
 
 /* 테이블 헤더 및 셀 스타일 */
 .va-table th {
@@ -280,13 +264,14 @@ onMounted(() => {
 .pagination button {
   margin: 0 5px; /* 버튼 간격 설정 */
 }
-
-/* 테이블 컬럼 너비 지정을 위한 클래스 */
-.w-aaa {
-  width: 16.66%; /* 너비 설정 */
+.Main {
+  flex-grow: 1;
+  /* 메인 콘텐츠가 남은 공간을 모두 차지하도록 함 */
+  /* 필요에 따라 추가 스타일링 */
 }
 
-.w-bbb {
-  width: 40%; /* 너비 설정 */
+.full-width {
+  width: 100%;
+  /* 테이블이 화면에 꽉 차도록 설정 */
 }
 </style>
