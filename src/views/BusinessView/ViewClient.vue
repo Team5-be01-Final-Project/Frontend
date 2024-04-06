@@ -12,7 +12,7 @@
         <div class="grid md:grid-cols-3 gap-6 mb-6 items-center">
           <VaSelect
             v-model="selectedField"
-            placeholder="검색할 필드 선택"
+            placeholder="검색 조건"
             :options="searchOptions"
             value-by="value"
           />

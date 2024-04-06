@@ -14,12 +14,12 @@
       <div class="grid grid-cols-12 gap-4 mb-6 items-center">
         <VaSelect
           v-model="selectedField"
-          placeholder="필터링할 필드 선택"
+          placeholder="검색 조건"
           :options="filterOptions"
           value-by="value"
           class="col-span-2 filter-select"
         />
-        <VaInput v-model="filter" placeholder="검색..." class="col-span-8 search-input" />
+        <VaInput v-model="filter" placeholder="검색어 입력" class="col-span-8 search-input" />
         <VaButton @click="searchStockList" class="search-button col-span-2">검색</VaButton>
       </div>
       <div class="va-table-responsive">

@@ -22,7 +22,7 @@
             { text: '이름', value: 'empName' },
             { text: '이메일', value: 'empEmail' },
           ]" value-by="value" />
-          <VaInput v-model="searchText" placeholder="Filter..." class="w-full" />
+          <VaInput v-model="searchText" placeholder="검색어 입력" class="w-full" />
           <VaButton @click="fetchFilteredEmployees">검색</VaButton>
         </div>
         <table class="va-table va-table--hoverable full-width">
