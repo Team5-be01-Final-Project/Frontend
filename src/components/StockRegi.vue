@@ -39,7 +39,7 @@ const emit = defineEmits(['close']); // close 이벤트 정의
 async function getProductInfo() {
   if (proCode.value) { // 품목코드 값이 있는 경우에만 실행
     try {
-      const response = await axios.get(`/api/stocks/product/${proCode.value}`); // API를 호출하여 제품 정보 가져오기
+      const response = await axios.get(`/stocks/product/${proCode.value}`); // API를 호출하여 제품 정보 가져오기
       proName.value = response.data.proName; // 제품명 업데이트
     } catch (error) {
       console.error('제품 정보 조회 실패:', error); // 에러 처리
@@ -57,7 +57,7 @@ async function submitForm() {
       proCode: proCode.value, // 품목코드
       stoAmo: stoAmo.value // 재고수량
     };
-    await axios.post('/api/stocks/register', stockRegisterDTO); // 재고 등록 API 호출
+    await axios.post('/stocks/register', stockRegisterDTO); // 재고 등록 API 호출
     alert('재고 등록이 완료되었습니다.'); // 성공 메시지 알림
     closeModal(); // 모달 닫기
   } catch (error) {

@@ -13,6 +13,11 @@
         <MyEmployeeSales :empCode="employee.empCode" />
       </div>
     </div>
+    <div class="third-row">
+      <div class="simulation-container">
+      <MySimulation :empCode="employee.empCode" :currentSales="currentSales" />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -24,9 +29,11 @@ import Cookies from "js-cookie";
 import MyEmployeeInfo from "@/components/my/MyEmployeeInfo.vue";
 import MyClientList from "@/components/my/MyClientList.vue";
 import MyEmployeeSales from '@/components/my/MyEmployeeSales.vue';
+import MySimulation from '@/components/my/MySimulation.vue';
 
 const employee = ref({});
 const clients = ref([]);
+const currentSales = ref(0); // 현재 매출액을 저장할 변수 추가
 
 onMounted(async () => {
   const empCode = Cookies.get("empCode");
@@ -36,6 +43,17 @@ onMounted(async () => {
     const data = response.data;
     employee.value = data.employee;
     clients.value = data.clients;
+    
+    // 현재 매출액 조회 API 호출
+    const currentSalesResponse = await axios.get(`/sales/employeeSales`, {
+      params: {
+        empCode: empCode,
+        year: new Date().getFullYear(),
+        month: new Date().getMonth() + 1,
+      },
+    });
+    currentSales.value = currentSalesResponse.data.reduce((sum, sale) => sum + sale.voucSales, 0);
+    
   } catch (error) {
     console.error("My 영업 정보를 가져오는데 실패했습니다.", error);
   }
@@ -103,4 +121,18 @@ onMounted(async () => {
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
+
+.third-row {
+  display: flex; /* 유연하게 늘어나도록 flex 설정 */
+  margin-top: 10px; /* 상단 여백 설정 */
+}
+
+/* Simulation 테이블 스타일 지정 */
+.simulation-table {
+  width: auto; /* 테이블 너비 자동 조정 */
+  max-width: 600px; /* 최대 너비 설정 */
+  border-collapse: collapse;
+  margin-top: 10px; /* 테이블 상단 여백 추가 */
+}
+
 </style>
