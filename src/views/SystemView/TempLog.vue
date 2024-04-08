@@ -6,6 +6,7 @@
         </div>
   
         <div class = "Main">
+            <h3 class="va-h3">창고/차량 이상온도 조회</h3>
             <table class="va-table va-table--hoverable full-width">
                 <thead>
                     <tr>

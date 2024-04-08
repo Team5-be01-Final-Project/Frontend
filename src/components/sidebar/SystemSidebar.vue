@@ -21,7 +21,7 @@ const items = [
     { title: '사원 정보 수정', icon: 'drafts' ,routeName: 'employeeslist'}, 
   ]},
   { title: '이상 온도 로그', icon: 'mail',children: [
-    { title: '창고 이상 온도 조회', icon: 'send', routeName: 'templog' },
+    { title: '창고/차량 이상 온도 조회', icon: 'send', routeName: 'templog' },
   ]
  }, 
 ]
