@@ -50,7 +50,7 @@
                   <va-select v-model="selectedProduct" placeholder="상품 선택" :options="productOptions" @update:modelValue="fetchProductStock()" />
                   <div v-if="selectedProduct">
                       <span class="voucher-info-label">재고량: </span>
-                      <span class="voucher-info-value">{{ selectedProductStock }}</span>
+                      <span class="voucher-info-value">{{ formatNumberWithCommas(selectedProductStock) }}</span>
                   </div>
                   <va-input type="number" v-model.number="selectedQuantity" placeholder="수량" />
                   <button @click="addProduct" class="approve-button">추가</button>
@@ -75,9 +75,9 @@
                   <td>{{ index+1 }}</td>
                   <td>{{ product.proCode }}</td>
                   <td>{{ product.proName }}</td>
-                  <td>{{ product.voucSale }}</td>
-                  <td>{{ product.voucAmount }}</td>
-                  <td>{{ product.voucSales }}</td>
+                  <td>{{ formatNumberWithCommas(product.voucSale) }}</td>
+                  <td>{{ formatNumberWithCommas(product.voucAmount) }}</td>
+                  <td>{{ formatNumberWithCommas(product.voucSales) }}</td>
                   <td>
                     <VaButton @click="removeProduct(index)" class="delete-button">삭제</VaButton>
                   </td>
@@ -92,6 +92,7 @@
   import axios from "axios";
     import VoucherApproval from "@/components/VoucherApproval.vue";
     import ProductSidebar from '@/components/sidebar/ProductSidebar.vue'
+    import formatNumberWithCommas from '@/utils/formatNumberWithCommas.js';
     import Cookies from 'js-cookie'
 
     export default {
@@ -135,6 +136,7 @@
         
       },
       methods: {
+        formatNumberWithCommas,
         fetchApprover() {// 담당자의 부서의 팀장(결재자) 가져오기
           axios.get(`/employees/${this.empCode}/approver`)
           // console.log(response)
@@ -170,7 +172,7 @@
         fetchProducts() { //선택한 거래처의 상품리스트 가져오기
           if (!this.selectedClient) return;
           console.log(this.selectedClient)
-          axios.get(`/api/products/${this.selectedClient.value}/ppcs`)
+          axios.get(`/products/${this.selectedClient.value}/ppcs`)
             .then(response => {
               this.products = response.data.map(product => ({
                 ...product,
@@ -222,7 +224,7 @@
           this.addproductlist.splice(index, 1);
         },
         fetchVoucherId(){//전표 번호 가져오기
-          axios.get('/api/vouchers/voucId')
+          axios.get('/vouchers/voucId')
           .then(response => {
             this.voucId = response.data.voucId; // 백엔드로부터 받은 전표번호를 저장
           })
@@ -248,7 +250,7 @@
               }))
             };
             console.log(voucherData)
-            axios.post('/api/vouchers/saveall', voucherData)
+            axios.post('/vouchers/saveall', voucherData)
               .then(response => {
                 alert("전표가 성공적으로 저장되었습니다.");
                 // 성공 후 필요한 동작(예: 페이지 새로고침, 다른 페이지로 이동 등)
