@@ -60,7 +60,6 @@ const currentYear = new Date().getFullYear();
 const years = ref(Array.from({ length: 5 }, (_, i) => currentYear - i));
 // 1월부터 12월까지의 월 배열 생성
 const months = ref(Array.from({ length: 12 }, (_, i) => i + 1));
-
 // 선택된 연도 초기값 설정 (현재 연도)
 const selectedYear = ref(currentYear);
 // 선택된 월 초기값 설정 (현재 월)
@@ -70,17 +69,29 @@ const selectedMonth = ref(new Date().getMonth() + 1);
 <style scoped>
 /* 대시보드 컨테이너 스타일 */
 .dashboard-container {
-  display: grid;
-  gap: 20px;
-  margin: auto;
-  max-width: 1200px;
-}
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+  }
 
+  /* 대시보드 내부에서만 .main-content 스타일 재정의 */
+  .dashboard-container .main-content {
+    width: 100%;
+    margin-top: 0;
+    margin-left: 0;
+    padding-right: 0;
+  }
+
+  .sidebar {
+    display: none;
+  }
 /* 위쪽 그리드 스타일 */
 .grid-top {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
+  height: 50vh;
 }
 
 /* 최우수 사원 정보 및 차트 그룹 컨테이너 스타일 */
@@ -116,6 +127,7 @@ const selectedMonth = ref(new Date().getMonth() + 1);
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
+  height: 50vh;
 }
 
 /* POI 정보 및 월별 매출 차트 컨테이너 스타일 */
