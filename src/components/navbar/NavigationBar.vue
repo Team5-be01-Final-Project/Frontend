@@ -102,7 +102,7 @@ onMounted(() => {
 const sitelogout = async () => {
   try {
     // 백엔드 서버에 로그아웃 요청
-    await axios.post('/api/logout')
+    await axios.post('/logout')
     // 로그아웃 성공 시, 로그인 페이지로 리다이렉트
     router.push('/')
   } catch (error) {

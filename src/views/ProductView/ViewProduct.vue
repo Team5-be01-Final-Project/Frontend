@@ -92,7 +92,7 @@ export default {
   methods: {
     async fetchProductList() {
       try {
-        const response = await this.axios.get('api/products');
+        const response = await this.axios.get('/products');
         this.products = response.data;
         this.filteredProducts = response.data; // 초기에는 모든 제품 목록을 filteredProducts에 할당
       } catch (error) {
