@@ -3,7 +3,7 @@ name: Deployaws
 on:
   push:
     branches:
-      - release/2.0.0
+      - non
   pull_request:
     types:
       - closed
