@@ -37,10 +37,6 @@
                       <span class="voucher-info-value">{{ empName }}</span>
                   </div>
                   <div class="voucher-info-item">
-                      <span class="voucher-info-label">차량번호:</span>
-                      <span class="voucher-info-value">{{ storageCar }}</span>
-                  </div>
-                  <div class="voucher-info-item">
                     <span class="voucher-info-label">결재자:</span>
                     <span class="voucher-info-value">{{ signerName }}</span>
                   </div>
