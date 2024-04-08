@@ -59,7 +59,8 @@
 
 <script>
 import axios from "axios";
-import ProductSidebar from '@/components/sidebar/ProductSidebar.vue';
+import Cookies from "js-cookie";
+import ProductSidebar from "@/components/sidebar/ProductSidebar.vue";
 
 export default {
   components: { ProductSidebar },
@@ -81,13 +82,21 @@ export default {
   },
   computed: {
     totalVoucSales() {
-      return this.voucherDetails.reduce((total, detail) => total + (detail.voucSales || 0), 0);
+      return this.voucherDetails.reduce(
+        (total, detail) => total + (detail.voucSales || 0),
+        0
+      );
+    },
+    isButtonsEnabled() {
+      const userEmpName = Cookies.get("empName");
+      return userEmpName === this.signerName;
     },
   },
   methods: {
     async fetchVoucherDetails() {
       try {
         const response = await axios.get(`/vouchers/${this.$route.params.voucherID}/details`);
+
         this.voucherDetails = response.data;
         if (this.voucherDetails.length > 0) {
           const firstDetail = this.voucherDetails[0];
@@ -96,9 +105,11 @@ export default {
           this.empName = firstDetail.empName;
           this.signerName = firstDetail.signerName;
           this.clientName = firstDetail.clientName;
-          this.showApproveButton = firstDetail.showApproveButton;
-          this.showRejectButton = firstDetail.showRejectButton;
           this.proCode = firstDetail.proCode;
+          this.showApproveButton =
+            firstDetail.showApproveButton && this.isButtonsEnabled;
+          this.showRejectButton =
+            firstDetail.showRejectButton && this.isButtonsEnabled;
         }
       } catch (error) {
         console.error("Error fetching voucher details:", error);
@@ -137,6 +148,7 @@ export default {
   },
 };
 </script>
+
 
 
 <style scoped>
