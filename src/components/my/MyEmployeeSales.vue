@@ -14,41 +14,36 @@
       </div>
       <button @click="fetchEmployeeSales" class="btn-fetch">조회</button>
     </div>
+
     <!-- 매출 정보 테이블 -->
     <table class="sales-table">
       <thead>
         <tr>
           <th>거래처명</th>
-          <th v-for="(month, index) in recentMonths" :key="index">{{ month }}</th>
-          <th>합계</th>
+          <th>상품명</th>
+          <th>판매가</th>
+          <th>매출원가</th>
+          <th>매출액</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(sale, index) in employeeSales" :key="index">
+        <tr v-for="sale in employeeSales" :key="sale.id">
           <td>{{ sale.clientName }}</td>
-          <td v-for="(monthlySale, index) in sale.monthlySales" :key="index">
-            {{ formatPrice(monthlySale) }}
-          </td>
-          <td>{{ formatPrice(totalSalesByClient(sale.monthlySales)) }}</td>
+          <td>{{ sale.proName }}</td>
+          <td>{{ formatPrice(sale.voucSale) }}</td>
+          <td>{{ formatPrice(sale.costOfSales) }}</td>
+          <td>{{ formatPrice(sale.voucSales) }}</td>
         </tr>
       </tbody>
-      <tfoot>
-        <tr>
-          <td>합계</td>
-          <td v-for="(monthlyTotal, index) in totalSalesByMonth" :key="index">
-            {{ formatPrice(monthlyTotal) }}
-          </td>
-          <td>{{ formatPrice(totalSales) }}</td>
-        </tr>
-      </tfoot>
     </table>
   </div>
 </template>
-
-<script setup>
-import { ref, computed } from "vue";
+  
+  <script setup>
+import { ref, defineProps } from "vue";
 import axios from "axios";
 
+// 부모 컴포넌트로부터 전달받은 속성 정의
 const props = defineProps({
   empCode: {
     type: Number,
@@ -56,11 +51,14 @@ const props = defineProps({
   },
 });
 
+// 선택된 년도와 월을 저장할 변수 초기화
 const selectedYear = ref(new Date().getFullYear());
 const selectedMonth = ref(new Date().getMonth() + 1);
-const employeeSales = ref([]);
-const recentMonths = ref([]);
 
+// 매출 정보를 저장할 배열 초기화
+const employeeSales = ref([]);
+
+// 매출 정보 조회 함수
 const fetchEmployeeSales = async () => {
   try {
     const response = await axios.get(`/sales/employeeSales`, {
@@ -71,40 +69,23 @@ const fetchEmployeeSales = async () => {
       },
     });
     employeeSales.value = response.data;
-
-    // 최근 3개월 설정
-    const currentDate = new Date(selectedYear.value, selectedMonth.value - 1);
-    recentMonths.value = [];
-    for (let i = 0; i < 3; i++) {
-      const month = new Date(currentDate);
-      month.setMonth(currentDate.getMonth() - i);
-      recentMonths.value.push(month.toLocaleString("default", { month: "long" }));
-    }
   } catch (error) {
     console.error("내 매출 정보를 가져오는데 실패했습니다.", error);
   }
 };
 
-const totalSalesByMonth = computed(() => {
-  const totals = new Array(3).fill(0);
-  employeeSales.value.forEach((sale) => {
-    sale.monthlySales.forEach((monthlySale, index) => {
-      totals[index] += monthlySale;
-    });
-  });
-  return totals;
-});
+// 가격을 형식에 맞게 변환하는 함수
+function formatPrice(price) {
+  return typeof price === "number" ? price.toLocaleString() : price;
+}
 
-const totalSales = computed(() => {
-  return totalSalesByMonth.value.reduce((sum, total) => sum + total, 0);
-});
-
-const totalSalesByClient = (monthlySales) => {
-  return monthlySales.reduce((sum, sale) => sum + sale, 0);
-};
-
-const formatPrice = (price) => {
-  return price.toLocaleString();
+// 날짜 포맷팅 함수
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 };
 </script>
   
