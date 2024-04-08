@@ -4,14 +4,25 @@
         <div class="sidebar">
             <SystemSidebar />
         </div>
-  
-        <div class = "Main">
+
+        <div class="Main">
             <h3 class="va-h3">창고/차량 이상온도 조회</h3>
+            <div class="filter">
+                <va-select v-model="selectedYear" :options="yearOptions" placeholder="년도 선택" />
+                <va-select v-model="selectedMonth" :options="monthOptions1" placeholder="월 선택" />
+                <VaSelect v-model="selectedSearchCondition" placeholder="검색 조건" :options="[
+                    { text: '전체', value: '' },
+                    { text: '구분', value: 'storageSeg' },
+                    { text: '차량번호', value: 'storageCar' },
+                ]" value-by="value" />
+                <VaInput v-model="searchText" placeholder="검색어 입력" class="w-full" />
+                <va-button @click="applyFilter">검색</va-button>
+            </div>
             <table class="va-table va-table--hoverable full-width">
                 <thead>
                     <tr>
                         <th>이상온도코드</th>
-                        <th>창고구분</th>
+                        <th>구분</th>
                         <th>차량번호</th>
                         <th>이상온도</th>
                         <th>시간</th>
@@ -31,36 +42,68 @@
             </table>
         </div>
     </div>
-  </template>
-  
-  <script>
-  import axios from 'axios';
-  import SystemSidebar from '@/components/sidebar/SystemSidebar.vue'
-  
-  export default {
-      components: {
-          SystemSidebar
-      },
-      data() {
-          return {
-              filteredData: []
-          }
-      },
-      mounted() {
-          this.fetchTempLogs();
-      },
-      methods: {
-          async fetchTempLogs() {
-              try {
-                  const response = await axios.get(`/temp-logs/all`);
-                  this.filteredData = response.data; // API에서 받아온 데이터를 직접 할당
-              } catch (error) {
-                  console.error("이상 온도 로그 데이터를 가져오는 중 에러가 발생했습니다.", error);
-              }
-          },
-      }
-  }
-  </script>
+</template>
+
+<script>
+import axios from 'axios';
+import SystemSidebar from '@/components/sidebar/SystemSidebar.vue'
+import { monthOptions1 } from '@/utils/monthOptions';
+import { ref, onMounted } from 'vue';
+
+export default {
+    components: {
+        SystemSidebar
+    },
+    setup() {
+
+        const currentYear = new Date().getFullYear().toString(); // 현재 년도
+        const currentMonth = (new Date().getMonth() + 1).toString().padStart(2, '0'); // 현재 월, 두 자리로 포맷팅
+
+        const filteredData = ref([]);
+        const allData = ref([]);
+        const selectedYear = ref(currentYear); // 현재 년도를 기본값으로 설정
+        const selectedMonth = ref(monthOptions1.find(option => option.value === currentMonth));
+        const selectedSearchCondition = ref(null);
+        const searchText = ref('');
+        const yearOptions = Array.from({ length: 5 }, (_, i) => ({
+            text: `${2020 + i}년`, value: `${2020 + i}`
+        }));
+
+        const fetchTempLogs = async () => {
+            try {
+                const response = await axios.get(`/temp-logs/all`);
+                allData.value = response.data; // 원본 데이터 저장
+                filteredData.value = response.data; // 초기에는 모든 데이터 표시
+            } catch (error) {
+                console.error("이상 온도 로그 데이터를 가져오는 중 에러가 발생했습니다.", error);
+            }
+        };
+
+        const applyFilter = () => {
+            filteredData.value = allData.value.filter((item) => {
+                const dateParts = item.tempDate.split('-');
+                const yearMatch = selectedYear.value ? dateParts[0] === selectedYear.value : true;
+                const monthMatch = selectedMonth.value ? dateParts[1] === selectedMonth.value.value : true; // 수정됨
+                let conditionMatch = true;
+
+                // 검색 조건이 "전체"가 아니며, 검색 텍스트가 입력된 경우
+                if (selectedSearchCondition.value && searchText.value) {
+                    const itemValue = item[selectedSearchCondition.value]?.toString().toLowerCase();
+                    conditionMatch = itemValue.includes(searchText.value.toLowerCase());
+                }
+
+                // 모든 조건이 true인 경우에만 해당 아이템을 필터링 결과에 포함
+                return yearMatch && monthMatch && conditionMatch;
+            });
+        };
+
+        onMounted(fetchTempLogs);
+
+        return { filteredData, selectedYear, selectedMonth, selectedSearchCondition, searchText, yearOptions, monthOptions1, applyFilter };
+    }
+}
+</script>
+
 
 <style>
 .flex {
@@ -73,30 +116,14 @@
     /* 필요에 따라 추가 스타일링 */
 }
 
-
-
-.pagination {
-    margin-top: 20px;
-}
-
-.pagination button {
-    cursor: pointer;
-    padding: 5px 10px;
-    margin-right: 5px;
-}
-
-td.money-right {
-    text-align: right;
-}
 .Main {
-  flex-grow: 1;
-  /* 메인 콘텐츠가 남은 공간을 모두 차지하도록 함 */
-  /* 필요에 따라 추가 스타일링 */
+    flex-grow: 1;
+    /* 메인 콘텐츠가 남은 공간을 모두 차지하도록 함 */
+    /* 필요에 따라 추가 스타일링 */
 }
 
 .full-width {
-  width: 100%;
-  /* 테이블이 화면에 꽉 차도록 설정 */
+    width: 100%;
+    /* 테이블이 화면에 꽉 차도록 설정 */
 }
-
 </style>
