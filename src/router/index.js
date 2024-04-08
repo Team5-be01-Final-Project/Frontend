@@ -38,7 +38,8 @@ const router = createRouter({
     {
       path: '/mysales',
       name: 'mysales',
-      component: () => import('../views/MySales.vue')
+      component: () => import('../views/MySales.vue'),
+      meta: { allowedAuthCodes: ['AUTH001'] } //영업사원만 접속
     },
     {
       path: '/system',
