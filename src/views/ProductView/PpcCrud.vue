@@ -6,7 +6,7 @@
     </div>
 
     <div class="Main">
-      <h2>거래처별 상품 가격 정보</h2>
+      <h3 class="va-h3">거래처별 상품 등록 및 수정</h3>
       <div class="register-button-container">
         <VaButton @click="openRegisterModal" class="register-button">
           판매상품 등록
@@ -156,4 +156,8 @@ export default {
   width: 100%;
   /* 테이블이 화면에 꽉 차도록 설정 */
 }
+
+.register-button {
+    float: right; /* 버튼을 오른쪽으로 이동시킵니다. */
+  }
 </style>

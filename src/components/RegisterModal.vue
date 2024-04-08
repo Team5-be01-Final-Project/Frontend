@@ -100,7 +100,7 @@
       },
       fetchProducts() {
         axios
-          .get('api/products')
+          .get('/products')
           .then(response => {
             this.products = response.data;
           })

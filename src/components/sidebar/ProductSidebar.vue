@@ -29,7 +29,7 @@ const items = [
     icon: "dashboard",
     children: [
       {
-        title: "거래처별 상품 등록 및수정",
+        title: "거래처별 상품 등록 및 수정",
         icon: "drafts",
         routeName: "ppccrud",
       },
