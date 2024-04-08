@@ -1,5 +1,6 @@
 <template>
-  <div id="map" style="width: 100%; height: 400px;"></div>
+  <h4>이달의 우수지점</h4>
+  <div id="map" style="width: 100%; height: 330px;"></div>
 </template>
 
 <script setup>
@@ -22,12 +23,12 @@ async function fetchData() {
   try {
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
-    const lastMonth = currentDate.getMonth() === 0 ? 12 : currentDate.getMonth();
+    const currentMonth = currentDate.getMonth() + 1; // 0이 1월이므로 1을 더함
     const year = currentDate.getMonth() === 0 ? currentYear - 1 : currentYear;
 
     const [clientsResponse, salesResponse] = await Promise.all([
       axios.get('/clients/list'),
-      axios.get(`/sales/Clientsales?year=${year}&month=${lastMonth}`)
+      axios.get(`/sales/Clientsales?year=${currentYear}&month=${currentMonth}`)
     ]);
 
     const clients = clientsResponse.data;
@@ -75,11 +76,3 @@ onMounted(() => {
   displayClientsOnMap();
 });
 </script>
-
-<style>
-/* 지도 컨테이너 스타일 */
-#map {
-  width: 100%;
-  height: 400px;
-}
-</style>

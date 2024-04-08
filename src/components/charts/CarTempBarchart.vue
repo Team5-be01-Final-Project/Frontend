@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="carTempCharts">
         <div style="display: flex; align-items: center;">
             <canvas id="carTempChart"></canvas>
             <button @click="fetchData" style="margin-left: 10px;">
@@ -79,3 +79,10 @@ export default {
     }
 };
 </script>
+
+<style scoped>
+.carTempCharts
+{
+    height: 300px;
+}
+</style>

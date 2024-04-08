@@ -4,25 +4,11 @@
     <h3 class="va-h3">대시보드</h3>
     <div class="grid-top">
       <!-- POI 지도 컴포넌트 -->
-      <div class="poi-map-container"><POIMap /></div>
+      <div class="poi-map-container">
+        <POIMap />
+      </div>
       <!-- 최우수 사원 정보 및 연도/월 선택 컴포넌트 그룹 -->
       <div class="top-employee-group-container">
-        <!-- 연도/월 선택 컴포넌트 -->
-        <div class="date-selectors-container">
-          <label for="year">연도 : </label>
-          <select id="year" v-model="selectedYear">
-            <option v-for="year in years" :value="year" :key="year">
-              {{ year }}
-            </option>
-          </select>
-          <label for="month"> 월 : </label>
-          <select id="month" v-model="selectedMonth">
-            <option v-for="month in months" :value="month" :key="month">
-              {{ month }}
-            </option>
-          </select>
-        </div>
-        <!-- 최우수 사원 정보 컴포넌트 -->
         <div class="top-employee-container">
           <TopEmployee :year="selectedYear" :month="selectedMonth" />
         </div>
@@ -30,16 +16,24 @@
       <!-- 차트 그룹 컴포넌트 -->
       <div class="chart-group-container">
         <!-- 창고 현황 차트 컴포넌트 -->
-        <div class="warehouse-container"><Warehouse /></div>
+        <div class="warehouse-container">
+          <Warehouse />
+        </div>
         <!-- 차량 온도 막대 차트 컴포넌트 -->
-        <div class="car-temp-barchart-container"><CarTempBarchart /></div>
+        <div class="car-temp-barchart-container">
+          <CarTempBarchart />
+        </div>
       </div>
     </div>
     <div class="grid-bottom">
       <!-- POI 정보 컴포넌트 -->
-      <div class="poi-container"><POI /></div>
+      <div class="poi-container">
+        <POI />
+      </div>
       <!-- 월별 매출 차트 컴포넌트 -->
-      <div class="month-sale-container"><MonthSale /></div>
+      <div class="month-sale-container">
+        <MonthSale />
+      </div>
     </div>
   </div>
 </template>
@@ -67,25 +61,13 @@ const selectedMonth = ref(new Date().getMonth() + 1);
 </script>
 
 <style scoped>
-/* 대시보드 컨테이너 스타일 */
 .dashboard-container {
-    width: 100vw;
-    height: 100vh;
-    margin: 0;
-    padding: 0;
-  }
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 20px;
+}
 
-  /* 대시보드 내부에서만 .main-content 스타일 재정의 */
-  .dashboard-container .main-content {
-    width: 100%;
-    margin-top: 0;
-    margin-left: 0;
-    padding-right: 0;
-  }
-
-  .sidebar {
-    display: none;
-  }
 /* 위쪽 그리드 스타일 */
 .grid-top {
   display: grid;
@@ -94,27 +76,18 @@ const selectedMonth = ref(new Date().getMonth() + 1);
   height: 50vh;
 }
 
+
+
 /* 최우수 사원 정보 및 차트 그룹 컨테이너 스타일 */
 .top-employee-group-container,
 .chart-group-container {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 0px;
 }
-
 /* 연도/월 선택 컨테이너 스타일 */
 .date-selectors-container {
   margin-bottom: 10px;
-}
-
-/* POI 지도 컨테이너 스타일 */
-.poi-map-container {
-  height: 400px;
-}
-
-/* 최우수 사원 정보 컨테이너 스타일 */
-.top-employee-container {
-  height: 300px;
 }
 
 /* 차량 온도 막대 차트 컨테이너 스타일 */
@@ -156,4 +129,17 @@ const selectedMonth = ref(new Date().getMonth() + 1);
 .va-table {
   min-width: 1000px;
 }
+
+/* 컴포넌트 테두리 스타일 */
+.poi-map-container,
+.top-employee-group-container,
+.chart-group-container,
+.poi-container,
+.month-sale-container {
+  border: 2px solid #ECF0F1; /* 검은색 실선 테두리, 두께 2px */
+  border-radius: 10px; /* 테두리 모서리 둥글게 */
+  padding: 10px; /* 테두리 내부 여백 */
+  margin-bottom: 20px; /* 컴포넌트 하단 여백 */
+}
+
 </style>

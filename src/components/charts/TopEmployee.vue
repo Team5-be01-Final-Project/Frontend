@@ -73,16 +73,17 @@ function formatCurrency(amount) {
 <style scoped>
 /* 최우수 사원 정보 컨테이너 스타일 */
 .top-employee {
-  margin-top: 20px;
+  height: 330px;
   padding: 20px;
   background-color: #f5f5f5;
   border-radius: 4px;
+  text-align: center; /* 이미지를 중앙 정렬 */
 }
 
 /* 최우수 사원 사진 스타일 */
 .top-employee img {
-  width: 100px;
-  height: 100px;
+  width: 200px;
+  height: 200px;
   object-fit: cover;
   border-radius: 50%;
   margin-bottom: 10px;
