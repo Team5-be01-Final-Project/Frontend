@@ -21,7 +21,7 @@
 
       </VaNavbarItem>
 
-      <router-link to="/system/employeesspec" class="hidden sm:block text-gray-600">
+      <router-link to="/system/templog" class="hidden sm:block text-gray-600">
         <VaNavbarItem class="hidden sm:block">
           시스템 관리
         </VaNavbarItem>
@@ -52,7 +52,7 @@
 
       </VaNavbarItem>
 
-      <router-link to="/business/incentivelist" class="hidden sm:block">
+      <router-link to="/business/viewclient" class="hidden sm:block">
         <VaNavbarItem class="hidden sm:block">
           영업 관리
         </VaNavbarItem>
