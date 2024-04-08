@@ -28,10 +28,11 @@
             <td>{{ ppc.proName }}</td>
             <td>{{ ppc.ppcSale }}</td>
             <td>
-              <VaButton color="warning" class="mr-6 mb-2" @click="openEditModal(ppc)">수정</VaButton>
+              <VaButton color="warning" class="mr-6 mb-2" @click="openEditModal(ppc)">
+               <va-icon name="edit"/></VaButton>
             </td>
             <td>
-              <VaButton color="danger" class="mr-6 mb-2" @click="openDeleteModal(ppc)">삭제</VaButton>
+              <VaButton color="danger" class="mr-6 mb-2" @click="openDeleteModal(ppc)"> <va-icon name="delete"/></VaButton>
             </td>
           </tr>
         </tbody>

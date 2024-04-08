@@ -7,6 +7,8 @@ import App from './App.vue'
 import router from './router'
 
 import axios from "axios"
+import '@fortawesome/fontawesome-free/css/all.css';
+
 
 axios.defaults.baseURL="http://localhost:8081/api"
 //axios.defaults.baseURL="https://bpssystem.store/api" 배포용 URL

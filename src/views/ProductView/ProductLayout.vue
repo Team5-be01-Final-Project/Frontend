@@ -20,5 +20,6 @@
   
   .product-content {
     margin-top: 20px;
+    margin-left: 270px; 
   }
   </style>
