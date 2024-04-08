@@ -71,6 +71,7 @@
                   <th>판매가</th>
                   <th>수량</th>
                   <th>금액</th>
+                  <th>삭제</th>
                 </tr>
               </thead>
               <tbody>
@@ -81,6 +82,9 @@
                   <td>{{ product.voucSale }}</td>
                   <td>{{ product.voucAmount }}</td>
                   <td>{{ product.voucSales }}</td>
+                  <td>
+                    <VaButton @click="removeProduct(index)" class="delete-button">삭제</VaButton>
+                  </td>
                 </tr>
               </tbody>
           </table>
@@ -216,6 +220,10 @@
             alert("상품을 선택하고, 유효한 수량을 입력하세요.");
           }
         },
+        removeProduct(index) {
+          // 지정된 인덱스의 상품을 리스트에서 제거
+          this.addproductlist.splice(index, 1);
+        },
         fetchVoucherId(){//전표 번호 가져오기
           axios.get('/api/vouchers/voucId')
           .then(response => {
@@ -249,8 +257,13 @@
                 // 성공 후 필요한 동작(예: 페이지 새로고침, 다른 페이지로 이동 등)
               })
               .catch(error => {
-                console.error("전표 저장 중 오류 발생:", error);
-                alert("전표 저장에 실패했습니다.");
+                if (error.response && error.response.status === 409) {
+                  // 재고 부족 에러 처리
+                  alert("재고가 부족합니다: " + error.response.data);
+                } else {
+                  // 기타 에러 처리
+                  alert("전표 저장에 실패했습니다: " + error.message);
+                }
               });
             }
         },
