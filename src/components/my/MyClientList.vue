@@ -52,7 +52,7 @@ const toggleDetails = (clientCode) => {
 }
 
 .client-list {
-  margin-top: 58px; /* 목록 상단의 여백 */
+  margin-top: 20px; /* 목록 상단의 여백 */
   list-style-type: none; /* 기본 리스트 스타일 제거 */
   padding: 0; /* 패딩 초기화 */
 }
