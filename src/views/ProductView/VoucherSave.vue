@@ -37,10 +37,6 @@
                       <span class="voucher-info-value">{{ empName }}</span>
                   </div>
                   <div class="voucher-info-item">
-                      <span class="voucher-info-label">차량번호:</span>
-                      <span class="voucher-info-value">{{ storageCar }}</span>
-                  </div>
-                  <div class="voucher-info-item">
                     <span class="voucher-info-label">결재자:</span>
                     <span class="voucher-info-value">{{ signerName }}</span>
                   </div>
@@ -48,13 +44,17 @@
           </div>
           <div class="voucher-info">
               <div class="voucher-info-row">
-                  <va-select v-model="selectedClient" placeholder="거래처 선택" :options="clientOptions" @update:modelValue="fetchProducts()" />
+                  <va-select v-model="selectedClient" 
+                  placeholder="거래처 선택" 
+                  :options="clientOptions" 
+                  :disabled="addproductlist.length > 0"
+                  @update:modelValue="fetchProducts()" />
               </div>
               <div class="voucher-info-row">
                   <va-select v-model="selectedProduct" placeholder="상품 선택" :options="productOptions" @update:modelValue="fetchProductStock()" />
                   <div v-if="selectedProduct">
                       <span class="voucher-info-label">재고량: </span>
-                      <span class="voucher-info-value">{{ selectedProductStock }}</span>
+                      <span class="voucher-info-value">{{ formatNumberWithCommas(selectedProductStock) }}</span>
                   </div>
                   <va-input type="number" v-model.number="selectedQuantity" placeholder="수량" />
                   <button @click="addProduct" class="approve-button">추가</button>
@@ -79,9 +79,9 @@
                   <td>{{ index+1 }}</td>
                   <td>{{ product.proCode }}</td>
                   <td>{{ product.proName }}</td>
-                  <td>{{ product.voucSale }}</td>
-                  <td>{{ product.voucAmount }}</td>
-                  <td>{{ product.voucSales }}</td>
+                  <td>{{ formatNumberWithCommas(product.voucSale) }}</td>
+                  <td>{{ formatNumberWithCommas(product.voucAmount) }}</td>
+                  <td>{{ formatNumberWithCommas(product.voucSales) }}</td>
                   <td>
                     <VaButton @click="removeProduct(index)" class="delete-button">삭제</VaButton>
                   </td>
@@ -96,6 +96,7 @@
   import axios from "axios";
     import VoucherApproval from "@/components/VoucherApproval.vue";
     import ProductSidebar from '@/components/sidebar/ProductSidebar.vue'
+    import formatNumberWithCommas from '@/utils/formatNumberWithCommas.js';
     import Cookies from 'js-cookie'
 
     export default {
@@ -139,6 +140,7 @@
         
       },
       methods: {
+        formatNumberWithCommas,
         fetchApprover() {// 담당자의 부서의 팀장(결재자) 가져오기
           axios.get(`/employees/${this.empCode}/approver`)
           // console.log(response)
@@ -174,7 +176,7 @@
         fetchProducts() { //선택한 거래처의 상품리스트 가져오기
           if (!this.selectedClient) return;
           console.log(this.selectedClient)
-          axios.get(`/api/products/${this.selectedClient.value}/ppcs`)
+          axios.get(`/products/${this.selectedClient.value}/ppcs`)
             .then(response => {
               this.products = response.data.map(product => ({
                 ...product,
@@ -200,7 +202,7 @@
             console.log("Product info is undefined or ppcStock is not available.");
           }
         },
-        addProduct() { //전표에 판매 상품 추가
+        addProduct() { //리스트에 판매 상품 추가
           console.log(this.selectedProduct)
           console.log(this.products);
           console.log(this.selectedQuantity);
@@ -221,12 +223,11 @@
             alert("상품을 선택하고, 유효한 수량을 입력하세요.");
           }
         },
-        removeProduct(index) {
-          // 지정된 인덱스의 상품을 리스트에서 제거
+        removeProduct(index) { //리스트에서 판매 상품 삭제
           this.addproductlist.splice(index, 1);
         },
         fetchVoucherId(){//전표 번호 가져오기
-          axios.get('/api/vouchers/voucId')
+          axios.get('/vouchers/voucId')
           .then(response => {
             this.voucId = response.data.voucId; // 백엔드로부터 받은 전표번호를 저장
           })
@@ -234,7 +235,7 @@
             console.error('전표번호 생성 중 오류:', error);
           });
         },
-        SaveVoucher() {
+        SaveVoucher() { //전표 등록
           // 전송할 전체 데이터 구성
           if(this.clientCode!==""){
             const voucherData = {
@@ -252,7 +253,7 @@
               }))
             };
             console.log(voucherData)
-            axios.post('/api/vouchers/saveall', voucherData)
+            axios.post('/vouchers/saveall', voucherData)
               .then(response => {
                 alert("전표가 성공적으로 저장되었습니다.");
                 // 성공 후 필요한 동작(예: 페이지 새로고침, 다른 페이지로 이동 등)
