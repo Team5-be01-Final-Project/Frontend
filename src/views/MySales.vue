@@ -10,7 +10,7 @@
         <MyClientList :clients="clients" />
       </div>
       <div class="sales-container">
-        <MyEmployeeSales :empCode="employee.empCode" />
+        <MyEmployeeSales :empCode="employee.empCode" @update-current-sales="handleUpdateCurrentSales" />
       </div>
     </div>
     <div class="third-row">
@@ -36,7 +36,11 @@ import MySimulation from "@/components/my/MySimulation.vue";
 
 const employee = ref({});
 const clients = ref([]);
-const currentSales = ref(0); // 현재 매출액을 저장할 변수 추가
+const currentSales = ref(0);
+
+const handleUpdateCurrentSales = (total) => {
+  currentSales.value = total;
+}
 
 onMounted(async () => {
   const empCode = Cookies.get("empCode");
@@ -46,18 +50,6 @@ onMounted(async () => {
     const data = response.data;
     employee.value = data.employee;
     clients.value = data.clients;
-
-    // 현재 매출액 조회 API 호출
-    const currentSalesResponse = await axios.get(`/sales/employeeSales`, {
-      params: {
-        empCode: empCode,
-        year: new Date().getFullYear(),
-        month: new Date().getMonth() + 1,
-      },
-    });
-    currentSales.value = currentSalesResponse.data.reduce((sum, sale) => {
-      return sum + (sale.voucSales || 0); // `voucSales`가 없는 경우를 대비해 기본값 0 처리
-    }, 0);
   } catch (error) {
     console.error("My 영업 정보를 가져오는데 실패했습니다.", error);
   }
