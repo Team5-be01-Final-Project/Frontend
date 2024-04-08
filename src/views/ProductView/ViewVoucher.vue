@@ -22,7 +22,7 @@
         </thead>
         <tbody>
           <tr v-for="voucher in displayedVouchers" :key="voucher.voucId">
-            <td @click="navigateToDetail(voucher.voucId)" class="clickable">{{ voucher.voucId }}</td>
+            <td>{{ voucher.voucId }}</td>
             <td>{{ voucher.empName }}</td>
             <td>{{ voucher.clientName }}</td>
             <td>{{ voucher.voucDate }}</td>
@@ -96,9 +96,7 @@ export default {
         console.error('Error fetching vouchers:', error);
       }
     },
-    navigateToDetail(voucId) {
-      this.$router.push(`/product/voucherdetail/${voucId}`);
-    },
+
     prevPage() {
       if (this.currentPage > 1) {
         this.currentPage--;

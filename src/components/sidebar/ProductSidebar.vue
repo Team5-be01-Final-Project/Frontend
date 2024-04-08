@@ -48,7 +48,7 @@ const items = [
     icon: "dashboard",
     children: [
       { title: "전표 등록", icon: "drafts", routeName: "vouchersave" },
-      { title: "전표 결재", icon: "drafts" },
+      { title: "전표 결재", icon: "drafts", routeName: "voucherapproval" },
       { title: "전표 리스트 조회", icon: "drafts", routeName: "viewvoucher" },
     ],
   },

@@ -1,230 +1,163 @@
 <template>
   <div class="flex">
+    <!-- 사이드바 섹션 -->
     <div class="sidebar">
       <ProductSidebar />
     </div>
 
-    <div>
-      <div class="header">
-        <h3 class="va-h3">출고전표 결재</h3>
-        <div class="button-container" v-if="showApproveButton || showRejectButton">
-          <button v-if="showApproveButton" @click="approveVoucherDetails" class="approve-button">승인</button>
-          <button v-if="showRejectButton" @click="rejectVoucherDetails" class="reject-button">반려</button>
-        </div>
+    <div class="Main">
+      <h3 class="va-h3">출고전표 결재</h3>
+      <table class="va-table va-table--hoverable full-width">
+        <!-- 테이블의 width를 100%로 설정 -->
+        <thead>
+          <tr>
+            <th class="text-left">전표번호</th>
+            <th class="text-left">담당자</th>
+            <th class="text-left">거래처명</th>
+            <th class="text-left">등록일</th>
+            <th class="text-left">결재자</th>
+            <th class="text-left">결재상태</th>
+            <th class="text-left">결재일</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="voucher in displayedVouchers" :key="voucher.voucId">
+            <td @click="navigateToDetail(voucher.voucId)" class="clickable">{{ voucher.voucId }}</td>
+            <td>{{ voucher.empName }}</td>
+            <td>{{ voucher.clientName }}</td>
+            <td>{{ voucher.voucDate }}</td>
+            <td>{{ voucher.signerName }}</td>
+            <td>
+              <template v-if="voucher.approvalStatus.trim() === '대기중'">
+                <VaBadge text="대기중" color="secondary" class="mr-2" />
+              </template>
+              <template v-if="voucher.approvalStatus.trim() === '승인'">
+                <VaBadge text="승인" color="success" class="mr-2" />
+              </template>
+              <template v-if="voucher.approvalStatus.trim() === '반려'">
+                <VaBadge text="반려" color="danger" class="mr-2" />
+              </template>
+              <!-- {{ voucher.approvalStatus.trim() }} -->
+            </td>
+            <td>{{ voucher.voucApproval }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="pagination">
+        <button @click="prevPage" :disabled="currentPage === 1">이전</button>
+        <span>Page {{ currentPage }} of {{ pageCount }}</span>
+        <button @click="nextPage" :disabled="currentPage === pageCount">다음</button>
       </div>
-      <div class="spacer" style="height: 20px"></div>
-      <div class="voucher-info">
-        <div class="voucher-info-row">
-          <div class="voucher-info-item"><span class="voucher-info-label">전표번호:</span><span
-              class="voucher-info-value">{{ voucId }}</span></div>
-          <div class="voucher-info-item"><span class="voucher-info-label">등록일:</span><span class="voucher-info-value">{{
-            voucDate }}</span></div>
-          <div class="voucher-info-item"><span class="voucher-info-label">담당자:</span><span class="voucher-info-value">{{
-            empName }}</span></div>
-          <div class="voucher-info-item"><span class="voucher-info-label">결재자:</span><span class="voucher-info-value">{{
-            signerName }}</span></div>
-          <div class="voucher-info-item"><span class="voucher-info-label">거래처:</span><span class="voucher-info-value">{{
-            clientName }}</span></div>
-        </div>
-      </div>
-      <hr />
-      <div class="spacer" style="height: 20px"></div>
-      <div v-if="voucherDetails.length > 0">
-        <table class="va-table">
-          <thead>
-            <tr>
-              <th>제품 코드</th>
-              <th>제품명</th>
-              <th>수량</th>
-              <th>판매가</th>
-              <th>합계</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(detail, index) in voucherDetails" :key="index">
-              <td>{{ detail.proCode }}</td>
-              <td>{{ detail.proName }}</td>
-              <td>{{ detail.voucAmount }}</td>
-              <td>{{ detail.voucSale.toLocaleString() }}원</td>
-              <td>{{ detail.voucSales.toLocaleString() }}원</td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="total-sales">총합계: {{ totalVoucSales.toLocaleString() }}원</div>
-      </div>
-      <p v-else>해당 전표번호에 대한 정보가 없습니다.</p>
     </div>
   </div>
 </template>
 
 <script>
-import axios from "axios";
-import ProductSidebar from '@/components/sidebar/ProductSidebar.vue';
+import axios from 'axios';
+import ProductSidebar from '@/components/sidebar/ProductSidebar.vue'
 
 export default {
-  components: { ProductSidebar },
+  components: {
+    ProductSidebar,
+  },
   data() {
     return {
-      voucId: "",
-      voucDate: "",
-      empName: "",
-      signerName: "",
-      clientName: "",
-      voucherDetails: [],
-      showApproveButton: false,
-      showRejectButton: false,
-      proCode: null,
+      vouchers: [],
+      currentPage: 1,
+      perPage: 20,
+      userDeptCode: '', // 사용자의 부서 코드를 저장할 변수
     };
   },
-  mounted() {
-    this.fetchVoucherDetails();
-  },
   computed: {
-    totalVoucSales() {
-      return this.voucherDetails.reduce((total, detail) => total + (detail.voucSales || 0), 0);
+    uniqueVouchers() {
+      const unique = {};
+      this.vouchers.forEach(voucher => {
+        unique[voucher.voucId] = voucher;
+      });
+      return Object.values(unique);
     },
+    displayedVouchers() {
+      const start = (this.currentPage - 1) * this.perPage;
+      const end = start + this.perPage;
+      return this.uniqueVouchers.slice(start, end).filter(voucher => voucher.deptCode === this.userDeptCode);
+    },
+    pageCount() {
+      return Math.ceil(this.uniqueVouchers.length / this.perPage);
+    }
+  },
+  mounted() {
+    this.fetchUserDeptCode(); // 사용자의 부서 코드를 가져오는 함수 호출
   },
   methods: {
-    async fetchVoucherDetails() {
+    async fetchUserDeptCode() {
       try {
-        const response = await axios.get(`/api/vouchers/${this.$route.params.voucherID}/details`);
-        this.voucherDetails = response.data;
-        if (this.voucherDetails.length > 0) {
-          const firstDetail = this.voucherDetails[0];
-          this.voucId = firstDetail.voucId;
-          this.voucDate = firstDetail.voucDate;
-          this.empName = firstDetail.empName;
-          this.signerName = firstDetail.signerName;
-          this.clientName = firstDetail.clientName;
-          this.proCode = firstDetail.proCode;
-
-          // empName과 signerName이 동일한 경우에만 버튼 활성화
-          this.showApproveButton = this.empName.trim() === this.signerName.trim();
-          this.showRejectButton = this.empName.trim() === this.signerName.trim();
-        }
+        // 쿠키에서 사용자의 부서 코드를 가져옴
+        this.userDeptCode = 'D02'; // 쿠키에서 가져온 사용자의 부서 코드 설정
+        await this.fetchVouchers(); // 출고전표 조회 함수 호출
       } catch (error) {
-        console.error("Error fetching voucher details:", error);
+        console.error('Error fetching user dept code:', error);
       }
     },
-    async approveVoucherDetails() {
+    async fetchVouchers() {
       try {
-        if (!this.voucId) {
-          console.error("voucId is required for approving voucher details.");
-          return;
-        }
-
-        await axios.put(`/api/vouchers/${this.voucId}/approve/details`);
-        console.log("Voucher details approved successfully");
-
-        this.fetchVoucherDetails();
+        const response = await axios.get('/api/vouchers');
+        this.vouchers = response.data;
       } catch (error) {
-        console.error("Error approving voucher details:", error);
+        console.error('Error fetching vouchers:', error);
       }
     },
-    async rejectVoucherDetails() {
-      try {
-        if (!this.voucId) {
-          console.error("voucId is required for rejecting voucher details.");
-          return;
-        }
-
-        await axios.put(`/api/vouchers/${this.voucId}/reject/details`);
-        console.log("Voucher details rejected successfully");
-
-        this.fetchVoucherDetails();
-      } catch (error) {
-        console.error("Error rejecting voucher details:", error);
+    navigateToDetail(voucId) {
+      this.$router.push(`/product/voucherdetail/${voucId}`);
+    },
+    prevPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
       }
     },
-  },
+    nextPage() {
+      if (this.currentPage < this.pageCount) {
+        this.currentPage++;
+      }
+    }
+  }
 };
 </script>
 
-
-
 <style scoped>
-.spacer {
-  height: 20px;
-}
-
-.header {
+.flex {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
 }
 
-.button-container {
-  display: flex;
-  gap: 10px;
-  z-index: 1;
+.sidebar {
+  width: 250px;
+  /* 사이드바의 너비를 조절하세요 */
+  /* 필요에 따라 추가 스타일링 */
 }
 
-.approve-button,
-.reject-button,
-.reject-details-button {
-  padding: 8px 16px;
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: bold;
+.clickable {
   cursor: pointer;
+  color: #2c3e50;
+  text-decoration: underline;
 }
 
-.approve-button {
-  background-color: #4CAF50;
-  color: white;
-}
-
-.reject-button,
-.reject-details-button {
-  background-color: #F44336;
-  color: white;
-}
-
-.voucher-info {
-  margin-bottom: 20px;
-}
-
-.voucher-info-row {
+.pagination {
   display: flex;
-  gap: 20px;
-  margin-bottom: 10px;
-}
-
-.voucher-info-item {
-  display: flex;
-  gap: 5px;
-}
-
-.voucher-info-label {
-  font-weight: bold;
-}
-
-.total-sales {
+  justify-content: center;
   margin-top: 20px;
-  font-size: 18px;
-  font-weight: bold;
 }
 
-.va-table {
+.pagination button {
+  margin: 0 10px;
+}
+
+.Main {
+  flex-grow: 1;
+  /* 메인 콘텐츠가 남은 공간을 모두 차지하도록 함 */
+  /* 필요에 따라 추가 스타일링 */
+}
+
+.full-width {
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-
-.va-table th,
-.va-table td {
-  padding: 10px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-}
-
-.va-table th {
-  background-color: #f2f2f2;
-  font-weight: bold;
-}
-
-.va-table tr:hover {
-  background-color: #f5f5f5;
+  /* 테이블이 화면에 꽉 차도록 설정 */
 }
 </style>
