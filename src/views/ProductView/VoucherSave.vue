@@ -178,7 +178,7 @@
             .then(response => {
               this.products = response.data.map(product => ({
                 ...product,
-                text: product.proName, // 상품 이름
+                text: `[${product.proCode}, ${product.proName}]`, // 상품 이름
                 value: product.proCode, // 상품 코드
               }));
               // 상품 옵션 업데이트
