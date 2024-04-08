@@ -15,7 +15,10 @@
     </div>
     <div class="third-row">
       <div class="simulation-container">
-      <MySimulation :empCode="employee.empCode" :currentSales="currentSales" />
+        <MySimulation
+          :empCode="employee.empCode"
+          :currentSales="currentSales"
+        />
       </div>
     </div>
   </div>
@@ -28,8 +31,8 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import MyEmployeeInfo from "@/components/my/MyEmployeeInfo.vue";
 import MyClientList from "@/components/my/MyClientList.vue";
-import MyEmployeeSales from '@/components/my/MyEmployeeSales.vue';
-import MySimulation from '@/components/my/MySimulation.vue';
+import MyEmployeeSales from "@/components/my/MyEmployeeSales.vue";
+import MySimulation from "@/components/my/MySimulation.vue";
 
 const employee = ref({});
 const clients = ref([]);
@@ -43,7 +46,7 @@ onMounted(async () => {
     const data = response.data;
     employee.value = data.employee;
     clients.value = data.clients;
-    
+
     // 현재 매출액 조회 API 호출
     const currentSalesResponse = await axios.get(`/sales/employeeSales`, {
       params: {
@@ -52,8 +55,9 @@ onMounted(async () => {
         month: new Date().getMonth() + 1,
       },
     });
-    currentSales.value = currentSalesResponse.data.reduce((sum, sale) => sum + sale.voucSales, 0);
-    
+    currentSales.value = currentSalesResponse.data.reduce((sum, sale) => {
+      return sum + (sale.voucSales || 0); // `voucSales`가 없는 경우를 대비해 기본값 0 처리
+    }, 0);
   } catch (error) {
     console.error("My 영업 정보를 가져오는데 실패했습니다.", error);
   }
@@ -134,5 +138,4 @@ onMounted(async () => {
   border-collapse: collapse;
   margin-top: 10px; /* 테이블 상단 여백 추가 */
 }
-
 </style>

@@ -3,23 +3,34 @@
   <div class="employee-sales">
     <h3>내 매출 현황</h3>
     <div class="sales-table">
-      <table>
-        <thead>
-          <tr>
-            <th>거래처명</th>
-            <th v-for="(month, index) in recentMonths" :key="index">{{ month }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(sale, index) in employeeSales" :key="index">
-            <td>{{ sale.clientName }}</td>
-            <td v-for="(monthlySale, index) in sale.monthlySales" :key="index">
-              {{ formatCurrency(monthlySale) }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>거래처명</th>
+          <th v-for="(month, index) in recentMonths" :key="index">{{ month }}</th>
+          <th>거래처 총 매출액</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(sale, index) in employeeSales" :key="index">
+          <td>{{ sale.clientName }}</td>
+          <td v-for="(monthlySale, index) in sale.monthlySales" :key="index">
+            {{ formatCurrency(monthlySale) }}
+          </td>
+          <td>{{ formatCurrency(totalSalesByClient(sale.monthlySales)) }}</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>월별 총액</td>
+          <td v-for="(monthlyTotal, index) in totalSalesByMonth" :key="index">
+            {{ formatCurrency(monthlyTotal) }}
+          </td>
+          <td>{{ formatCurrency(totalSales) }}</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
   </div>
 </template>
 
@@ -30,6 +41,22 @@ import Cookies from 'js-cookie';
 
 const employeeSales = ref([]);
 const recentMonths = ref([]);
+
+// 거래처별 총 매출액을 계산하는 함수
+const totalSalesByClient = (monthlySales) => {
+  return monthlySales.reduce((sum, sale) => sum + sale, 0);
+};
+
+// 월별 총액을 계산
+const totalSalesByMonth = computed(() => {
+  const totals = new Array(3).fill(0);
+  employeeSales.value.forEach((sale) => {
+    sale.monthlySales.forEach((monthlySale, index) => {
+      totals[index] += monthlySale;
+    });
+  });
+  return totals;
+});
 
 onMounted(async () => {
   const empCode = Cookies.get('empCode');
