@@ -44,7 +44,11 @@
           </div>
           <div class="voucher-info">
               <div class="voucher-info-row">
-                  <va-select v-model="selectedClient" placeholder="거래처 선택" :options="clientOptions" @update:modelValue="fetchProducts()" />
+                  <va-select v-model="selectedClient" 
+                  placeholder="거래처 선택" 
+                  :options="clientOptions" 
+                  :disabled="addproductlist.length > 0"
+                  @update:modelValue="fetchProducts()" />
               </div>
               <div class="voucher-info-row">
                   <va-select v-model="selectedProduct" placeholder="상품 선택" :options="productOptions" @update:modelValue="fetchProductStock()" />
