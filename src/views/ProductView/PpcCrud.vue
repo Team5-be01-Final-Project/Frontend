@@ -16,7 +16,7 @@
         <thead>
           <tr>
             <th>거래처명</th>
-            <th>상품명</th>
+            <th>제품명</th>
             <th>판매가</th>
             <th>수정</th>
             <th>삭제</th>
@@ -26,7 +26,7 @@
           <tr v-for="(ppc, index) in ppcs" :key="index">
             <td>{{ ppc.clientName }}</td>
             <td>{{ ppc.proName }}</td>
-            <td>{{ ppc.ppcSale }}</td>
+            <td>{{ formatNumberWithCommas(ppc.ppcSale) }}</td>
             <td>
               <VaButton color="warning" class="mr-6 mb-2" @click="openEditModal(ppc)">
                <va-icon name="edit"/></VaButton>
@@ -45,6 +45,7 @@
 </template>
 
 <script>
+import formatNumberWithCommas from '@/utils/formatNumberWithCommas.js';
 import axios from 'axios';
 import ProductSidebar from '@/components/sidebar/ProductSidebar.vue';
 import EditDeleteModal from '@/components/Modal.vue';
@@ -66,6 +67,7 @@ export default {
     };
   },
   methods: {
+    formatNumberWithCommas,
     fetchPpcs() {
       axios
         .get('/ppc/all')
