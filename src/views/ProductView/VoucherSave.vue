@@ -225,65 +225,35 @@
             console.error('전표번호 생성 중 오류:', error);
           });
         },
-        // SaveVoucher() {
-        //   // 전송할 전체 데이터 구성
-        //   if(this.clientCode!==""){
-        //     const voucherData = {
-        //       voucId: this.voucId,
-        //       voucDate: this.dateString,
-        //       empCode: this.empCode,
-        //       signerCode: this.signerCode,
-        //       clientCode: this.selectedClient.value,
-        //       approvalCode: "A00",
-        //       items: this.addproductlist.map(item => ({
-        //         proCode: item.proCode,
-        //         voucSale: item.voucSale,
-        //         voucAmount: item.voucAmount,
-        //         voucSales: item.voucSales,
-        //       }))
-        //     };
-        //     console.log(voucherData)
-        //     axios.post('/api/vouchers/saveall', voucherData)
-        //       .then(response => {
-        //         alert("전표가 성공적으로 저장되었습니다.");
-        //         // 성공 후 필요한 동작(예: 페이지 새로고침, 다른 페이지로 이동 등)
-        //       })
-        //       .catch(error => {
-        //         console.error("전표 저장 중 오류 발생:", error);
-        //         alert("전표 저장에 실패했습니다.");
-        //       });
-        //     }
-        // },
-          SaveVoucher() {
-            // 전송할 전체 데이터 구성
-            this.addproductlist.forEach(item => {
-                const voucherData = {
-                    voucId: this.voucId,
-                    voucDate: this.dateString,
-                    empCode: this.empCode,
-                    signerCode: this.signerCode,
-                    clientCode: this.selectedClient.value,
-                    approvalCode: "A00",
-                    proCode: item.proCode,
-                    voucSale: item.voucSale,
-                    voucAmount: item.voucAmount,
-                    voucSales: item.voucSales,
-                };
-                console.log(voucherData);
-                axios.post('/api/vouchers/save', voucherData)
-                    .then(response => {
-                        console.log("Item saved successfully");
-                        // 여기에 성공 로직 추가(예: 성공 메시지 표시)
-                    })
-                    .catch(error => {
-                        console.error("Item saving error:", error);
-                        alert("Error saving item.");
-                        // 여기에 실패 로직 추가(예: 실패 메시지 표시)
-                        // 실패 시, 다음 항목의 처리를 중단하려면 throw new Error()를 사용할 수 있습니다.
-                    });
-            });
-            // 모든 항목의 저장 요청이 완료된 후의 로직(예: 페이지 리다이렉트)을 여기에 추가
-        }
+        SaveVoucher() {
+          // 전송할 전체 데이터 구성
+          if(this.clientCode!==""){
+            const voucherData = {
+              voucId: this.voucId,
+              voucDate: this.dateString,
+              empCode: this.empCode,
+              signerCode: this.signerCode,
+              clientCode: this.selectedClient.value,
+              approvalCode: "A00",
+              items: this.addproductlist.map(item => ({
+                proCode: item.proCode,
+                voucSale: item.voucSale,
+                voucAmount: item.voucAmount,
+                voucSales: item.voucSales,
+              }))
+            };
+            console.log(voucherData)
+            axios.post('/api/vouchers/saveall', voucherData)
+              .then(response => {
+                alert("전표가 성공적으로 저장되었습니다.");
+                // 성공 후 필요한 동작(예: 페이지 새로고침, 다른 페이지로 이동 등)
+              })
+              .catch(error => {
+                console.error("전표 저장 중 오류 발생:", error);
+                alert("전표 저장에 실패했습니다.");
+              });
+            }
+        },
       }
     };
 </script>
