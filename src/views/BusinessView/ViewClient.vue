@@ -8,7 +8,7 @@
 
     <div class="Main">
       <div class="va-table-responsive">
-        <h3 class="va-h3">거래처 목록</h3>
+        <h3 class="va-h3">거래처 조회</h3>
         <div class="grid md:grid-cols-3 gap-6 mb-6 items-center">
           <VaSelect
             v-model="selectedField"

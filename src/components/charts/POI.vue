@@ -6,7 +6,7 @@
         <tr>
           <th>순위</th>
           <th>거래처명</th>
-          <th>매출 총합</th>
+          <th>매출액</th>
         </tr>
       </thead>
       <tbody>

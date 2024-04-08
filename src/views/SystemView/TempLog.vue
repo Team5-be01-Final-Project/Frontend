@@ -34,7 +34,7 @@
                         <td>{{ item.tempCode }}</td>
                         <td>{{ item.storageSeg }}</td>
                         <td>{{ item.storageCar }}</td>
-                        <td>{{ item.tempTemp }}</td>
+                        <td>{{ item.tempTemp }}°C</td>
                         <td>{{ item.tempDate }}</td>
                         <td>{{ item.empName }}</td>
                     </tr>
