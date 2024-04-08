@@ -12,6 +12,7 @@
           v-model="selectedDepartment"
           placeholder="부서 선택"
           :options="deptOption"
+          :disabled="isDeptSelectDisabled"
         />
         <va-select
           v-model="selectedYear"
@@ -56,7 +57,8 @@
   import { yearOptions } from '@/utils/yearOptions.js'; 
   import { monthOptions } from '@/utils/monthOptions.js'; 
   import formatNumberWithCommas from '@/utils/formatNumberWithCommas.js';
-  import BusinessSidebar from '@/components/sidebar/BusinessSidebar.vue'
+  import BusinessSidebar from '@/components/sidebar/BusinessSidebar.vue';
+  import Cookies from 'js-cookie';
   
   export default {
     components:{
@@ -78,13 +80,31 @@
         selectedMonth: defaultMonthOption,
         selectedMonthhistory: defaultMonthOption,
         monthOption: monthOptions,
-        filteredData: [] // 필터링된 데이터를 저장할 배열
+        filteredData: [], // 필터링된 데이터를 저장할 배열
+        isDeptSelectDisabled: false
       }
     },
+    created() {
+      this.userAuthCode = Cookies.get('empAuthCode');
+      this.userDeptCode = Cookies.get('deptCode');
+
+      if(this.userAuthCode === 'AUTH003') {
+        const userDept = this.deptOption.find(dept => dept.value === this.userDeptCode);
+        if(userDept) {
+          this.selectedDepartment = userDept;
+        }
+        // 부서 선택 컴포넌트를 비활성화합니다.
+        this.isDeptSelectDisabled = true;
+      }
+
+    },
     mounted() {
-      this.fetchIncentives(this.selectedYear, this.selectedMonth);
+      this.fetchIncentives(this.selectedYear, this.selectedMonth).then(() => {
+        this.applyFilter();
+      });
     },
     methods: {
+      formatNumberWithCommas,
       async fetchIncentives(year, month) {
         try {
           const response = await axios.get(`/incentive/list?year=${year.value}&month=${month.value}`);
@@ -96,7 +116,6 @@
         this.selectedYearhistory = this.selectedYear;
         this.selectedMonthhistory = this.selectedMonth; // 비동기 호출이 성공한 후 업데이트
       },
-      formatNumberWithCommas,
       async applyFilter() {
         // 연도나 월 변경 시 데이터 다시 가져오기
         const yearChanged = this.selectedYear !== this.selectedYearhistory;
@@ -140,12 +159,10 @@
     margin-right: 5px;
   }
 
- 
   td.money-right {
     text-align: right;
   }
 
- 
 
 .Main {
   flex-grow: 1;
