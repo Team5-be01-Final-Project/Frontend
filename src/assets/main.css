@@ -59,5 +59,12 @@ a,
   /* 기존에 적용된 다른 스타일이 있다면 그대로 유지 */
 }
 
-/* 네비게이션 바 스타일 */
+td.money-right {
+  text-align: right;
+}
+
+td.index-center{
+text-align: center;
+}
+
 

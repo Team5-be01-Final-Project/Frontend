@@ -34,14 +34,14 @@
           </thead>
           <tbody>
             <tr v-for="(product, index) in paginatedProducts" :key="product.proCode">
-              <td>{{ getPageNumber(index) }}</td>
+              <td class = "index-center">{{ getPageNumber(index) }}</td>
               <td>{{ product.proCode }}</td>
               <td>{{ product.proName }}</td>
               <td>{{ product.proSeg }}</td>
               <td>{{ product.proIngre }}</td>
               <td>{{ product.proAtc }}</td>
               <td>{{ product.proCat }}</td>
-              <td>{{ product.proUnit }}</td>
+              <td class = 'money-right'> {{ formatNumberWithCommas(product.proUnit) }}</td>
             </tr>
           </tbody>
         </table>
@@ -60,6 +60,7 @@
 import { VaButton } from 'vuestic-ui/web-components';
 import ProductSidebar from '@/components/sidebar/ProductSidebar.vue'
 import NavigationBar from '@/components/navbar/NavigationBar.vue'
+import formatNumberWithCommas from '@/utils/formatNumberWithCommas.js';
 
 export default {
   components: {
@@ -90,6 +91,7 @@ export default {
     this.fetchProductList();
   },
   methods: {
+    formatNumberWithCommas,
     async fetchProductList() {
       try {
         const response = await this.axios.get('/products');
@@ -170,4 +172,6 @@ export default {
   width: 100%;
   /* 테이블이 화면에 꽉 차도록 설정 */
 }
+
+
 </style>
