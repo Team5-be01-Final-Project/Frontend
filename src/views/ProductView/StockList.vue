@@ -9,8 +9,7 @@
     <div class="Main">
       <div class="flex justify-between items-center mb-6">
         <h3 class="va-h3">재고 조회</h3>
-        <VaButton @click="openRegisterModal" class="register-button">재고 등록</VaButton>
-      </div>
+        </div>
       <div class="grid grid-cols-12 gap-4 mb-6 items-center">
         <VaSelect
           v-model="selectedField"
@@ -21,6 +20,7 @@
         />
         <VaInput v-model="filter" placeholder="검색어 입력" class="col-span-8 search-input" />
         <VaButton @click="searchStockList" class="search-button col-span-2">검색</VaButton>
+        <VaButton @click="openRegisterModal" class="register-button">재고 등록</VaButton>
       </div>
       <div class="va-table-responsive">
         <table class="va-table va-table--hoverable full-width">
@@ -274,4 +274,8 @@ onMounted(() => {
   width: 100%;
   /* 테이블이 화면에 꽉 차도록 설정 */
 }
+
+.register-button {
+    float: right; /* 버튼을 오른쪽으로 이동시킵니다. */
+  }
 </style>
