@@ -58,5 +58,13 @@ a,
   padding-right: 0; /* 메인 컨텐츠 우측 패딩 제거 */
   /* 기존에 적용된 다른 스타일이 있다면 그대로 유지 */
 }
+
+td.money-right {
+  text-align: right;
+}
+
+td.index-center{
+text-align: center;
+}
 /* 네비게이션 바 스타일 */
 
