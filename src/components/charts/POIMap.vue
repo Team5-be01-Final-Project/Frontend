@@ -26,7 +26,7 @@ async function fetchData() {
     const year = currentDate.getMonth() === 0 ? currentYear - 1 : currentYear;
 
     const [clientsResponse, salesResponse] = await Promise.all([
-      axios.get('http://localhost:8081/clients/list'),
+      axios.get('/clients/list'),
       axios.get(`/sales/Clientsales?year=${year}&month=${lastMonth}`)
     ]);
 

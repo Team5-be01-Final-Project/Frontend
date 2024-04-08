@@ -87,7 +87,7 @@ export default {
   methods: {
     async fetchVoucherDetails() {
       try {
-        const response = await axios.get(`/api/vouchers/${this.$route.params.voucherID}/details`);
+        const response = await axios.get(`/vouchers/${this.$route.params.voucherID}/details`);
         this.voucherDetails = response.data;
         if (this.voucherDetails.length > 0) {
           const firstDetail = this.voucherDetails[0];
@@ -111,7 +111,7 @@ export default {
           return;
         }
 
-        await axios.put(`/api/vouchers/${this.voucId}/approve/details`);
+        await axios.put(`/vouchers/${this.voucId}/approve/details`);
         console.log("Voucher details approved successfully");
 
         this.fetchVoucherDetails();
@@ -126,7 +126,7 @@ export default {
           return;
         }
 
-        await axios.put(`/api/vouchers/${this.voucId}/reject/details`);
+        await axios.put(`/vouchers/${this.voucId}/reject/details`);
         console.log("Voucher details rejected successfully");
 
         this.fetchVoucherDetails();
