@@ -21,33 +21,27 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="voucher in displayedVouchers" :key="voucher.voucId">
-            <td @click="navigateToDetail(voucher.voucId)" class="clickable">{{ voucher.voucId }}</td>
-            <td>{{ voucher.empName }}</td>
-            <td>{{ voucher.clientName }}</td>
-            <td>{{ voucher.voucDate }}</td>
-            <td>{{ voucher.signerName }}</td>
+          <tr v-for="(voucherGroup, index) in uniqueVouchers" :key="index">
+            <td @click="navigateToDetail(voucherGroup[0].voucId)" class="clickable">{{ voucherGroup[0].voucId }}</td>
+            <td>{{ voucherGroup[0].empName }}</td>
+            <td>{{ voucherGroup[0].clientName }}</td>
+            <td>{{ voucherGroup[0].voucDate }}</td>
+            <td>{{ voucherGroup[0].signerName }}</td>
             <td>
-              <template v-if="voucher.approvalStatus.trim() === '대기중'">
+              <template v-if="voucherGroup[0].approvalStatus.trim() === '대기중'">
                 <VaBadge text="대기중" color="secondary" class="mr-2" />
               </template>
-              <template v-if="voucher.approvalStatus.trim() === '승인'">
+              <template v-if="voucherGroup[0].approvalStatus.trim() === '승인'">
                 <VaBadge text="승인" color="success" class="mr-2" />
               </template>
-              <template v-if="voucher.approvalStatus.trim() === '반려'">
+              <template v-if="voucherGroup[0].approvalStatus.trim() === '반려'">
                 <VaBadge text="반려" color="danger" class="mr-2" />
               </template>
-              <!-- {{ voucher.approvalStatus.trim() }} -->
             </td>
-            <td>{{ voucher.voucApproval }}</td>
+            <td>{{ voucherGroup[0].voucApproval }}</td>
           </tr>
         </tbody>
       </table>
-      <div class="pagination">
-        <button @click="prevPage" :disabled="currentPage === 1">이전</button>
-        <span>Page {{ currentPage }} of {{ pageCount }}</span>
-        <button @click="nextPage" :disabled="currentPage === pageCount">다음</button>
-      </div>
     </div>
   </div>
 </template>
@@ -56,6 +50,7 @@
 import axios from 'axios';
 import ProductSidebar from '@/components/sidebar/ProductSidebar.vue'
 
+
 export default {
   components: {
     ProductSidebar,
@@ -63,27 +58,23 @@ export default {
   data() {
     return {
       vouchers: [],
-      currentPage: 1,
-      perPage: 20,
       userDeptCode: '', // 사용자의 부서 코드를 저장할 변수
     };
   },
   computed: {
+    filteredVouchers() {
+      return this.vouchers.filter(voucher => voucher.deptCode === this.userDeptCode);
+    },
     uniqueVouchers() {
       const unique = {};
-      this.vouchers.forEach(voucher => {
-        unique[voucher.voucId] = voucher;
+      this.filteredVouchers.forEach(voucher => {
+        if (!unique[voucher.voucId]) {
+          unique[voucher.voucId] = [];
+        }
+        unique[voucher.voucId].push(voucher);
       });
       return Object.values(unique);
     },
-    displayedVouchers() {
-      const start = (this.currentPage - 1) * this.perPage;
-      const end = start + this.perPage;
-      return this.uniqueVouchers.slice(start, end).filter(voucher => voucher.deptCode === this.userDeptCode);
-    },
-    pageCount() {
-      return Math.ceil(this.uniqueVouchers.length / this.perPage);
-    }
   },
   mounted() {
     this.fetchUserDeptCode(); // 사용자의 부서 코드를 가져오는 함수 호출
@@ -91,13 +82,19 @@ export default {
   methods: {
     async fetchUserDeptCode() {
       try {
-        // 쿠키에서 사용자의 부서 코드를 가져옴
-        this.userDeptCode = 'D02'; // 쿠키에서 가져온 사용자의 부서 코드 설정
-        await this.fetchVouchers(); // 출고전표 조회 함수 호출
+        const cookies = document.cookie.split(';').map(cookie => cookie.trim().split('='));
+        const deptCodeCookie = cookies.find(cookie => cookie[0] === 'deptCode');
+        if (deptCodeCookie) {
+          this.userDeptCode = deptCodeCookie[1];
+          await this.fetchVouchers(); // 출고전표 조회 함수 호출
+        } else {
+          console.error('Department code cookie not found.');
+        }
       } catch (error) {
         console.error('Error fetching user dept code:', error);
       }
     },
+
     async fetchVouchers() {
       try {
         const response = await axios.get('/api/vouchers');
@@ -109,16 +106,6 @@ export default {
     navigateToDetail(voucId) {
       this.$router.push(`/product/voucherdetail/${voucId}`);
     },
-    prevPage() {
-      if (this.currentPage > 1) {
-        this.currentPage--;
-      }
-    },
-    nextPage() {
-      if (this.currentPage < this.pageCount) {
-        this.currentPage++;
-      }
-    }
   }
 };
 </script>
@@ -138,16 +125,6 @@ export default {
   cursor: pointer;
   color: #2c3e50;
   text-decoration: underline;
-}
-
-.pagination {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.pagination button {
-  margin: 0 10px;
 }
 
 .Main {

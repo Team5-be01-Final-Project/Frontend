@@ -7,6 +7,10 @@
     <div>
       <div class="header">
         <h3 class="va-h3">출고전표 결재</h3>
+        <div class="button-container" v-if="showApproveButton || showRejectButton">
+          <button v-if="showApproveButton" @click="approveVoucherDetails" class="approve-button">승인</button>
+          <button v-if="showRejectButton" @click="rejectVoucherDetails" class="reject-button">반려</button>
+        </div>
       </div>
       <div class="spacer" style="height: 20px"></div>
       <div class="voucher-info">
@@ -55,7 +59,8 @@
 
 <script>
 import axios from "axios";
-import ProductSidebar from '@/components/sidebar/ProductSidebar.vue';
+import Cookies from "js-cookie";
+import ProductSidebar from "@/components/sidebar/ProductSidebar.vue";
 
 export default {
   components: { ProductSidebar },
@@ -77,13 +82,22 @@ export default {
   },
   computed: {
     totalVoucSales() {
-      return this.voucherDetails.reduce((total, detail) => total + (detail.voucSales || 0), 0);
+      return this.voucherDetails.reduce(
+        (total, detail) => total + (detail.voucSales || 0),
+        0
+      );
+    },
+    isButtonsEnabled() {
+      const userEmpName = Cookies.get("empName");
+      return userEmpName === this.signerName;
     },
   },
   methods: {
     async fetchVoucherDetails() {
       try {
-        const response = await axios.get(`/api/vouchers/${this.$route.params.voucherID}/details`);
+        const response = await axios.get(
+          `/api/vouchers/${this.$route.params.voucherID}/details`
+        );
         this.voucherDetails = response.data;
         if (this.voucherDetails.length > 0) {
           const firstDetail = this.voucherDetails[0];
@@ -93,6 +107,10 @@ export default {
           this.signerName = firstDetail.signerName;
           this.clientName = firstDetail.clientName;
           this.proCode = firstDetail.proCode;
+          this.showApproveButton =
+            firstDetail.showApproveButton && this.isButtonsEnabled;
+          this.showRejectButton =
+            firstDetail.showRejectButton && this.isButtonsEnabled;
         }
       } catch (error) {
         console.error("Error fetching voucher details:", error);
@@ -146,8 +164,32 @@ export default {
   margin-bottom: 20px;
 }
 
+.button-container {
+  display: flex;
+  gap: 10px;
+  z-index: 1;
+}
 
+.approve-button,
+.reject-button,
+.reject-details-button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
 
+.approve-button {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.reject-button,
+.reject-details-button {
+  background-color: #F44336;
+  color: white;
+}
 
 .voucher-info {
   margin-bottom: 20px;
