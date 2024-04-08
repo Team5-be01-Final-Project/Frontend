@@ -56,6 +56,7 @@
 import axios from 'axios';
 import { VaButton, VaSelect, VaInput } from 'vuestic-ui';
 import ProductSidebar from '@/components/sidebar/ProductSidebar.vue';
+import { watch } from 'vue';
 
 export default {
   components: {
@@ -66,20 +67,34 @@ export default {
   },
   data() {
     return {
+      // 초기 데이터 설정
       products: [],
       filteredProducts: [],
       filter: '',
-      selectedField: '',
+      selectedField: '전체', // '전체' 선택을 위한 'all' 값으로 초기화
       currentPage: 1,
       perPage: 10,
+      // 필터 옵션
       filterOptions: [
+        { text: '전체', value: 'all' },
         { text: '거래처명', value: 'clientName' },
         { text: '제품명', value: 'proName' },
         { text: '분류', value: 'proCat' },
       ],
     };
   },
+  // 계산된 속성, 메서드 등...
+  watch: {
+    // selectedField의 값이 변경될 때 실행될 함수
+    selectedField(newValue) {
+      if (newValue === 'all') {
+        // "전체"가 선택되면 검색 필드를 초기화
+        this.filter = '';
+      }
+    }
+  },
   computed: {
+    // 페이징 처리를 위한 계산 속성
     paginatedProducts() {
       const start = (this.currentPage - 1) * this.perPage;
       return this.filteredProducts.slice(start, start + this.perPage);
@@ -90,39 +105,42 @@ export default {
   },
   methods: {
     async fetchProducts() {
+      // 제품 데이터를 불러오는 메서드
       try {
-        const response = await axios.get('/ppc/all'); // 백엔드 엔드포인트의 실제 URL로 대체
+        const response = await axios.get('/ppc/all'); // API 호출
         this.products = response.data;
-        this.filteredProducts = response.data; // 초기에는 모든 제품을 표시
+        this.filteredProducts = response.data;
       } catch (error) {
         console.error('Failed to fetch products:', error);
       }
     },
     applyFilter() {
-      if (!this.filter || !this.selectedField) {
-        // 검색어나 필터링 필드가 선택되지 않은 경우 전체 제품 목록을 보여줌
-        this.filteredProducts = this.products;
-      } else {
-        // 선택된 필드와 검색어를 기준으로 제품 목록을 필터링
-        this.filteredProducts = this.products.filter(product =>
-          product[this.selectedField].toString().toLowerCase().includes(this.filter.toLowerCase())
-        );
-      }
-      this.currentPage = 1; // 검색 후 현재 페이지를 1로 초기화
-    },
+      // 로그를 추가하여 현재 필터링 상태를 확인
+      console.log(`Selected Field: ${this.selectedField}, Filter: ${this.filter}`);
+
+      if (this.selectedField.value === 'all' || !this.filter.trim()) {
+    // "전체"가 선택되었거나 검색어가 비어있는 경우, 모든 제품을 표시
+    this.filteredProducts = this.products;
+  } else {
+    // 선택된 필드에 따라 필터링
+    this.filteredProducts = this.products.filter(product => {
+      const fieldValue = product[this.selectedField.value]?.toString().toLowerCase() || '';
+      return fieldValue.includes(this.filter.toLowerCase());
+    });
+  }
+  this.currentPage = 1; // 필터링 후 페이지를 처음으로 설정
+},
     nextPage() {
-      if (this.currentPage < this.pageCount) {
-        this.currentPage++;
-      }
+      // 다음 페이지로 이동
+      if (this.currentPage < this.pageCount) this.currentPage++;
     },
     prevPage() {
-      if (this.currentPage > 1) {
-        this.currentPage--;
-      }
+      // 이전 페이지로 이동
+      if (this.currentPage > 1) this.currentPage--;
     },
   },
   created() {
-    this.fetchProducts();
+    this.fetchProducts(); // 컴포넌트 생성 시 제품 데이터 로드
   },
 };
 </script>
