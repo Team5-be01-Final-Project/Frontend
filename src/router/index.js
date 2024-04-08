@@ -35,7 +35,7 @@ const router = createRouter({
       component: () => import('../views/Dashboard.vue'),
       meta: { requiresAuth: true }
     },
-    {
+    { //마이 영업
       path: '/mysales',
       name: 'mysales',
       component: () => import('../views/MySales.vue'),
@@ -47,19 +47,19 @@ const router = createRouter({
       component: () => import('../views/SystemView/SystemLayout.vue'), // SystemLayout.vue 추가
       meta: { requiresAuth: true },
       children: [
-        {
+        { //사원 리스트 조회
           path: 'employeesspec',
           name: 'employeesspec',
           component: () => import('../views/SystemView/EmployeesSpec.vue'),
           meta: { allowedAuthCodes: ['AUTH001', 'AUTH002', 'AUTH003'] }//팀장 이상만 접속
         },
-        {
+        { // 사원 정보 수정
           path: 'employeeslist',
           name: 'employeeslist',
           component: () => import('../views/SystemView/EmployeesList.vue'),
           meta: { allowedAuthCodes: ['AUTH001', 'AUTH002'] }//대표 이상만 접속
         },
-        {
+        { //이상온도 로그
           path: 'templog',
           name: 'templog',
           component: () => import('../views/SystemView/TempLog.vue')
@@ -72,40 +72,40 @@ const router = createRouter({
       component: () => import('../views/ProductView/ProductLayout.vue'), // ProductLayout.vue 추가
       meta: { requiresAuth: true },
       children: [
-        {
+        { //판매상품 리스트 조회
           path: 'viewproduct',
           name: 'viewproduct',
           component: () => import('../views/ProductView/ViewProduct.vue')
         },
-        {
+        { //거래처별 판매 상품 등록
           path: 'ppccrud',
           name: 'ppccrud',
           component: () => import('../views/ProductView/PpcCrud.vue'),
           meta: { allowedAuthCodes: ['AUTH001', 'AUTH002', 'AUTH003'] }//팀장 이상만 접속
         },
-        {
+        { //거래처별 판매 상품 리스트 조회
           path: 'ppcview',
           name: 'ppcview',
           component: () => import('../views/ProductView/PpcView.vue')
         },
-        {
+        { //재고 조회 및 재고 등록
           path: 'stockList',
           name: 'stockList',
           component: () => import('../views/ProductView/StockList.vue'),
           meta: { allowedAuthCodes: ['AUTH001', 'AUTH002', 'AUTH003'] }//팀장 이상만 접속
         },
-        {
+        { //출고 전표 등록
           path: 'vouchersave',
           name: 'vouchersave',
           component: () => import('../views/ProductView/VoucherSave.vue'),
           meta: { allowedAuthCodes: ['AUTH001', 'AUTH004'] } //영업사원과 IT관리자만 접속
         },
-        {
+        { //출고 전표 리스트
           path: 'viewvoucher',
           name: 'viewvoucher',
           component: () => import('../views/ProductView/ViewVoucher.vue')
         },
-        {
+        { //출고 전표 상세 및 결재
           path: 'voucherdetail/:voucherID',
           name: 'VoucherDetail',
           component: () => import('../views/ProductView/VoucherDetail.vue')
@@ -118,12 +118,12 @@ const router = createRouter({
       component: () => import('../views/SalesView/SalesLayout.vue'), // SalesLayout.vue 추가
       meta: { requiresAuth: true },
       children: [
-        {
+        { //판매 상품별 판매 현황
           path: 'productsales',
           name: 'productsales',
           component: () => import('../views/SalesView/ProductSales.vue')
         },
-        {
+        { //거래처별 판매 현황
           path: 'clientsales',
           name: 'clientSales',
           component: () => import('../views/SalesView/ClientSales.vue')
@@ -136,24 +136,24 @@ const router = createRouter({
       component: () => import('../views/BusinessView/BusinessLayout.vue'), // BusinessLayout.vue 추가
       meta: { requiresAuth: true },
       children: [
-        {
+        { //인센티브 현황 확인
           path: 'incentivelist',
           name: 'incentivelist',
           component: () => import('../views/BusinessView/IncentiveList.vue'),
           meta: { allowedAuthCodes: ['AUTH001', 'AUTH002', 'AUTH003'] }//팀장 이상만 접속
         },
-        {
+        { //매출 거래처 등록
           path: 'clientsave',
           name: 'clientsave',
           component: () => import('../views/BusinessView/Clientsave.vue'),
           meta: { allowedAuthCodes: ['AUTH001', 'AUTH002', 'AUTH003'] }//팀장 이상만 접속
         },
-        {
+        { //매출 거래처 리스트 조회
           path: 'viewclient',
           name: 'viewclient',
           component: () => import('../views/BusinessView/ViewClient.vue')
         },
-        {
+        { //매출 거래처 수정
           path: 'ClientDetail/:clientCode',
           name: 'ClientDetail',
           component: () => import('../views/BusinessView/ClientDetail.vue'),
@@ -161,7 +161,7 @@ const router = createRouter({
         },
       ]
     },
-    {
+    {//정의 되지 않은 URL은 404로 이동
       path: '/:pathMatch(.*)*',
       name: 'not-found',
       component: NotFound,
