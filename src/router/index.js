@@ -43,6 +43,7 @@ const router = createRouter({
       path: '/system',
       name: 'system',
       component: () => import('../views/SystemView/SystemLayout.vue'), // SystemLayout.vue 추가
+      meta: { requiresAuth: true },
       children: [
         {
           path: 'employeesspec',
@@ -65,6 +66,7 @@ const router = createRouter({
       path: '/product',
       name: 'product',
       component: () => import('../views/ProductView/ProductLayout.vue'), // ProductLayout.vue 추가
+      meta: { requiresAuth: true },
       children: [
         {
           path: 'viewproduct',
@@ -107,6 +109,7 @@ const router = createRouter({
       path: '/sales',
       name: 'sales',
       component: () => import('../views/SalesView/SalesLayout.vue'), // SalesLayout.vue 추가
+      meta: { requiresAuth: true },
       children: [
         {
           path: 'clientsales',
@@ -124,6 +127,7 @@ const router = createRouter({
       path: '/business',
       name: 'business',
       component: () => import('../views/BusinessView/BusinessLayout.vue'), // BusinessLayout.vue 추가
+      meta: { requiresAuth: true },
       children: [
         {
           path: 'clientsave',
@@ -158,7 +162,7 @@ const router = createRouter({
 
 // AUTH000, AUTH001, AUTH002, AUTH003,  AUTH004
 // 퇴사자, IT관리자, 경영관리자, 영업팀장, 영업사원
-//전역 가드를 사용한 사용자 인증과 권한 확인
+// 전역 가드를 사용한 사용자 인증과 권한 확인
 router.beforeEach((to, from, next) => { //페이지를 이동하기 전에 매번 호출되는 전역 가드 함수
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth); //라우터의 인증 요구 여부 확인
   const allowedAuthCodes = to.matched.some(record => record.meta.allowedAuthCodes) ? 
