@@ -28,13 +28,13 @@
           </thead>
           <tbody>
             <tr v-for="(item, index) in paginatedProducts" :key="index">
-              <td>{{ (currentPage - 1) * perPage + index + 1 }}</td>
+              <td class = 'index-center'>{{ (currentPage - 1) * perPage + index + 1 }}</td>
               <td>{{ item.clientName }}</td>
               <td>{{ item.proCode }}</td>
               <td>{{ item.proName }}</td>
               <td>{{ item.proSeg }}</td>
               <td>{{ item.proCat }}</td>
-              <td>{{ item.ppcSale }}</td>
+              <td class = 'money-right'>{{ formatNumberWithCommas(item.ppcSale) }}</td>
             </tr>
           </tbody>
         </table>
@@ -56,6 +56,7 @@
 import axios from 'axios';
 import { VaButton, VaSelect, VaInput } from 'vuestic-ui';
 import ProductSidebar from '@/components/sidebar/ProductSidebar.vue';
+import formatNumberWithCommas from '@/utils/formatNumberWithCommas.js';
 
 export default {
   components: {
@@ -71,7 +72,7 @@ export default {
       filter: '',
       selectedField: '',
       currentPage: 1,
-      perPage: 10,
+      perPage: 20,
       filterOptions: [
         { text: '거래처명', value: 'clientName' },
         { text: '제품명', value: 'proName' },
@@ -89,6 +90,7 @@ export default {
     },
   },
   methods: {
+    formatNumberWithCommas,
     async fetchProducts() {
       try {
         const response = await axios.get('/ppc/all'); // 백엔드 엔드포인트의 실제 URL로 대체
