@@ -5,12 +5,12 @@
     <!-- 년도와 월 선택 영역 -->
     <div class="select-period">
       <div class="select-year">
-        <label for="year">년도:</label>
         <input type="number" id="year" v-model="selectedYear" />
+        <label for="year">년</label>
       </div>
       <div class="select-month">
-        <label for="month">월:</label>
         <input type="number" id="month" v-model="selectedMonth" />
+        <label for="month">월</label>
       </div>
       <button @click="fetchEmployeeSales" class="btn-fetch">조회</button>
     </div>
@@ -89,47 +89,54 @@ const formatDate = (dateString) => {
 };
 </script>
   
-  <style scoped>
+<style scoped>
+/* 매출 정보를 보여주는 컨테이너 스타일링 */
 .employee-sales {
-  margin-top: 20px;
+  margin-top: 20px; /* 컨테이너 상단 여백 */
 }
 
+/* 년도와 월을 선택하는 영역 스타일링 */
 .select-period {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
+  display: flex; /* 요소를 가로로 나열 */
+  align-items: center; /* 세로 중앙 정렬 */
+  margin-bottom: 10px; /* 영역 하단 여백 */
 }
 
+/* 년도와 월 선택 필드 스타일링 */
 .select-year,
 .select-month {
-  display: flex;
-  align-items: center;
-  margin-right: 10px;
+  display: flex; /* 요소를 가로로 나열 */
+  align-items: center; /* 세로 중앙 정렬 */
+  margin-right: 10px; /* 필드 우측 여백 */
 }
 
+/* 조회 버튼 스타일링 */
 .btn-fetch {
-  padding: 5px 10px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+  padding: 5px 10px; /* 내부 여백 */
+  background-color: #007bff; /* 배경색 */
+  color: #fff; /* 글자색 */
+  border: none; /* 테두리 없음 */
+  border-radius: 4px; /* 모서리 둥글게 */
+  cursor: pointer; /* 마우스 오버 시 커서 변경 */
 }
 
+/* 매출 정보 테이블 스타일링 */
 .sales-table {
-  width: 100%;
-  border-collapse: collapse;
+  width: 100%; /* 너비를 부모 요소의 100%로 설정 */
+  border-collapse: collapse; /* 셀 사이 경계선 합치기 */
 }
 
+/* 테이블 헤더와 셀 스타일링 */
 .sales-table th,
 .sales-table td {
-  padding: 8px;
-  border: 1px solid #ddd;
-  text-align: center;
+  padding: 8px; /* 셀 내부 여백 */
+  border: 1px solid #ddd; /* 셀 경계선 스타일 */
+  text-align: center; /* 텍스트 중앙 정렬 */
 }
 
+/* 테이블 헤더 배경 및 글자 스타일 */
 .sales-table th {
-  background-color: #f2f2f2;
-  font-weight: bold;
+  background-color: #f2f2f2; /* 헤더 배경색 */
+  font-weight: bold; /* 글자 굵게 */
 }
 </style>
