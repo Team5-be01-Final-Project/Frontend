@@ -214,8 +214,9 @@
               voucSales: productInfo.ppcSale * this.selectedQuantity,
             };
             this.addproductlist.push(newProduct);
-            // 입력 필드 초기화
-            this.selectedQuantity = 0;
+
+            this.selectedQuantity = 0;// 입력 필드 초기화
+            this.selectedProduct = null; // 선택된 상품 초기화
           } else {
             alert("상품을 선택하고, 유효한 수량을 입력하세요.");
           }
@@ -259,7 +260,8 @@
               .catch(error => {
                 if (error.response && error.response.status === 409) {
                   // 재고 부족 에러 처리
-                  alert("재고가 부족합니다: " + error.response.data);
+                  alert("전표 저장에 실패했습니다: " + error.response.data);
+                  this.fetchProducts();
                 } else {
                   // 기타 에러 처리
                   alert("전표 저장에 실패했습니다: " + error.message);
