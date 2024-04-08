@@ -198,7 +198,7 @@
             console.log("Product info is undefined or ppcStock is not available.");
           }
         },
-        addProduct() { //전표에 판매 상품 추가
+        addProduct() { //리스트에 판매 상품 추가
           console.log(this.selectedProduct)
           console.log(this.products);
           console.log(this.selectedQuantity);
@@ -219,8 +219,7 @@
             alert("상품을 선택하고, 유효한 수량을 입력하세요.");
           }
         },
-        removeProduct(index) {
-          // 지정된 인덱스의 상품을 리스트에서 제거
+        removeProduct(index) { //리스트에서 판매 상품 삭제
           this.addproductlist.splice(index, 1);
         },
         fetchVoucherId(){//전표 번호 가져오기
@@ -232,7 +231,7 @@
             console.error('전표번호 생성 중 오류:', error);
           });
         },
-        SaveVoucher() {
+        SaveVoucher() { //전표 등록
           // 전송할 전체 데이터 구성
           if(this.clientCode!==""){
             const voucherData = {
