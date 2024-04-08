@@ -7,6 +7,10 @@
     <div>
       <div class="header">
         <h3 class="va-h3">출고전표 결재</h3>
+        <div class="button-container" v-if="showApproveButton || showRejectButton">
+          <button v-if="showApproveButton" @click="approveVoucherDetails" class="approve-button">승인</button>
+          <button v-if="showRejectButton" @click="rejectVoucherDetails" class="reject-button">반려</button>
+        </div>
       </div>
       <div class="spacer" style="height: 20px"></div>
       <div class="voucher-info">
@@ -93,6 +97,10 @@ export default {
           this.signerName = firstDetail.signerName;
           this.clientName = firstDetail.clientName;
           this.proCode = firstDetail.proCode;
+
+          // empName과 signerName이 동일한 경우에만 버튼 활성화
+          this.showApproveButton = this.empName.trim() === this.signerName.trim();
+          this.showRejectButton = this.empName.trim() === this.signerName.trim();
         }
       } catch (error) {
         console.error("Error fetching voucher details:", error);
@@ -146,8 +154,32 @@ export default {
   margin-bottom: 20px;
 }
 
+.button-container {
+  display: flex;
+  gap: 10px;
+  z-index: 1;
+}
 
+.approve-button,
+.reject-button,
+.reject-details-button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
 
+.approve-button {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.reject-button,
+.reject-details-button {
+  background-color: #F44336;
+  color: white;
+}
 
 .voucher-info {
   margin-bottom: 20px;
