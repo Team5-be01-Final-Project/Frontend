@@ -90,7 +90,7 @@ const pageCount = computed(() => {
 // 서버에서 재고 목록을 가져오는 비동기 함수
 async function fetchStockList() {
   try {
-    const response = await axios.get("/api/stocks/all");
+    const response = await axios.get("/stocks/all");
     stockList.value = response.data;
   } catch (error) {
     console.error("재고 목록을 가져오는 데 실패했습니다:", error);
@@ -139,7 +139,7 @@ const searchStockList = async () => {
       proName = filter.value;
     }
 
-    const response = await axios.get("/api/stocks/search", {
+    const response = await axios.get("/stocks/search", {
       params: {
         proCode: proCode,
         proName: proName,

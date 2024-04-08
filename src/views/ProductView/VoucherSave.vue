@@ -170,7 +170,7 @@
         fetchProducts() { //선택한 거래처의 상품리스트 가져오기
           if (!this.selectedClient) return;
           console.log(this.selectedClient)
-          axios.get(`/api/products/${this.selectedClient.value}/ppcs`)
+          axios.get(`/products/${this.selectedClient.value}/ppcs`)
             .then(response => {
               this.products = response.data.map(product => ({
                 ...product,
@@ -217,7 +217,7 @@
           }
         },
         fetchVoucherId(){//전표 번호 가져오기
-          axios.get('/api/vouchers/voucId')
+          axios.get('/vouchers/voucId')
           .then(response => {
             this.voucId = response.data.voucId; // 백엔드로부터 받은 전표번호를 저장
           })
@@ -270,7 +270,7 @@
                     voucSales: item.voucSales,
                 };
                 console.log(voucherData);
-                axios.post('/api/vouchers/save', voucherData)
+                axios.post('/vouchers/save', voucherData)
                     .then(response => {
                         console.log("Item saved successfully");
                         // 여기에 성공 로직 추가(예: 성공 메시지 표시)

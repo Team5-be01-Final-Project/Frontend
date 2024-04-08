@@ -8,7 +8,8 @@ import router from './router'
 
 import axios from "axios"
 
-axios.defaults.baseURL="http://localhost:8081"
+axios.defaults.baseURL="http://localhost:8081/api"
+//axios.defaults.baseURL="https://bpssystem.store/api" 배포용 URL
 axios.defaults.withCredentials = true; // withCredentials 전역 설정
 
 const app = createApp(App)
