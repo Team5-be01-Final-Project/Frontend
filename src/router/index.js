@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Login from '@/views/Login.vue'
+import NotFound from '@/components/NotFound.vue' // 404 컴포넌트 임포트
 import Cookies from 'js-cookie'
 
 const router = createRouter({
@@ -14,7 +15,7 @@ const router = createRouter({
       path: '/',
       name: 'home',
       beforeEnter: (to, from, next) => {
-        // const isAuthenticated = !!Cookies.get('empAuthCode');
+        const isAuthenticated = !!Cookies.get('empAuthCode');
         if (isAuthenticated) {
           next({ name: 'dashboard' });
         } else {
@@ -49,11 +50,13 @@ const router = createRouter({
           path: 'employeesspec',
           name: 'employeesspec',
           component: () => import('../views/SystemView/EmployeesSpec.vue'),
+          meta: { allowedAuthCodes: ['AUTH001', 'AUTH002', 'AUTH003'] }//팀장 이상만 접속
         },
         {
           path: 'employeeslist',
           name: 'employeeslist',
           component: () => import('../views/SystemView/EmployeesList.vue'),
+          meta: { allowedAuthCodes: ['AUTH001', 'AUTH002'] }//대표 이상만 접속
         },
         {
           path: 'templog',
@@ -74,24 +77,27 @@ const router = createRouter({
           component: () => import('../views/ProductView/ViewProduct.vue')
         },
         {
+          path: 'ppccrud',
+          name: 'ppccrud',
+          component: () => import('../views/ProductView/PpcCrud.vue'),
+          meta: { allowedAuthCodes: ['AUTH001', 'AUTH002', 'AUTH003'] }//팀장 이상만 접속
+        },
+        {
           path: 'ppcview',
           name: 'ppcview',
           component: () => import('../views/ProductView/PpcView.vue')
         },
         {
-          path: 'ppccrud',
-          name: 'ppccrud',
-          component: () => import('../views/ProductView/PpcCrud.vue')
-        },
-        {
           path: 'stockList',
           name: 'stockList',
-          component: () => import('../views/ProductView/StockList.vue')
+          component: () => import('../views/ProductView/StockList.vue'),
+          meta: { allowedAuthCodes: ['AUTH001', 'AUTH002', 'AUTH003'] }//팀장 이상만 접속
         },
         {
           path: 'vouchersave',
           name: 'vouchersave',
           component: () => import('../views/ProductView/VoucherSave.vue'),
+          meta: { allowedAuthCodes: ['AUTH001', 'AUTH004'] } //영업사원과 IT관리자만 접속
         },
         {
           path: 'viewvoucher',
@@ -112,15 +118,15 @@ const router = createRouter({
       meta: { requiresAuth: true },
       children: [
         {
+          path: 'productsales',
+          name: 'productsales',
+          component: () => import('../views/SalesView/ProductSales.vue')
+        },
+        {
           path: 'clientsales',
           name: 'clientSales',
           component: () => import('../views/SalesView/ClientSales.vue')
         },
-        {
-          path: 'productsales',
-          name: 'productsales',
-          component: () => import('../views/SalesView/ProductSales.vue')
-        }
       ]
     },
     {
@@ -130,9 +136,16 @@ const router = createRouter({
       meta: { requiresAuth: true },
       children: [
         {
+          path: 'incentivelist',
+          name: 'incentivelist',
+          component: () => import('../views/BusinessView/IncentiveList.vue'),
+          meta: { allowedAuthCodes: ['AUTH001', 'AUTH002', 'AUTH003'] }//팀장 이상만 접속
+        },
+        {
           path: 'clientsave',
           name: 'clientsave',
-          component: () => import('../views/BusinessView/Clientsave.vue')
+          component: () => import('../views/BusinessView/Clientsave.vue'),
+          meta: { allowedAuthCodes: ['AUTH001', 'AUTH002', 'AUTH003'] }//팀장 이상만 접속
         },
         {
           path: 'viewclient',
@@ -142,13 +155,9 @@ const router = createRouter({
         {
           path: 'ClientDetail/:clientCode',
           name: 'ClientDetail',
-          component: () => import('../views/BusinessView/ClientDetail.vue')
+          component: () => import('../views/BusinessView/ClientDetail.vue'),
+          meta: { allowedAuthCodes: ['AUTH001', 'AUTH002', 'AUTH003'] }//팀장 이상만 접속
         },
-        {
-          path: 'incentivelist',
-          name: 'incentivelist',
-          component: () => import('../views/BusinessView/IncentiveList.vue'),
-        }
       ]
     },
     {
@@ -162,7 +171,7 @@ const router = createRouter({
 
 // AUTH000, AUTH001, AUTH002, AUTH003,  AUTH004
 // 퇴사자, IT관리자, 경영관리자, 영업팀장, 영업사원
-// 전역 가드를 사용한 사용자 인증과 권한 확인
+//전역 가드를 사용한 사용자 인증과 권한 확인
 router.beforeEach((to, from, next) => { //페이지를 이동하기 전에 매번 호출되는 전역 가드 함수
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth); //라우터의 인증 요구 여부 확인
   const allowedAuthCodes = to.matched.some(record => record.meta.allowedAuthCodes) ? 
