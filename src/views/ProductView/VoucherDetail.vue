@@ -96,9 +96,11 @@ export default {
           this.empName = firstDetail.empName;
           this.signerName = firstDetail.signerName;
           this.clientName = firstDetail.clientName;
-          this.showApproveButton = firstDetail.showApproveButton;
-          this.showRejectButton = firstDetail.showRejectButton;
           this.proCode = firstDetail.proCode;
+
+          // empName과 signerName이 동일한 경우에만 버튼 활성화
+          this.showApproveButton = this.empName.trim() === this.signerName.trim();
+          this.showRejectButton = this.empName.trim() === this.signerName.trim();
         }
       } catch (error) {
         console.error("Error fetching voucher details:", error);
@@ -137,6 +139,7 @@ export default {
   },
 };
 </script>
+
 
 
 <style scoped>
