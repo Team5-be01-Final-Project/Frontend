@@ -1,9 +1,6 @@
 <template>
   <div>
-    <h2>월별 매출 현황</h2>
-    <select v-model="selectedYear" @change="fetchMonthlySales">
-      <option v-for="year in years" :key="year" :value="year">{{ year }}년</option>
-    </select>
+    <h4>월별 매출 현황</h4>
     <div class="chart-container">
       <canvas ref="monthlySalesChartRef"></canvas>
     </div>
@@ -111,5 +108,10 @@ watch(selectedYear, fetchMonthlySales);
   height: 500px;
   /* 또는 적절한 높이로 설정 */
   width: 800px;
+}
+
+h4 {
+  font-size: 20px;
+  /* h4 태그의 폰트 사이즈를 키움 */
 }
 </style>

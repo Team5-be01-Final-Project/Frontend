@@ -1,9 +1,10 @@
 <template>
+    <h4>현재 차량 온도</h4>
     <div class="carTempCharts">
         <div style="display: flex; align-items: center;">
             <canvas id="carTempChart"></canvas>
-            <button @click="fetchData" style="margin-left: 10px;">
-                <i class="fas fa-sync-alt"></i> 새로고침
+            <button class="refresh-button" @click="fetchData">
+                <va-icon spin="clockwise" name="refresh" />
             </button>
         </div>
     </div>
@@ -81,8 +82,30 @@ export default {
 </script>
 
 <style scoped>
-.carTempCharts
-{
+.carTempCharts {
     height: 300px;
+}
+
+h4 {
+    font-size: 20px;
+    /* h4 태그의 폰트 사이즈를 키움 */
+}
+
+.temperature-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    /* 온도를 나타내는 텍스트의 폰트 사이즈를 키움 */
+}
+
+.refresh-button {
+    margin-left: 10px;
+    display: flex;
+    /* Flexbox를 사용하여 내용물을 중앙에 배치 */
+    justify-content: center;
+    /* 가로축 중앙 정렬 */
+    align-items: center;
+    /* 세로축 중앙 정렬 */
 }
 </style>

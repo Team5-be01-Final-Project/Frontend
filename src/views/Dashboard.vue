@@ -40,7 +40,6 @@
 
 <script setup>
 import { ref } from "vue";
-import axios from "axios";
 import CarTempBarchart from "@/components/charts/CarTempBarchart.vue";
 import Warehouse from "@/components/charts/Warehouse.vue";
 import POI from "@/components/charts/POI.vue";
@@ -66,6 +65,8 @@ const selectedMonth = ref(new Date().getMonth() + 1);
   height: 100vh;
   margin: 0;
   padding: 20px;
+  overflow: auto;
+  /* 컨테이너 내용이 넘치면 스크롤바 생성 */
 }
 
 /* 위쪽 그리드 스타일 */
@@ -73,9 +74,8 @@ const selectedMonth = ref(new Date().getMonth() + 1);
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
-  height: 50vh;
-}
 
+}
 
 
 /* 최우수 사원 정보 및 차트 그룹 컨테이너 스타일 */
@@ -85,6 +85,7 @@ const selectedMonth = ref(new Date().getMonth() + 1);
   flex-direction: column;
   gap: 0px;
 }
+
 /* 연도/월 선택 컨테이너 스타일 */
 .date-selectors-container {
   margin-bottom: 10px;
@@ -100,13 +101,13 @@ const selectedMonth = ref(new Date().getMonth() + 1);
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
-  height: 50vh;
+  height: 70vh;
 }
 
 /* POI 정보 및 월별 매출 차트 컨테이너 스타일 */
 .poi-container,
 .month-sale-container {
-  height: 400px;
+  height: 550px;
 }
 
 /* 기타 스타일 */
@@ -130,16 +131,31 @@ const selectedMonth = ref(new Date().getMonth() + 1);
   min-width: 1000px;
 }
 
-/* 컴포넌트 테두리 스타일 */
+
+/* 컴포넌트 테두리 스타일 및 box-sizing 적용 */
 .poi-map-container,
 .top-employee-group-container,
 .chart-group-container,
 .poi-container,
 .month-sale-container {
-  border: 2px solid #ECF0F1; /* 검은색 실선 테두리, 두께 2px */
-  border-radius: 10px; /* 테두리 모서리 둥글게 */
-  padding: 10px; /* 테두리 내부 여백 */
-  margin-bottom: 20px; /* 컴포넌트 하단 여백 */
+  border: 2px solid #ECF0F1;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+  /* 패딩과 테두리를 포함한 총 크기를 요소의 크기로 계산 */
 }
 
+/* 그리드 컨테이너 스타일 */
+.grid-top,
+.grid-bottom {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  /* .grid-top의 경우 */
+  /* grid-template-columns: repeat(2, 1fr); .grid-bottom의 경우 */
+  gap: 20px;
+  overflow: hidden;
+  /* 내부 컴포넌트가 윤곽을 초과할 경우 숨김 */
+  /* 또는 overflow: auto; 필요한 경우 스크롤바 생성 */
+}
 </style>

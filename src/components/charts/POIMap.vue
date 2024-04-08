@@ -1,6 +1,6 @@
 <template>
   <h4>이달의 우수지점</h4>
-  <div id="map" style="width: 100%; height: 330px;"></div>
+  <div id="map" style="width: 100%; height: 450px;"></div>
 </template>
 
 <script setup>
@@ -76,3 +76,10 @@ onMounted(() => {
   displayClientsOnMap();
 });
 </script>
+
+<style scoped>
+h4 {
+  font-size: 20px;
+  /* h4 태그의 폰트 사이즈를 키움 */
+}
+</style>

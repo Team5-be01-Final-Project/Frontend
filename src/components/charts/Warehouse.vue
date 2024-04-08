@@ -1,15 +1,17 @@
 <template>
-  <div>
-    <p v-if="srg10Temp !== null">현재 창고 온도: {{ srg10Temp }}°C</p>
-    <button @click="fetchData">
-      <va-icon name='refresh' /> 새로고침
-    </button>
+  <h4>현재 창고 온도</h4>
+  <div class="warehouse-container">
+    <div class="temperature-display">
+      <p v-if="srg10Temp !== null">현재 창고 온도: {{ srg10Temp }}°C</p>
+      <button class="refresh-button" @click="fetchData">
+        <va-icon name="refresh" spin="clockwise"/>
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
-
 
 export default {
   name: 'Warehouse',
@@ -36,11 +38,27 @@ export default {
 </script>
 
 <style scoped>
-/* 컴포넌트 최상위 요소 스타일 */
-div {
-  background-color: #f0f0f0;
-  /* 배경색을 회색으로 설정 */
-  text-align: center;
-  /* 이미지를 중앙 정렬 */
+.warehouse-container {
+  background-color: #f0f0f0; /* 배경색을 회색으로 설정 */
+  text-align: center; /* 이미지를 중앙 정렬 */
+  padding: 10px;
 }
+
+h4 {
+  font-size: 20px; /* h4 태그의 폰트 사이즈를 키움 */
+}
+.temperature-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px; /* 온도를 나타내는 텍스트의 폰트 사이즈를 키움 */
+}
+
+.refresh-button {
+  margin-left: 10px;
+  display: flex; /* Flexbox를 사용하여 내용물을 중앙에 배치 */
+  justify-content: center; /* 가로축 중앙 정렬 */
+  align-items: center; /* 세로축 중앙 정렬 */
+}
+
 </style>
