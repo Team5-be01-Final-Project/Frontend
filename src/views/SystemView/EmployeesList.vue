@@ -10,14 +10,7 @@
       <div class="va-table-responsive">
         <h3 class="va-h3">사원 리스트 조회</h3>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 items-end">
-          <VaSelect v-model="selectedDept" placeholder="부서" :options="[
-            { text: '전체', value: '' },
-            { text: '이사회', value: '이사회' },
-            { text: '영업 1팀', value: '영업 1팀' },
-            { text: '영업 2팀', value: '영업 2팀' },
-            { text: '영업 3팀', value: '영업 3팀' },
-            { text: '시스템', value: '시스템' }
-          ]" value-by="value" />
+          <VaSelect v-model="selectedDept" placeholder="부서" :options=deptOptions value-by="value" />
           <VaSelect v-model="selectedSearchCondition" placeholder="검색 조건" :options="[
             { text: '이름', value: 'empName' },
             { text: '이메일', value: 'empEmail' },
@@ -82,6 +75,7 @@
 import axios from 'axios';
 import { VaButton } from 'vuestic-ui/web-components';
 import SystemSidebar from '@/components/sidebar/SystemSidebar.vue'
+import { deptOptions } from '@/utils/departmentOptions.js'; 
 
 
 export default {
