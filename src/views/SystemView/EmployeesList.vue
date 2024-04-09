@@ -10,7 +10,7 @@
       <div class="va-table-responsive">
         <h3 class="va-h3">사원 리스트 조회</h3>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 items-end">
-          <VaSelect v-model="selectedDept" placeholder="부서" :options=deptOptions value-by="value" />
+          <VaSelect v-model="selectedDept" placeholder="부서" :options=deptOptions />
           <VaSelect v-model="selectedSearchCondition" placeholder="검색 조건" :options="[
             { text: '이름', value: 'empName' },
             { text: '이메일', value: 'empEmail' },
@@ -74,8 +74,8 @@
 <script>
 import axios from 'axios';
 import { VaButton } from 'vuestic-ui/web-components';
-import SystemSidebar from '@/components/sidebar/SystemSidebar.vue'
-import { deptOptions } from '@/utils/departmentOptions.js'; 
+import SystemSidebar from '@/components/sidebar/SystemSidebar.vue';
+import { departmentOptions } from '@/utils/departmentOptions.js'; 
 
 
 export default {
@@ -84,10 +84,11 @@ export default {
   },
   data() {
     return {
+      deptOptions: departmentOptions,
       employees: [],
       loading: true,
-      currentPage: 1,
-      selectedDept: null, // 부서 선택을 위한 변수
+      // currentPage: 1,
+      selectedDept: '', // 부서 선택을 위한 변수
       selectedSearchCondition: null, // 검색 조건 선택을 위한 변수
       searchText: '', // 검색어 입력을 위한 변수
       employee: {
@@ -125,7 +126,12 @@ export default {
       try {
         const params = new URLSearchParams();
         if (this.selectedDept) {
-          params.append('deptName', this.selectedDept);
+          if(this.selectedDept.text === '전체'){
+            params.append('deptName', this.selectedDept.value);
+          }else{
+            params.append('deptName', this.selectedDept.text);
+          }
+          
         }
         if (this.searchText && this.selectedSearchCondition) {
           params.append(this.selectedSearchCondition, this.searchText);
