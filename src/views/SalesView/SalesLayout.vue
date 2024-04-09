@@ -18,7 +18,4 @@
     padding: 20px;
   }
   
-  .sales-content {
-    margin-top: 20px;
-  }
   </style>

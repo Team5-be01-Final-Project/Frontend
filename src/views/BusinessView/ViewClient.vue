@@ -6,24 +6,15 @@
       <BusinessSidebar />
     </div>
 
-    <div class="client-list">
+    <div class="Main">
       <div class="va-table-responsive">
-        <h3 class="va-h3">거래처 목록</h3>
+        <h3 class="va-h3">거래처 조회</h3>
         <div class="grid md:grid-cols-3 gap-6 mb-6 items-center">
-          <VaSelect
-            v-model="selectedField"
-            placeholder="검색할 필드 선택"
-            :options="searchOptions"
-            value-by="value"
-          />
-          <VaInput
-            v-model="searchKeyword"
-            placeholder="검색어 입력"
-            class="w-full search-input"
-          />
+          <VaSelect v-model="selectedField" placeholder="검색 조건" :options="searchOptions" value-by="value" />
+          <VaInput v-model="searchKeyword" placeholder="검색어 입력" class="w-full search-input" />
           <VaButton @click="searchClients" class="search-button">검색</VaButton>
         </div>
-        <table class="va-table va-table--hoverable">
+        <table class="va-table va-table--hoverable full-width">
           <thead>
             <tr>
               <th>사업자등록번호</th>
@@ -48,7 +39,7 @@
               <td>{{ client.clientEmp }}</td>
               <td>{{ client.clientEmpTel }}</td>
               <td>
-                <VaButton color="danger" @click="deleteClient(client.clientCode)">삭제</VaButton>
+                <VaButton color="danger" @click="deleteClient(client.clientCode)" v-if="canDeleteClient">삭제</VaButton>
               </td>
             </tr>
           </tbody>
@@ -64,9 +55,10 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted,watch } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
+import Cookies from 'js-cookie';
 import { VaSelect, VaInput, VaButton } from 'vuestic-ui';
 import BusinessSidebar from '@/components/sidebar/BusinessSidebar.vue';
 
@@ -79,6 +71,7 @@ const currentPage = ref(1); // 현재 페이지
 const perPage = ref(10); // 페이지당 보여줄 거래처 수
 
 const searchOptions = ref([
+  { text: '전체', value: '전체' },
   { text: '거래처명', value: 'clientName' },
   { text: '병원 분류', value: 'clientClass' },
   { text: '대표명', value: 'clientBoss' },
@@ -133,6 +126,12 @@ function prevPage() {
   }
 }
 
+// 삭제 권한 확인
+const canDeleteClient = computed(() => {
+  const userRole = Cookies.get('empAuthCode');
+  return ['AUTH001', 'AUTH002', 'AUTH003'].includes(userRole); // 여러 권한 확인
+});
+
 // 거래처 삭제
 function deleteClient(clientCode) {
   if (confirm(`정말로 거래처를 삭제하시겠습니까? [${clientCode}]`)) {
@@ -150,15 +149,49 @@ function deleteClient(clientCode) {
 
 // 거래처 검색
 function searchClients() {
+  // 병원 분류 텍스트를 숫자로 매핑하는 객체
+  const classMapping = {
+    '1차 병원': 1,
+    '2차 병원': 2,
+    '3차 병원': 3,
+  };
+
+  // 검색 결과 필터링
   if (selectedField.value && searchKeyword.value) {
-    searchResults.value = clients.value.filter(client =>
-      String(client[selectedField.value]).toLowerCase().includes(searchKeyword.value.toLowerCase())
-    );
+    if (selectedField.value === 'clientClass') {
+      // 병원 분류로 검색하는 경우
+      const classValue = Object.keys(classMapping).find(key => key.toLowerCase().includes(searchKeyword.value.toLowerCase()));
+      if (classValue) {
+        searchResults.value = clients.value.filter(client =>
+          client[selectedField.value] === classMapping[classValue]
+        );
+      } else {
+        // 매핑되는 병원 분류가 없는 경우 검색 결과 없음
+        searchResults.value = [];
+      }
+    } else {
+      // 그 외 필드로 검색하는 경우
+      searchResults.value = clients.value.filter(client =>
+        String(client[selectedField.value]).toLowerCase().includes(searchKeyword.value.toLowerCase())
+      );
+    }
   } else {
+    // 검색 조건이 없는 경우 전체 목록을 표시
     searchResults.value = clients.value;
   }
+
+  
+
   currentPage.value = 1; // 검색 후 현재 페이지를 1로 초기화
 }
+
+watch(selectedField, (newValue) => {
+  // "전체"가 선택되었을 때 검색어 입력란을 초기화합니다.
+  if (newValue === '전체') {
+    searchKeyword.value = '';
+  }
+});
+
 
 onMounted(() => {
   fetchClients();
@@ -166,13 +199,10 @@ onMounted(() => {
 </script>
 
 <style>
-.va-table-responsive {
-  overflow: auto;
-}
-
 .search-input {
-    margin-right: 16px; /* 오른쪽 마진 추가 */
-  }
+  margin-right: 16px;
+  /* 오른쪽 마진 추가 */
+}
 
 .pagination {
   display: flex;
@@ -188,4 +218,24 @@ onMounted(() => {
   cursor: pointer;
 }
 
+.flex {
+  display: flex;
+}
+
+.sidebar {
+  width: 250px;
+  /* 사이드바의 너비를 조절하세요 */
+  /* 필요에 따라 추가 스타일링 */
+}
+
+.Main {
+  flex-grow: 1;
+  /* 메인 콘텐츠가 남은 공간을 모두 차지하도록 함 */
+  /* 필요에 따라 추가 스타일링 */
+}
+
+.full-width {
+  width: 100%;
+  /* 테이블이 화면에 꽉 차도록 설정 */
+}
 </style>

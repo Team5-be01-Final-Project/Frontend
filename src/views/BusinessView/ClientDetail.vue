@@ -6,8 +6,8 @@
       <BusinessSidebar />
     </div>
 
-    <div>
-      <h3>거래처 정보 수정</h3>
+    <div class = "Main">
+      <h3 class="va-h3">거래처 정보 수정</h3>
       <div class="form-container">
         <form @submit.prevent="submitForm">
           <div class="form-group">
@@ -62,8 +62,8 @@
           <div class="col-span-1" style="height: 50px;"></div>
           <div class="col-span-1" style="height: 50px;"></div>
           <div class="form-group actions">
-            <va-button color="primary" type="submit">수정 완료</va-button>
-            <va-button color="secondary" @click="cancel">취소</va-button>
+            <button color="primary" type="submit" style="width: 45%;">수정 완료</button>
+            <button color="danger" type="submit" style="width: 45%;" @click="cancel">취소</button>
           </div>
         </form>
       </div>
@@ -175,7 +175,7 @@ const submitForm = async () => {
     const response = await axios.put(`/clients/${client.value.clientCode}`, clientData);
     console.log(response.data);
     alert("거래처 수정이 완료되었습니다.");
-    router.push('/viewclient');
+    router.push({ name: 'viewclient' });
   } catch (error) {
     console.error("Failed to update client:", error);
     alert("거래처 수정에 실패했습니다.");
@@ -184,7 +184,7 @@ const submitForm = async () => {
 
 // Cancel and go back to previous page or specific route
 const cancel = () => {
-  router.push('/viewclient'); // Or use router.back() to go to the previous page
+  router.push({ name: 'viewclient' }); // Or use router.back() to go to the previous page
 };
 
 onMounted(() => {

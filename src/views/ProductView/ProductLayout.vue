@@ -18,7 +18,5 @@
     padding: 20px;
   }
   
-  .product-content {
-    margin-top: 20px;
-  }
+
   </style>

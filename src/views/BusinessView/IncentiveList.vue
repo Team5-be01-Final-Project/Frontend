@@ -5,13 +5,14 @@
       <BusinessSidebar/>
     </div>
 
-    <div class="va-table-responsive">
+    <div class="Main">
       <h3 class="va-h3">인센티브 현황</h3>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4 items-end">
         <va-select
           v-model="selectedDepartment"
           placeholder="부서 선택"
           :options="deptOption"
+          :disabled="isDeptSelectDisabled"
         />
         <va-select
           v-model="selectedYear"
@@ -26,7 +27,7 @@
         <VaButton @click="applyFilter">검색</VaButton>
       </div>
 
-      <table class="va-table va-table--hoverable">
+      <table class="va-table va-table--hoverable full-width">
         <thead>
           <tr>
             <th>직원 이름</th>
@@ -56,7 +57,8 @@
   import { yearOptions } from '@/utils/yearOptions.js'; 
   import { monthOptions } from '@/utils/monthOptions.js'; 
   import formatNumberWithCommas from '@/utils/formatNumberWithCommas.js';
-  import BusinessSidebar from '@/components/sidebar/BusinessSidebar.vue'
+  import BusinessSidebar from '@/components/sidebar/BusinessSidebar.vue';
+  import Cookies from 'js-cookie';
   
   export default {
     components:{
@@ -78,13 +80,31 @@
         selectedMonth: defaultMonthOption,
         selectedMonthhistory: defaultMonthOption,
         monthOption: monthOptions,
-        filteredData: [] // 필터링된 데이터를 저장할 배열
+        filteredData: [], // 필터링된 데이터를 저장할 배열
+        isDeptSelectDisabled: false
       }
     },
+    created() {
+      this.userAuthCode = Cookies.get('empAuthCode');
+      this.userDeptCode = Cookies.get('deptCode');
+
+      if(this.userAuthCode === 'AUTH003') {
+        const userDept = this.deptOption.find(dept => dept.value === this.userDeptCode);
+        if(userDept) {
+          this.selectedDepartment = userDept;
+        }
+        // 부서 선택 컴포넌트를 비활성화합니다.
+        this.isDeptSelectDisabled = true;
+      }
+
+    },
     mounted() {
-      this.fetchIncentives(this.selectedYear, this.selectedMonth);
+      this.fetchIncentives(this.selectedYear, this.selectedMonth).then(() => {
+        this.applyFilter();
+      });
     },
     methods: {
+      formatNumberWithCommas,
       async fetchIncentives(year, month) {
         try {
           const response = await axios.get(`/api/incentive/list?year=${year.value}&month=${month.value}`);
@@ -96,7 +116,6 @@
         this.selectedYearhistory = this.selectedYear;
         this.selectedMonthhistory = this.selectedMonth; // 비동기 호출이 성공한 후 업데이트
       },
-      formatNumberWithCommas,
       async applyFilter() {
         // 연도나 월 변경 시 데이터 다시 가져오기
         const yearChanged = this.selectedYear !== this.selectedYearhistory;
@@ -130,9 +149,7 @@
     width: 250px; /* 사이드바의 너비를 조절하세요 */
     /* 필요에 따라 추가 스타일링 */
   }
-  .va-table-responsive {
-    overflow: auto;
-  }
+  
   .pagination {
     margin-top: 20px;
   }
@@ -142,16 +159,19 @@
     margin-right: 5px;
   }
 
-  .va-table {
-  /* min-width: 1000px; */
-  }
-
   td.money-right {
     text-align: right;
   }
 
-  .va-table-responsive {
-    flex-grow: 1; /* 메인 콘텐츠가 남은 공간을 모두 차지하도록 함 */
-    /* 필요에 따라 추가 스타일링 */
-  }
+
+.Main {
+  flex-grow: 1;
+  /* 메인 콘텐츠가 남은 공간을 모두 차지하도록 함 */
+  /* 필요에 따라 추가 스타일링 */
+}
+
+.full-width {
+  width: 100%;
+  /* 테이블이 화면에 꽉 차도록 설정 */
+}
   </style>

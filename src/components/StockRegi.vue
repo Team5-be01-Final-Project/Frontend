@@ -1,15 +1,16 @@
+<!-- StockRegi.vue -->
 <template>
   <div class="modal">
     <div class="modal-content">
       <h2 class="modal-title">재고 등록</h2>
       <form @submit.prevent="submitForm">
         <div class="form-group">
-          <label for="proCode">품목코드</label>
-          <input type="text" id="proCode" v-model="proCode" @input="getProductInfo" required>
+          <label for="proName">제품명</label>
+          <input type="text" id="proName" v-model="proName" @input="getProductInfo" required>
         </div>
         <div class="form-group">
-          <label for="proName">제품명</label>
-          <input type="text" id="proName" v-model="proName" readonly>
+          <label for="proCode">품목코드</label>
+          <input type="text" id="proCode" v-model="proCode" readonly>
         </div>
         <div class="form-group">
           <label for="stoAmo">재고수량</label>
@@ -29,24 +30,23 @@ import { ref } from 'vue'; // Vue Composition API에서 ref 함수 가져오기
 import axios from 'axios'; // axios 라이브러리 가져오기
 
 // 변수 선언
-const proCode = ref(''); // 품목코드 상태 변수
 const proName = ref(''); // 제품명 상태 변수
+const proCode = ref(''); // 품목코드 상태 변수
 const stoAmo = ref(0); // 재고수량 상태 변수
-
 const emit = defineEmits(['close']); // close 이벤트 정의
 
-// 특정 품목코드의 제품 정보를 가져오는 비동기 함수
+// 특정 제품명의 제품 정보를 가져오는 비동기 함수
 async function getProductInfo() {
-  if (proCode.value) { // 품목코드 값이 있는 경우에만 실행
+  if (proName.value) { // 제품명 값이 있는 경우에만 실행
     try {
-      const response = await axios.get(`/api/stocks/product/${proCode.value}`); // API를 호출하여 제품 정보 가져오기
-      proName.value = response.data.proName; // 제품명 업데이트
+      const response = await axios.get(`/stocks/product/${proName.value}`); // API를 호출하여 제품 정보 가져오기
+      proCode.value = response.data.proCode; // 품목코드 업데이트
     } catch (error) {
       console.error('제품 정보 조회 실패:', error); // 에러 처리
-      proName.value = ''; // 제품명 초기화
+      proCode.value = ''; // 품목코드 초기화
     }
   } else {
-    proName.value = ''; // 품목코드가 비어있는 경우 제품명 초기화
+    proCode.value = ''; // 제품명이 비어있는 경우 품목코드 초기화
   }
 }
 
@@ -54,10 +54,10 @@ async function getProductInfo() {
 async function submitForm() {
   try {
     const stockRegisterDTO = {
-      proCode: proCode.value, // 품목코드
+      proName: proName.value, // 제품명
       stoAmo: stoAmo.value // 재고수량
     };
-    await axios.post('/api/stocks/register', stockRegisterDTO); // 재고 등록 API 호출
+    await axios.post('/stocks/register', stockRegisterDTO); // 재고 등록 API 호출
     alert('재고 등록이 완료되었습니다.'); // 성공 메시지 알림
     closeModal(); // 모달 닫기
   } catch (error) {
@@ -68,8 +68,8 @@ async function submitForm() {
 
 // 모달 닫기 함수
 function closeModal() {
-  proCode.value = ''; // 품목코드 초기화
   proName.value = ''; // 제품명 초기화
+  proCode.value = ''; // 품목코드 초기화
   stoAmo.value = 0; // 재고수량 초기화
   emit('close'); // close 이벤트 발생
 }

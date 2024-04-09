@@ -18,7 +18,4 @@
     padding: 20px;
   }
   
-  .business-content {
-    margin-top: 20px;
-  }
   </style>

@@ -37,10 +37,6 @@
                       <span class="voucher-info-value">{{ empName }}</span>
                   </div>
                   <div class="voucher-info-item">
-                      <span class="voucher-info-label">차량번호:</span>
-                      <span class="voucher-info-value">{{ storageCar }}</span>
-                  </div>
-                  <div class="voucher-info-item">
                     <span class="voucher-info-label">결재자:</span>
                     <span class="voucher-info-value">{{ signerName }}</span>
                   </div>
@@ -48,13 +44,17 @@
           </div>
           <div class="voucher-info">
               <div class="voucher-info-row">
-                  <va-select v-model="selectedClient" placeholder="거래처 선택" :options="clientOptions" @update:modelValue="fetchProducts()" />
+                  <va-select v-model="selectedClient" 
+                  placeholder="거래처 선택" 
+                  :options="clientOptions" 
+                  :disabled="addproductlist.length > 0"
+                  @update:modelValue="fetchProducts()" />
               </div>
               <div class="voucher-info-row">
                   <va-select v-model="selectedProduct" placeholder="상품 선택" :options="productOptions" @update:modelValue="fetchProductStock()" />
                   <div v-if="selectedProduct">
                       <span class="voucher-info-label">재고량: </span>
-                      <span class="voucher-info-value">{{ selectedProductStock }}</span>
+                      <span class="voucher-info-value">{{ formatNumberWithCommas(selectedProductStock) }}</span>
                   </div>
                   <va-input type="number" v-model.number="selectedQuantity" placeholder="수량" />
                   <button @click="addProduct" class="approve-button">추가</button>
@@ -71,6 +71,7 @@
                   <th>판매가</th>
                   <th>수량</th>
                   <th>금액</th>
+                  <th>삭제</th>
                 </tr>
               </thead>
               <tbody>
@@ -78,9 +79,12 @@
                   <td>{{ index+1 }}</td>
                   <td>{{ product.proCode }}</td>
                   <td>{{ product.proName }}</td>
-                  <td>{{ product.voucSale }}</td>
-                  <td>{{ product.voucAmount }}</td>
-                  <td>{{ product.voucSales }}</td>
+                  <td>{{ formatNumberWithCommas(product.voucSale) }}</td>
+                  <td>{{ formatNumberWithCommas(product.voucAmount) }}</td>
+                  <td>{{ formatNumberWithCommas(product.voucSales) }}</td>
+                  <td>
+                    <VaButton @click="removeProduct(index)" class="delete-button">삭제</VaButton>
+                  </td>
                 </tr>
               </tbody>
           </table>
@@ -92,6 +96,7 @@
   import axios from "axios";
     import VoucherApproval from "@/components/VoucherApproval.vue";
     import ProductSidebar from '@/components/sidebar/ProductSidebar.vue'
+    import formatNumberWithCommas from '@/utils/formatNumberWithCommas.js';
     import Cookies from 'js-cookie'
 
     export default {
@@ -135,6 +140,7 @@
         
       },
       methods: {
+        formatNumberWithCommas,
         fetchApprover() {// 담당자의 부서의 팀장(결재자) 가져오기
           axios.get(`/employees/${this.empCode}/approver`)
           // console.log(response)
@@ -170,11 +176,11 @@
         fetchProducts() { //선택한 거래처의 상품리스트 가져오기
           if (!this.selectedClient) return;
           console.log(this.selectedClient)
-          axios.get(`/api/products/${this.selectedClient.value}/ppcs`)
+          axios.get(`/products/${this.selectedClient.value}/ppcs`)
             .then(response => {
               this.products = response.data.map(product => ({
                 ...product,
-                text: product.proName, // 상품 이름
+                text: `[${product.proCode}, ${product.proName}]`, // 상품 이름
                 value: product.proCode, // 상품 코드
               }));
               // 상품 옵션 업데이트
@@ -196,7 +202,7 @@
             console.log("Product info is undefined or ppcStock is not available.");
           }
         },
-        addProduct() { //전표에 판매 상품 추가
+        addProduct() { //리스트에 판매 상품 추가
           console.log(this.selectedProduct)
           console.log(this.products);
           console.log(this.selectedQuantity);
@@ -210,14 +216,18 @@
               voucSales: productInfo.ppcSale * this.selectedQuantity,
             };
             this.addproductlist.push(newProduct);
-            // 입력 필드 초기화
-            this.selectedQuantity = 0;
+
+            this.selectedQuantity = 0;// 입력 필드 초기화
+            this.selectedProduct = null; // 선택된 상품 초기화
           } else {
             alert("상품을 선택하고, 유효한 수량을 입력하세요.");
           }
         },
+        removeProduct(index) { //리스트에서 판매 상품 삭제
+          this.addproductlist.splice(index, 1);
+        },
         fetchVoucherId(){//전표 번호 가져오기
-          axios.get('/api/vouchers/voucId')
+          axios.get('/vouchers/voucId')
           .then(response => {
             this.voucId = response.data.voucId; // 백엔드로부터 받은 전표번호를 저장
           })
@@ -225,65 +235,41 @@
             console.error('전표번호 생성 중 오류:', error);
           });
         },
-        // SaveVoucher() {
-        //   // 전송할 전체 데이터 구성
-        //   if(this.clientCode!==""){
-        //     const voucherData = {
-        //       voucId: this.voucId,
-        //       voucDate: this.dateString,
-        //       empCode: this.empCode,
-        //       signerCode: this.signerCode,
-        //       clientCode: this.selectedClient.value,
-        //       approvalCode: "A00",
-        //       items: this.addproductlist.map(item => ({
-        //         proCode: item.proCode,
-        //         voucSale: item.voucSale,
-        //         voucAmount: item.voucAmount,
-        //         voucSales: item.voucSales,
-        //       }))
-        //     };
-        //     console.log(voucherData)
-        //     axios.post('/api/vouchers/saveall', voucherData)
-        //       .then(response => {
-        //         alert("전표가 성공적으로 저장되었습니다.");
-        //         // 성공 후 필요한 동작(예: 페이지 새로고침, 다른 페이지로 이동 등)
-        //       })
-        //       .catch(error => {
-        //         console.error("전표 저장 중 오류 발생:", error);
-        //         alert("전표 저장에 실패했습니다.");
-        //       });
-        //     }
-        // },
-          SaveVoucher() {
-            // 전송할 전체 데이터 구성
-            this.addproductlist.forEach(item => {
-                const voucherData = {
-                    voucId: this.voucId,
-                    voucDate: this.dateString,
-                    empCode: this.empCode,
-                    signerCode: this.signerCode,
-                    clientCode: this.selectedClient.value,
-                    approvalCode: "A00",
-                    proCode: item.proCode,
-                    voucSale: item.voucSale,
-                    voucAmount: item.voucAmount,
-                    voucSales: item.voucSales,
-                };
-                console.log(voucherData);
-                axios.post('/api/vouchers/save', voucherData)
-                    .then(response => {
-                        console.log("Item saved successfully");
-                        // 여기에 성공 로직 추가(예: 성공 메시지 표시)
-                    })
-                    .catch(error => {
-                        console.error("Item saving error:", error);
-                        alert("Error saving item.");
-                        // 여기에 실패 로직 추가(예: 실패 메시지 표시)
-                        // 실패 시, 다음 항목의 처리를 중단하려면 throw new Error()를 사용할 수 있습니다.
-                    });
-            });
-            // 모든 항목의 저장 요청이 완료된 후의 로직(예: 페이지 리다이렉트)을 여기에 추가
-        }
+        SaveVoucher() { //전표 등록
+          // 전송할 전체 데이터 구성
+          if(this.clientCode!==""){
+            const voucherData = {
+              voucId: this.voucId,
+              voucDate: this.dateString,
+              empCode: this.empCode,
+              signerCode: this.signerCode,
+              clientCode: this.selectedClient.value,
+              approvalCode: "A00",
+              items: this.addproductlist.map(item => ({
+                proCode: item.proCode,
+                voucSale: item.voucSale,
+                voucAmount: item.voucAmount,
+                voucSales: item.voucSales,
+              }))
+            };
+            console.log(voucherData)
+            axios.post('/vouchers/saveall', voucherData)
+              .then(response => {
+                alert("전표가 성공적으로 저장되었습니다.");
+                // 성공 후 필요한 동작(예: 페이지 새로고침, 다른 페이지로 이동 등)
+              })
+              .catch(error => {
+                if (error.response && error.response.status === 409) {
+                  // 재고 부족 에러 처리
+                  alert("전표 저장에 실패했습니다: " + error.response.data);
+                  this.fetchProducts();
+                } else {
+                  // 기타 에러 처리
+                  alert("전표 저장에 실패했습니다: " + error.message);
+                }
+              });
+            }
+        },
       }
     };
 </script>

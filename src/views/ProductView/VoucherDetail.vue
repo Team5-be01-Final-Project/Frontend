@@ -1,3 +1,4 @@
+<!-- VoucherDetail.vue -->
 <template>
   <div class="flex">
     <div class="sidebar">
@@ -18,15 +19,13 @@
           <div class="voucher-info-item"><span class="voucher-info-label">전표번호:</span><span
               class="voucher-info-value">{{ voucId }}</span></div>
           <div class="voucher-info-item"><span class="voucher-info-label">등록일:</span><span class="voucher-info-value">{{
-          voucDate }}</span></div>
+            voucDate }}</span></div>
           <div class="voucher-info-item"><span class="voucher-info-label">담당자:</span><span class="voucher-info-value">{{
-          empName }}</span></div>
+            empName }}</span></div>
           <div class="voucher-info-item"><span class="voucher-info-label">결재자:</span><span class="voucher-info-value">{{
-          signerName }}</span></div>
+            signerName }}</span></div>
           <div class="voucher-info-item"><span class="voucher-info-label">거래처:</span><span class="voucher-info-value">{{
-          clientName }}</span></div>
-          <div class="voucher-info-item"><span class="voucher-info-label">차량 번호:</span><span
-              class="voucher-info-value">{{ storageCar }}</span></div>
+            clientName }}</span></div>
         </div>
       </div>
       <hr />
@@ -61,7 +60,8 @@
 
 <script>
 import axios from "axios";
-import ProductSidebar from '@/components/sidebar/ProductSidebar.vue';
+import Cookies from "js-cookie";
+import ProductSidebar from "@/components/sidebar/ProductSidebar.vue";
 
 export default {
   components: { ProductSidebar },
@@ -72,7 +72,6 @@ export default {
       empName: "",
       signerName: "",
       clientName: "",
-      storageCar: "",
       voucherDetails: [],
       showApproveButton: false,
       showRejectButton: false,
@@ -84,13 +83,21 @@ export default {
   },
   computed: {
     totalVoucSales() {
-      return this.voucherDetails.reduce((total, detail) => total + (detail.voucSales || 0), 0);
+      return this.voucherDetails.reduce(
+        (total, detail) => total + (detail.voucSales || 0),
+        0
+      );
+    },
+    isButtonsEnabled() {
+      const userEmpName = Cookies.get("empName");
+      return userEmpName === this.signerName;
     },
   },
   methods: {
     async fetchVoucherDetails() {
       try {
-        const response = await axios.get(`/api/vouchers/${this.$route.params.voucherID}/details`);
+        const response = await axios.get(`/vouchers/${this.$route.params.voucherID}/details`);
+
         this.voucherDetails = response.data;
         if (this.voucherDetails.length > 0) {
           const firstDetail = this.voucherDetails[0];
@@ -99,24 +106,16 @@ export default {
           this.empName = firstDetail.empName;
           this.signerName = firstDetail.signerName;
           this.clientName = firstDetail.clientName;
-          this.storageCar = firstDetail.storageCar;
-          this.showApproveButton = firstDetail.showApproveButton;
-          this.showRejectButton = firstDetail.showRejectButton;
           this.proCode = firstDetail.proCode;
+          this.showApproveButton =
+            firstDetail.showApproveButton && this.isButtonsEnabled;
+          this.showRejectButton =
+            firstDetail.showRejectButton && this.isButtonsEnabled;
         }
       } catch (error) {
         console.error("Error fetching voucher details:", error);
       }
     },
-    // async approveVoucher() {
-    //   try {
-    //     await axios.put(`/api/vouchers/${this.voucId}/approve`);
-    //     console.log("Voucher approved");
-    //     this.fetchVoucherDetails();
-    //   } catch (error) {
-    //     console.error("Error approving voucher:", error);
-    //   }
-    // },   
     async approveVoucherDetails() {
       try {
         if (!this.voucId) {
@@ -124,19 +123,14 @@ export default {
           return;
         }
 
-        // /api/vouchers/{voucId}/approve/details에 PUT 요청 보내기
-        await axios.put(`/api/vouchers/${this.voucId}/approve/details`);
-        console.log("Voucher details approveded successfully");
+        await axios.put(`/vouchers/${this.voucId}/approve/details`);
+        console.log("Voucher details approved successfully");
 
-        // 세부 정보 재로드
         this.fetchVoucherDetails();
       } catch (error) {
-        console.error("Error rapproving voucher details:", error);
+        console.error("Error approving voucher details:", error);
       }
     },
-
-
-
     async rejectVoucherDetails() {
       try {
         if (!this.voucId) {
@@ -144,11 +138,9 @@ export default {
           return;
         }
 
-        // /api/vouchers/{voucId}/reject/details에 PUT 요청 보내기
-        await axios.put(`/api/vouchers/${this.voucId}/reject/details`);
+        await axios.put(`/vouchers/${this.voucId}/reject/details`);
         console.log("Voucher details rejected successfully");
 
-        // 세부 정보 재로드
         this.fetchVoucherDetails();
       } catch (error) {
         console.error("Error rejecting voucher details:", error);
@@ -157,6 +149,8 @@ export default {
   },
 };
 </script>
+
+
 
 <style scoped>
 .spacer {

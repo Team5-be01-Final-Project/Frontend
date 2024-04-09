@@ -17,8 +17,5 @@
   .system-layout {
     padding: 20px;
   }
-  
-  .system-content {
-    margin-top: 20px;
-  }
+ 
   </style>

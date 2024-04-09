@@ -6,24 +6,24 @@
       <ProductSidebar />
     </div>
 
-    <div class="stock-list">
+    <div class="Main">
       <div class="flex justify-between items-center mb-6">
         <h3 class="va-h3">재고 조회</h3>
-        <VaButton @click="openRegisterModal" class="register-button">재고 등록</VaButton>
-      </div>
+        </div>
       <div class="grid grid-cols-12 gap-4 mb-6 items-center">
         <VaSelect
           v-model="selectedField"
-          placeholder="필터링할 필드 선택"
+          placeholder="검색 조건"
           :options="filterOptions"
           value-by="value"
           class="col-span-2 filter-select"
         />
-        <VaInput v-model="filter" placeholder="검색..." class="col-span-8 search-input" />
+        <VaInput v-model="filter" placeholder="검색어 입력" class="col-span-8 search-input" />
         <VaButton @click="searchStockList" class="search-button col-span-2">검색</VaButton>
+        <VaButton @click="openRegisterModal" class="register-button">재고 등록</VaButton>
       </div>
       <div class="va-table-responsive">
-        <table class="va-table va-table--hoverable">
+        <table class="va-table va-table--hoverable full-width">
           <thead>
             <tr>
               <th class="text-center w-aaa">품목기준코드</th>
@@ -90,7 +90,7 @@ const pageCount = computed(() => {
 // 서버에서 재고 목록을 가져오는 비동기 함수
 async function fetchStockList() {
   try {
-    const response = await axios.get("/api/stocks/all");
+    const response = await axios.get("/stocks/all");
     stockList.value = response.data;
   } catch (error) {
     console.error("재고 목록을 가져오는 데 실패했습니다:", error);
@@ -139,7 +139,7 @@ const searchStockList = async () => {
       proName = filter.value;
     }
 
-    const response = await axios.get("/api/stocks/search", {
+    const response = await axios.get("/stocks/search", {
       params: {
         proCode: proCode,
         proName: proName,
@@ -166,18 +166,6 @@ onMounted(() => {
 .sidebar {
   width: 250px; /* 사이드바의 너비를 조절하세요 */
   /* 필요에 따라 추가 스타일링 */
-}
-
-/* 테이블과 필터 옵션 컨테이너의 스타일 */
-.va-table-responsive {
-  overflow: auto; /* 가로 스크롤이 필요한 경우 오버플로우 설정 */
-  min-height: 2000px; /* 최소 높이 설정 */
-}
-
-.va-table {
-  width: 800px; /* 테이블 너비 고정 */
-  table-layout: fixed; /* 테이블 너비 고정 */
-  overflow-y: auto; /* 세로 스크롤이 필요한 경우 오버플로우 설정 */
 }
 
 .filter-options-container {
@@ -251,10 +239,6 @@ onMounted(() => {
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3); /* 그림자 설정 */
 }
 
-/* 필터링 필드 선택과 검색 입력 간격 조절 */
-.va-table-responsive .va-input {
-  margin-left: 10px; /* 왼쪽 여백 설정 */
-}
 
 /* 테이블 헤더 및 셀 스타일 */
 .va-table th {
@@ -280,13 +264,18 @@ onMounted(() => {
 .pagination button {
   margin: 0 5px; /* 버튼 간격 설정 */
 }
-
-/* 테이블 컬럼 너비 지정을 위한 클래스 */
-.w-aaa {
-  width: 16.66%; /* 너비 설정 */
+.Main {
+  flex-grow: 1;
+  /* 메인 콘텐츠가 남은 공간을 모두 차지하도록 함 */
+  /* 필요에 따라 추가 스타일링 */
 }
 
-.w-bbb {
-  width: 40%; /* 너비 설정 */
+.full-width {
+  width: 100%;
+  /* 테이블이 화면에 꽉 차도록 설정 */
 }
+
+.register-button {
+    float: right; /* 버튼을 오른쪽으로 이동시킵니다. */
+  }
 </style>

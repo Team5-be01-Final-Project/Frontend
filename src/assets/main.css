@@ -22,7 +22,7 @@ a,
 
 @media (min-width: 1024px) {
   body {
-    display: flex;
+    /* display: flex; */  /*기존에 방해하던 레이아웃 제거*/
     place-items: center; /* 본문을 중앙에 배치합니다 */
   }
 
@@ -32,6 +32,7 @@ a,
     padding: 0; /* 가장자리 패딩을 제거합니다 */
   }
 }
+
 .sidebar {
   display: flex;
   flex-direction: column;
@@ -46,17 +47,23 @@ a,
 .sidebar-top {
   /* 필요한 스타일링 추가 */
 }
-
 .sidebar-bottom {
   margin-top: auto; /* 하단 컨테이너를 사이드바 바닥에 붙임 */
 }
 
+
 .main-content {
   width: calc(100% - 270px);
   margin-top: 60px; /* 네비게이션 바 높이만큼 상단 여백을 추가하여 하단에 위치하도록 설정 */
-  margin-left: 270px; /* 사이드바 너비 + 20px의 여백 */
+  margin-left: 270px; 
   padding-right: 0; /* 메인 컨텐츠 우측 패딩 제거 */
   /* 기존에 적용된 다른 스타일이 있다면 그대로 유지 */
 }
-/* 네비게이션 바 스타일 */
 
+td.money-right {
+  text-align: right;
+}
+
+td.index-center{
+text-align: center;
+}
