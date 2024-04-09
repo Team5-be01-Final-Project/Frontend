@@ -17,7 +17,7 @@
         <table class="va-table va-table--hoverable full-width">
           <thead>
             <tr>
-              <th>#</th>
+              <th>No</th>
               <th>거래처명</th>
               <th>품목기준코드</th>
               <th>제품명</th>
@@ -28,13 +28,13 @@
           </thead>
           <tbody>
             <tr v-for="(item, index) in paginatedProducts" :key="index">
-              <td>{{ (currentPage - 1) * perPage + index + 1 }}</td>
+              <td class='index-center'>{{ (currentPage - 1) * perPage + index + 1 }}</td>
               <td>{{ item.clientName }}</td>
               <td>{{ item.proCode }}</td>
               <td>{{ item.proName }}</td>
               <td>{{ item.proSeg }}</td>
               <td>{{ item.proCat }}</td>
-              <td>{{ item.ppcSale }}</td>
+              <td class='money-right'>{{ formatNumberWithCommas(item.ppcSale) }}</td>
             </tr>
           </tbody>
         </table>
@@ -56,7 +56,7 @@
 import axios from 'axios';
 import { VaButton, VaSelect, VaInput } from 'vuestic-ui';
 import ProductSidebar from '@/components/sidebar/ProductSidebar.vue';
-import { watch } from 'vue';
+import formatNumberWithCommas from '@/utils/formatNumberWithCommas.js';
 
 export default {
   components: {
@@ -73,7 +73,7 @@ export default {
       filter: '',
       selectedField: '전체', // '전체' 선택을 위한 'all' 값으로 초기화
       currentPage: 1,
-      perPage: 10,
+      perPage: 20,
       // 필터 옵션
       filterOptions: [
         { text: '전체', value: 'all' },
@@ -86,8 +86,8 @@ export default {
   // 계산된 속성, 메서드 등...
   watch: {
     // selectedField의 값이 변경될 때 실행될 함수
-    selectedField(newValue) {
-      if (newValue === 'all') {
+    selectedField(newVal) {
+      if (newVal.text === '전체') {
         // "전체"가 선택되면 검색 필드를 초기화
         this.filter = '';
       }
@@ -104,6 +104,7 @@ export default {
     },
   },
   methods: {
+    formatNumberWithCommas,
     async fetchProducts() {
       // 제품 데이터를 불러오는 메서드
       try {
@@ -116,20 +117,20 @@ export default {
     },
     applyFilter() {
       // 로그를 추가하여 현재 필터링 상태를 확인
-      console.log(`Selected Field: ${this.selectedField}, Filter: ${this.filter}`);
+      //console.log(`Selected Field: ${this.selectedField}, Filter: ${this.filter}`);
 
       if (this.selectedField.value === 'all' || !this.filter.trim()) {
-    // "전체"가 선택되었거나 검색어가 비어있는 경우, 모든 제품을 표시
-    this.filteredProducts = this.products;
-  } else {
-    // 선택된 필드에 따라 필터링
-    this.filteredProducts = this.products.filter(product => {
-      const fieldValue = product[this.selectedField.value]?.toString().toLowerCase() || '';
-      return fieldValue.includes(this.filter.toLowerCase());
-    });
-  }
-  this.currentPage = 1; // 필터링 후 페이지를 처음으로 설정
-},
+        // "전체"가 선택되었거나 검색어가 비어있는 경우, 모든 제품을 표시
+        this.filteredProducts = this.products;
+      } else {
+        // 선택된 필드에 따라 필터링
+        this.filteredProducts = this.products.filter(product => {
+          const fieldValue = product[this.selectedField.value]?.toString().toLowerCase() || '';
+          return fieldValue.includes(this.filter.toLowerCase());
+        });
+      }
+      this.currentPage = 1; // 필터링 후 페이지를 처음으로 설정
+    },
     nextPage() {
       // 다음 페이지로 이동
       if (this.currentPage < this.pageCount) this.currentPage++;
