@@ -1,3 +1,4 @@
+<!-- ClientSales.vue -->
 <template>
   <div class="flex">
     <!-- 사이드바 섹션 -->
@@ -26,16 +27,16 @@
           </thead>
           <tbody>
             <tr v-for="(item, index) in displayedSalesData" :key="item.clientName + item.proName">
-              <td class = 'index-center'>{{ index + 1 }}</td>
+              <td class='index-center'>{{ index + 1 }}</td>
               <td>{{ item.clientName }}</td>
               <td>{{ item.proName || '-' }}</td>
-              <td class = 'money-right'>{{ item.proUnit ? `${item.proUnit.toLocaleString()}` : '-' }}</td>
-              <td class = 'money-right'>{{ item.voucSale ? `${item.voucSale.toLocaleString()}` : '-' }}</td>
-              <td class = 'money-right'>{{ item.voucAmount || '-' }}</td>
-              <td class = 'money-right'>{{ item.costOfSales ? `${item.costOfSales.toLocaleString()}` : '-' }}</td>
-              <td class = 'money-right'>{{ item.voucSales ? `${item.voucSales.toLocaleString()}` : '-' }}</td>
-              <td class = 'money-right'>{{ item.grossProfit ? `${item.grossProfit.toLocaleString()}` : '-' }}</td>
-              <td class = 'money-right'>{{ formatProfitMargin(item.profitMargin) }}</td>
+              <td class='money-right'>{{ item.proUnit ? `${item.proUnit.toLocaleString()}` : '-' }}</td>
+              <td class='money-right'>{{ item.voucSale ? `${item.voucSale.toLocaleString()}` : '-' }}</td>
+              <td class='money-right'>{{ item.voucAmount || '-' }}</td>
+              <td class='money-right'>{{ item.costOfSales ? `${item.costOfSales.toLocaleString()}` : '-' }}</td>
+              <td class='money-right'>{{ item.voucSales ? `${item.voucSales.toLocaleString()}` : '-' }}</td>
+              <td class='money-right'>{{ item.grossProfit ? `${item.grossProfit.toLocaleString()}` : '-' }}</td>
+              <td class='money-right'>{{ formatProfitMargin(item.profitMargin) }}</td>
             </tr>
           </tbody>
         </table>
@@ -47,21 +48,41 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
+// Vue의 컴포지션 API에서 필요한 함수들을 가져옵니다.
+
 import axios from 'axios';
+// HTTP 요청을 보내기 위한 axios 라이브러리를 가져옵니다.
+
 import { yearOptions } from '@/utils/yearOptions.js'; 
 import { monthOptions1 } from '@/utils/monthOptions';
-import SalesSidebar from '@/components/sidebar/SalesSidebar.vue'
+// 년도와 월 선택 옵션을 가져옵니다.
+
+import SalesSidebar from '@/components/sidebar/SalesSidebar.vue';
+// 사이드바 컴포넌트를 가져옵니다.
 
 const defaultYearOption = yearOptions.find(option => option.value === new Date().getFullYear());
-const currentMonth = ("0" + (new Date().getMonth() + 1)).slice(-2); // 현재 월을 두 자리 문자열로 포맷팅
+// 기본 년도 옵션을 현재 년도로 설정합니다.
+
+const currentMonth = ("0" + (new Date().getMonth() + 1)).slice(-2);
+// 현재 월을 두 자리 문자열로 포맷팅합니다.
 
 const yearOption = yearOptions;
-const selectedYear = ref(defaultYearOption); // 현재 년도를 기본값으로 설정
+// 년도 선택 옵션을 설정합니다.
+
+const selectedYear = ref(defaultYearOption);
+// 선택된 년도를 현재 년도로 초기화합니다.
+
 const selectedMonth = ref(monthOptions1.find(option => option.value === currentMonth));
+// 선택된 월을 현재 월로 초기화합니다.
+
 const clientNameFilter = ref('');
+// 거래처명 검색어를 저장할 ref를 생성합니다.
 
 const filteredSalesData = ref([]);
-const displayedSalesData = ref(filteredSalesData); // 바로 filteredSalesData를 참조하도록 변경
+// 필터링된 매출 데이터를 저장할 ref를 생성합니다.
+
+const displayedSalesData = ref(filteredSalesData);
+// 표시할 매출 데이터를 필터링된 데이터로 설정합니다.
 
 const fields = [
   { key: 'clientName', label: '거래처', class: 'text-center' },
@@ -74,6 +95,7 @@ const fields = [
   { key: 'grossProfit', label: '매출이익', class: 'text-center' },
   { key: 'profitMargin', label: '이익율', class: 'text-center' },
 ];
+// 테이블 헤더에 표시할 필드 정보를 정의합니다.
 
 const fetchSalesData = async (year = defaultYearOption.value, month = currentMonth) => {
   let url = '/sales/Clientsales';
@@ -94,6 +116,8 @@ const fetchSalesData = async (year = defaultYearOption.value, month = currentMon
     console.error('Error fetching sales data:', error);
   }
 };
+// 매출 데이터를 가져오는 함수입니다.
+// 선택된 년도와 월을 기준으로 데이터를 가져옵니다.
 
 const formatProfitMargin = (profitMargin) => {
   if (profitMargin === null || profitMargin === undefined) {
@@ -102,16 +126,21 @@ const formatProfitMargin = (profitMargin) => {
     return (Math.round(profitMargin * 10) / 10).toFixed(1) + '%';
   }
 };
+// 이익율을 포맷팅하는 함수입니다.
+// 소수점 둘째 자리까지 표시하고 '%' 기호를 붙입니다.
 
 const filterSalesData = () => {
   const year = selectedYear.value.value;
   const month = selectedMonth.value ? (typeof selectedMonth.value === 'object' ? selectedMonth.value.value : selectedMonth.value) : null;
   fetchSalesData(year, month);
 };
+// 매출 데이터를 필터링하는 함수입니다.
+// 선택된 년도와 월을 기준으로 데이터를 다시 가져옵니다.
 
 onMounted(() => {
   fetchSalesData();
 });
+// 컴포넌트가 마운트될 때 초기 매출 데이터를 가져옵니다.
 
 const filterByClientName = (data, clientName) => {
   if (!clientName) {
@@ -119,6 +148,8 @@ const filterByClientName = (data, clientName) => {
   }
   return data.filter(item => item.clientName.toLowerCase().includes(clientName.toLowerCase()));
 };
+// 거래처명으로 데이터를 필터링하는 함수입니다.
+// 입력된 검색어를 포함하는 거래처만 필터링합니다.
 </script>
 
 <style scoped>
