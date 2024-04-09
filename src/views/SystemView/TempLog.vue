@@ -72,6 +72,9 @@ export default {
                 const response = await axios.get(`/temp-logs/all`);
                 allData.value = response.data; // 원본 데이터 저장
                 filteredData.value = response.data; // 초기에는 모든 데이터 표시
+
+                // 데이터 로딩 후 필터링 적용
+                applyFilter(); // 이 부분을 추가
             } catch (error) {
                 console.error("이상 온도 로그 데이터를 가져오는 중 에러가 발생했습니다.", error);
             }
@@ -80,8 +83,9 @@ export default {
         const applyFilter = () => {
             filteredData.value = allData.value.filter((item) => {
                 const dateParts = item.tempDate.split('-');
-                const yearMatch = selectedYear.value ? dateParts[0] === selectedYear.value : true;
-                const monthMatch = selectedMonth.value ? dateParts[1] === selectedMonth.value.value : true; // 수정됨
+                const yearMatch = selectedYear.value ? dateParts[0] === String(selectedYear.value.value) : true;
+                const monthMatch = selectedMonth.value ? dateParts[1] === String(selectedMonth.value.value).padStart(2, '0') : true;
+
                 let conditionMatch = true;
 
                 // 검색 조건이 "전체"가 아니며, 검색 텍스트가 입력된 경우
