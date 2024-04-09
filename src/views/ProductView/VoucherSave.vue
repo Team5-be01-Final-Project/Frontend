@@ -259,7 +259,7 @@
             axios.post('/vouchers/saveall', voucherData)
               .then(response => {
                 alert("전표가 성공적으로 저장되었습니다.");
-                // 성공 후 필요한 동작(예: 페이지 새로고침, 다른 페이지로 이동 등)
+                this.$router.push({ name: 'viewvoucher' }); // 저장 성공 후 전표 목록 페이지로 이동
               })
               .catch(error => {
                 if (error.response && error.response.status === 409) {
