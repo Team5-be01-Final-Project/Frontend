@@ -45,6 +45,7 @@ async function fetchData() {
 }
 
 // 지도에 거래처 위치를 마커로 표시하는 함수
+// 지도에 거래처 위치를 마커로 표시하고, 마우스 오버 시 인포윈도우를 표시하는 함수
 async function displayClientsOnMap() {
   await loadKakaoMapScript();
   kakao.maps.load(async () => {
@@ -65,12 +66,28 @@ async function displayClientsOnMap() {
             ? 'https://cdn-icons-png.flaticon.com/512/4834/4834723.png'
             : 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
           const markerImage = new kakao.maps.MarkerImage(imageSrc, new kakao.maps.Size(24, 35));
-          new kakao.maps.Marker({ map, position: coords, image: markerImage });
+          const marker = new kakao.maps.Marker({ map, position: coords, image: markerImage });
+
+          // 인포윈도우 생성
+          const infowindow = new kakao.maps.InfoWindow({
+            content: `<div style="padding:5px;">${client.clientName}</div>` // 인포윈도우에 표시될 내용
+          });
+
+          // 마우스 오버 이벤트 리스너 등록
+          kakao.maps.event.addListener(marker, 'mouseover', () => {
+            infowindow.open(map, marker);
+          });
+
+          // 마우스 아웃 이벤트 리스너 등록
+          kakao.maps.event.addListener(marker, 'mouseout', () => {
+            infowindow.close();
+          });
         }
       });
     });
   });
 }
+
 
 onMounted(() => {
   displayClientsOnMap();
