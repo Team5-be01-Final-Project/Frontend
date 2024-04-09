@@ -8,8 +8,7 @@
 
 
   <div>
-    <h3>거래처 등록</h3>
-    <div class="col-span-1" style="height: 50px;"></div>
+    <h3 class="va-h3">거래처 등록</h3>
     <div class="col-span-1" style="height: 50px;"></div>
     <form @submit.prevent="submitForm">
       <div class="form-group">
