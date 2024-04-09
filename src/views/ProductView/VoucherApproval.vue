@@ -1,12 +1,24 @@
+<!-- VoucherApproval.vue -->
 <template>
   <div class="flex">
     <!-- 사이드바 섹션 -->
     <div class="sidebar">
       <ProductSidebar />
     </div>
-
     <div class="Main">
-      <h3 class="va-h3">출고전표 결재</h3>
+      <h3 class="va-h3">출고전표 결재 목록</h3>
+      <!-- 검색 폼 추가 -->
+      <div class="grid grid-cols-12 gap-4 mb-6 items-center">
+        <VaSelect
+          v-model="selectedField"
+          placeholder="검색 조건"
+          :options="filterOptions"
+          value-by="value"
+          class="col-span-4 filter-select"
+        />
+        <VaInput v-model="filter" placeholder="검색어 입력" class="col-span-6 search-input" />
+        <VaButton @click="searchVouchers" class="search-button col-span-2">검색</VaButton>
+      </div>
       <table class="va-table va-table--hoverable full-width">
         <!-- 테이블의 width를 100%로 설정 -->
         <thead>
@@ -15,9 +27,7 @@
             <th class="text-left">담당자</th>
             <th class="text-left">거래처명</th>
             <th class="text-left">등록일</th>
-            <th class="text-left">결재자</th>
             <th class="text-left">결재상태</th>
-            <th class="text-left">결재일</th>
           </tr>
         </thead>
         <tbody>
@@ -26,7 +36,6 @@
             <td>{{ voucherGroup[0].empName }}</td>
             <td>{{ voucherGroup[0].clientName }}</td>
             <td>{{ voucherGroup[0].voucDate }}</td>
-            <td>{{ voucherGroup[0].signerName }}</td>
             <td>
               <template v-if="voucherGroup[0].approvalStatus.trim() === '대기중'">
                 <VaBadge text="대기중" color="secondary" class="mr-2" />
@@ -38,7 +47,6 @@
                 <VaBadge text="반려" color="danger" class="mr-2" />
               </template>
             </td>
-            <td>{{ voucherGroup[0].voucApproval }}</td>
           </tr>
         </tbody>
       </table>
@@ -48,17 +56,30 @@
 
 <script>
 import axios from 'axios';
-import ProductSidebar from '@/components/sidebar/ProductSidebar.vue'
-
+import { VaSelect, VaInput, VaButton, VaBadge } from 'vuestic-ui';
+import ProductSidebar from '@/components/sidebar/ProductSidebar.vue';
 
 export default {
   components: {
     ProductSidebar,
+    VaSelect,
+    VaInput,
+    VaButton,
+    VaBadge,
   },
   data() {
     return {
       vouchers: [],
       userDeptCode: '', // 사용자의 부서 코드를 저장할 변수
+      selectedField: null, // 사용자가 선택한 필터링 필드를 저장하는 변수
+      filter: '', // 사용자가 입력한 검색어를 저장하는 변수
+      filterOptions: [
+        // 필터링 옵션 목록
+        { text: '전표번호', value: 'voucId' },
+        { text: '담당자', value: 'empName' },
+        { text: '거래처명', value: 'clientName' },
+        { text: '결재상태', value: 'approvalStatus' },
+      ],
     };
   },
   computed: {
@@ -94,7 +115,6 @@ export default {
         console.error('Error fetching user dept code:', error);
       }
     },
-
     async fetchVouchers() {
       try {
         const response = await axios.get('/vouchers');
@@ -106,7 +126,19 @@ export default {
     navigateToDetail(voucId) {
       this.$router.push(`/product/voucherdetail/${voucId}`);
     },
-  }
+    async searchVouchers() {
+      try {
+        const params = {};
+        if (this.selectedField && this.filter) {
+          params[this.selectedField] = this.filter;
+        }
+        const response = await axios.get('/vouchers/search', { params });
+        this.vouchers = response.data;
+      } catch (error) {
+        console.error('Error searching vouchers:', error);
+      }
+    },
+  },
 };
 </script>
 

@@ -1,3 +1,4 @@
+<!-- VoucherDetail.vue -->
 <template>
   <div class="flex">
     <div class="sidebar">
