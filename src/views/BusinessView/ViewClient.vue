@@ -137,7 +137,7 @@ function prevPage() {
 // 삭제 권한 확인
 const canDeleteClient = computed(() => {
   const userRole = Cookies.get('empAuthCode');
-  return userRole === 'AUTH003';
+  return ['AUTH001', 'AUTH002', 'AUTH003'].includes(userRole); // 여러 권한 확인
 });
 
 // 거래처 삭제
