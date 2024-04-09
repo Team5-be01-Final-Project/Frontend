@@ -70,32 +70,14 @@ export default {
       originemployees: [],
       employees: [],
       loading: true,
-      currentPage: 1,
       selectedDept: null, // 부서 선택을 위한 변수
       selectedSearchCondition: null, // 검색 조건 선택을 위한 변수
       searchText: '', // 검색어 입력을 위한 변수
-      employee: {
-        originalAuthorityCode: null,
-        selectedAuthorityCode: null,
-      },
-      authorityCodes: [],
-      changingEmployee: null, // 권한 변경할 직원 정보 저장
-      isAlarmSettingsModalOpen: false,
-      alarmSettings: {
-        'AL01': false, // 이상 온도 알림
-        // 'AL02': false, // 이상 압력 알림
-      },
     };
   },
 
   computed: {
     SystemSidebar,
-    authorityCodeOptions() {
-      return this.authorityCodes.map(code => ({
-        text: code.authName, // 사용자에게 보여질 텍스트
-        value: code.authCode // 실제 선택 시 반환될 값
-      }));
-    }
   },
 
   created() {
