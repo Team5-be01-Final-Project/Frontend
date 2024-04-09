@@ -60,7 +60,9 @@
 
     </template>
     <template #right>
+      <router-link to="/mysales" class="hidden sm:block">
       <VaAvatar :src="empImg" />
+    </router-link>
       <div class="right-section">
       <p>{{ empName }}님 안녕하세요!</p>
     </div>

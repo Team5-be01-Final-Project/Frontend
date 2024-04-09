@@ -1,10 +1,10 @@
 <template>
   <div id="app">
     <NavigationBar v-if="!isLoginPage" class="navigation-bar" />
-    <div class="main-content" v-if="!isMysalesPage && !isDashboardPage">
+    <div class="main-content" v-if="!isMySalesPage && !isDashboardPage">
       <RouterView />
     </div>
-    <MySales v-else-if="isMyalesPage" />
+    <MySales v-else-if="isMySalesPage" />
     <Dashboard v-else-if="isDashboardPage" />
   </div>
 </template>
@@ -18,7 +18,7 @@ import MySales from '@/views/MySales.vue';
 
 const route = useRoute();
 const isLoginPage = computed(() => route.name === 'login');
-const isMyalesPage = computed(() => route.name === 'mysales');
+const isMySalesPage = computed(() => route.name === 'mysales');
 const isDashboardPage = computed(() => route.name === 'dashboard');
 </script>
 
