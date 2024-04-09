@@ -67,102 +67,54 @@ export default {
   data() {
     return {
       deptOptions: departmentOptions,
+      originemployees: [],
       employees: [],
       loading: true,
-      currentPage: 1,
       selectedDept: null, // 부서 선택을 위한 변수
       selectedSearchCondition: null, // 검색 조건 선택을 위한 변수
       searchText: '', // 검색어 입력을 위한 변수
-      employee: {
-        originalAuthorityCode: null,
-        selectedAuthorityCode: null,
-      },
-      authorityCodes: [],
-      changingEmployee: null, // 권한 변경할 직원 정보 저장
-      isAlarmSettingsModalOpen: false,
-      alarmSettings: {
-        'AL01': false, // 이상 온도 알림
-        // 'AL02': false, // 이상 압력 알림
-      },
     };
   },
 
   computed: {
     SystemSidebar,
-    authorityCodeOptions() {
-      return this.authorityCodes.map(code => ({
-        text: code.authName, // 사용자에게 보여질 텍스트
-        value: code.authCode // 실제 선택 시 반환될 값
-      }));
-    }
   },
 
   created() {
-    this.fetchAuthorityCodes().then(() => {
-      this.fetchEmployeesList();
-    });
+    this.fetchEmployeesList();
   },
 
   methods: {
     async fetchFilteredEmployees() {
-      try {
-        const params = new URLSearchParams();
-        if (this.selectedDept) {
-          if(this.selectedDept.text === '전체'){
-            params.append('deptName', this.selectedDept.value);
-          }else{
-            params.append('deptName', this.selectedDept.text);
-          }
-        }
-        if (this.searchText && this.selectedSearchCondition) {
-          params.append(this.selectedSearchCondition, this.searchText);
-        }
-        const response = await axios.get(`employees/list?${params.toString()}`);
-        this.employees = response.data;
-        this.employees = response.data.map(employee => ({
-          ...employee,
-          // 백엔드로부터 받은 권한 코드를 selectedAuthorityCode에 설정,
-          selectedAuthorityCode: {
-            text: employee.authName,
-            value: employee.authCode
-          },
-        }));
-      } catch (error) {
-        console.error('필터링된 데이터 가져오기 실패:', error);
+      let filteredEmployees = [...this.originemployees]; // 복사본을 사용하여 필터링합니다.
+
+      if (this.selectedDept) {
+        filteredEmployees = filteredEmployees.filter(employee => 
+          this.selectedDept.text === '전체' || employee.deptName === this.selectedDept.text
+        );
       }
+
+      if (this.searchText && this.selectedSearchCondition) {
+        filteredEmployees = filteredEmployees.filter(employee =>
+          employee[this.selectedSearchCondition].toLowerCase().includes(this.searchText.toLowerCase())
+        );
+      }
+
+      // 필터링된 결과로 employees 배열을 업데이트합니다.
+      this.employees = filteredEmployees;
     },
+
     async fetchEmployeesList() {
       try {
         const response = await axios.get(`/employees/specs`);
-        this.employees = response.data; // 응답 데이터 할당
-        this.employees = response.data.map(employee => ({
-          ...employee,
-          // 백엔드로부터 받은 권한 코드를 selectedAuthorityCode에 설정
-          selectedAuthorityCode: {
-            text: employee.authName,
-            value: employee.authCode
-          },
-        }));
+        this.originemployees = response.data;
+        this.employees = [...this.originemployees];
       } catch (error) {
         console.error('데이터 가져오기 실패:', error);
       } finally {
         this.loading = false;
       }
     },
-
-    async fetchAuthorityCodes() {
-      try {
-        const response = await axios.get('/authorities/codes');
-        this.authorityCodes = response.data.map(item => ({
-          authName: item.authName,
-          authCode: item.authCode,
-        }));
-      } catch (error) {
-        console.error('권한 코드 가져오기 실패:', error);
-      }
-    },
-
-
   }
 };
 

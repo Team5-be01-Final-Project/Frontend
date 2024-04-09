@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Login from '@/views/Login.vue'
-import NotFound from '@/components/NotFound.vue' // 404 컴포넌트 임포트
+import NotFound from '@/views/NotFound.vue' // 404 컴포넌트 임포트
 import Cookies from 'js-cookie'
 
 const router = createRouter({
@@ -39,7 +39,7 @@ const router = createRouter({
       path: '/mysales',
       name: 'mysales',
       component: () => import('../views/MySales.vue'),
-      meta: { allowedAuthCodes: ['AUTH001'] } //영업사원만 접속
+      meta: { allowedAuthCodes: ['AUTH001', 'AUTH004'] , requiresAuth: true } //영업사원만 접속
     },
     {
       path: '/system',
@@ -169,7 +169,7 @@ const router = createRouter({
     {//정의 되지 않은 URL은 404로 이동
       path: '/:pathMatch(.*)*',
       name: 'not-found',
-      component: NotFound,
+      component: () => import('../views/NotFound.vue'),
     },
   ]
 })
