@@ -1,17 +1,18 @@
 <!-- VoucherApproval.vue -->
 <template>
   <div class="flex">
-    <!-- 사이드바 섹션 -->
+    <!-- 사이드바 섹션: 제품 관련 사이드바 컴포넌트를 포함합니다. -->
     <div class="sidebar">
       <ProductSidebar />
     </div>
+    <!-- 메인 컨텐츠 섹션 -->
     <div class="Main">
       <h3 class="va-h3">출고전표 결재 목록</h3>
-      <!-- 검색 폼 추가 -->
+      <!-- 검색 폼: 사용자가 결재 목록을 필터링할 수 있게 합니다. -->
       <div class="grid grid-cols-12 gap-4 mb-6 items-center">
         <VaSelect
           v-model="selectedField"
-          placeholder="검색 조건"
+          placeholder="검색 조건 선택"
           :options="filterOptions"
           value-by="value"
           class="col-span-4 filter-select"
@@ -19,8 +20,8 @@
         <VaInput v-model="filter" placeholder="검색어 입력" class="col-span-6 search-input" />
         <VaButton @click="searchVouchers" class="search-button col-span-2">검색</VaButton>
       </div>
+      <!-- 출고전표 결재 목록 테이블 -->
       <table class="va-table va-table--hoverable full-width">
-        <!-- 테이블의 width를 100%로 설정 -->
         <thead>
           <tr>
             <th class="text-left">전표번호</th>
@@ -31,21 +32,34 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(voucherGroup, index) in uniqueVouchers" :key="index">
+          <!-- 대기중인 출고전표 목록 출력 -->
+          <tr v-for="(voucherGroup, index) in waitingVouchers" :key="'waiting-' + index">
             <td @click="navigateToDetail(voucherGroup[0].voucId)" class="clickable">{{ voucherGroup[0].voucId }}</td>
             <td>{{ voucherGroup[0].empName }}</td>
             <td>{{ voucherGroup[0].clientName }}</td>
             <td>{{ voucherGroup[0].voucDate }}</td>
             <td>
-              <template v-if="voucherGroup[0].approvalStatus.trim() === '대기중'">
-                <VaBadge text="대기중" color="secondary" class="mr-2" />
-              </template>
-              <template v-if="voucherGroup[0].approvalStatus.trim() === '승인'">
-                <VaBadge text="승인" color="success" class="mr-2" />
-              </template>
-              <template v-if="voucherGroup[0].approvalStatus.trim() === '반려'">
-                <VaBadge text="반려" color="danger" class="mr-2" />
-              </template>
+              <VaBadge text="대기중" color="secondary" class="mr-2" />
+            </td>
+          </tr>
+          <!-- 승인된 출고전표 목록 출력 -->
+          <tr v-for="(voucherGroup, index) in approvedVouchers" :key="'approved-' + index">
+            <td @click="navigateToDetail(voucherGroup[0].voucId)" class="clickable">{{ voucherGroup[0].voucId }}</td>
+            <td>{{ voucherGroup[0].empName }}</td>
+            <td>{{ voucherGroup[0].clientName }}</td>
+            <td>{{ voucherGroup[0].voucDate }}</td>
+            <td>
+              <VaBadge text="승인" color="success" class="mr-2" />
+            </td>
+          </tr>
+          <!-- 반려된 출고전표 목록 출력 -->
+          <tr v-for="(voucherGroup, index) in rejectedVouchers" :key="'rejected-' + index">
+            <td @click="navigateToDetail(voucherGroup[0].voucId)" class="clickable">{{ voucherGroup[0].voucId }}</td>
+            <td>{{ voucherGroup[0].empName }}</td>
+            <td>{{ voucherGroup[0].clientName }}</td>
+            <td>{{ voucherGroup[0].voucDate }}</td>
+            <td>
+              <VaBadge text="반려" color="danger" class="mr-2" />
             </td>
           </tr>
         </tbody>
@@ -69,12 +83,12 @@ export default {
   },
   data() {
     return {
-      vouchers: [],
-      userDeptCode: '', // 사용자의 부서 코드를 저장할 변수
-      selectedField: null, // 사용자가 선택한 필터링 필드를 저장하는 변수
-      filter: '', // 사용자가 입력한 검색어를 저장하는 변수
+      vouchers: [], // 조회된 전체 출고전표 목록
+      userDeptCode: '', // 현재 사용자의 부서 코드
+      selectedField: null, // 선택된 검색 조건
+      filter: '', // 입력된 검색어
       filterOptions: [
-        // 필터링 옵션 목록
+        // 검색 필터 옵션
         { text: '전표번호', value: 'voucId' },
         { text: '담당자', value: 'empName' },
         { text: '거래처명', value: 'clientName' },
@@ -84,9 +98,11 @@ export default {
   },
   computed: {
     filteredVouchers() {
+      // 사용자 부서 코드에 따라 필터링된 출고전표 목록 반환
       return this.vouchers.filter(voucher => voucher.deptCode === this.userDeptCode);
     },
     uniqueVouchers() {
+      // 중복 제거된 유니크 출고전표 목록 생성
       const unique = {};
       this.filteredVouchers.forEach(voucher => {
         if (!unique[voucher.voucId]) {
@@ -96,18 +112,31 @@ export default {
       });
       return Object.values(unique);
     },
+    waitingVouchers() {
+      // 대기중인 출고전표 목록 반환
+      return this.uniqueVouchers.filter(voucherGroup => voucherGroup[0].approvalStatus.trim() === '대기중');
+    },
+    approvedVouchers() {
+      // 승인된 출고전표 목록 반환
+      return this.uniqueVouchers.filter(voucherGroup => voucherGroup[0].approvalStatus.trim() === '승인');
+    },
+    rejectedVouchers() {
+      // 반려된 출고전표 목록 반환
+      return this.uniqueVouchers.filter(voucherGroup => voucherGroup[0].approvalStatus.trim() === '반려');
+    },
   },
   mounted() {
-    this.fetchUserDeptCode(); // 사용자의 부서 코드를 가져오는 함수 호출
+    this.fetchUserDeptCode(); // 컴포넌트 마운트 시 사용자 부서 코드 조회
   },
   methods: {
     async fetchUserDeptCode() {
+      // 사용자의 부서 코드를 쿠키에서 조회하는 메소드
       try {
         const cookies = document.cookie.split(';').map(cookie => cookie.trim().split('='));
         const deptCodeCookie = cookies.find(cookie => cookie[0] === 'deptCode');
         if (deptCodeCookie) {
           this.userDeptCode = deptCodeCookie[1];
-          await this.fetchVouchers(); // 출고전표 조회 함수 호출
+          await this.fetchVouchers(); // 부서 코드 확인 후 출고전표 조회
         } else {
           console.error('Department code cookie not found.');
         }
@@ -116,6 +145,7 @@ export default {
       }
     },
     async fetchVouchers() {
+      // 서버에서 출고전표 목록 조회
       try {
         const response = await axios.get('/vouchers');
         this.vouchers = response.data;
@@ -124,9 +154,11 @@ export default {
       }
     },
     navigateToDetail(voucId) {
+      // 상세 페이지로 네비게이션
       this.$router.push(`/product/voucherdetail/${voucId}`);
     },
     async searchVouchers() {
+      // 사용자가 입력한 조건으로 출고전표 검색
       try {
         const params = {};
         if (this.selectedField && this.filter) {
@@ -141,6 +173,7 @@ export default {
   },
 };
 </script>
+
 
 <style scoped>
 .flex {
