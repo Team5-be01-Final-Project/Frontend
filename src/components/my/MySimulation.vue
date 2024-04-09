@@ -1,6 +1,6 @@
 <template>
+  <h3>인센티브 시뮬레이션</h3>
   <div class="incentive-simulation">
-    <h3>인센티브 시뮬레이션</h3>
     <div class="simulation-section">
       <div class="sales-info">
         <table>
@@ -167,5 +167,9 @@ const fetchIncentiveSimulation = async () => {
   border: none; /* 테두리 제거 */
   border-radius: 4px; /* 테두리 둥글게 설정 */
   cursor: pointer; /* 커서를 포인터로 설정 */
+}
+h3 {
+  font-size: 20px;
+  /* h4 태그의 폰트 사이즈를 키움 */
 }
 </style>

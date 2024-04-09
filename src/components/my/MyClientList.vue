@@ -1,16 +1,15 @@
-<!-- MyClientList.vue -->
 <template>
+  <h3>담당 거래처 목록</h3>
   <div class="client-list-container">
-    <h3>담당 거래처 목록</h3>
     <ul class="client-list">
       <li
-        v-for="client in clients"
+        v-for="(client, index) in clients"
         :key="client.clientCode"
         @click="toggleDetails(client.clientCode)"
       >
         <h4>{{ client.clientName }}</h4>
-        <div v-if="activeClient === client.clientCode" class="client-details">
-          <p>대표자: {{ client.clientBoss }}</p>
+        <div v-if="activeClient === client.clientCode || (index === 0 && activeClient === null)" class="client-details">
+          <p>대표명: {{ client.clientBoss }}</p>
           <p>주소: {{ client.clientWhere }}</p>
           <p>담당자: {{ client.clientEmp }}</p>
           <p>전화번호: {{ client.clientEmpTel }}</p>
@@ -23,29 +22,24 @@
 <script setup>
 import { defineProps, ref } from "vue";
 
-// 부모 컴포넌트로부터 clients 배열을 props로 받습니다.
 const props = defineProps({
   clients: {
     type: Array,
-    required: true, // 필수 prop
+    required: true,
   },
 });
 
-// 현재 활성화된(상세 정보가 표시된) 클라이언트를 추적하는 ref
 const activeClient = ref(null);
 
-// 클라이언트 코드를 기반으로 상세 정보의 표시 여부를 토글하는 함수
 const toggleDetails = (clientCode) => {
-  // 현재 활성화된 클라이언트가 다시 클릭된 경우, 활성화 상태를 해제합니다.
   if (activeClient.value === clientCode) {
     activeClient.value = null;
   } else {
-    // 다른 클라이언트가 클릭된 경우, 해당 클라이언트의 상세 정보를 활성화합니다.
     activeClient.value = clientCode;
   }
 };
 </script>
-  
+
 <style scoped>
 .client-list-container {
   /* 이 컨테이너는 클라이언트 목록을 감싸는 블록입니다. */
@@ -72,5 +66,9 @@ const toggleDetails = (clientCode) => {
 .client-details {
   border-top: 1px solid #8ca4d0; /* 항목간 구분선 */
   padding-top: 10px; /* 구분선 위 여백 */
+}
+h3 {
+  font-size: 20px;
+  /* h4 태그의 폰트 사이즈를 키움 */
 }
 </style>

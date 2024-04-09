@@ -1,11 +1,7 @@
 <!-- MyEmployeeSales.vue -->
-html
-
-
-Copy code
 <template>
+      <h3>내 매출 현황</h3>
   <div class="employee-sales">
-    <h3>내 매출 현황</h3>
     <div class="sales-table">
       <table>
         <thead>
@@ -146,6 +142,10 @@ th {
 /* 통화 형식 셀 텍스트 오른쪽 정렬 */
 .employee-sales td:not(:first-child) {
   text-align: right;
+}
+h3 {
+  font-size: 20px;
+  /* h4 태그의 폰트 사이즈를 키움 */
 }
 
 </style>
