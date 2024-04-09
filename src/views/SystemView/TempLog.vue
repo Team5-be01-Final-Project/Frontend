@@ -9,7 +9,7 @@
             <h3 class="va-h3">창고/차량 이상온도 조회</h3>
             <div class="filter">
                 <va-select v-model="selectedYear" :options="yearOptions" placeholder="년도 선택" />
-                <va-select v-model="selectedMonth" :options="monthOptions1" placeholder="월 선택" />
+                <va-select v-model="selectedMonth" :options="monthOptions" placeholder="월 선택" />
                 <VaSelect v-model="selectedSearchCondition" placeholder="검색 조건" :options="[
                     { text: '전체', value: '' },
                     { text: '구분', value: 'storageSeg' },
@@ -47,7 +47,8 @@
 <script>
 import axios from 'axios';
 import SystemSidebar from '@/components/sidebar/SystemSidebar.vue'
-import { monthOptions1 } from '@/utils/monthOptions';
+import { yearOptions } from '@/utils/yearOptions';
+import { monthOptions } from '@/utils/monthOptions';
 import { ref, onMounted } from 'vue';
 
 export default {
@@ -56,24 +57,24 @@ export default {
     },
     setup() {
 
-        const currentYear = new Date().getFullYear().toString(); // 현재 년도
-        const currentMonth = (new Date().getMonth() + 1).toString().padStart(2, '0'); // 현재 월, 두 자리로 포맷팅
+        const currentYear = new Date().getFullYear() // 현재 년도
+        const currentMonth = (new Date().getMonth() + 1) // 현재 월, 두 자리로 포맷팅
 
         const filteredData = ref([]);
         const allData = ref([]);
-        const selectedYear = ref(currentYear); // 현재 년도를 기본값으로 설정
-        const selectedMonth = ref(monthOptions1.find(option => option.value === currentMonth));
+        const selectedYear = ref(yearOptions.find(option => option.value === currentYear)); // 현재 년도를 기본값으로 설정
+        const selectedMonth = ref(monthOptions.find(option => option.value === currentMonth));
         const selectedSearchCondition = ref(null);
         const searchText = ref('');
-        const yearOptions = Array.from({ length: 5 }, (_, i) => ({
-            text: `${2020 + i}년`, value: `${2020 + i}`
-        }));
 
         const fetchTempLogs = async () => {
             try {
                 const response = await axios.get(`/temp-logs/all`);
                 allData.value = response.data; // 원본 데이터 저장
                 filteredData.value = response.data; // 초기에는 모든 데이터 표시
+
+                // 데이터 로딩 후 필터링 적용
+                applyFilter(); // 이 부분을 추가
             } catch (error) {
                 console.error("이상 온도 로그 데이터를 가져오는 중 에러가 발생했습니다.", error);
             }
@@ -82,8 +83,9 @@ export default {
         const applyFilter = () => {
             filteredData.value = allData.value.filter((item) => {
                 const dateParts = item.tempDate.split('-');
-                const yearMatch = selectedYear.value ? dateParts[0] === selectedYear.value : true;
-                const monthMatch = selectedMonth.value ? dateParts[1] === selectedMonth.value.value : true; // 수정됨
+                const yearMatch = selectedYear.value ? dateParts[0] === String(selectedYear.value.value) : true;
+                const monthMatch = selectedMonth.value ? dateParts[1] === String(selectedMonth.value.value).padStart(2, '0') : true;
+
                 let conditionMatch = true;
 
                 // 검색 조건이 "전체"가 아니며, 검색 텍스트가 입력된 경우
@@ -99,7 +101,7 @@ export default {
 
         onMounted(fetchTempLogs);
 
-        return { filteredData, selectedYear, selectedMonth, selectedSearchCondition, searchText, yearOptions, monthOptions1, applyFilter };
+        return { filteredData, selectedYear, selectedMonth, selectedSearchCondition, searchText, yearOptions, monthOptions, applyFilter };
     }
 }
 </script>
