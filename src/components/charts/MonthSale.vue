@@ -107,7 +107,7 @@ watch(selectedYear, fetchMonthlySales);
 .chart-container {
   height: 500px;
   /* 또는 적절한 높이로 설정 */
-  width: 800px;
+  width: 800x;
 }
 
 h4 {

@@ -17,13 +17,13 @@
         <table class="va-table va-table--hoverable full-width">
           <thead>
             <tr>
-              <th>No</th>
+              <th>NO.</th>
               <th>거래처명</th>
               <th>품목기준코드</th>
               <th>제품명</th>
               <th>품목 구분</th>
               <th>분류</th>
-              <th>판매 가격</th>
+              <th>판매가</th>
             </tr>
           </thead>
           <tbody>
