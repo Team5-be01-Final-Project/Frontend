@@ -1,7 +1,8 @@
 <!-- TopEmployee.vue -->
 <template>
+  <h4>이달의 최우수 사원</h4>
   <div class="top-employee">
-    <h4>이달의 최우수 사원</h4>
+
     <!-- 최우수 사원 정보가 있을 경우 -->
     <div v-if="salesRankTopEmployee">
       <!-- 최우수 사원 사진 -->
@@ -73,18 +74,25 @@ function formatCurrency(amount) {
 <style scoped>
 /* 최우수 사원 정보 컨테이너 스타일 */
 .top-employee {
-  margin-top: 20px;
+  height: 450px;
   padding: 20px;
   background-color: #f5f5f5;
   border-radius: 4px;
+  text-align: center;
+  /* 이미지를 중앙 정렬 */
 }
 
 /* 최우수 사원 사진 스타일 */
 .top-employee img {
-  width: 100px;
-  height: 100px;
+  width: 300px;
+  height: 300px;
   object-fit: cover;
   border-radius: 50%;
   margin-bottom: 10px;
+}
+
+h4 {
+  font-size: 20px;
+  /* h4 태그의 폰트 사이즈를 키움 */
 }
 </style>
