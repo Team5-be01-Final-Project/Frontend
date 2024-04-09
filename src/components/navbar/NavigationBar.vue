@@ -60,9 +60,12 @@
 
     </template>
     <template #right>
+      <router-link to="/mysales" class="hidden sm:block">
       <VaAvatar :src="empImg" />
+    </router-link>
+      <div class="right-section">
       <p>{{ empName }}님 안녕하세요!</p>
-  
+    </div>
       <VaButton preset="secondary" color="textPrimary" href="https://github.com/Team5-be01-Final-Project"
         target="_blank" aria-label="Visit github">
         <VaIcon :component="VaIconGitHub" />
@@ -142,6 +145,7 @@ const sitelogout = async () => {
   }
 }
 
+
 .icon-fade-enter-active,
 .icon-fade-leave-active {
   transition: transform 0.5s ease;
@@ -160,5 +164,14 @@ const sitelogout = async () => {
 .va-navbar__item.logo:hover {
   border-bottom:0
 }
+.right-section {
+  display: flex; /* Flexbox 레이아웃 사용 */
+  align-items: center; /* Flex 아이템들을 수직 방향으로 중앙 정렬 */
+  gap: 10px; /* 아이템 사이의 간격 설정 */
+  font-size: 18px;
+}
+
+/* 추가적인 스타일링이 필요한 경우 여기에 추가 */
+
 
 </style>

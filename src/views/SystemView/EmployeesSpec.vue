@@ -10,14 +10,7 @@
       <div class="va-table-responsive">
         <h3 class="va-h3">사원 리스트 조회</h3>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 items-end">
-          <VaSelect v-model="selectedDept" placeholder="부서" :options="[
-            { text: '전체', value: '' },
-            { text: '이사회', value: '이사회' },
-            { text: '영업 1팀', value: '영업 1팀' },
-            { text: '영업 2팀', value: '영업 2팀' },
-            { text: '영업 3팀', value: '영업 3팀' },
-            { text: '시스템', value: '시스템' }
-          ]" value-by="value" />
+          <VaSelect v-model="selectedDept" placeholder="부서" :options=deptOptions />
           <VaSelect v-model="selectedSearchCondition" placeholder="검색 조건" :options="[
             { text: '이름', value: 'empName' },
             { text: '이메일', value: 'empEmail' },
@@ -34,8 +27,8 @@
               <th>이름</th>
               <th>직급</th>
               <th>부서</th>
-              <th>전화번호</th>
               <th>이메일</th>
+              <th>전화번호</th>
               <th>입사일</th>
               <th>퇴사일</th>
             </tr>
@@ -58,30 +51,13 @@
     </div>
   </div>
 
-  <VaModal v-model="isAuthorityChangeModalOpen" title="권한 변경 확인" @ok="AuthorityChangeModalproceedChange" ok-text="변경"
-    @cancel="AuthorityChangeModalcancelChange" cancel-text="취소">
-    <h4>권한을 변경 하시겠습니까?</h4>
-  </VaModal>
-
-  <VaModal v-model="isAlarmSettingsModalOpen" ok-text="저장" cancel-text="취소" @ok="saveAlarmSettings">
-    <template #header>
-      <h4>알림 설정 변경</h4>
-    </template>
-
-    <div class="flex flex-col">
-      <div v-for="(value, code) in alarmSettings" :key="code" class="mb-6">
-        <VaCheckbox :value="code" v-model="alarmSettings[code]" :label="`알림 ${code}`" />
-      </div>
-    </div>
-
-  </VaModal>
-
 </template>
 
 <script>
 import axios from 'axios';
 import { VaButton } from 'vuestic-ui/web-components';
 import SystemSidebar from '@/components/sidebar/SystemSidebar.vue'
+import { departmentOptions } from '@/utils/departmentOptions.js'; 
 
 
 export default {
@@ -90,6 +66,7 @@ export default {
   },
   data() {
     return {
+      deptOptions: departmentOptions,
       employees: [],
       loading: true,
       currentPage: 1,
@@ -131,7 +108,11 @@ export default {
       try {
         const params = new URLSearchParams();
         if (this.selectedDept) {
-          params.append('deptName', this.selectedDept);
+          if(this.selectedDept.text === '전체'){
+            params.append('deptName', this.selectedDept.value);
+          }else{
+            params.append('deptName', this.selectedDept.text);
+          }
         }
         if (this.searchText && this.selectedSearchCondition) {
           params.append(this.selectedSearchCondition, this.searchText);
