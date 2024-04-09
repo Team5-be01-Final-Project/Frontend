@@ -65,7 +65,7 @@
           <table class="va-table va-table--hoverable">
               <thead>
                 <tr>
-                  <th>No</th>
+                  <th>No.</th>
                   <th>품목코드</th>
                   <th>제품명</th>
                   <th>판매가</th>
@@ -88,6 +88,7 @@
                 </tr>
               </tbody>
           </table>
+          <div class="total-sales">총 합계(매출액): {{ formatNumberWithCommas(totalSales) }}원</div>
       </div>
   </div>
 </template>
@@ -137,7 +138,9 @@
         });
       },
       computed: {
-        
+        totalSales(){
+          return this.addproductlist.reduce((total, product) => total + product.voucSales, 0);
+        }
       },
       methods: {
         formatNumberWithCommas,
