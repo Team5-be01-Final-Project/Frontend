@@ -67,3 +67,6 @@ td.money-right {
 td.index-center{
 text-align: center;
 }
+table.va-table th {
+  text-align: center;
+}

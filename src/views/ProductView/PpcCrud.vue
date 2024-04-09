@@ -15,6 +15,7 @@
       <table class="va-table va-table--hoverable full-width">
         <thead>
           <tr>
+            <th>NO.</th>
             <th>거래처명</th>
             <th>제품명</th>
             <th>판매가</th>
@@ -23,20 +24,27 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(ppc, index) in ppcs" :key="index">
+          <tr v-for="(ppc, index) in paginatedPpcs" :key="index">
+            <td class='index-center'>{{ (currentPage - 1) * perPage + index + 1 }}</td>
             <td>{{ ppc.clientName }}</td>
             <td>{{ ppc.proName }}</td>
-            <td>{{ formatNumberWithCommas(ppc.ppcSale) }}</td>
-            <td>
+            <td class='money-right'>{{ formatNumberWithCommas(ppc.ppcSale) }}</td>
+            <td class='index-center'>
               <VaButton color="warning" class="mr-6 mb-2" @click="openEditModal(ppc)">
                <va-icon name="edit"/></VaButton>
             </td>
-            <td>
+            <td class='index-center'>
               <VaButton color="danger" class="mr-6 mb-2" @click="openDeleteModal(ppc)"> <va-icon name="delete"/></VaButton>
             </td>
           </tr>
         </tbody>
-      </Table>
+      </table>
+      <!-- 페이지네이션 -->
+      <div class="pagination">
+          <VaButton @click="prevPage" :disabled="currentPage === 1">이전</VaButton>
+          <VaButton disabled>{{ currentPage }}</VaButton>
+          <VaButton @click="nextPage" :disabled="currentPage === pageCount">다음</VaButton>
+        </div>
     </div>
     <EditDeleteModal :isVisible="isModalVisible" :currentItem="currentItem" :isEditing="isEditing" @close="closeModal"
       @edit="updatePpc" @delete="deletePpc" />
@@ -64,7 +72,19 @@ export default {
       currentItem: null,
       isEditing: false,
       isRegisterModalVisible: false,
+      currentPage: 1,
+      perPage: 20,
     };
+  },
+  computed: {
+    pageCount() {
+      return Math.ceil(this.ppcs.length / this.perPage);
+    },
+    paginatedPpcs() {
+      const start = (this.currentPage - 1) * this.perPage;
+      const end = this.currentPage * this.perPage;
+      return this.ppcs.slice(start, end);
+    },
   },
   methods: {
     formatNumberWithCommas,
@@ -77,6 +97,14 @@ export default {
         .catch((error) => {
           console.error('상품 가격 정보를 가져오는데 실패했습니다:', error);
         });
+    },
+    nextPage() {
+      // 다음 페이지로 이동
+      if (this.currentPage < this.pageCount) this.currentPage++;
+    },
+    prevPage() {
+      // 이전 페이지로 이동
+      if (this.currentPage > 1) this.currentPage--;
     },
     openEditModal(ppc) {
       this.currentItem = { ...ppc };
@@ -112,8 +140,7 @@ export default {
         .catch((error) => {
           console.error('상품 가격 정보를 삭제하는데 실패했습니다:', error);
         });
-    }
-    ,
+    },
     openRegisterModal() {
       this.isRegisterModalVisible = true;
     },
@@ -163,4 +190,14 @@ export default {
 .register-button {
     float: right; /* 버튼을 오른쪽으로 이동시킵니다. */
   }
+
+.pagination {
+  margin-top: 20px;
+}
+
+.pagination button {
+  cursor: pointer;
+  padding: 5px 10px;
+  margin-right: 5px;
+}
 </style>

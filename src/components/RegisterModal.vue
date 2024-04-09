@@ -21,10 +21,10 @@
         </div>
         <div>
           <label for="salePrice">판매가:</label>
-          <input type="number" v-model.number="salePrice" id="salePrice" />
+          <input type="number" v-model.number="salePrice" id="salePrice" class="full-width-input" />
         </div>
         <button type="submit" @click="registerProduct">등록</button>
-        <button type="button" @click="closeModal">취소</button> <!-- 취소 버튼 추가 -->
+        <button type="submit" @click="closeModal">취소</button> <!-- 취소 버튼 추가 -->
         <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
       </div>
     </div>
@@ -170,5 +170,15 @@
     color: red;
     margin-top: 5px;
   }
+
+  /* 입력 필드 스타일 수정 */
+.full-width-input {
+  width: 100%; /* 너비를 100%로 설정 */
+  padding: 8px; /* 적당한 패딩 추가 */
+  border-radius: 5px; /* 모서리 둥글게 */
+  border: 1px solid #ccc; /* 테두리 스타일 */
+  margin-bottom: 10px; /* 하단 마진 추가 */
+}
+
   </style>
   
