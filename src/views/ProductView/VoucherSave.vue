@@ -83,7 +83,7 @@
                   <td>{{ formatNumberWithCommas(product.voucAmount) }}</td>
                   <td>{{ formatNumberWithCommas(product.voucSales) }}</td>
                   <td>
-                    <VaButton @click="removeProduct(index)" class="delete-button">삭제</VaButton>
+                    <VaButton @click="removeProduct(index)" color="danger" class="mr-6 mb-2">삭제</VaButton>
                   </td>
                 </tr>
               </tbody>
