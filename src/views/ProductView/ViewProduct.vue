@@ -1,3 +1,4 @@
+<!-- ViewProduct.vue -->
 <template>
   <div class="flex">
     <!-- 사이드바 섹션 -->
@@ -10,12 +11,17 @@
       <div class="va-table-responsive">
         <h3 class="va-h3">제품 목록</h3>
         <div class="grid md:grid-cols-3 gap-6 mb-6">
-          <VaSelect v-model="selectedField" placeholder="검색 조건" :options="[
-            { text: '제품명', value: 'proName' },
-            { text: '품목 구분', value: 'proSeg' },
-            { text: '주성분', value: 'proIngre' },
-            { text: 'ATC 코드', value: 'proAtc' }
-          ]" value-by="value" />
+          <VaSelect
+            v-model="selectedField"
+            placeholder="검색 조건"
+            :options="[
+              { text: '제품명', value: 'proName' },
+              { text: '품목 구분', value: 'proSeg' },
+              { text: '주성분', value: 'proIngre' },
+              { text: 'ATC 코드', value: 'proAtc' },
+            ]"
+            value-by="value"
+          />
           <VaInput v-model="filter" placeholder="검색어 입력" class="w-full" />
           <VaButton @click="filterProducts">검색</VaButton>
         </div>
@@ -33,23 +39,38 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(product, index) in paginatedProducts" :key="product.proCode">
-              <td class = "index-center">{{ getPageNumber(index) }}</td>
+            <tr
+              v-for="(product, index) in paginatedProducts"
+              :key="product.proCode"
+            >
+              <td class="index-center">{{ getPageNumber(index) }}</td>
               <td>{{ product.proCode }}</td>
               <td>{{ product.proName }}</td>
               <td>{{ product.proSeg }}</td>
               <td>{{ product.proIngre }}</td>
               <td>{{ product.proAtc }}</td>
               <td>{{ product.proCat }}</td>
-              <td class = 'money-right'> {{ formatNumberWithCommas(product.proUnit) }}</td>
+              <td class="money-right" v-if="isAuthorized">
+                {{ formatNumberWithCommas(product.proUnit) }}
+              </td>
+              <td class="money-right" v-else>-</td>
             </tr>
           </tbody>
         </table>
         <div class="pagination">
-          <VaButton @click="prevPage" :disabled="currentPage === 1">이전</VaButton>
-          <VaButton class="mr-6 mb-2" preset="secondary" hover-behavior="opacity" :hover-opacity="0.4">{{ currentPage }}
+          <VaButton @click="prevPage" :disabled="currentPage === 1"
+            >이전</VaButton
+          >
+          <VaButton
+            class="mr-6 mb-2"
+            preset="secondary"
+            hover-behavior="opacity"
+            :hover-opacity="0.4"
+            >{{ currentPage }}
           </VaButton>
-          <VaButton @click="nextPage" :disabled="currentPage === pageCount">다음</VaButton>
+          <VaButton @click="nextPage" :disabled="currentPage === pageCount"
+            >다음</VaButton
+          >
         </div>
       </div>
     </div>
@@ -57,22 +78,23 @@
 </template>
 
 <script>
-import { VaButton } from 'vuestic-ui/web-components';
-import ProductSidebar from '@/components/sidebar/ProductSidebar.vue'
-import NavigationBar from '@/components/navbar/NavigationBar.vue'
-import formatNumberWithCommas from '@/utils/formatNumberWithCommas.js';
+import { VaButton } from "vuestic-ui/web-components";
+import ProductSidebar from "@/components/sidebar/ProductSidebar.vue";
+import NavigationBar from "@/components/navbar/NavigationBar.vue";
+import formatNumberWithCommas from "@/utils/formatNumberWithCommas.js";
+import Cookies from "js-cookie";
 
 export default {
   components: {
     ProductSidebar,
-    NavigationBar
+    NavigationBar,
   },
   data() {
     return {
       products: [], // 모든 제품 목록
       filteredProducts: [], // 필터링된 제품 목록
       selectedField: null, // VaSelect에서 선택한 필드
-      filter: '', // VaInput의 필터 값
+      filter: "", // VaInput의 필터 값
       currentPage: 1, // 현재 페이지 번호
       perPage: 20, // 페이지당 표시할 항목 수
     };
@@ -85,7 +107,11 @@ export default {
     },
     pageCount() {
       return Math.ceil(this.filteredProducts.length / this.perPage);
-    }
+    },
+    isAuthorized() {
+      const userRole = Cookies.get("empAuthCode");
+      return ['AUTH001', 'AUTH002', 'AUTH003'].includes(userRole); // 여러 권한 확인
+    },
   },
   created() {
     this.fetchProductList();
@@ -94,11 +120,11 @@ export default {
     formatNumberWithCommas,
     async fetchProductList() {
       try {
-        const response = await this.axios.get('/products');
+        const response = await this.axios.get("/products");
         this.products = response.data;
         this.filteredProducts = response.data; // 초기에는 모든 제품 목록을 filteredProducts에 할당
       } catch (error) {
-        console.error('데이터 가져오기 실패:', error);
+        console.error("데이터 가져오기 실패:", error);
       }
     },
     filterProducts() {
@@ -108,8 +134,13 @@ export default {
         this.filteredProducts = this.products;
       } else {
         // 선택한 필드에 따라 제품을 필터링
-        this.filteredProducts = this.products.filter(product => {
-          return product[this.selectedField] && product[this.selectedField].toLowerCase().includes(this.filter.toLowerCase());
+        this.filteredProducts = this.products.filter((product) => {
+          return (
+            product[this.selectedField] &&
+            product[this.selectedField]
+              .toLowerCase()
+              .includes(this.filter.toLowerCase())
+          );
         });
       }
       this.currentPage = 1; // 필터링 후 현재 페이지를 1로 초기화
@@ -127,8 +158,8 @@ export default {
     // 각 제품의 번호를 계산하는 함수
     getPageNumber(index) {
       return (this.currentPage - 1) * this.perPage + index + 1;
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -172,6 +203,4 @@ export default {
   width: 100%;
   /* 테이블이 화면에 꽉 차도록 설정 */
 }
-
-
 </style>

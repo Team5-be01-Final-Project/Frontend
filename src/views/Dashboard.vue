@@ -107,6 +107,12 @@ const selectedMonth = ref(new Date().getMonth() + 1);
   height: 70vh;
 }
 
+.poi-container {
+  height: 550px; /* 높이는 유지 */
+  overflow: auto; /* 내용이 넘칠 경우 자동으로 스크롤바 생성 */
+  /* 기존 스타일은 유지 */
+}
+
 /* POI 정보 및 월별 매출 차트 컨테이너 스타일 */
 .poi-container,
 .month-sale-container {
