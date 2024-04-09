@@ -48,7 +48,7 @@
               <td>{{ client.clientEmp }}</td>
               <td>{{ client.clientEmpTel }}</td>
               <td>
-                <VaButton color="danger" @click="deleteClient(client.clientCode)">삭제</VaButton>
+                <VaButton color="danger" @click="deleteClient(client.clientCode)" v-if="canDeleteClient">삭제</VaButton>
               </td>
             </tr>
           </tbody>
@@ -67,6 +67,7 @@
 import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
+import Cookies from 'js-cookie';
 import { VaSelect, VaInput, VaButton } from 'vuestic-ui';
 import BusinessSidebar from '@/components/sidebar/BusinessSidebar.vue';
 
@@ -132,6 +133,12 @@ function prevPage() {
     currentPage.value--;
   }
 }
+
+// 삭제 권한 확인
+const canDeleteClient = computed(() => {
+  const userRole = Cookies.get('empAuthCode');
+  return userRole === 'AUTH003';
+});
 
 // 거래처 삭제
 function deleteClient(clientCode) {
