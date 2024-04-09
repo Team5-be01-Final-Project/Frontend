@@ -25,7 +25,7 @@
                       <span class="voucher-info-value">{{ dateString }}</span>
                   </div>
                   <div class="voucher-info-item">
-                    <span class="voucher-info-label">거래처:</span>
+                    <span class="voucher-info-label">거래처명:</span>
                     <span class="voucher-info-value">{{ selectedClient.text }}</span>
                   </div>
               </div>
@@ -66,11 +66,11 @@
               <thead>
                 <tr>
                   <th>No</th>
-                  <th>상품코드</th>
-                  <th>상품명</th>
+                  <th>품목코드</th>
+                  <th>제품명</th>
                   <th>판매가</th>
                   <th>수량</th>
-                  <th>금액</th>
+                  <th>매출액</th>
                   <th>삭제</th>
                 </tr>
               </thead>
@@ -162,7 +162,7 @@
         },
         fetchClients() { // 담당자의 거래처 리스트 가져오기
         // 예시 empCode
-        const empCode = 2016101542;
+        const empCode = this.empCode;
         axios.get(`/employees/${empCode}/clients`)
             .then(response => {
             this.clients = response.data;
