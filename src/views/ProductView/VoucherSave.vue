@@ -10,7 +10,7 @@
           <div class="header">
               <h3 class="va-h3">출고전표 등록</h3>
               <div class="button-container">
-                  <button @click="SaveVoucher" class="approve-button">등록</button>
+                  <VaButton  @click="SaveVoucher">등록</VaButton >
               </div>
           </div>
           <div class="spacer" style="height: 20px"></div>
@@ -57,7 +57,7 @@
                       <span class="voucher-info-value">{{ formatNumberWithCommas(selectedProductStock) }}</span>
                   </div>
                   <va-input type="number" v-model.number="selectedQuantity" placeholder="수량" />
-                  <button @click="addProduct" class="approve-button">추가</button>
+                  <VaButton  @click="addProduct">추가</VaButton >
               </div>
           </div>
           <hr />
@@ -290,25 +290,6 @@
       display: flex;
       gap: 10px;
       z-index: 1;
-    }
-    
-    .approve-button,
-    .reject-button {
-      padding: 8px 16px;
-      border-radius: 4px;
-      font-size: 14px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    
-    .approve-button {
-      background-color: #4CAF50;
-      color: white;
-    }
-    
-    .reject-button {
-      background-color: #F44336;
-      color: white;
     }
     
     .voucher-info {
