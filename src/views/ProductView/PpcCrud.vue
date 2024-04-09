@@ -18,6 +18,7 @@
             <th>NO.</th>
             <th>거래처명</th>
             <th>제품명</th>
+            <th>단가</th>
             <th>판매가</th>
             <th>수정</th>
             <th>삭제</th>
@@ -28,6 +29,7 @@
             <td class='index-center'>{{ (currentPage - 1) * perPage + index + 1 }}</td>
             <td>{{ ppc.clientName }}</td>
             <td>{{ ppc.proName }}</td>
+            <td class='money-right'>{{ formatNumberWithCommas(ppc.proUnit) }}</td>
             <td class='money-right'>{{ formatNumberWithCommas(ppc.ppcSale) }}</td>
             <td class='index-center'>
               <VaButton color="warning" class="mr-6 mb-2" @click="openEditModal(ppc)">
@@ -122,7 +124,7 @@ export default {
     },
     updatePpc(updatedPpc) {
       axios
-        .put(`/ppc/update/${updatedPpc.proCode}`, updatedPpc)
+        .put(`/ppc/${updatedPpc.clientCode}/${updatedPpc.proCode}`, updatedPpc)
         .then(() => {
           this.fetchPpcs();
           this.closeModal();
@@ -132,7 +134,7 @@ export default {
         });
     },
     deletePpc(deletedPpc) {
-      axios.delete(`/ppc/${deletedPpc.proCode}`)
+      axios.delete(`/ppc/${deletedPpc.clientCode}/${deletedPpc.proCode}`)
         .then(() => {
           this.fetchPpcs();
           this.closeModal();
