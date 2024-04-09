@@ -48,6 +48,7 @@ async function fetchData() {
 // 지도에 거래처 위치를 마커로 표시하고, 마우스 오버 시 인포윈도우를 표시하는 함수
 async function displayClientsOnMap() {
   await loadKakaoMapScript();
+  await fetchData(); // 클라이언트 정보를 가져옵니다.
   kakao.maps.load(async () => {
     const mapContainer = document.getElementById('map');
     const mapOption = {
