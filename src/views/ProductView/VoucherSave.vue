@@ -76,12 +76,12 @@
               </thead>
               <tbody>
                 <tr v-for="(product, index) in addproductlist" :key="index">
-                  <td>{{ index+1 }}</td>
+                  <td class = 'index-center'>{{ index+1 }}</td>
                   <td>{{ product.proCode }}</td>
                   <td>{{ product.proName }}</td>
-                  <td>{{ formatNumberWithCommas(product.voucSale) }}</td>
-                  <td>{{ formatNumberWithCommas(product.voucAmount) }}</td>
-                  <td>{{ formatNumberWithCommas(product.voucSales) }}</td>
+                  <td class = 'money-right'>{{ formatNumberWithCommas(product.voucSale) }}</td>
+                  <td class = 'money-right'>{{ formatNumberWithCommas(product.voucAmount) }}</td>
+                  <td class = 'money-right'>{{ formatNumberWithCommas(product.voucSales) }}</td>
                   <td>
                     <VaButton @click="removeProduct(index)" color="danger" class="mr-6 mb-2">삭제</VaButton>
                   </td>
@@ -329,7 +329,6 @@
     .va-table th,
     .va-table td {
       padding: 10px;
-      text-align: left;
       border-bottom: 1px solid #ddd;
     }
     
