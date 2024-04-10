@@ -329,7 +329,6 @@
     .va-table th,
     .va-table td {
       padding: 10px;
-      text-align: left;
       border-bottom: 1px solid #ddd;
     }
     
