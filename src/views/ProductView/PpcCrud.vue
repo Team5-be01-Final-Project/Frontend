@@ -8,6 +8,9 @@
     <div class="Main">
       <h3 class="va-h3">거래처별 상품 등록 및 수정</h3>
       <div>
+        <VaSelect v-model="selectedField" placeholder="검색 조건" :options="filterOptions" />
+          <VaInput v-model="filter" placeholder="검색어 입력" class="w-full" />
+          <VaButton @click="applyFilter">검색</VaButton>
         <VaButton @click="openRegisterModal" class="register-button">
           판매상품 등록
         </VaButton>
@@ -33,20 +36,22 @@
             <td class='money-right'>{{ formatNumberWithCommas(ppc.ppcSale) }}</td>
             <td class='index-center'>
               <VaButton color="warning" class="mr-6 mb-2" @click="openEditModal(ppc)">
-               <va-icon name="edit"/></VaButton>
+                <va-icon name="edit" />
+              </VaButton>
             </td>
             <td class='index-center'>
-              <VaButton color="danger" class="mr-6 mb-2" @click="openDeleteModal(ppc)"> <va-icon name="delete"/></VaButton>
+              <VaButton color="danger" class="mr-6 mb-2" @click="openDeleteModal(ppc)"> <va-icon name="delete" />
+              </VaButton>
             </td>
           </tr>
         </tbody>
       </table>
       <!-- 페이지네이션 -->
       <div class="pagination">
-          <VaButton @click="prevPage" :disabled="currentPage === 1">이전</VaButton>
-          <VaButton disabled>{{ currentPage }}</VaButton>
-          <VaButton @click="nextPage" :disabled="currentPage === pageCount">다음</VaButton>
-        </div>
+        <VaButton @click="prevPage" :disabled="currentPage === 1">이전</VaButton>
+        <VaButton disabled>{{ currentPage }}</VaButton>
+        <VaButton @click="nextPage" :disabled="currentPage === pageCount">다음</VaButton>
+      </div>
     </div>
     <EditDeleteModal :isVisible="isModalVisible" :currentItem="currentItem" :isEditing="isEditing" @close="closeModal"
       @edit="updatePpc" @delete="deletePpc" />
@@ -76,6 +81,11 @@ export default {
       isRegisterModalVisible: false,
       currentPage: 1,
       perPage: 20,
+      // 필터 옵션
+      filterOptions: [
+        { text: '전체', value: 'all' },
+        { text: '거래처명', value: 'clientName' },
+    ],
     };
   },
   computed: {
@@ -170,14 +180,15 @@ export default {
 
 <style scoped>
 .flex {
-    display: flex;
+  display: flex;
 }
 
 .sidebar {
-    width: 250px;
-    /* 사이드바의 너비를 조절하세요 */
-    /* 필요에 따라 추가 스타일링 */
+  width: 250px;
+  /* 사이드바의 너비를 조절하세요 */
+  /* 필요에 따라 추가 스타일링 */
 }
+
 .Main {
   flex-grow: 1;
   /* 메인 콘텐츠가 남은 공간을 모두 차지하도록 함 */
@@ -190,9 +201,10 @@ export default {
 }
 
 .register-button {
-    float: right; /* 버튼을 오른쪽으로 이동시킵니다. */
-    margin-bottom: 10px;
-  }
+  float: right;
+  /* 버튼을 오른쪽으로 이동시킵니다. */
+  margin-bottom: 10px;
+}
 
 .pagination {
   margin-top: 20px;

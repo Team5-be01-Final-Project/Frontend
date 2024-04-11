@@ -9,7 +9,7 @@
     <div class="Main">
       <div class="va-table-responsive">
         <h3 class="va-h3">거래처별 판매상품 목록</h3>
-        <div class="grid md:grid-cols-3 gap-6 mb-6">
+        <div class="filter">
           <VaSelect v-model="selectedField" placeholder="검색 조건" :options="filterOptions" />
           <VaInput v-model="filter" placeholder="검색어 입력" class="w-full" />
           <VaButton @click="applyFilter">검색</VaButton>
@@ -176,5 +176,8 @@ export default {
 .full-width {
   width: 100%;
   /* 테이블이 화면에 꽉 차도록 설정 */
+}
+.filter{
+  margin-bottom: 10px;
 }
 </style>
