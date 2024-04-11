@@ -2,7 +2,7 @@
     <div v-if="isVisible" class="modal-overlay">
       <div class="modal-content">
         <span class="close-btn" @click="closeModal">&times;</span>
-        <h3>판매상품 등록</h3>
+        <h2 class="modal-title">판매상품 등록</h2>
         <div>
           <label for="client">거래처 선택:</label>
           <select v-model="selectedClient" id="client">
@@ -137,6 +137,13 @@
     max-width: 400px;
     width: 100%;
   }
+
+  /* 모달 제목에 대한 스타일 */
+.modal-title {
+  font-size: 24px; /* 폰트 크기 설정 */
+  font-weight: bold; /* 폰트 굵기 설정 */
+  margin-bottom: 20px; /* 아래쪽 여백 설정 */
+}
   
   .close-btn {
     position: absolute;

@@ -7,7 +7,7 @@
 
     <div class="Main">
       <h3 class="va-h3">거래처별 상품 등록 및 수정</h3>
-      <div class="register-button-container">
+      <div>
         <VaButton @click="openRegisterModal" class="register-button">
           판매상품 등록
         </VaButton>
@@ -191,6 +191,7 @@ export default {
 
 .register-button {
     float: right; /* 버튼을 오른쪽으로 이동시킵니다. */
+    margin-bottom: 10px;
   }
 
 .pagination {
