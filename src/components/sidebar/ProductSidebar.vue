@@ -18,8 +18,8 @@ const items = [
     icon: "mail",
     children: [
       {
-        title: "판매 상품 리스트 조회",
-        icon: "drafts",
+        title: "판매 상품 리스트",
+        icon: 'visibility',
         routeName: "viewproduct",
       },
     ],
@@ -33,7 +33,7 @@ const items = [
         icon: "drafts",
         routeName: "ppccrud",
       },
-      { title: "거래처별 상품 리스트", icon: "drafts", routeName: "ppcview" },
+      { title: "거래처별 상품 리스트", icon: 'visibility', routeName: "ppcview" },
     ],
   },
   {
@@ -48,8 +48,8 @@ const items = [
     icon: "dashboard",
     children: [
       { title: "전표 등록", icon: "drafts", routeName: "vouchersave" },
-      { title: "전표 결재", icon: "drafts", routeName: "voucherapproval" },
-      { title: "전표 리스트 조회", icon: "drafts", routeName: "viewvoucher" },
+      { title: "전표 결재", icon: "check", routeName: "voucherapproval" },
+      { title: "전표 리스트 조회", icon: 'visibility', routeName: "viewvoucher" },
     ],
   },
 ];
@@ -78,9 +78,9 @@ const items = [
             <template #body>
               <VaSidebarItem v-for="child in item.children" :key="child.title" :active="child.title === activeElement"
                 @click="() => {
-                    activeElement = child.title;
-                    if (child.routeName) navigateTo(child.routeName); // 라우팅 함수 호출
-                  }
+                  activeElement = child.title;
+                  if (child.routeName) navigateTo(child.routeName); // 라우팅 함수 호출
+                }
                   ">
                 <VaSidebarItemContent>
                   <VaIcon :name="child.icon" />
