@@ -40,6 +40,7 @@
             <th class="text-left">거래처명</th>
             <th class="text-left">결재자</th>
             <th class="text-left">결재상태</th>
+            <th class="text-left">결재일</th>
           </tr>
         </thead>
         <tbody>
@@ -61,6 +62,7 @@
                 <VaBadge text="반려" color="danger" class="mr-2" />
               </template>
             </td>
+            <td style="text-align: center">{{ voucher.voucApproval }}</td>
           </tr>
         </tbody>
       </table>

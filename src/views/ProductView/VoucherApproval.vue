@@ -36,6 +36,7 @@
             <th class="text-left">거래처명</th>
             <th class="text-left">등록일</th>
             <th class="text-left">결재상태</th>
+            <th class="text-left">결재일</th>
             <th class="text-left">매출액</th>
           </tr>
         </thead>
@@ -55,36 +56,10 @@
               <VaBadge v-else text="반려" color="danger" class="mr-2" />
               <!-- <VaBadge text="대기중" color="secondary" class="mr-2" /> -->
             </td>
+            <td style="text-align: center">{{ voucherGroup[0].voucApproval }}</td>
             <td style="text-align: right;">{{ formatNumberWithCommas(calculateTotalSalesForVoucherId(voucherGroup)) }}</td>
           </tr>
-          <!-- 승인된 출고전표 목록 출력 -->
-          <!-- <tr
-            v-for="(voucherGroup, index) in approvedVouchers"
-            :key="'approved-' + index"
-          >
-            <td style="text-align: center;" @click="navigateToDetail(voucherGroup[0].voucId)" class="clickable">{{ voucherGroup[0].voucId }}</td>
-            <td style="text-align: center">{{ voucherGroup[0].empName }}</td>
-            <td>{{ voucherGroup[0].clientName }}</td>
-            <td style="text-align: center">{{ voucherGroup[0].voucDate }}</td>
-            <td style="text-align: center">
-              <VaBadge text="승인" color="success" class="mr-2" />
-            </td>
-            <td style="text-align: right;">{{ formatNumberWithCommas(calculateTotalSalesForVoucherId(voucherGroup)) }}</td>
-          </tr> -->
-          <!-- 반려된 출고전표 목록 출력 -->
-          <!-- <tr
-            v-for="(voucherGroup, index) in rejectedVouchers"
-            :key="'rejected-' + index"
-          >
-            <td style="text-align: center;" @click="navigateToDetail(voucherGroup[0].voucId)" class="clickable">{{ voucherGroup[0].voucId }}</td>
-            <td style="text-align: center">{{ voucherGroup[0].empName }}</td>
-            <td>{{ voucherGroup[0].clientName }}</td>
-            <td style="text-align: center">{{ voucherGroup[0].voucDate }}</td>
-            <td style="text-align: center">
-              <VaBadge text="반려" color="danger" class="mr-2" />
-            </td>
-            <td style="text-align: right;">{{ formatNumberWithCommas(calculateTotalSalesForVoucherId(voucherGroup)) }}</td>
-          </tr> -->
+          
         </tbody>
       </table>
     </div>
