@@ -58,19 +58,9 @@
           </tbody>
         </table>
         <div class="pagination">
-          <VaButton @click="prevPage" :disabled="currentPage === 1"
-            >이전</VaButton
-          >
-          <VaButton
-            class="mr-6 mb-2"
-            preset="secondary"
-            hover-behavior="opacity"
-            :hover-opacity="0.4"
-            >{{ currentPage }}
-          </VaButton>
-          <VaButton @click="nextPage" :disabled="currentPage === pageCount"
-            >다음</VaButton
-          >
+          <VaButton @click="prevPage" :disabled="currentPage === 1">이전</VaButton>
+          <VaButton disabled>{{ currentPage }}</VaButton>
+          <VaButton @click="nextPage" :disabled="currentPage === pageCount">다음</VaButton>
         </div>
       </div>
     </div>
