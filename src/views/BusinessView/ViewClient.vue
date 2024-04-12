@@ -38,8 +38,8 @@
               <td>{{ client.clientBoss }}</td>
               <td>{{ client.clientEmp }}</td>
               <td>{{ client.clientEmpTel }}</td>
-              <td>
-                <VaButton color="danger" @click="deleteClient(client.clientCode)" v-if="canDeleteClient">삭제</VaButton>
+              <td class='index-center'>
+                <VaButton color="danger" @click="deleteClient(client.clientCode)" v-if="canDeleteClient"><va-icon name="delete" /></VaButton>
               </td>
             </tr>
           </tbody>

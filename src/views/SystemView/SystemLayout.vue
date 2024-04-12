@@ -1,6 +1,6 @@
 <template>
     <div class="system-layout">
-      <h2>System View</h2>
+      <h2>System Management</h2>
       <div class="system-content">
         <router-view></router-view>
       </div>
