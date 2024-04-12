@@ -75,17 +75,15 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick, watch, computed } from 'vue'
-import axios from 'axios'
-import { VaInput, VaButton, VaAlert, VaSelect, VaDateInput } from 'vuestic-ui'
-// 필요한 라이브러리 및 훅을 import 합니다.
-import { useRouter } from 'vue-router';
-import BusinessSidebar from '@/components/sidebar/BusinessSidebar.vue'
+import { ref, onMounted, nextTick, watch, computed } from 'vue'  // 필요한 Vue Composition API 함수들을 import합니다.
+import axios from 'axios'  // HTTP 요청을 위한 Axios 라이브러리를 import합니다.
+import { VaInput, VaButton, VaAlert, VaSelect, VaDateInput } from 'vuestic-ui'  // Vuestic UI 컴포넌트를 import합니다.
+import { useRouter } from 'vue-router';  // 라우터 인스턴스를 사용하기 위해 useRouter 훅을 import합니다.
+import BusinessSidebar from '@/components/sidebar/BusinessSidebar.vue'  // 사이드바 컴포넌트를 import합니다.
 
-// 컴포넌트 내부에서 useRouter 훅을 사용하여 router 인스턴스를 가져옵니다.
-const router = useRouter();
-const selectedClass = ref(null);
-const client = ref({
+const router = useRouter();  // useRouter 훅을 통해 라우터 인스턴스를 초기화합니다.
+const selectedClass = ref(null);  // 선택된 병원 분류를 저장할 ref를 생성합니다.
+const client = ref({  // 거래처 정보를 저장할 ref 객체를 생성합니다.
   clientCode: '',
   clientName: '',
   clientClass: '',
@@ -100,56 +98,44 @@ const client = ref({
   employee: null,
 })
 
-const formattedClientCode = computed({
+const formattedClientCode = computed({  // 사업자 등록번호를 형식화하여 표시하기 위한 computed 속성입니다.
   get() {
-    return formatClientCodeDisplay(client.value.clientCode);
+    return formatClientCodeDisplay(client.value.clientCode); // 입력값 형식화 함수를 호출합니다.
   },
   set(value) {
-    client.value.clientCode = value.replace(/\D/g, '');
+    client.value.clientCode = value.replace(/\D/g, ''); // 입력값에서 숫자만 저장합니다.
   }
 });
 
-const clientCodeError = ref(false);
-const employeeError = ref(false);
+const clientCodeError = ref(false);  // 사업자 등록번호 입력 오류를 나타내는 ref입니다.
+const employeeError = ref(false);  // 담당 사원 선택 오류를 나타내는 ref입니다.
 
-function formatClientCode(event) {
-  let inputValue = event.target.value.replace(/\D/g, ''); // 숫자 이외의 문자 제거
-  client.value.clientCode = inputValue;
-  clientCodeError.value = inputValue.length !== 10; // 10자리가 아닐 경우 에러 표시
+function formatClientCode(event) {  // 사용자 입력에 따라 사업자 등록번호를 형식화하는 함수입니다.
+  let inputValue = event.target.value.replace(/\D/g, ''); // 숫자 이외 문자를 제거합니다.
+  client.value.clientCode = inputValue;  // 정제된 값을 저장합니다.
+  clientCodeError.value = inputValue.length !== 10;  // 입력값 길이 검증.
 }
 
-function formatClientCodeDisplay(clientCode) {
+function formatClientCodeDisplay(clientCode) {  // 사업자 등록번호를 '-'을 사용하여 형식화합니다.
   if (!clientCode) return '';
-
   const cleaned = clientCode.replace(/\D/g, '');
   const match = cleaned.match(/^(\d{3})(\d{2})(\d{5})$/);
-
   if (match) {
-    return `${match[1]}-${match[2]}-${match[3]}`;
+    return `${match[1]}-${match[2]}-${match[3]}`;  // 형식화된 문자열 반환.
   }
-
-  return cleaned;
+  return cleaned;  // 숫자만 반환.
 }
 
-// 선택된 클래스가 변경될 때마다 실행될 함수
-watch(selectedClass, (newValue) => {
-  if (newValue) {
-    client.value.clientClass = newValue.value;
-  } else {
-    client.value.clientClass = null; // 선택이 해제되었을 경우
-  }
+watch(selectedClass, (newValue) => {  // 선택된 병원 분류가 변경될 때마다 client 객체를 업데이트합니다.
+  client.value.clientClass = newValue ? newValue.value : null;
 });
 
-const errorMessage = ref('')
-const valueSingle = ref('')
-const value = ref(new Date()) // 계약 시작일, 기본값으로 오늘 날짜 설정
-const value2 = ref(new Date()) // 계약 종료일, 기본값으로 오늘 날짜 설정
-const classes = ref([{ text: '1차 병원', value: 1 }, { text: '2차 병원', value: 2 }, { text: '3차 병원', value: 3 }])
-const employees = ref([]); // 사원 목록을 저장할 배열
-const selectKey = ref(0); // selectKey 정의
+const errorMessage = ref('');  // 오류 메시지를 저장할 ref입니다.
+const classes = ref([{ text: '1차 병원', value: 1 }, { text: '2차 병원', value: 2 }, { text: '3차 병원', value: 3 }]);  // 병원 분류 옵션.
+const employees = ref([]);  // 사원 목록을 저장할 ref입니다.
+const selectKey = ref(0);  // select 컴포넌트의 key를 관리하는 ref입니다.
 
-// 날짜를 'YYYY-MM-DD' 형식의 문자열로 변환하는 함수
-function formatDate(date) {
+function formatDate(date) {  // 날짜를 'YYYY-MM-DD' 형식으로 변환하는 함수입니다.
   const d = new Date(date);
   let month = '' + (d.getMonth() + 1),
     day = '' + d.getDate(),
@@ -159,72 +145,63 @@ function formatDate(date) {
   return [year, month, day].join('-');
 }
 
-const submitForm = async () => {
+const submitForm = async () => {  // 폼 제출 함수입니다.
+  if (client.value.clientCode.length !== 10) {
+    clientCodeError.value = true;
+    return;
+  }
+
+  if (!client.value.employee) {
+    employeeError.value = true;
+    return;
+  }
+
+  const formData = {
+    ...client.value,
+    clientStart: formatDate(client.value.clientStart),
+    clientEnd: formatDate(client.value.clientEnd),
+    empCode: client.value.employee ? client.value.employee.value : null,
+  };
+
   try {
-    if (client.value.clientCode.length !== 10) {
-      clientCodeError.value = true;
-      return;
-    }
-
-    if (!client.value.employee) {
-      employeeError.value = true;
-      return;
-    }
-
-    const formData = {
-      ...client.value,
-      clientStart: formatDate(client.value.clientStart),
-      clientEnd: formatDate(client.value.clientEnd),
-      empCode: client.value.employee ? client.value.employee.value : null,
-    };
-
     const response = await axios.post('/clients', formData);
-
-    if (response.status === 200 || response.status === 201) { // 성공 응답 코드 확인
+    if (response.status === 200 || response.status === 201) {
       alert('거래처가 성공적으로 등록되었습니다.');
-      await router.push({ name: 'viewclient' }); // 페이지 이동 대기
-      return; // 함수에서 바로 빠져나와 불필요한 실행 방지
+      await router.push({ name: 'viewclient' });
     } else {
-      throw new Error('등록에 실패했습니다.'); // 서버 응답이 성공이 아닐 경우, 에러를 강제로 발생시킴
+      throw new Error('등록에 실패했습니다.');
     }
   } catch (error) {
     console.error('폼 제출 중 오류:', error);
-    if (error.response && error.response.data && error.response.data.message === '이미 존재하는 사업자등록번호입니다.') {
-      alert('사업자등록번호가 중복입니다. 다시 시도해주세요.');
-    } else {
-      alert('등록에 실패했습니다. 다시 시도해주세요.');
-    }
+    alert('등록에 실패했습니다. 다시 시도해주세요.');
   }
 };
 
-// 사원 정보를 불러오는 함수
-onMounted(async () => {
+onMounted(async () => {  // 컴포넌트 마운트 시 사원 목록을 불러오는 함수입니다.
   try {
-    // URL 경로를 '/employees/list'로 수정
     const response = await axios.get('/employees/list');
     employees.value = response.data.map(emp => ({
-      text: `${emp.empName} (${emp.posName}, ${emp.deptName})`, // 사원 이름으로 레이블 설정
-      value: emp.empCode // 사원 코드로 값을 설정
+      text: `${emp.empName} (${emp.posName}, ${emp.deptName})`,
+      value: emp.empCode
     }));
     await nextTick();
     selectKey.value++;
-    console.log(employees.value);
   } catch (error) {
     console.error('사원 정보를 불러오는 데 실패했습니다.', error);
-    employees.value = []; // 오류 발생 시 employees를 빈 배열로 초기화
+    employees.value = [];
   }
 });
 
-onMounted(() => {
+onMounted(() => {  // 컴포넌트 마운트 시 필요한 스크립트를 로드합니다.
   const script = document.createElement('script')
   script.src = "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"
   script.onload = () => {
-    // 스크립트 로드 완료 후 처리할 작업 (필요한 경우)
+    // 스크립트 로드 완료 후 처리할 작업
   }
   document.head.appendChild(script)
 })
 
-const openPostcodePopup = () => {
+const openPostcodePopup = () => {  // 우편번호 찾기 팝업을 열기 위한 함수입니다.
   new daum.Postcode({
     oncomplete: function (data) {
       let addr = '';
@@ -252,20 +229,21 @@ const openPostcodePopup = () => {
 }
 </script>
 
+
 <style scoped>
 .form-container {
-  max-width: 600px;
-  margin: auto;
+  max-width: 600px; /* 최대 너비 설정 */
+  margin: auto; /* 중앙 정렬 */
 }
 
 .extended-margin-right {
-  margin-right: 2rem;
-  /* 원하는 간격으로 조정 */
+  margin-right: 2rem; /* 오른쪽 마진 추가 */
 }
 
 .error-message {
-  color: red;
-  font-size: 14px;
-  margin-top: 5px;
+  color: red; /* 에러 메시지 색상 */
+  font-size: 14px; /* 폰트 크기 */
+  margin-top: 5px; /* 상단 여백 */
 }
 </style>
+
