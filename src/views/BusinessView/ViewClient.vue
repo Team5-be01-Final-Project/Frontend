@@ -207,11 +207,14 @@ onMounted(() => {
 .pagination {
   display: flex;
   justify-content: center;
+  /* 페이지네이션 버튼을 중앙에 위치시키기 */
   margin-top: 20px;
 }
 
 .pagination button {
-  margin: 0 5px;
+  cursor: pointer;
+  padding: 5px 10px;
+  margin-right: 5px;
 }
 
 .clickable {

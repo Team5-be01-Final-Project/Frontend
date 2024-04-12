@@ -42,9 +42,7 @@
         <!-- 페이지네이션 -->
         <div class="pagination">
           <VaButton @click="prevPage" :disabled="currentPage === 1">이전</VaButton>
-          <VaButton class="mr-6 mb-2" preset="secondary" hover-behavior="opacity" :hover-opacity="0.4">
-            {{ currentPage }}
-          </VaButton>
+          <VaButton disabled>{{ currentPage }}</VaButton>
           <VaButton @click="nextPage" :disabled="currentPage === pageCount">다음</VaButton>
         </div>
       </div>
@@ -158,6 +156,9 @@ export default {
 
 
 .pagination {
+  display: flex;
+  justify-content: center;
+  /* 페이지네이션 버튼을 중앙에 위치시키기 */
   margin-top: 20px;
 }
 

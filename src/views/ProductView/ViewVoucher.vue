@@ -55,9 +55,9 @@
       </table>
       <!-- 페이지네이션: 사용자가 페이지를 이동할 수 있는 컨트롤을 제공합니다. -->
       <div class="pagination">
-        <button @click="prevPage" :disabled="currentPage === 1">이전</button>
-        <span>Page {{ currentPage }} of {{ pageCount }}</span>
-        <button @click="nextPage" :disabled="currentPage === pageCount">다음</button>
+        <VaButton @click="prevPage" :disabled="currentPage === 1">이전</VaButton>
+        <VaButton disabled>{{ currentPage }}</VaButton>
+        <VaButton @click="nextPage" :disabled="currentPage === pageCount">다음</VaButton>
       </div>
     </div>
   </div>
@@ -178,11 +178,14 @@ export default {
 .pagination {
   display: flex;
   justify-content: center;
+  /* 페이지네이션 버튼을 중앙에 위치시키기 */
   margin-top: 20px;
 }
 
 .pagination button {
-  margin: 0 10px;
+  cursor: pointer;
+  padding: 5px 10px;
+  margin-right: 5px;
 }
 
 .Main {
