@@ -1,3 +1,4 @@
+<!-- ProductSales.vue -->
 <template>
   <div class="flex">
     <!-- 사이드바 섹션 -->
@@ -13,6 +14,7 @@
           <va-input v-model="proNameFilter" placeholder="상품명 검색" />
           <va-button @click="filterSalesData">검색</va-button>
         </div>
+        <div class="right-align">단위: 원/개</div>
         <table class="va-table va-table--hoverable full-width">
           <thead>
             <tr>
@@ -28,20 +30,20 @@
             <!-- 데이터 행 -->
             <tr class="total-sum">
               <td colspan="4" class="index-center"><strong>총합계</strong></td>
-              <td class = 'money-right'>{{ totalCostOfSales.toLocaleString() }}</td>
-              <td class = 'money-right'>{{ totalVoucSales.toLocaleString() }}</td>
-              <td class = 'money-right'>{{ totalGrossProfit.toLocaleString() }}</td>
-              <td class = 'money-right'>{{ formatProfitMargin(totalprofitMargin) }}</td>
+              <td class='money-right'>{{ totalCostOfSales.toLocaleString() }}</td>
+              <td class='money-right'>{{ totalVoucSales.toLocaleString() }}</td>
+              <td class='money-right'>{{ totalGrossProfit.toLocaleString() }}</td>
+              <td class='money-right'>{{ formatProfitMargin(totalprofitMargin) }}</td>
             </tr>
             <tr v-for="(item, index) in displayedSalesData" :key="item.proName">
               <td class="index-center">{{ index + 1 }}</td>
               <td>{{ item.proName || '-' }}</td>
-              <td class = 'money-right'>{{ item.proUnit ? `${item.proUnit.toLocaleString()}` : '-' }}</td>
-              <td class="index-center">{{ item.voucAmount || '-' }}</td>
-              <td class = 'money-right'>{{ item.costOfSales ? `${item.costOfSales.toLocaleString()}` : '-' }}</td>
-              <td class = 'money-right'>{{ item.voucSales ? `${item.voucSales.toLocaleString()}` : '-' }}</td>
-              <td class = 'money-right'>{{ item.grossProfit ? `${item.grossProfit.toLocaleString()}` : '-' }}</td>
-              <td class = 'money-right'>{{ formatProfitMargin(item.profitMargin) }}</td>
+              <td class='money-right'>{{ item.proUnit ? `${item.proUnit.toLocaleString()}` : '-' }}</td>
+              <td class="index-center">{{ formatNumberWithCommas(item.voucAmount || '-') }}</td>
+              <td class='money-right'>{{ item.costOfSales ? `${item.costOfSales.toLocaleString()}` : '-' }}</td>
+              <td class='money-right'>{{ item.voucSales ? `${item.voucSales.toLocaleString()}` : '-' }}</td>
+              <td class='money-right'>{{ item.grossProfit ? `${item.grossProfit.toLocaleString()}` : '-' }}</td>
+              <td class='money-right'>{{ formatProfitMargin(item.profitMargin) }}</td>
             </tr>
           </tbody>
         </table>
@@ -52,21 +54,44 @@
 
 <script setup>
 import { onMounted, ref, computed } from 'vue';
+// Vue의 컴포지션 API에서 필요한 함수들을 가져옵니다.
+
 import axios from 'axios';
+// HTTP 요청을 보내기 위한 axios 라이브러리를 가져옵니다.
+
 import { yearOptions } from '@/utils/yearOptions.js'; 
 import { monthOptions1 } from '@/utils/monthOptions';
+// 년도와 월 선택 옵션을 가져옵니다.
+
 import SalesSidebar from '@/components/sidebar/SalesSidebar.vue';
+// 사이드바 컴포넌트를 가져옵니다.
+
+import formatNumberWithCommas from '@/utils/formatNumberWithCommas';
 
 const defaultYearOption = yearOptions.find(option => option.value === new Date().getFullYear());
-const currentMonth = ("0" + (new Date().getMonth() + 1)).slice(-2); // 현재 월을 두 자리 문자열로 포맷팅
+// 기본 년도 옵션을 현재 년도로 설정합니다.
+
+const currentMonth = ("0" + (new Date().getMonth() + 1)).slice(-2);
+// 현재 월을 두 자리 문자열로 포맷팅합니다.
 
 const yearOption = yearOptions;
-const selectedYear = ref(defaultYearOption); // 현재 년도를 기본값으로 설정
+// 년도 선택 옵션을 설정합니다.
+
+const selectedYear = ref(defaultYearOption);
+// 선택된 년도를 현재 년도로 초기화합니다.
+
 const selectedMonth = ref(monthOptions1.find(option => option.value === currentMonth));
+// 선택된 월을 현재 월로 초기화합니다.
+
 const proNameFilter = ref('');
+// 상품명 검색어를 저장할 ref를 생성합니다.
 
 const filteredSalesData = ref([]);
-const displayedSalesData = filteredSalesData; // filteredSalesData를 직접 참조하도록 변경
+// 필터링된 매출 데이터를 저장할 ref를 생성합니다.
+
+const displayedSalesData = filteredSalesData;
+// 표시할 매출 데이터를 필터링된 데이터로 설정합니다.
+
 const fields = [
   { key: 'proName', label: '상품명', class: 'text-center' },
   { key: 'proUnit', label: '단가', class: 'text-center' },
@@ -76,9 +101,13 @@ const fields = [
   { key: 'grossProfit', label: '매출이익', class: 'text-center' },
   { key: 'profitMargin', label: '이익율', class: 'text-center' },
 ];
+// 테이블 헤더에 표시할 필드 정보를 정의합니다.
 
 const sortKey = ref('');
+// 정렬 기준 키를 저장할 ref를 생성합니다.
+
 const sortOrder = ref('');
+// 정렬 순서를 저장할 ref를 생성합니다.
 
 const sortData = (key) => {
   if (sortKey.value === key) {
@@ -96,6 +125,8 @@ const sortData = (key) => {
     }
   });
 };
+// 데이터를 정렬하는 함수입니다.
+// 클릭한 필드의 키를 기준으로 오름차순 또는 내림차순으로 정렬합니다.
 
 const fetchSalesData = async (year = defaultYearOption.value, month = currentMonth) => {
   let url = '/sales/productsales';
@@ -108,6 +139,8 @@ const fetchSalesData = async (year = defaultYearOption.value, month = currentMon
     console.error('Error fetching sales data:', error);
   }
 };
+// 매출 데이터를 가져오는 함수입니다.
+// 선택된 년도와 월을 기준으로 데이터를 가져옵니다.
 
 const formatProfitMargin = (profitMargin) => {
   if (profitMargin === null || profitMargin === undefined) {
@@ -116,27 +149,35 @@ const formatProfitMargin = (profitMargin) => {
     return (Math.round(profitMargin * 100) / 100).toFixed(1) + '%';
   }
 };
+// 이익율을 포맷팅하는 함수입니다.
+// 소수점 둘째 자리까지 표시하고 '%' 기호를 붙입니다.
 
 const filterSalesData = () => {
   const year = selectedYear.value.value;
   const month = selectedMonth.value ? (typeof selectedMonth.value === 'object' ? selectedMonth.value.value : selectedMonth.value) : null;
   fetchSalesData(year, month);
 };
+// 매출 데이터를 필터링하는 함수입니다.
+// 선택된 년도와 월을 기준으로 데이터를 다시 가져옵니다.
 
 onMounted(() => {
   fetchSalesData();
 });
+// 컴포넌트가 마운트될 때 초기 매출 데이터를 가져옵니다.
 
 const filterByProName = (data, proName) => {
   if (!proName) return data;
   return data.filter(item => item.proName.toLowerCase().includes(proName.toLowerCase()));
 };
+// 상품명으로 데이터를 필터링하는 함수입니다.
+// 입력된 검색어를 포함하는 상품만 필터링합니다.
 
-// 총합계 계산을 위한 computed 속성
 const totalCostOfSales = computed(() => filteredSalesData.value.reduce((acc, item) => acc + (item.costOfSales || 0), 0));
 const totalVoucSales = computed(() => filteredSalesData.value.reduce((acc, item) => acc + (item.voucSales || 0), 0));
 const totalGrossProfit = computed(() => filteredSalesData.value.reduce((acc, item) => acc + (item.grossProfit || 0), 0));
 const totalprofitMargin = computed(() => totalVoucSales.value ? (totalGrossProfit.value / totalVoucSales.value) * 100 : 0);
+// 총합계를 계산하는 computed 속성들입니다.
+// 필터링된 데이터를 기준으로 각 필드의 합계를 계산합니다.
 </script>
 
 <style scoped>
@@ -164,7 +205,8 @@ const totalprofitMargin = computed(() => totalVoucSales.value ? (totalGrossProfi
 .va-table thead, .va-table tfoot, .va-table tbody tr {
   display: table;
   width: 100%;
-  table-layout: fixed; /* 테이블 셀의 너비를 고정 */
+  table-layout: fixed; 
+  /* 테이블 셀의 너비를 고정 */
 }
 
 .total-sum {

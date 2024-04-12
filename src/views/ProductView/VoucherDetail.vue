@@ -16,16 +16,16 @@
       <div class="spacer" style="height: 20px"></div>
       <div class="voucher-info">
         <div class="voucher-info-row">
-          <div class="voucher-info-item"><span class="voucher-info-label">전표번호:</span><span
-              class="voucher-info-value">{{ voucId }}</span></div>
-          <div class="voucher-info-item"><span class="voucher-info-label">등록일:</span><span class="voucher-info-value">{{
-            voucDate }}</span></div>
-          <div class="voucher-info-item"><span class="voucher-info-label">담당자:</span><span class="voucher-info-value">{{
-            empName }}</span></div>
-          <div class="voucher-info-item"><span class="voucher-info-label">결재자:</span><span class="voucher-info-value">{{
-            signerName }}</span></div>
-          <div class="voucher-info-item"><span class="voucher-info-label">거래처:</span><span class="voucher-info-value">{{
-            clientName }}</span></div>
+          <div class="voucher-info-item"><span class="voucher-info-label">전표번호:</span>
+            <span class="voucher-info-value">{{ voucId }}</span></div>
+          <div class="voucher-info-item"><span class="voucher-info-label">등록일:</span>
+            <span class="voucher-info-value">{{voucDate }}</span></div>
+          <div class="voucher-info-item"><span class="voucher-info-label">담당자:</span>
+            <span class="voucher-info-value">{{ empName }}</span></div>
+          <div class="voucher-info-item"><span class="voucher-info-label">결재자:</span>
+          <span class="voucher-info-value">{{ signerName }}</span></div>
+          <div class="voucher-info-item"><span class="voucher-info-label">거래처:</span>
+          <span class="voucher-info-value">{{ clientName }}</span></div>
         </div>
       </div>
       <hr />
@@ -34,24 +34,26 @@
         <table class="va-table">
           <thead>
             <tr>
-              <th>제품 코드</th>
+              <th>No.</th>
+              <th>품목코드</th>
               <th>제품명</th>
               <th>수량</th>
               <th>판매가</th>
-              <th>합계</th>
+              <th>매출액</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(detail, index) in voucherDetails" :key="index">
+              <td class = 'index-center'>{{ index+1 }}</td>
               <td>{{ detail.proCode }}</td>
               <td>{{ detail.proName }}</td>
-              <td>{{ detail.voucAmount }}</td>
-              <td>{{ detail.voucSale.toLocaleString() }}원</td>
-              <td>{{ detail.voucSales.toLocaleString() }}원</td>
+              <td class = 'money-right'>{{ detail.voucAmount }}</td>
+              <td class = 'money-right'>{{ detail.voucSale.toLocaleString() }}</td>
+              <td class = 'money-right'>{{ detail.voucSales.toLocaleString() }}</td>
             </tr>
           </tbody>
         </table>
-        <div class="total-sales">총합계: {{ totalVoucSales.toLocaleString() }}원</div>
+        <div class="total-sales">총 합계(매출액): {{ totalVoucSales.toLocaleString() }}원</div>
       </div>
       <p v-else>해당 전표번호에 대한 정보가 없습니다.</p>
     </div>
@@ -225,7 +227,6 @@ export default {
 .va-table th,
 .va-table td {
   padding: 10px;
-  text-align: left;
   border-bottom: 1px solid #ddd;
 }
 

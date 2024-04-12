@@ -65,7 +65,7 @@
           <table class="va-table va-table--hoverable">
               <thead>
                 <tr>
-                  <th>No</th>
+                  <th>No.</th>
                   <th>품목코드</th>
                   <th>제품명</th>
                   <th>판매가</th>
@@ -76,18 +76,19 @@
               </thead>
               <tbody>
                 <tr v-for="(product, index) in addproductlist" :key="index">
-                  <td>{{ index+1 }}</td>
+                  <td class = 'index-center'>{{ index+1 }}</td>
                   <td>{{ product.proCode }}</td>
                   <td>{{ product.proName }}</td>
-                  <td>{{ formatNumberWithCommas(product.voucSale) }}</td>
-                  <td>{{ formatNumberWithCommas(product.voucAmount) }}</td>
-                  <td>{{ formatNumberWithCommas(product.voucSales) }}</td>
+                  <td class = 'money-right'>{{ formatNumberWithCommas(product.voucSale) }}</td>
+                  <td class = 'money-right'>{{ formatNumberWithCommas(product.voucAmount) }}</td>
+                  <td class = 'money-right'>{{ formatNumberWithCommas(product.voucSales) }}</td>
                   <td>
                     <VaButton @click="removeProduct(index)" color="danger" class="mr-6 mb-2">삭제</VaButton>
                   </td>
                 </tr>
               </tbody>
           </table>
+          <div class="total-sales">총 합계(매출액): {{ formatNumberWithCommas(totalSales) }}원</div>
       </div>
   </div>
 </template>
@@ -117,13 +118,12 @@
             voucId: "",
             clients: [],
             products: [],
-            clientOptions: [],
-            productOptions: [],
+            clientOptions: [], //거래처 선택 리스트
+            productOptions: [], //선택한 거래처의 상품 리스트
             selectedClient: "",
-            selectedProduct: null,
-            selectedProductDetails: null,
-            selectedProductStock: -1,
-            addproductlist: []
+            selectedProduct: null, //선택한 상품
+            selectedProductStock: -1, //선택한 상품의 재고
+            addproductlist: [] //등록 상품 리스트트
         };
       },
 
@@ -137,7 +137,9 @@
         });
       },
       computed: {
-        
+        totalSales(){
+          return this.addproductlist.reduce((total, product) => total + product.voucSales, 0);
+        }
       },
       methods: {
         formatNumberWithCommas,
@@ -207,7 +209,13 @@
           console.log(this.products);
           console.log(this.selectedQuantity);
           const productInfo = this.products.find(product => product.value === this.selectedProduct.value);
-          if (productInfo && this.selectedQuantity > 0) {
+          const existingProduct = this.addproductlist.find(p => p.proCode === productInfo.proCode);
+
+          if(existingProduct){
+            // 이미 목록에 존재하는 상품인 경우 경고 메시지 표시
+            alert("이미 목록에 같은 상품이 있습니다.");
+          }
+          else if (productInfo && this.selectedQuantity > 0 && this.selectedQuantity<this.selectedProductStock) {
             const newProduct = {
               proCode: productInfo.proCode,
               proName: productInfo.proName,
@@ -256,7 +264,7 @@
             axios.post('/vouchers/saveall', voucherData)
               .then(response => {
                 alert("전표가 성공적으로 저장되었습니다.");
-                // 성공 후 필요한 동작(예: 페이지 새로고침, 다른 페이지로 이동 등)
+                this.$router.push({ name: 'viewvoucher' }); // 저장 성공 후 전표 목록 페이지로 이동
               })
               .catch(error => {
                 if (error.response && error.response.status === 409) {
@@ -326,7 +334,6 @@
     .va-table th,
     .va-table td {
       padding: 10px;
-      text-align: left;
       border-bottom: 1px solid #ddd;
     }
     
