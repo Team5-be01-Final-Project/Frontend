@@ -14,6 +14,7 @@
           <va-input v-model="proNameFilter" placeholder="상품명 검색" />
           <va-button @click="filterSalesData">검색</va-button>
         </div>
+        <div class="right-align">단위: 원/개</div>
         <table class="va-table va-table--hoverable full-width">
           <thead>
             <tr>
@@ -38,7 +39,7 @@
               <td class="index-center">{{ index + 1 }}</td>
               <td>{{ item.proName || '-' }}</td>
               <td class='money-right'>{{ item.proUnit ? `${item.proUnit.toLocaleString()}` : '-' }}</td>
-              <td class="index-center">{{ item.voucAmount || '-' }}</td>
+              <td class='money-right'>{{ item.voucAmount || '-' }}</td>
               <td class='money-right'>{{ item.costOfSales ? `${item.costOfSales.toLocaleString()}` : '-' }}</td>
               <td class='money-right'>{{ item.voucSales ? `${item.voucSales.toLocaleString()}` : '-' }}</td>
               <td class='money-right'>{{ item.grossProfit ? `${item.grossProfit.toLocaleString()}` : '-' }}</td>
@@ -202,7 +203,8 @@ const totalprofitMargin = computed(() => totalVoucSales.value ? (totalGrossProfi
 .va-table thead, .va-table tfoot, .va-table tbody tr {
   display: table;
   width: 100%;
-  table-layout: fixed; /* 테이블 셀의 너비를 고정 */
+  table-layout: fixed; 
+  /* 테이블 셀의 너비를 고정 */
 }
 
 .total-sum {
