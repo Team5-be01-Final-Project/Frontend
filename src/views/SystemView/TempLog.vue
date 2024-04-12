@@ -38,6 +38,7 @@
           style="margin-right: 5px"
         />
         <va-button @click="applyFilter">검색</va-button>
+        <refresh-button class="left-margin"/>
       </div>
       <div class="right-align">단위 : °C</div>
       <table class="va-table va-table--hoverable full-width">
@@ -72,10 +73,12 @@ import SystemSidebar from "@/components/sidebar/SystemSidebar.vue";
 import { yearOptions } from "@/utils/yearOptions";
 import { monthOptions } from "@/utils/monthOptions";
 import { ref, onMounted } from "vue";
+import RefreshButton from "@/components/RefreshButton.vue";
 
 export default {
   components: {
     SystemSidebar,
+    RefreshButton,
   },
   setup() {
     const currentYear = new Date().getFullYear(); // 현재 년도
@@ -183,6 +186,10 @@ export default {
   border: 2px solid #cccccc;
   border-bottom: 2px solid #cccccc; /* 회색 테두리 */
   font-size: 15px;
+}
+
+.left-margin{
+  margin-left: 5px;
 }
 
 </style>

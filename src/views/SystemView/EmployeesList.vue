@@ -35,6 +35,7 @@
             style="margin-right: 5px"
           />
           <VaButton @click="fetchFilteredEmployees">검색</VaButton>
+          <refresh-button class="left-margin"/>
         </div>
         <table class="va-table va-table--hoverable full-width">
           <thead>
@@ -113,10 +114,13 @@ import axios from "axios";
 import { VaButton } from "vuestic-ui/web-components";
 import SystemSidebar from "@/components/sidebar/SystemSidebar.vue";
 import { departmentOptions } from "@/utils/departmentOptions.js";
+import RefreshButton from "@/components/RefreshButton.vue";
+
 
 export default {
   components: {
     SystemSidebar,
+    RefreshButton,
   },
   data() {
     return {
@@ -346,5 +350,9 @@ export default {
   border: 2px solid #cccccc;
   border-bottom: 2px solid #cccccc; /* 회색 테두리 */
   font-size: 15px;
+}
+
+.left-margin{
+  margin-left: 5px;
 }
 </style>

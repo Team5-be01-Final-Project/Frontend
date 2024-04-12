@@ -27,6 +27,7 @@
             style="margin-right: 5px"
           />
           <VaButton @click="searchClients" class="search-button">검색</VaButton>
+          <refresh-button class="left-margin"/>
         </div>
         <table class="va-table va-table--hoverable full-width">
           <thead>
@@ -92,6 +93,7 @@ import { useRouter } from "vue-router";
 import Cookies from "js-cookie";
 import { VaSelect, VaInput, VaButton } from "vuestic-ui";
 import BusinessSidebar from "@/components/sidebar/BusinessSidebar.vue";
+import RefreshButton from "@/components/RefreshButton.vue";
 
 const router = useRouter();
 const clients = ref([]); // 전체 거래처 목록
@@ -278,4 +280,9 @@ onMounted(() => {
   border-bottom: 2px solid #cccccc; /* 회색 테두리 */
   font-size: 15px;
 }
+
+.left-margin{
+  margin-left: 5px;
+}
+
 </style>

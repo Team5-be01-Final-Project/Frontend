@@ -25,6 +25,8 @@
           style="margin-right: 5px"
         />
         <VaButton @click="searchVouchers" class="search-button col-span-2">검색</VaButton>
+        <refresh-button class="left-margin"/>
+
       </div>
       <div class="right-align">단위 : 원</div>
       <!-- 출고전표 결재 목록 테이블 -->
@@ -71,6 +73,7 @@ import axios from "axios";
 import { VaSelect, VaInput, VaButton, VaBadge } from "vuestic-ui";
 import ProductSidebar from "@/components/sidebar/ProductSidebar.vue";
 import formatNumberWithCommas from "@/utils/formatNumberWithCommas";
+import RefreshButton from "@/components/RefreshButton.vue";
 
 export default {
   components: {
@@ -79,6 +82,7 @@ export default {
     VaInput,
     VaButton,
     VaBadge,
+    RefreshButton,
   },
   data() {
     return {
@@ -225,5 +229,9 @@ export default {
   border: 2px solid #cccccc;
   border-bottom: 2px solid #cccccc; /* 회색 테두리 */
   font-size: 15px;
+}
+
+.left-margin{
+  margin-left: 5px;
 }
 </style>
