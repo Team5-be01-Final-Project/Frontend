@@ -37,12 +37,13 @@
             <td class='money-right'>{{ formatNumberWithCommas(ppc.proUnit) }}</td>
             <td class='money-right'>{{ formatNumberWithCommas(ppc.ppcSale) }}</td>
             <td class='index-center'>
-              <VaButton color="warning" class="mr-6 mb-2" @click="openEditModal(ppc)">
+              <VaButton preset="primary" class="mr-6 mb-2" @click="openEditModal(ppc)">
                 <va-icon name="edit" />
               </VaButton>
             </td>
             <td class='index-center'>
-              <VaButton color="danger" class="mr-6 mb-2" @click="openDeleteModal(ppc)"> <va-icon name="delete" />
+              <VaButton preset="primary" color="danger" class="mr-6 mb-2" @click="openDeleteModal(ppc)"> <va-icon
+                  name="delete" />
               </VaButton>
             </td>
           </tr>
@@ -246,5 +247,4 @@ export default {
   padding: 5px 10px;
   margin-right: 5px;
 }
-
 </style>

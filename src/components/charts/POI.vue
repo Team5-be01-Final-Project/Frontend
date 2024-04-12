@@ -1,6 +1,7 @@
 <template>
   <h4>이달의 매출 현황</h4>
   <div>
+    <div class="right-align">단위 : 원</div>
     <table class="va-table va-table--hoverable">
       <thead>
         <tr>
@@ -60,7 +61,7 @@ const formatCurrency = (value) => {
 
 <style>
 .va-table {
-  width: 715px;
+  width: 700px;
   border-collapse: collapse;
   margin-top: 20px;
 }

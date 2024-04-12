@@ -39,6 +39,7 @@
         />
         <va-button @click="applyFilter">검색</va-button>
       </div>
+      <div class="right-align">단위 : °C</div>
       <table class="va-table va-table--hoverable full-width">
         <thead>
           <tr>
