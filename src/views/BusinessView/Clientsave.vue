@@ -269,21 +269,3 @@ const openPostcodePopup = () => {
   margin-top: 5px;
 }
 </style>
-
-<style scoped>
-.form-container {
-  max-width: 600px;
-  margin: auto;
-}
-
-.extended-margin-right {
-  margin-right: 2rem;
-  /* 원하는 간격으로 조정 */
-}
-
-.error-message {
-  color: red;
-  font-size: 14px;
-  margin-top: 5px;
-}
-</style>
