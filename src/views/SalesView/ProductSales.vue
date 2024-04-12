@@ -14,6 +14,7 @@
           <va-input v-model="proNameFilter" placeholder="상품명 검색" />
           <va-button @click="filterSalesData">검색</va-button>
         </div>
+        <div class="right-align">단위: 원/개</div>
         <table class="va-table va-table--hoverable full-width">
           <thead>
             <tr>
@@ -204,7 +205,8 @@ const totalprofitMargin = computed(() => totalVoucSales.value ? (totalGrossProfi
 .va-table thead, .va-table tfoot, .va-table tbody tr {
   display: table;
   width: 100%;
-  table-layout: fixed; /* 테이블 셀의 너비를 고정 */
+  table-layout: fixed; 
+  /* 테이블 셀의 너비를 고정 */
 }
 
 .total-sum {

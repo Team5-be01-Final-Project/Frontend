@@ -118,13 +118,12 @@
             voucId: "",
             clients: [],
             products: [],
-            clientOptions: [],
-            productOptions: [],
+            clientOptions: [], //거래처 선택 리스트
+            productOptions: [], //선택한 거래처의 상품 리스트
             selectedClient: "",
-            selectedProduct: null,
-            selectedProductDetails: null,
-            selectedProductStock: -1,
-            addproductlist: []
+            selectedProduct: null, //선택한 상품
+            selectedProductStock: -1, //선택한 상품의 재고
+            addproductlist: [] //등록 상품 리스트트
         };
       },
 
@@ -210,7 +209,13 @@
           console.log(this.products);
           console.log(this.selectedQuantity);
           const productInfo = this.products.find(product => product.value === this.selectedProduct.value);
-          if (productInfo && this.selectedQuantity > 0) {
+          const existingProduct = this.addproductlist.find(p => p.proCode === productInfo.proCode);
+
+          if(existingProduct){
+            // 이미 목록에 존재하는 상품인 경우 경고 메시지 표시
+            alert("이미 목록에 같은 상품이 있습니다.");
+          }
+          else if (productInfo && this.selectedQuantity > 0 && this.selectedQuantity<this.selectedProductStock) {
             const newProduct = {
               proCode: productInfo.proCode,
               proName: productInfo.proName,
