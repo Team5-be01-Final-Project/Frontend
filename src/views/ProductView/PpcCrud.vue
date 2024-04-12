@@ -8,9 +8,10 @@
     <div class="Main">
       <h3 class="va-h3">거래처별 상품 등록 및 수정</h3>
       <div>
-        <VaSelect v-model="selectedField" placeholder="검색 조건" :options="filterOptions" />
-          <VaInput v-model="filter" placeholder="검색어 입력" class="w-full" />
-          <VaButton @click="applyFilter">검색</VaButton>
+        <VaSelect v-model="selectedField" placeholder="검색 조건" :options="filterOptions"
+          @update:modelValue="handleSelectedFieldChange()" />
+        <VaInput v-model="filter" placeholder="검색어 입력" class="w-full" />
+        <VaButton @click="applyFilter">검색</VaButton>
         <VaButton @click="openRegisterModal" class="register-button">
           판매상품 등록
         </VaButton>
@@ -81,35 +82,56 @@ export default {
       isRegisterModalVisible: false,
       currentPage: 1,
       perPage: 20,
+      selectedField: '전체', // 선택된 필터 옵션
+      filter: '', // 사용자 입력 검색어
+      actualFilter: '', // 실제 적용될 필터 값을 저장하는 새로운 데이터 속성
       // 필터 옵션
       filterOptions: [
-        { text: '전체', value: 'all' },
+        { text: '전체', value: '전체' },
         { text: '거래처명', value: 'clientName' },
-    ],
+      ],
     };
   },
   computed: {
     pageCount() {
-      return Math.ceil(this.ppcs.length / this.perPage);
+      return Math.ceil(this.filteredPpcs.length / this.perPage);
+    },
+    filteredPpcs() {
+      if (this.selectedField === '전체' || !this.actualFilter) {
+        return this.ppcs;
+      } else {
+        return this.ppcs.filter(ppc =>
+          ppc.clientName.toLowerCase().includes(this.actualFilter.toLowerCase())
+        );
+      }
     },
     paginatedPpcs() {
       const start = (this.currentPage - 1) * this.perPage;
-      const end = this.currentPage * this.perPage;
-      return this.ppcs.slice(start, end);
+      const end = start + this.perPage;
+      return this.filteredPpcs.slice(start, end);
     },
   },
   methods: {
     formatNumberWithCommas,
     fetchPpcs() {
-      axios
-        .get('/ppc/all')
-        .then((response) => {
-          this.ppcs = response.data;
-        })
-        .catch((error) => {
-          console.error('상품 가격 정보를 가져오는데 실패했습니다:', error);
-        });
+      axios.get('/ppc/all').then((response) => {
+        this.ppcs = response.data;
+        this.filteredPpcs = [...this.ppcs]; // Initially display all data
+      }).catch((error) => {
+        console.error('Error fetching PPCs:', error);
+      });
     },
+    applyFilter() {
+      // '전체' 옵션이 선택되었을 때와 검색 버튼을 클릭했을 때를 모두 처리
+      if (this.selectedField !== '전체') {
+        this.actualFilter = this.filter; // 입력된 검색어를 실제 필터 값에 할당
+      } else {
+        // '전체'를 선택했을 때는 `actualFilter`도 초기화합니다.
+        this.actualFilter = '';
+      }
+      this.currentPage = 1; // 페이지를 첫 번째 페이지로 리셋
+    },
+    // Other methods (nextPage, prevPage, openEditModal, etc.) remain unchanged...
     nextPage() {
       // 다음 페이지로 이동
       if (this.currentPage < this.pageCount) this.currentPage++;
@@ -171,6 +193,12 @@ export default {
           alert('상품 가격 정보를 등록하는데 실패했습니다.');
         });
     },
+    handleSelectedFieldChange() {
+      this.filter = '';
+      this.actualFilter = '';
+
+    },
+
   },
   mounted() {
     this.fetchPpcs();

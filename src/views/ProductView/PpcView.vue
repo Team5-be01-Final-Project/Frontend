@@ -177,7 +177,8 @@ export default {
   width: 100%;
   /* 테이블이 화면에 꽉 차도록 설정 */
 }
-.filter{
+
+.filter {
   margin-bottom: 10px;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
     <div class="business-layout">
-      <h2>Business View</h2>
+      <h2>Business Management</h2>
       <div class="business-content">
         <router-view></router-view>
       </div>
