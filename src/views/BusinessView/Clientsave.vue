@@ -1,11 +1,10 @@
+<!-- Clientsave.vue -->
 <template>
-
   <div class="flex">
     <!-- 사이드바 섹션 -->
     <div class="sidebar">
       <BusinessSidebar />
     </div>
-
 
     <div>
       <h3 class="va-h3">거래처 등록</h3>
@@ -13,7 +12,8 @@
       <div class="form-container">
         <form @submit.prevent="submitForm">
           <div class="form-group">
-            <va-input label="사업자 등록번호" v-model="client.clientCode" id="clientCode" type="text" required></va-input>
+            <va-input label="사업자 등록번호" v-model="formattedClientCode" @input="formatClientCode" id="clientCode" type="text" required></va-input>
+            <div v-if="clientCodeError" class="error-message">사업자 등록번호는 10자리여야 합니다.</div>
           </div>
           <div class="col-span-1" style="height: 50px;"></div>
           <div class="grid grid-cols-2 md:grid-cols-4 gap-4 items-end">
@@ -52,6 +52,7 @@
           <div class="col-span-1" style="height: 50px;"></div>
           <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 items-end">
             <VaSelect :key="selectKey" v-model="client.employee" label="담당 사원" :options="employees"></VaSelect>
+            <div v-if="employeeError" class="error-message">담당 사원을 선택해주세요.</div>
           </div>
           <div class="col-span-1" style="height: 50px;"></div>
 
@@ -74,13 +75,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick, watch } from 'vue'
+import { ref, onMounted, nextTick, watch, computed } from 'vue'
 import axios from 'axios'
 import { VaInput, VaButton, VaAlert, VaSelect, VaDateInput } from 'vuestic-ui'
 // 필요한 라이브러리 및 훅을 import 합니다.
 import { useRouter } from 'vue-router';
 import BusinessSidebar from '@/components/sidebar/BusinessSidebar.vue'
-
 
 // 컴포넌트 내부에서 useRouter 훅을 사용하여 router 인스턴스를 가져옵니다.
 const router = useRouter();
@@ -99,6 +99,38 @@ const client = ref({
   clientNote: '',
   employee: null,
 })
+
+const formattedClientCode = computed({
+  get() {
+    return formatClientCodeDisplay(client.value.clientCode);
+  },
+  set(value) {
+    client.value.clientCode = value.replace(/\D/g, '');
+  }
+});
+
+const clientCodeError = ref(false);
+const employeeError = ref(false);
+
+function formatClientCode(event) {
+  let inputValue = event.target.value.replace(/\D/g, ''); // 숫자 이외의 문자 제거
+  client.value.clientCode = inputValue;
+  clientCodeError.value = inputValue.length !== 10; // 10자리가 아닐 경우 에러 표시
+}
+
+function formatClientCodeDisplay(clientCode) {
+  if (!clientCode) return '';
+
+  const cleaned = clientCode.replace(/\D/g, '');
+  const match = cleaned.match(/^(\d{3})(\d{2})(\d{5})$/);
+
+  if (match) {
+    return `${match[1]}-${match[2]}-${match[3]}`;
+  }
+
+  return cleaned;
+}
+
 // 선택된 클래스가 변경될 때마다 실행될 함수
 watch(selectedClass, (newValue) => {
   if (newValue) {
@@ -107,6 +139,7 @@ watch(selectedClass, (newValue) => {
     client.value.clientClass = null; // 선택이 해제되었을 경우
   }
 });
+
 const errorMessage = ref('')
 const valueSingle = ref('')
 const value = ref(new Date()) // 계약 시작일, 기본값으로 오늘 날짜 설정
@@ -114,6 +147,7 @@ const value2 = ref(new Date()) // 계약 종료일, 기본값으로 오늘 날�
 const classes = ref([{ text: '1차 병원', value: 1 }, { text: '2차 병원', value: 2 }, { text: '3차 병원', value: 3 }])
 const employees = ref([]); // 사원 목록을 저장할 배열
 const selectKey = ref(0); // selectKey 정의
+
 // 날짜를 'YYYY-MM-DD' 형식의 문자열로 변환하는 함수
 function formatDate(date) {
   const d = new Date(date);
@@ -124,8 +158,19 @@ function formatDate(date) {
   if (day.length < 2) day = '0' + day;
   return [year, month, day].join('-');
 }
+
 const submitForm = async () => {
   try {
+    if (client.value.clientCode.length !== 10) {
+      clientCodeError.value = true;
+      return;
+    }
+
+    if (!client.value.employee) {
+      employeeError.value = true;
+      return;
+    }
+
     const formData = {
       ...client.value,
       clientStart: formatDate(client.value.clientStart),
@@ -144,7 +189,11 @@ const submitForm = async () => {
     }
   } catch (error) {
     console.error('폼 제출 중 오류:', error);
-    alert('사업자등록번호가 중복입니다. 다시 시도해주세요.');
+    if (error.response && error.response.data && error.response.data.message === '이미 존재하는 사업자등록번호입니다.') {
+      alert('사업자등록번호가 중복입니다. 다시 시도해주세요.');
+    } else {
+      alert('등록에 실패했습니다. 다시 시도해주세요.');
+    }
   }
 };
 
@@ -165,6 +214,7 @@ onMounted(async () => {
     employees.value = []; // 오류 발생 시 employees를 빈 배열로 초기화
   }
 });
+
 onMounted(() => {
   const script = document.createElement('script')
   script.src = "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"
@@ -173,6 +223,7 @@ onMounted(() => {
   }
   document.head.appendChild(script)
 })
+
 const openPostcodePopup = () => {
   new daum.Postcode({
     oncomplete: function (data) {
@@ -200,7 +251,8 @@ const openPostcodePopup = () => {
   }).open();
 }
 </script>
-<style>
+
+<style scoped>
 .form-container {
   max-width: 600px;
   margin: auto;
@@ -209,5 +261,29 @@ const openPostcodePopup = () => {
 .extended-margin-right {
   margin-right: 2rem;
   /* 원하는 간격으로 조정 */
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
+</style>
+
+<style scoped>
+.form-container {
+  max-width: 600px;
+  margin: auto;
+}
+
+.extended-margin-right {
+  margin-right: 2rem;
+  /* 원하는 간격으로 조정 */
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
 }
 </style>
