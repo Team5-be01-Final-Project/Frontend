@@ -10,13 +10,8 @@
       <h3 class="va-h3">출고전표 결재 목록</h3>
       <!-- 검색 폼: 사용자가 결재 목록을 필터링할 수 있게 합니다. -->
       <div class="grid grid-cols-12 gap-4 mb-6 items-center">
-        <VaSelect
-          v-model="selectedField"
-          placeholder="검색 조건 선택"
-          :options="filterOptions"
-          value-by="value"
-          class="col-span-4 filter-select"
-        />
+        <VaSelect v-model="selectedField" placeholder="검색 조건 선택" :options="filterOptions" value-by="value"
+          class="col-span-4 filter-select" />
         <VaInput v-model="filter" placeholder="검색어 입력" class="col-span-6 search-input" />
         <VaButton @click="searchVouchers" class="search-button col-span-2">검색</VaButton>
       </div>
@@ -42,7 +37,7 @@
             <td>
               <VaBadge text="대기중" color="secondary" class="mr-2" />
             </td>
-            <td>{{ formatNumberWithCommas( voucherGroup[0].voucSales) }}</td>
+            <td>{{ formatNumberWithCommas(voucherGroup[0].voucSales) }}</td>
           </tr>
           <!-- 승인된 출고전표 목록 출력 -->
           <tr v-for="(voucherGroup, index) in approvedVouchers" :key="'approved-' + index">
@@ -53,7 +48,7 @@
             <td>
               <VaBadge text="승인" color="success" class="mr-2" />
             </td>
-            <td>{{ formatNumberWithCommas( voucherGroup[0].voucSales) }}</td>
+            <td>{{ formatNumberWithCommas(voucherGroup[0].voucSales) }}</td>
           </tr>
           <!-- 반려된 출고전표 목록 출력 -->
           <tr v-for="(voucherGroup, index) in rejectedVouchers" :key="'rejected-' + index">
@@ -64,7 +59,7 @@
             <td>
               <VaBadge text="반려" color="danger" class="mr-2" />
             </td>
-            <td>{{ formatNumberWithCommas( voucherGroup[0].voucSales) }}</td>
+            <td>{{ formatNumberWithCommas(voucherGroup[0].voucSales) }}</td>
           </tr>
         </tbody>
       </table>
@@ -176,6 +171,7 @@ export default {
         console.error('Error searching vouchers:', error);
       }
     },
+    
   },
 };
 </script>
