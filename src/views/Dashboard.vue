@@ -96,7 +96,7 @@ const selectedMonth = ref(new Date().getMonth() + 1);
 
 /* 차량 온도 막대 차트 컨테이너 스타일 */
 .car-temp-barchart-container {
-  height: 300px;
+  height: 400px;
 }
 
 /* 아래쪽 그리드 스타일 */
@@ -105,6 +105,12 @@ const selectedMonth = ref(new Date().getMonth() + 1);
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
   height: 70vh;
+}
+
+.poi-container {
+  height: 550px; /* 높이는 유지 */
+  overflow: auto; /* 내용이 넘칠 경우 자동으로 스크롤바 생성 */
+  /* 기존 스타일은 유지 */
 }
 
 /* POI 정보 및 월별 매출 차트 컨테이너 스타일 */

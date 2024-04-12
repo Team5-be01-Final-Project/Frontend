@@ -60,10 +60,18 @@ a,
   /* 기존에 적용된 다른 스타일이 있다면 그대로 유지 */
 }
 
+.right-align {
+  text-align: right;  /* 텍스트를 우측으로 정렬 */
+  width: 100%;        /* 부모 컨테이너의 전체 너비 사용 */
+}
+
 td.money-right {
   text-align: right;
 }
 
 td.index-center{
 text-align: center;
+}
+table.va-table th {
+  text-align: center;
 }

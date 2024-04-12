@@ -1,6 +1,6 @@
 <template>
     <div class="sales-layout">
-      <h2>sales View</h2>
+      <h2>Sales Management</h2>
       <div class="sales-content">
         <router-view></router-view>
       </div>

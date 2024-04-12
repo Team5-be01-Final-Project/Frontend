@@ -9,13 +9,13 @@
     <div class="Main">
       <div class="va-table-responsive">
         <h3 class="va-h3">사원 리스트 조회</h3>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 items-end">
-          <VaSelect v-model="selectedDept" placeholder="부서" :options=deptOptions />
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 items-end" style="margin-bottom: 25px;" >
+          <VaSelect v-model="selectedDept" placeholder="부서" :options=deptOptions style="margin-right: 5px;" />
           <VaSelect v-model="selectedSearchCondition" placeholder="검색 조건" :options="[
             { text: '이름', value: 'empName' },
             { text: '이메일', value: 'empEmail' },
-          ]" value-by="value" />
-          <VaInput v-model="searchText" placeholder="검색어 입력" class="w-full" />
+          ]" value-by="value" style="margin-right: 5px;" />
+          <VaInput v-model="searchText" placeholder="검색어 입력" class="w-full" style="margin-right: 5px;" />
           <VaButton @click="fetchFilteredEmployees">검색</VaButton>
         </div>
 
@@ -162,4 +162,5 @@ export default {
   width: 100%;
   /* 테이블이 화면에 꽉 차도록 설정 */
 }
+
 </style>

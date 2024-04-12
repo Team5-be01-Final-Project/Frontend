@@ -2,9 +2,9 @@
     <div v-if="isVisible" class="modal-overlay">
       <div class="modal-content">
         <span class="close-btn" @click="closeModal">&times;</span>
-        <h3>판매상품 등록</h3>
+        <h2 class="modal-title">판매상품 등록</h2>
         <div>
-          <label for="client">거래처 선택:</label>
+          <label for="client">거래처 선택</label>
           <select v-model="selectedClient" id="client">
             <option v-for="client in clients" :key="client.clientCode" :value="client">
               {{ client.clientName }}
@@ -12,19 +12,23 @@
           </select>
         </div>
         <div>
-          <label for="product">상품 선택:</label>
+          <label for="product">상품 선택</label>
           <select v-model="selectedProduct" id="product">
             <option v-for="product in products" :key="product.proCode" :value="product">
               {{ product.proName }}
             </option>
           </select>
         </div>
+        <div v-if="selectedProduct">
+          <label>단가</label>
+          <label class="label-name">{{ selectedProduct.proUnit }}</label>
+        </div>
         <div>
           <label for="salePrice">판매가:</label>
-          <input type="number" v-model.number="salePrice" id="salePrice" />
+          <input type="number" v-model.number="salePrice" id="salePrice" class="full-width-input" />
         </div>
         <button type="submit" @click="registerProduct">등록</button>
-        <button type="button" @click="closeModal">취소</button> <!-- 취소 버튼 추가 -->
+        <button type="submit" @click="closeModal">취소</button> <!-- 취소 버튼 추가 -->
         <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
       </div>
     </div>
@@ -137,6 +141,36 @@
     max-width: 400px;
     width: 100%;
   }
+
+  /* 모달 제목에 대한 스타일 */
+.modal-title {
+  font-size: 24px; /* 폰트 크기 설정 */
+  font-weight: bold; /* 폰트 굵기 설정 */
+  margin-bottom: 20px; /* 아래쪽 여백 설정 */
+}
+
+label {
+  display: block;
+  /* 블록 요소로 표시하여 한 줄에 하나씩 표시 */
+  margin-bottom: 5px;
+  /* 아래쪽 여백 설정 */
+  font-size: 16px;
+  /* 폰트 크기 설정 */
+  font-weight: bold;
+  /* 폰트 굵기 설정 */
+}
+
+.label-name {
+  margin-top: 10px;
+  color:#888;
+  font-size: 16px;/* 원하는 글씨 크기로 설정 */
+  font-weight: normal; /* 필요에 따라 글씨 굵기 조절 */
+  border: 1px solid #ccc; /* 테두리 스타일 및 색상 설정 */
+  border-radius: 4px;
+  /* 테두리 반경 설정 */
+  padding: 5px;
+  height: 40px;
+}
   
   .close-btn {
     position: absolute;
@@ -170,5 +204,15 @@
     color: red;
     margin-top: 5px;
   }
+
+  /* 입력 필드 스타일 수정 */
+.full-width-input {
+  width: 100%; /* 너비를 100%로 설정 */
+  padding: 8px; /* 적당한 패딩 추가 */
+  border-radius: 5px; /* 모서리 둥글게 */
+  border: 1px solid #ccc; /* 테두리 스타일 */
+  margin-bottom: 10px; /* 하단 마진 추가 */
+}
+
   </style>
   

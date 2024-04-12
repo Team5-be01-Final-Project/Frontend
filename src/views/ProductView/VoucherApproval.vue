@@ -10,16 +10,12 @@
       <h3 class="va-h3">출고전표 결재 목록</h3>
       <!-- 검색 폼: 사용자가 결재 목록을 필터링할 수 있게 합니다. -->
       <div class="grid grid-cols-12 gap-4 mb-6 items-center">
-        <VaSelect
-          v-model="selectedField"
-          placeholder="검색 조건 선택"
-          :options="filterOptions"
-          value-by="value"
-          class="col-span-4 filter-select"
-        />
-        <VaInput v-model="filter" placeholder="검색어 입력" class="col-span-6 search-input" />
+        <VaSelect v-model="selectedField" placeholder="검색 조건 선택" :options="filterOptions" value-by="value"
+          class="col-span-4 filter-select" style="margin-right: 5px;" />
+        <VaInput v-model="filter" placeholder="검색어 입력" class="col-span-6 search-input" style="margin-right: 5px;" />
         <VaButton @click="searchVouchers" class="search-button col-span-2">검색</VaButton>
       </div>
+      <div class="right-align">단위 : 원</div>
       <!-- 출고전표 결재 목록 테이블 -->
       <table class="va-table va-table--hoverable full-width">
         <thead>
@@ -29,6 +25,7 @@
             <th class="text-left">거래처명</th>
             <th class="text-left">등록일</th>
             <th class="text-left">결재상태</th>
+            <th class="text-left">총 합계</th>
           </tr>
         </thead>
         <tbody>
@@ -41,6 +38,7 @@
             <td>
               <VaBadge text="대기중" color="secondary" class="mr-2" />
             </td>
+            <td>{{ formatNumberWithCommas(voucherGroup[0].voucSales) }}</td>
           </tr>
           <!-- 승인된 출고전표 목록 출력 -->
           <tr v-for="(voucherGroup, index) in approvedVouchers" :key="'approved-' + index">
@@ -51,6 +49,7 @@
             <td>
               <VaBadge text="승인" color="success" class="mr-2" />
             </td>
+            <td>{{ formatNumberWithCommas(voucherGroup[0].voucSales) }}</td>
           </tr>
           <!-- 반려된 출고전표 목록 출력 -->
           <tr v-for="(voucherGroup, index) in rejectedVouchers" :key="'rejected-' + index">
@@ -61,6 +60,7 @@
             <td>
               <VaBadge text="반려" color="danger" class="mr-2" />
             </td>
+            <td>{{ formatNumberWithCommas(voucherGroup[0].voucSales) }}</td>
           </tr>
         </tbody>
       </table>
@@ -72,6 +72,7 @@
 import axios from 'axios';
 import { VaSelect, VaInput, VaButton, VaBadge } from 'vuestic-ui';
 import ProductSidebar from '@/components/sidebar/ProductSidebar.vue';
+import formatNumberWithCommas from '@/utils/formatNumberWithCommas';
 
 export default {
   components: {
@@ -129,6 +130,7 @@ export default {
     this.fetchUserDeptCode(); // 컴포넌트 마운트 시 사용자 부서 코드 조회
   },
   methods: {
+    formatNumberWithCommas,
     async fetchUserDeptCode() {
       // 사용자의 부서 코드를 쿠키에서 조회하는 메소드
       try {
@@ -170,6 +172,7 @@ export default {
         console.error('Error searching vouchers:', error);
       }
     },
+    
   },
 };
 </script>

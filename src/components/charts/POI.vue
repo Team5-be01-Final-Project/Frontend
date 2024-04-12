@@ -33,7 +33,7 @@ onMounted(async () => {
   const currentMonth = String(currentDate.getMonth() + 1).padStart(2, '0');
 
   try {
-    const response = await axios.get(`/sales/Clientsales?year=${currentYear}&month=${currentMonth - 1}`);
+    const response = await axios.get(`/sales/Clientsales?year=${currentYear}&month=${currentMonth}`);
     const salesData = response.data; // 서버로부터 받은 거래처별 매출 데이터
 
     const totals = {};
@@ -68,7 +68,7 @@ const formatCurrency = (value) => {
 .va-table td {
   border: 1px solid #ddd;
   padding: 8px;
-  text-align: left;
+  text-align: left; 
 }
 
 .va-table--hoverable tbody tr:hover {

@@ -9,15 +9,15 @@
     <div class="Main">
       <h3 class="va-h3">출고전표 목록 조회</h3>
       <!-- 검색 폼: 사용자가 출고전표를 필터링할 수 있는 입력 필드와 버튼을 제공합니다. -->
-      <div class="grid grid-cols-12 gap-4 mb-6 items-center">
+      <div class="grid grid-cols-12 gap-4 mb-6 items-center" style="margin-bottom: 25px;" >
         <VaSelect
           v-model="selectedField"
           placeholder="검색 조건"
           :options="filterOptions"
           value-by="value"
-          class="col-span-4 filter-select"
+          class="col-span-4 filter-select" style="margin-right: 5px;"
         />
-        <VaInput v-model="filter" placeholder="검색어 입력" class="col-span-6 search-input" />
+        <VaInput v-model="filter" placeholder="검색어 입력" class="col-span-6 search-input" style="margin-right: 5px;" />
         <VaButton @click="searchVouchers" class="search-button col-span-2">검색</VaButton>
       </div>
       <!-- 출고전표 목록 테이블: 필터링된 출고전표 목록을 표시합니다. -->
@@ -55,9 +55,9 @@
       </table>
       <!-- 페이지네이션: 사용자가 페이지를 이동할 수 있는 컨트롤을 제공합니다. -->
       <div class="pagination">
-        <button @click="prevPage" :disabled="currentPage === 1">이전</button>
-        <span>Page {{ currentPage }} of {{ pageCount }}</span>
-        <button @click="nextPage" :disabled="currentPage === pageCount">다음</button>
+        <VaButton @click="prevPage" :disabled="currentPage === 1">이전</VaButton>
+        <VaButton disabled>{{ currentPage }}</VaButton>
+        <VaButton @click="nextPage" :disabled="currentPage === pageCount">다음</VaButton>
       </div>
     </div>
   </div>
@@ -178,11 +178,14 @@ export default {
 .pagination {
   display: flex;
   justify-content: center;
+  /* 페이지네이션 버튼을 중앙에 위치시키기 */
   margin-top: 20px;
 }
 
 .pagination button {
-  margin: 0 10px;
+  cursor: pointer;
+  padding: 5px 10px;
+  margin-right: 5px;
 }
 
 .Main {
