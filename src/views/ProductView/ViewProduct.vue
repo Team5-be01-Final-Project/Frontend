@@ -45,9 +45,9 @@
               :key="product.proCode"
             >
               <td class="index-center">{{ getPageNumber(index) }}</td>
-              <td>{{ product.proCode }}</td>
+              <td style="text-align: center;">{{ product.proCode }}</td>
               <td>{{ product.proName }}</td>
-              <td>{{ product.proSeg }}</td>
+              <td style="text-align: center;">{{ product.proSeg }}</td>
               <td>{{ product.proIngre }}</td>
               <td>{{ product.proAtc }}</td>
               <td>{{ product.proCat }}</td>

@@ -35,7 +35,7 @@
           </thead>
           <tbody>
             <tr v-for="stock in paginatedStockList" :key="stock.proCode">
-              <td >{{ stock.proCode }}</td>
+              <td class="text-center">{{ stock.proCode }}</td>
               <td>{{ stock.proName }}</td>
               <td class="text-right">{{ formatNumberWithCommas(stock.stoAmo) }}</td>
               <td class="text-right">{{ formatPrice(stock.proUnit) }}</td>

@@ -12,17 +12,20 @@
           v-model="selectedDepartment"
           placeholder="부서 선택"
           :options="deptOption"
-          :disabled="isDeptSelectDisabled" style="margin-right: 5px;"
+          :disabled="isDeptSelectDisabled"
+          style="margin-right: 5px"
         />
         <va-select
           v-model="selectedYear"
           placeholder="연도 선택"
-          :options="yearOption" style="margin-right: 5px;"
+          :options="yearOption"
+          style="margin-right: 5px"
         />
         <va-select
           v-model="selectedMonth"
           placeholder="월 선택"
-          :options="monthOption" style="margin-right: 5px;"
+          :options="monthOption"
+          style="margin-right: 5px"
         />
         <VaButton @click="applyFilter">검색</VaButton>
       </div>
@@ -39,12 +42,12 @@
         </thead>
         <tbody>
           <tr v-for="item in filteredData" :key="item.empName">
-            <td>{{ item.empName }}</td>
-            <td>{{ item.deptName }}</td>
+            <td style="text-align: center">{{ item.empName }}</td>
+            <td style="text-align: center">{{ item.deptName }}</td>
             <td class="money-right">
               {{ formatNumberWithCommas(item.voucMonthSales) }}
             </td>
-            <td>{{ item.salesRank }}</td>
+            <td style="text-align: center;">{{ item.salesRank }}</td>
             <td class="money-right">
               {{ formatNumberWithCommas(item.incentive) }}
             </td>

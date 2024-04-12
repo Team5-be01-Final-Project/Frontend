@@ -9,16 +9,27 @@
     <div class="Main">
       <h3 class="va-h3">출고전표 목록 조회</h3>
       <!-- 검색 폼: 사용자가 출고전표를 필터링할 수 있는 입력 필드와 버튼을 제공합니다. -->
-      <div class="grid grid-cols-12 gap-4 mb-6 items-center" style="margin-bottom: 25px;" >
+      <div
+        class="grid grid-cols-12 gap-4 mb-6 items-center"
+        style="margin-bottom: 25px"
+      >
         <VaSelect
           v-model="selectedField"
           placeholder="검색 조건"
           :options="filterOptions"
           value-by="value"
-          class="col-span-4 filter-select" style="margin-right: 5px;"
+          class="col-span-4 filter-select"
+          style="margin-right: 5px"
         />
-        <VaInput v-model="filter" placeholder="검색어 입력" class="col-span-6 search-input" style="margin-right: 5px;" />
-        <VaButton @click="searchVouchers" class="search-button col-span-2">검색</VaButton>
+        <VaInput
+          v-model="filter"
+          placeholder="검색어 입력"
+          class="col-span-6 search-input"
+          style="margin-right: 5px"
+        />
+        <VaButton @click="searchVouchers" class="search-button col-span-2"
+          >검색</VaButton
+        >
       </div>
       <!-- 출고전표 목록 테이블: 필터링된 출고전표 목록을 표시합니다. -->
       <table class="va-table va-table--hoverable full-width">
@@ -34,11 +45,11 @@
         <tbody>
           <!-- v-for 디렉티브를 사용하여 displayedVouchers 배열을 반복하여 테이블 행을 생성합니다. -->
           <tr v-for="voucher in displayedVouchers" :key="voucher.voucId">
-            <td>{{ voucher.voucId }}</td>
-            <td>{{ voucher.empName }}</td>
+            <td style="text-align: center">{{ voucher.voucId }}</td>
+            <td style="text-align: center">{{ voucher.empName }}</td>
             <td>{{ voucher.clientName }}</td>
-            <td>{{ voucher.signerName }}</td>
-            <td>
+            <td style="text-align: center">{{ voucher.signerName }}</td>
+            <td style="text-align: center">
               <!-- 결재상태에 따라 다른 색상의 배지를 표시합니다. -->
               <template v-if="voucher.approvalStatus.trim() === '대기중'">
                 <VaBadge text="대기중" color="secondary" class="mr-2" />
@@ -55,18 +66,22 @@
       </table>
       <!-- 페이지네이션: 사용자가 페이지를 이동할 수 있는 컨트롤을 제공합니다. -->
       <div class="pagination">
-        <VaButton @click="prevPage" :disabled="currentPage === 1">이전</VaButton>
+        <VaButton @click="prevPage" :disabled="currentPage === 1"
+          >이전</VaButton
+        >
         <VaButton disabled>{{ currentPage }}</VaButton>
-        <VaButton @click="nextPage" :disabled="currentPage === pageCount">다음</VaButton>
+        <VaButton @click="nextPage" :disabled="currentPage === pageCount"
+          >다음</VaButton
+        >
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
-import { VaSelect, VaInput, VaButton, VaBadge } from 'vuestic-ui';
-import ProductSidebar from '@/components/sidebar/ProductSidebar.vue';
+import axios from "axios";
+import { VaSelect, VaInput, VaButton, VaBadge } from "vuestic-ui";
+import ProductSidebar from "@/components/sidebar/ProductSidebar.vue";
 
 export default {
   components: {
@@ -82,14 +97,14 @@ export default {
       currentPage: 1, // 현재 페이지 번호
       perPage: 20, // 페이지당 출고전표 개수
       selectedField: null, // 사용자가 선택한 필터링 필드를 저장하는 변수
-      filter: '', // 사용자가 입력한 검색어를 저장하는 변수
+      filter: "", // 사용자가 입력한 검색어를 저장하는 변수
       filterOptions: [
         // 필터링 옵션 목록
-        { text: '전표번호', value: 'voucId' },
-        { text: '담당자', value: 'empName' },
-        { text: '거래처명', value: 'clientName' },
-        { text: '결재자', value: 'signerName' },
-        { text: '결재상태', value: 'approvalStatus' },
+        { text: "전표번호", value: "voucId" },
+        { text: "담당자", value: "empName" },
+        { text: "거래처명", value: "clientName" },
+        { text: "결재자", value: "signerName" },
+        { text: "결재상태", value: "approvalStatus" },
       ],
     };
   },
@@ -97,7 +112,7 @@ export default {
     uniqueVouchers() {
       // 중복된 출고전표를 제거하고 유일한 출고전표만 반환합니다.
       const unique = {};
-      this.vouchers.forEach(voucher => {
+      this.vouchers.forEach((voucher) => {
         unique[voucher.voucId] = voucher;
       });
       return Object.values(unique);
@@ -121,10 +136,10 @@ export default {
     async fetchVouchers() {
       // 서버에서 출고전표 목록을 조회하는 메서드입니다.
       try {
-        const response = await axios.get('/vouchers');
+        const response = await axios.get("/vouchers");
         this.vouchers = response.data;
       } catch (error) {
-        console.error('Error fetching vouchers:', error);
+        console.error("Error fetching vouchers:", error);
       }
     },
     prevPage() {
@@ -146,11 +161,11 @@ export default {
         if (this.selectedField && this.filter) {
           params[this.selectedField] = this.filter;
         }
-        const response = await axios.get('/vouchers/search', { params });
+        const response = await axios.get("/vouchers/search", { params });
         this.vouchers = response.data;
         this.currentPage = 1; // 검색 후 현재 페이지를 1로 초기화합니다.
       } catch (error) {
-        console.error('Error searching vouchers:', error);
+        console.error("Error searching vouchers:", error);
       }
     },
   },
