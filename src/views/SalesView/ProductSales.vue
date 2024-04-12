@@ -202,13 +202,6 @@ const totalprofitMargin = computed(() => totalVoucSales.value ? (totalGrossProfi
   /* 테이블이 화면에 꽉 차도록 설정 */
 }
 
-.va-table thead, .va-table tfoot, .va-table tbody tr {
-  display: table;
-  width: 100%;
-  table-layout: fixed; 
-  /* 테이블 셀의 너비를 고정 */
-}
-
 .total-sum {
   background-color: #f0f0f0; /* 총합계 행에 색상 적용 */
 }

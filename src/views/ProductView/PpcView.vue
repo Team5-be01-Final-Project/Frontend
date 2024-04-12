@@ -30,9 +30,9 @@
             <tr v-for="(item, index) in paginatedProducts" :key="index">
               <td class='index-center'>{{ (currentPage - 1) * perPage + index + 1 }}</td>
               <td>{{ item.clientName }}</td>
-              <td>{{ item.proCode }}</td>
+              <td style="text-align: center;">{{ item.proCode }}</td>
               <td>{{ item.proName }}</td>
-              <td>{{ item.proSeg }}</td>
+              <td style="text-align: center;">{{ item.proSeg }}</td>
               <td>{{ item.proCat }}</td>
               <td class='money-right'>{{ formatNumberWithCommas(item.ppcSale) }}</td>
             </tr>
