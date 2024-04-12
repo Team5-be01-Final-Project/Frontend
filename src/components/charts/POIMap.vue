@@ -34,10 +34,22 @@ async function fetchData() {
     const clients = clientsResponse.data;
     const salesData = salesResponse.data;
 
-    // 매출 1등 거래처 찾기
-    const topSalesClient = salesData.reduce((prev, current) => (prev.voucSales > current.voucSales) ? prev : current);
+    // 거래처별 총 매출액 계산
+    const clientSales = {};
+    salesData.forEach(sale => {
+      const clientName = sale.clientName;
+      const voucSales = sale.voucSales;
+      if (clientSales[clientName]) {
+        clientSales[clientName] += voucSales;
+      } else {
+        clientSales[clientName] = voucSales;
+      }
+    });
 
-    return { clients, topSalesClient };
+    // 총 매출액이 가장 높은 거래처 찾기
+    const topSalesClient = Object.entries(clientSales).reduce((prev, current) => prev[1] > current[1] ? prev : current);
+
+    return { clients, topSalesClient: { clientName: topSalesClient[0], voucSales: topSalesClient[1] } };
   } catch (error) {
     console.error('데이터를 가져오는 중 오류가 발생했습니다:', error);
     return { clients: [], topSalesClient: null };

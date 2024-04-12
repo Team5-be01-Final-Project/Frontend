@@ -14,7 +14,6 @@
           <VaInput v-model="filter" placeholder="검색어 입력" class="w-full" style="margin-right: 5px;" />
           <VaButton @click="applyFilter">검색</VaButton>
         </div>
-        <div class="right-align">단위 : 원</div>
         <table class="va-table va-table--hoverable full-width">
           <thead>
             <tr>
@@ -154,7 +153,6 @@ export default {
   width: 250px;
   /* 사이드바 너비 조절 */
 }
-
 
 .pagination {
   display: flex;
