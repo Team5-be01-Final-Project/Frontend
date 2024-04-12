@@ -40,7 +40,6 @@
         <table class="va-table va-table--hoverable full-width">
           <thead>
             <tr>
-              <th>사진</th>
               <th>사번</th>
               <th>이름</th>
               <th>직급</th>
@@ -53,15 +52,12 @@
           </thead>
           <tbody>
             <tr v-for="employee in employees" :key="employee.empCode">
-              <td>
-                <img
+              <td style="text-align: center">{{ employee.empCode }}</td>
+              <td style="text-align: center">                 <img
                   :src="employee.empImg"
                   alt="Employee Image"
                   class="employee-image"
-                />
-              </td>
-              <td style="text-align: center">{{ employee.empCode }}</td>
-              <td style="text-align: center">{{ employee.empName }}</td>
+                /><br>{{ employee.empName }}</td>
               <td style="text-align: center">{{ employee.posName }}</td>
               <td style="text-align: center">{{ employee.deptName }}</td>
               <td>{{ employee.empTel }}</td>
@@ -186,5 +182,9 @@ export default {
 .full-width {
   width: 100%;
   /* 테이블이 화면에 꽉 차도록 설정 */
+}
+th,
+td {
+  vertical-align : middle; /* 값들 중간 정렬 */
 }
 </style>
