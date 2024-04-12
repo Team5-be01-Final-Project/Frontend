@@ -156,6 +156,9 @@ export default {
 
 
 .pagination {
+  display: flex;
+  justify-content: center;
+  /* 페이지네이션 버튼을 중앙에 위치시키기 */
   margin-top: 20px;
 }
 
