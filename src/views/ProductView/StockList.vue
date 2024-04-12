@@ -34,10 +34,10 @@
           </thead>
           <tbody>
             <tr v-for="stock in paginatedStockList" :key="stock.proCode">
-              <td class="text-center">{{ stock.proCode }}</td>
+              <td >{{ stock.proCode }}</td>
               <td>{{ stock.proName }}</td>
-              <td class="text-center">{{ stock.stoAmo }}</td>
-              <td class="text-right">{{ formatPrice(stock.proUnit) }}원</td>
+              <td class="text-right">{{ formatNumberWithCommas(stock.stoAmo) }}</td>
+              <td class="text-right">{{ formatPrice(stock.proUnit) }}</td>
             </tr>
           </tbody>
         </table>
@@ -61,6 +61,7 @@ import axios from "axios";
 import StockRegi from "@/components/StockRegi.vue";
 import { VaSelect, VaInput, VaButton } from "vuestic-ui";
 import ProductSidebar from "@/components/sidebar/ProductSidebar.vue";
+import formatNumberWithCommas from "@/utils/formatNumberWithCommas";
 
 // 데이터와 상태 관리를 위한 변수들
 const stockList = ref([]); // 서버에서 받아온 재고 목록을 저장하는 배열

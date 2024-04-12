@@ -82,9 +82,9 @@ export default {
 </script>
 
 <style scoped>
-.carTempCharts {
+/* .carTempCharts {
     height: 300px;
-}
+} */
 
 h4 {
     font-size: 20px;
