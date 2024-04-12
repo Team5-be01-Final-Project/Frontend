@@ -22,10 +22,13 @@
         <VaButton @click="searchStockList" class="search-button col-span-2">검색</VaButton>
         <VaButton @click="openRegisterModal" class="register-button">재고 등록</VaButton>
       </div>
-      <div class="right-align">단위 : 개 / 원</div>
+      <!-- <div class="right-align">단위 : 개 / 원</div> -->
       <div class="va-table-responsive">
         <table class="va-table va-table--hoverable full-width">
           <thead>
+            <tr>
+              <th colspan="4" style="text-align: right">단위 : 원</th>
+            </tr>
             <tr>
               <th class="text-center w-aaa">품목기준코드</th>
               <th class="text-center w-bbb">제품명</th>

@@ -20,14 +20,22 @@
               { text: '주성분', value: 'proIngre' },
               { text: 'ATC 코드', value: 'proAtc' },
             ]"
-            value-by="value" style="margin-right: 5px;"
+            value-by="value"
+            style="margin-right: 5px"
           />
-          <VaInput v-model="filter" placeholder="검색어 입력" class="w-full" style="margin-right: 5px;" />
+          <VaInput
+            v-model="filter"
+            placeholder="검색어 입력"
+            class="w-full"
+            style="margin-right: 5px"
+          />
           <VaButton @click="filterProducts">검색</VaButton>
         </div>
-        <div class="right-align">단위 : 원</div>
         <table class="va-table va-table--hoverable full-width">
           <thead>
+            <tr>
+              <th colspan="8" style="text-align: right">단위 : 원</th>
+            </tr>
             <tr>
               <th>No.</th>
               <th>품목기준코드</th>
@@ -45,9 +53,9 @@
               :key="product.proCode"
             >
               <td class="index-center">{{ getPageNumber(index) }}</td>
-              <td style="text-align: center;">{{ product.proCode }}</td>
+              <td style="text-align: center">{{ product.proCode }}</td>
               <td>{{ product.proName }}</td>
-              <td style="text-align: center;">{{ product.proSeg }}</td>
+              <td style="text-align: center">{{ product.proSeg }}</td>
               <td>{{ product.proIngre }}</td>
               <td>{{ product.proAtc }}</td>
               <td>{{ product.proCat }}</td>
@@ -59,9 +67,13 @@
           </tbody>
         </table>
         <div class="pagination">
-          <VaButton @click="prevPage" :disabled="currentPage === 1">이전</VaButton>
+          <VaButton @click="prevPage" :disabled="currentPage === 1"
+            >이전</VaButton
+          >
           <VaButton disabled>{{ currentPage }}</VaButton>
-          <VaButton @click="nextPage" :disabled="currentPage === pageCount">다음</VaButton>
+          <VaButton @click="nextPage" :disabled="currentPage === pageCount"
+            >다음</VaButton
+          >
         </div>
       </div>
     </div>
@@ -101,7 +113,7 @@ export default {
     },
     isAuthorized() {
       const userRole = Cookies.get("empAuthCode");
-      return ['AUTH001', 'AUTH002', 'AUTH003'].includes(userRole); // 여러 권한 확인
+      return ["AUTH001", "AUTH002", "AUTH003"].includes(userRole); // 여러 권한 확인
     },
   },
   created() {

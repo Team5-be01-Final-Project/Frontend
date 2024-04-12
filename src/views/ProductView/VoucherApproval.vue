@@ -28,10 +28,12 @@
           >검색</VaButton
         >
       </div>
-      <div class="right-align">단위 : 원</div>
       <!-- 출고전표 결재 목록 테이블 -->
       <table class="va-table va-table--hoverable full-width">
         <thead>
+          <tr>
+            <th colspan="7" style="text-align: right">단위 : 원</th>
+          </tr>
           <tr>
             <th class="text-left">전표번호</th>
             <th class="text-left">담당자</th>
@@ -47,42 +49,66 @@
             v-for="(voucherGroup, index) in waitingVouchers"
             :key="'waiting-' + index"
           >
-            <td style="text-align: center;" @click="navigateToDetail(voucherGroup[0].voucId)" class="clickable">{{ voucherGroup[0].voucId }}</td>
+            <td
+              style="text-align: center"
+              @click="navigateToDetail(voucherGroup[0].voucId)"
+              class="clickable"
+            >
+              {{ voucherGroup[0].voucId }}
+            </td>
             <td style="text-align: center">{{ voucherGroup[0].empName }}</td>
             <td>{{ voucherGroup[0].clientName }}</td>
             <td style="text-align: center">{{ voucherGroup[0].voucDate }}</td>
             <td style="text-align: center">
               <VaBadge text="대기중" color="secondary" class="mr-2" />
             </td>
-            <td style="text-align: right;">{{ formatNumberWithCommas(voucherGroup[0].voucSales) }}</td>
+            <td style="text-align: right">
+              {{ formatNumberWithCommas(voucherGroup[0].voucSales) }}
+            </td>
           </tr>
           <!-- 승인된 출고전표 목록 출력 -->
           <tr
             v-for="(voucherGroup, index) in approvedVouchers"
             :key="'approved-' + index"
           >
-            <td style="text-align: center;" @click="navigateToDetail(voucherGroup[0].voucId)" class="clickable">{{ voucherGroup[0].voucId }}</td>
+            <td
+              style="text-align: center"
+              @click="navigateToDetail(voucherGroup[0].voucId)"
+              class="clickable"
+            >
+              {{ voucherGroup[0].voucId }}
+            </td>
             <td style="text-align: center">{{ voucherGroup[0].empName }}</td>
             <td>{{ voucherGroup[0].clientName }}</td>
             <td style="text-align: center">{{ voucherGroup[0].voucDate }}</td>
             <td style="text-align: center">
               <VaBadge text="승인" color="success" class="mr-2" />
             </td>
-            <td style="text-align: right;">{{ formatNumberWithCommas(voucherGroup[0].voucSales) }}</td>
+            <td style="text-align: right">
+              {{ formatNumberWithCommas(voucherGroup[0].voucSales) }}
+            </td>
           </tr>
           <!-- 반려된 출고전표 목록 출력 -->
           <tr
             v-for="(voucherGroup, index) in rejectedVouchers"
             :key="'rejected-' + index"
           >
-            <td style="text-align: center;" @click="navigateToDetail(voucherGroup[0].voucId)" class="clickable">{{ voucherGroup[0].voucId }}</td>
+            <td
+              style="text-align: center"
+              @click="navigateToDetail(voucherGroup[0].voucId)"
+              class="clickable"
+            >
+              {{ voucherGroup[0].voucId }}
+            </td>
             <td style="text-align: center">{{ voucherGroup[0].empName }}</td>
             <td>{{ voucherGroup[0].clientName }}</td>
             <td style="text-align: center">{{ voucherGroup[0].voucDate }}</td>
             <td style="text-align: center">
               <VaBadge text="반려" color="danger" class="mr-2" />
             </td>
-            <td style="text-align: right;">{{ formatNumberWithCommas(voucherGroup[0].voucSales) }}</td>
+            <td style="text-align: right">
+              {{ formatNumberWithCommas(voucherGroup[0].voucSales) }}
+            </td>
           </tr>
         </tbody>
       </table>
@@ -237,5 +263,10 @@ export default {
 .full-width {
   width: 100%;
   /* 테이블이 화면에 꽉 차도록 설정 */
+}
+
+.right-align {
+  text-align: right;
+  margin-bottom: 0px; /* 아래쪽 마진을 조정하세요 */
 }
 </style>

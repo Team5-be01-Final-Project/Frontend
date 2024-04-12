@@ -10,12 +10,25 @@
       <div class="va-table-responsive">
         <h3 class="va-h3">거래처별 판매상품 목록</h3>
         <div class="filter">
-          <VaSelect v-model="selectedField" placeholder="검색 조건" :options="filterOptions" style="margin-right: 5px;" />
-          <VaInput v-model="filter" placeholder="검색어 입력" class="w-full" style="margin-right: 5px;" />
+          <VaSelect
+            v-model="selectedField"
+            placeholder="검색 조건"
+            :options="filterOptions"
+            style="margin-right: 5px"
+          />
+          <VaInput
+            v-model="filter"
+            placeholder="검색어 입력"
+            class="w-full"
+            style="margin-right: 5px"
+          />
           <VaButton @click="applyFilter">검색</VaButton>
         </div>
         <table class="va-table va-table--hoverable full-width">
           <thead>
+            <tr>
+              <th colspan="7" style="text-align: right">단위 : 원</th>
+            </tr>
             <tr>
               <th>NO.</th>
               <th>거래처명</th>
@@ -28,22 +41,30 @@
           </thead>
           <tbody>
             <tr v-for="(item, index) in paginatedProducts" :key="index">
-              <td class='index-center'>{{ (currentPage - 1) * perPage + index + 1 }}</td>
+              <td class="index-center">
+                {{ (currentPage - 1) * perPage + index + 1 }}
+              </td>
               <td>{{ item.clientName }}</td>
-              <td style="text-align: center;">{{ item.proCode }}</td>
+              <td style="text-align: center">{{ item.proCode }}</td>
               <td>{{ item.proName }}</td>
-              <td style="text-align: center;">{{ item.proSeg }}</td>
+              <td style="text-align: center">{{ item.proSeg }}</td>
               <td>{{ item.proCat }}</td>
-              <td class='money-right'>{{ formatNumberWithCommas(item.ppcSale) }}</td>
+              <td class="money-right">
+                {{ formatNumberWithCommas(item.ppcSale) }}
+              </td>
             </tr>
           </tbody>
         </table>
 
         <!-- 페이지네이션 -->
         <div class="pagination">
-          <VaButton @click="prevPage" :disabled="currentPage === 1">이전</VaButton>
+          <VaButton @click="prevPage" :disabled="currentPage === 1"
+            >이전</VaButton
+          >
           <VaButton disabled>{{ currentPage }}</VaButton>
-          <VaButton @click="nextPage" :disabled="currentPage === pageCount">다음</VaButton>
+          <VaButton @click="nextPage" :disabled="currentPage === pageCount"
+            >다음</VaButton
+          >
         </div>
       </div>
     </div>
@@ -51,10 +72,10 @@
 </template>
 
 <script>
-import axios from 'axios';
-import { VaButton, VaSelect, VaInput } from 'vuestic-ui';
-import ProductSidebar from '@/components/sidebar/ProductSidebar.vue';
-import formatNumberWithCommas from '@/utils/formatNumberWithCommas.js';
+import axios from "axios";
+import { VaButton, VaSelect, VaInput } from "vuestic-ui";
+import ProductSidebar from "@/components/sidebar/ProductSidebar.vue";
+import formatNumberWithCommas from "@/utils/formatNumberWithCommas.js";
 
 export default {
   components: {
@@ -68,16 +89,16 @@ export default {
       // 초기 데이터 설정
       products: [],
       filteredProducts: [],
-      filter: '',
-      selectedField: '전체', // '전체' 선택을 위한 'all' 값으로 초기화
+      filter: "",
+      selectedField: "전체", // '전체' 선택을 위한 'all' 값으로 초기화
       currentPage: 1,
       perPage: 20,
       // 필터 옵션
       filterOptions: [
-        { text: '전체', value: 'all' },
-        { text: '거래처명', value: 'clientName' },
-        { text: '제품명', value: 'proName' },
-        { text: '분류', value: 'proCat' },
+        { text: "전체", value: "all" },
+        { text: "거래처명", value: "clientName" },
+        { text: "제품명", value: "proName" },
+        { text: "분류", value: "proCat" },
       ],
     };
   },
@@ -85,11 +106,11 @@ export default {
   watch: {
     // selectedField의 값이 변경될 때 실행될 함수
     selectedField(newVal) {
-      if (newVal.text === '전체') {
+      if (newVal.text === "전체") {
         // "전체"가 선택되면 검색 필드를 초기화
-        this.filter = '';
+        this.filter = "";
       }
-    }
+    },
   },
   computed: {
     // 페이징 처리를 위한 계산 속성
@@ -106,24 +127,25 @@ export default {
     async fetchProducts() {
       // 제품 데이터를 불러오는 메서드
       try {
-        const response = await axios.get('/ppc/all'); // API 호출
+        const response = await axios.get("/ppc/all"); // API 호출
         this.products = response.data;
         this.filteredProducts = response.data;
       } catch (error) {
-        console.error('Failed to fetch products:', error);
+        console.error("Failed to fetch products:", error);
       }
     },
     applyFilter() {
       // 로그를 추가하여 현재 필터링 상태를 확인
       //console.log(`Selected Field: ${this.selectedField}, Filter: ${this.filter}`);
 
-      if (this.selectedField.value === 'all' || !this.filter.trim()) {
+      if (this.selectedField.value === "all" || !this.filter.trim()) {
         // "전체"가 선택되었거나 검색어가 비어있는 경우, 모든 제품을 표시
         this.filteredProducts = this.products;
       } else {
         // 선택된 필드에 따라 필터링
-        this.filteredProducts = this.products.filter(product => {
-          const fieldValue = product[this.selectedField.value]?.toString().toLowerCase() || '';
+        this.filteredProducts = this.products.filter((product) => {
+          const fieldValue =
+            product[this.selectedField.value]?.toString().toLowerCase() || "";
           return fieldValue.includes(this.filter.toLowerCase());
         });
       }
@@ -177,5 +199,4 @@ export default {
   width: 100%;
   /* 테이블이 화면에 꽉 차도록 설정 */
 }
-
 </style>
