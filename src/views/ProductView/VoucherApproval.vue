@@ -47,12 +47,7 @@
             v-for="(voucherGroup, index) in waitingVouchers"
             :key="'waiting-' + index"
           >
-            <td
-              @click="navigateToDetail(voucherGroup[0].voucId)"
-              class="clickable"
-            >
-              {{ voucherGroup[0].voucId }}
-            </td>
+            <td style="text-align: center;" @click="navigateToDetail(voucherGroup[0].voucId)" class="clickable">{{ voucherGroup[0].voucId }}</td>
             <td style="text-align: center">{{ voucherGroup[0].empName }}</td>
             <td>{{ voucherGroup[0].clientName }}</td>
             <td style="text-align: center">{{ voucherGroup[0].voucDate }}</td>
@@ -66,12 +61,7 @@
             v-for="(voucherGroup, index) in approvedVouchers"
             :key="'approved-' + index"
           >
-            <td
-              @click="navigateToDetail(voucherGroup[0].voucId)"
-              class="clickable"
-            >
-              {{ voucherGroup[0].voucId }}
-            </td>
+            <td style="text-align: center;" @click="navigateToDetail(voucherGroup[0].voucId)" class="clickable">{{ voucherGroup[0].voucId }}</td>
             <td style="text-align: center">{{ voucherGroup[0].empName }}</td>
             <td>{{ voucherGroup[0].clientName }}</td>
             <td style="text-align: center">{{ voucherGroup[0].voucDate }}</td>
@@ -85,12 +75,7 @@
             v-for="(voucherGroup, index) in rejectedVouchers"
             :key="'rejected-' + index"
           >
-            <td
-              @click="navigateToDetail(voucherGroup[0].voucId)"
-              class="clickable"
-            >
-              {{ voucherGroup[0].voucId }}
-            </td>
+            <td style="text-align: center;" @click="navigateToDetail(voucherGroup[0].voucId)" class="clickable">{{ voucherGroup[0].voucId }}</td>
             <td style="text-align: center">{{ voucherGroup[0].empName }}</td>
             <td>{{ voucherGroup[0].clientName }}</td>
             <td style="text-align: center">{{ voucherGroup[0].voucDate }}</td>

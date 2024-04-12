@@ -39,7 +39,7 @@
               <td class="index-center">{{ index + 1 }}</td>
               <td>{{ item.proName || '-' }}</td>
               <td class='money-right'>{{ item.proUnit ? `${item.proUnit.toLocaleString()}` : '-' }}</td>
-              <td class="index-center">{{ formatNumberWithCommas(item.voucAmount || '-') }}</td>
+              <td class="money-right">{{ formatNumberWithCommas(item.voucAmount || '-') }}</td>
               <td class='money-right'>{{ item.costOfSales ? `${item.costOfSales.toLocaleString()}` : '-' }}</td>
               <td class='money-right'>{{ item.voucSales ? `${item.voucSales.toLocaleString()}` : '-' }}</td>
               <td class='money-right'>{{ item.grossProfit ? `${item.grossProfit.toLocaleString()}` : '-' }}</td>

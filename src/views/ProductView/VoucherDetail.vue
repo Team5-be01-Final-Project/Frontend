@@ -16,15 +16,15 @@
       <div class="spacer" style="height: 20px"></div>
       <div class="voucher-info">
         <div class="voucher-info-row">
-          <div class="voucher-info-item"><span class="voucher-info-label">전표번호:</span>
+          <div class="voucher-info-item"><span class="voucher-info-label">전표번호 : </span>
             <span class="voucher-info-value">{{ voucId }}</span></div>
-          <div class="voucher-info-item"><span class="voucher-info-label">등록일:</span>
+          <div class="voucher-info-item"><span class="voucher-info-label">등록일 : </span>
             <span class="voucher-info-value">{{voucDate }}</span></div>
-          <div class="voucher-info-item"><span class="voucher-info-label">담당자:</span>
+          <div class="voucher-info-item"><span class="voucher-info-label">담당자 : </span>
             <span class="voucher-info-value">{{ empName }}</span></div>
-          <div class="voucher-info-item"><span class="voucher-info-label">결재자:</span>
+          <div class="voucher-info-item"><span class="voucher-info-label">결재자 : </span>
           <span class="voucher-info-value">{{ signerName }}</span></div>
-          <div class="voucher-info-item"><span class="voucher-info-label">거래처:</span>
+          <div class="voucher-info-item"><span class="voucher-info-label">거래처 : </span>
           <span class="voucher-info-value">{{ clientName }}</span></div>
         </div>
       </div>
@@ -45,7 +45,7 @@
           <tbody>
             <tr v-for="(detail, index) in voucherDetails" :key="index">
               <td class = 'index-center'>{{ index+1 }}</td>
-              <td>{{ detail.proCode }}</td>
+              <td class = 'index-center'>{{ detail.proCode }}</td>
               <td>{{ detail.proName }}</td>
               <td class = 'money-right'>{{ detail.voucAmount }}</td>
               <td class = 'money-right'>{{ detail.voucSale.toLocaleString() }}</td>
