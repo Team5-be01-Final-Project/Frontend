@@ -27,7 +27,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in displayedSalesData" :key="item.clientName + item.proName">
+            <tr v-for="(item, index) in mergedSalesData" :key="item.clientName + item.proName">
               <td class='index-center'>{{ index + 1 }}</td>
               <td>{{ item.clientName }}</td>
               <td>{{ item.proName || '-' }}</td>
@@ -48,7 +48,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted,computed } from 'vue';
 // Vue의 컴포지션 API에서 필요한 함수들을 가져옵니다.
 
 import axios from 'axios';
@@ -131,6 +131,30 @@ const formatProfitMargin = (profitMargin) => {
 };
 // 이익율을 포맷팅하는 함수입니다.
 // 소수점 둘째 자리까지 표시하고 '%' 기호를 붙입니다.
+
+const mergedSalesData = computed(() => {
+  const mergedData = [];
+  const dataMap = new Map();
+
+  filteredSalesData.value.forEach(item => {
+    const key = `${item.clientName}_${item.proName}`;
+    const existingItem = dataMap.get(key);
+
+    if (existingItem) {
+      existingItem.voucSale += item.voucSale;
+      existingItem.voucAmount += item.voucAmount;
+      existingItem.costOfSales += item.costOfSales;
+      existingItem.voucSales += item.voucSales;
+      existingItem.grossProfit = existingItem.voucSales - existingItem.costOfSales;
+      existingItem.profitMargin = (existingItem.grossProfit * 100.0) / existingItem.voucSales;
+    } else {
+      dataMap.set(key, { ...item });
+      mergedData.push(item);
+    }
+  });
+
+  return mergedData;
+});
 
 const filterSalesData = () => {
   const year = selectedYear.value.value;
