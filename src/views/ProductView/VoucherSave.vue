@@ -10,7 +10,7 @@
           <div class="header">
               <h3 class="va-h3">출고전표 등록</h3>
               <div class="button-container">
-                  <button @click="SaveVoucher" class="approve-button">등록</button>
+                  <VaButton  @click="SaveVoucher">등록</VaButton >
               </div>
           </div>
           <div class="spacer" style="height: 20px"></div>
@@ -25,7 +25,7 @@
                       <span class="voucher-info-value">{{ dateString }}</span>
                   </div>
                   <div class="voucher-info-item">
-                    <span class="voucher-info-label">거래처:</span>
+                    <span class="voucher-info-label">거래처명:</span>
                     <span class="voucher-info-value">{{ selectedClient.text }}</span>
                   </div>
               </div>
@@ -57,7 +57,7 @@
                       <span class="voucher-info-value">{{ formatNumberWithCommas(selectedProductStock) }}</span>
                   </div>
                   <va-input type="number" v-model.number="selectedQuantity" placeholder="수량" />
-                  <button @click="addProduct" class="approve-button">추가</button>
+                  <VaButton  @click="addProduct">추가</VaButton >
               </div>
           </div>
           <hr />
@@ -65,29 +65,30 @@
           <table class="va-table va-table--hoverable">
               <thead>
                 <tr>
-                  <th>No</th>
-                  <th>상품코드</th>
-                  <th>상품명</th>
+                  <th>No.</th>
+                  <th>품목코드</th>
+                  <th>제품명</th>
                   <th>판매가</th>
                   <th>수량</th>
-                  <th>금액</th>
+                  <th>매출액</th>
                   <th>삭제</th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="(product, index) in addproductlist" :key="index">
-                  <td>{{ index+1 }}</td>
+                  <td class = 'index-center'>{{ index+1 }}</td>
                   <td>{{ product.proCode }}</td>
                   <td>{{ product.proName }}</td>
-                  <td>{{ formatNumberWithCommas(product.voucSale) }}</td>
-                  <td>{{ formatNumberWithCommas(product.voucAmount) }}</td>
-                  <td>{{ formatNumberWithCommas(product.voucSales) }}</td>
+                  <td class = 'money-right'>{{ formatNumberWithCommas(product.voucSale) }}</td>
+                  <td class = 'money-right'>{{ formatNumberWithCommas(product.voucAmount) }}</td>
+                  <td class = 'money-right'>{{ formatNumberWithCommas(product.voucSales) }}</td>
                   <td>
-                    <VaButton @click="removeProduct(index)" class="delete-button">삭제</VaButton>
+                    <VaButton @click="removeProduct(index)" color="danger" class="mr-6 mb-2">삭제</VaButton>
                   </td>
                 </tr>
               </tbody>
           </table>
+          <div class="total-sales">총 합계(매출액): {{ formatNumberWithCommas(totalSales) }}원</div>
       </div>
   </div>
 </template>
@@ -137,7 +138,9 @@
         });
       },
       computed: {
-        
+        totalSales(){
+          return this.addproductlist.reduce((total, product) => total + product.voucSales, 0);
+        }
       },
       methods: {
         formatNumberWithCommas,
@@ -162,7 +165,7 @@
         },
         fetchClients() { // 담당자의 거래처 리스트 가져오기
         // 예시 empCode
-        const empCode = 2016101542;
+        const empCode = this.empCode;
         axios.get(`/employees/${empCode}/clients`)
             .then(response => {
             this.clients = response.data;
@@ -256,7 +259,7 @@
             axios.post('/vouchers/saveall', voucherData)
               .then(response => {
                 alert("전표가 성공적으로 저장되었습니다.");
-                // 성공 후 필요한 동작(예: 페이지 새로고침, 다른 페이지로 이동 등)
+                this.$router.push({ name: 'viewvoucher' }); // 저장 성공 후 전표 목록 페이지로 이동
               })
               .catch(error => {
                 if (error.response && error.response.status === 409) {
@@ -290,25 +293,6 @@
       display: flex;
       gap: 10px;
       z-index: 1;
-    }
-    
-    .approve-button,
-    .reject-button {
-      padding: 8px 16px;
-      border-radius: 4px;
-      font-size: 14px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    
-    .approve-button {
-      background-color: #4CAF50;
-      color: white;
-    }
-    
-    .reject-button {
-      background-color: #F44336;
-      color: white;
     }
     
     .voucher-info {
@@ -345,7 +329,6 @@
     .va-table th,
     .va-table td {
       padding: 10px;
-      text-align: left;
       border-bottom: 1px solid #ddd;
     }
     
