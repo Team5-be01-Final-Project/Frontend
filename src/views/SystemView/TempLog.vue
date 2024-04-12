@@ -15,7 +15,7 @@
                     { text: '구분', value: 'storageSeg' },
                     { text: '차량번호', value: 'storageCar' },
                 ]" value-by="value" style="margin-right: 5px;" />
-                <VaInput v-model="searchText" placeholder="검색어 입력" class="w-full" />
+                <VaInput v-model="searchText" placeholder="검색어 입력" class="w-full" style="margin-right: 5px;" />
                 <va-button @click="applyFilter">검색</va-button>
             </div>
             <table class="va-table va-table--hoverable full-width">
@@ -127,6 +127,10 @@ export default {
 .full-width {
     width: 100%;
     /* 테이블이 화면에 꽉 차도록 설정 */
+}
+
+.filter {
+  margin-bottom: 25px;
 }
 
 </style>

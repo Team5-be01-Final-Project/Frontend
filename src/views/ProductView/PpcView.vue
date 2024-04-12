@@ -14,6 +14,7 @@
           <VaInput v-model="filter" placeholder="검색어 입력" class="w-full" style="margin-right: 5px;" />
           <VaButton @click="applyFilter">검색</VaButton>
         </div>
+        <div class="right-align">단위 : 원</div>
         <table class="va-table va-table--hoverable full-width">
           <thead>
             <tr>
@@ -179,7 +180,4 @@ export default {
   /* 테이블이 화면에 꽉 차도록 설정 */
 }
 
-.filter {
-  margin-bottom: 10px;
-}
 </style>

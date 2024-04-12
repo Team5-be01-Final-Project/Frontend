@@ -26,7 +26,7 @@
         />
         <VaButton @click="applyFilter">검색</VaButton>
       </div>
-
+      <div class="right-align">단위 : 원</div>
       <table class="va-table va-table--hoverable full-width">
         <thead>
           <tr>

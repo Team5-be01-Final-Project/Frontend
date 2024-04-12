@@ -9,7 +9,7 @@
     <div class="Main">
       <h3 class="va-h3">출고전표 목록 조회</h3>
       <!-- 검색 폼: 사용자가 출고전표를 필터링할 수 있는 입력 필드와 버튼을 제공합니다. -->
-      <div class="grid grid-cols-12 gap-4 mb-6 items-center">
+      <div class="grid grid-cols-12 gap-4 mb-6 items-center" style="margin-bottom: 25px;" >
         <VaSelect
           v-model="selectedField"
           placeholder="검색 조건"

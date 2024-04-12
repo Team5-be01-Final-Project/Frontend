@@ -16,6 +16,7 @@
           판매상품 등록
         </VaButton>
       </div>
+      <div class="right-align">단위 : 원</div>
       <table class="va-table va-table--hoverable full-width">
         <thead>
           <tr>
@@ -231,7 +232,6 @@ export default {
 .register-button {
   float: right;
   /* 버튼을 오른쪽으로 이동시킵니다. */
-  margin-bottom: 10px;
 }
 
 .pagination {

@@ -9,7 +9,7 @@
     <div class="Main">
       <div class="va-table-responsive">
         <h3 class="va-h3">사원 리스트 조회</h3>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 items-end">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 items-end" style="margin-bottom: 25px;" >
           <VaSelect v-model="selectedDept" placeholder="부서" :options=deptOptions style="margin-right: 5px;" />
           <VaSelect v-model="selectedSearchCondition" placeholder="검색 조건" :options="[
             { text: '이름', value: 'empName' },
