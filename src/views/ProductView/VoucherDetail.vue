@@ -230,12 +230,16 @@ export default {
   border-bottom: 1px solid #ddd;
 }
 
-.va-table th {
-  background-color: #f2f2f2;
-  font-weight: bold;
-}
 
 .va-table tr:hover {
   background-color: #f5f5f5;
+}
+
+.va-table thead th {
+  background-color: #DEE5F2; /* 짙은 파란색 배경 */
+  font-weight: bold; /* 글자 굵게 */
+  border: 2px solid #cccccc;
+  border-bottom: 2px solid #cccccc; /* 회색 테두리 */
+  font-size: 15px;
 }
 </style>
