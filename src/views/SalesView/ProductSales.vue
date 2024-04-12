@@ -9,9 +9,9 @@
       <va-container>
         <h3 class="va-h3">상품별 매출 현황</h3>
         <div>
-          <va-select v-model="selectedYear" :options="yearOptions" placeholder="년도 선택" />
-          <va-select v-model="selectedMonth" :options="monthOptions1" placeholder="월 선택" />
-          <va-input v-model="proNameFilter" placeholder="상품명 검색" />
+          <va-select v-model="selectedYear" :options="yearOptions" placeholder="년도 선택" style="margin-right: 5px;" />
+          <va-select v-model="selectedMonth" :options="monthOptions1" placeholder="월 선택" style="margin-right: 5px;" />
+          <va-input v-model="proNameFilter" placeholder="상품명 검색" style="margin-right: 5px;" />
           <va-button @click="filterSalesData">검색</va-button>
         </div>
         <div class="right-align">단위: 원/개</div>

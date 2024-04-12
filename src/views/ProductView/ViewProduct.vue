@@ -20,9 +20,9 @@
               { text: '주성분', value: 'proIngre' },
               { text: 'ATC 코드', value: 'proAtc' },
             ]"
-            value-by="value"
+            value-by="value" style="margin-right: 5px;"
           />
-          <VaInput v-model="filter" placeholder="검색어 입력" class="w-full" />
+          <VaInput v-model="filter" placeholder="검색어 입력" class="w-full" style="margin-right: 5px;" />
           <VaButton @click="filterProducts">검색</VaButton>
         </div>
         <table class="va-table va-table--hoverable full-width">

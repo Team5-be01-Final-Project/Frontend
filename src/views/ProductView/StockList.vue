@@ -178,12 +178,12 @@ onMounted(() => {
 
 /* 필터 옵션 스타일 */
 .filter-select {
-  margin-right: 10px; /* 오른쪽 마진 추가 */
+  margin-right: 5px; /* 오른쪽 마진 추가 */
 }
 
 /* 검색 입력 필드 스타일 */
 .search-input {
-  margin-right: 10px; /* 오른쪽 마진 추가 */
+  margin-right: 5px; /* 오른쪽 마진 추가 */
 }
 
 /* 재고 등록 버튼 컨테이너 스타일 */
@@ -214,32 +214,6 @@ onMounted(() => {
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* 글자 그림자 설정 */
   /* width: 40px; 제거 또는 원하는 크기로 변경 */
 }
-
-@keyframes gradient-animation {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-/* 재고 등록 버튼 호버 시 스타일 */
-.register-button:hover {
-  background: linear-gradient(
-    145deg,
-    #26748a,
-    #3940bf,
-    #5e1aad,
-    #0d624b
-  ); /* 호버 시 그라데이션 배경 색상 변경 */
-  animation: none; /* 호버 시 그라데이션 애니메이션 중지 */
-  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3); /* 그림자 설정 */
-}
-
 
 /* 테이블 헤더 및 셀 스타일 */
 .va-table th {

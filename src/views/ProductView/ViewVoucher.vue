@@ -15,9 +15,9 @@
           placeholder="검색 조건"
           :options="filterOptions"
           value-by="value"
-          class="col-span-4 filter-select"
+          class="col-span-4 filter-select" style="margin-right: 5px;"
         />
-        <VaInput v-model="filter" placeholder="검색어 입력" class="col-span-6 search-input" />
+        <VaInput v-model="filter" placeholder="검색어 입력" class="col-span-6 search-input" style="margin-right: 5px;" />
         <VaButton @click="searchVouchers" class="search-button col-span-2">검색</VaButton>
       </div>
       <!-- 출고전표 목록 테이블: 필터링된 출고전표 목록을 표시합니다. -->
