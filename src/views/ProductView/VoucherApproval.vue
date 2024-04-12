@@ -11,10 +11,11 @@
       <!-- 검색 폼: 사용자가 결재 목록을 필터링할 수 있게 합니다. -->
       <div class="grid grid-cols-12 gap-4 mb-6 items-center">
         <VaSelect v-model="selectedField" placeholder="검색 조건 선택" :options="filterOptions" value-by="value"
-          class="col-span-4 filter-select" />
-        <VaInput v-model="filter" placeholder="검색어 입력" class="col-span-6 search-input" />
+          class="col-span-4 filter-select" style="margin-right: 5px;" />
+        <VaInput v-model="filter" placeholder="검색어 입력" class="col-span-6 search-input" style="margin-right: 5px;" />
         <VaButton @click="searchVouchers" class="search-button col-span-2">검색</VaButton>
       </div>
+      <div class="right-align">단위 : 원</div>
       <!-- 출고전표 결재 목록 테이블 -->
       <table class="va-table va-table--hoverable full-width">
         <thead>

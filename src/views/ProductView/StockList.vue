@@ -22,6 +22,7 @@
         <VaButton @click="searchStockList" class="search-button col-span-2">검색</VaButton>
         <VaButton @click="openRegisterModal" class="register-button">재고 등록</VaButton>
       </div>
+      <div class="right-align">단위 : 개 / 원</div>
       <div class="va-table-responsive">
         <table class="va-table va-table--hoverable full-width">
           <thead>
@@ -178,12 +179,12 @@ onMounted(() => {
 
 /* 필터 옵션 스타일 */
 .filter-select {
-  margin-right: 10px; /* 오른쪽 마진 추가 */
+  margin-right: 5px; /* 오른쪽 마진 추가 */
 }
 
 /* 검색 입력 필드 스타일 */
 .search-input {
-  margin-right: 10px; /* 오른쪽 마진 추가 */
+  margin-right: 5px; /* 오른쪽 마진 추가 */
 }
 
 /* 재고 등록 버튼 컨테이너 스타일 */
@@ -191,55 +192,6 @@ onMounted(() => {
   display: flex; /* 요소들을 가로로 나란히 표시하기 위해 flex 사용 */
   align-items: center; /* 세로 중앙 정렬을 위해 요소들을 수직 정렬 */
 }
-
-/* 재고 등록 버튼 스타일 */
-.register-button {
-  padding: 8px 16px; /* 내부 여백 설정 */
-  color: #fff; /* 글자색 설정 */
-  border: none; /* 테두리 없음 */
-  border-radius: 4px; /* 테두리 모서리 둥글게 설정 */
-  cursor: pointer; /* 마우스 커서 설정 */
-  font-size: 16px; /* 글자 크기 설정 */
-  height: 40px; /* 버튼 높이 설정 */
-  background: linear-gradient(
-    145deg,
-    #3489d4,
-    #505ed8,
-    #5bc0f2,
-    #27a3bb
-  ); /* 그라데이션 배경 색상 */
-  background-size: 400% 400%; /* 그라데이션 크기 설정 */
-  animation: gradient-animation 10s ease infinite; /* 그라데이션 애니메이션 설정 */
-  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1); /* 그림자 설정 */
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* 글자 그림자 설정 */
-  /* width: 40px; 제거 또는 원하는 크기로 변경 */
-}
-
-@keyframes gradient-animation {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-/* 재고 등록 버튼 호버 시 스타일 */
-.register-button:hover {
-  background: linear-gradient(
-    145deg,
-    #26748a,
-    #3940bf,
-    #5e1aad,
-    #0d624b
-  ); /* 호버 시 그라데이션 배경 색상 변경 */
-  animation: none; /* 호버 시 그라데이션 애니메이션 중지 */
-  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3); /* 그림자 설정 */
-}
-
 
 /* 테이블 헤더 및 셀 스타일 */
 .va-table th {
@@ -263,8 +215,11 @@ onMounted(() => {
 }
 
 .pagination button {
-  margin: 0 5px; /* 버튼 간격 설정 */
+  cursor: pointer;
+  padding: 5px 10px;
+  margin-right: 5px;
 }
+
 .Main {
   flex-grow: 1;
   /* 메인 콘텐츠가 남은 공간을 모두 차지하도록 함 */

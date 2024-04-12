@@ -10,10 +10,11 @@
       <div class="va-table-responsive">
         <h3 class="va-h3">거래처별 판매상품 목록</h3>
         <div class="filter">
-          <VaSelect v-model="selectedField" placeholder="검색 조건" :options="filterOptions" />
-          <VaInput v-model="filter" placeholder="검색어 입력" class="w-full" />
+          <VaSelect v-model="selectedField" placeholder="검색 조건" :options="filterOptions" style="margin-right: 5px;" />
+          <VaInput v-model="filter" placeholder="검색어 입력" class="w-full" style="margin-right: 5px;" />
           <VaButton @click="applyFilter">검색</VaButton>
         </div>
+        <div class="right-align">단위 : 원</div>
         <table class="va-table va-table--hoverable full-width">
           <thead>
             <tr>
@@ -179,7 +180,4 @@ export default {
   /* 테이블이 화면에 꽉 차도록 설정 */
 }
 
-.filter {
-  margin-bottom: 10px;
-}
 </style>

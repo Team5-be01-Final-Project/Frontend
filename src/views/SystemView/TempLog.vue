@@ -8,14 +8,14 @@
         <div class="Main">
             <h3 class="va-h3">창고/차량 이상온도 조회</h3>
             <div class="filter">
-                <va-select v-model="selectedYear" :options="yearOptions" placeholder="년도 선택" />
-                <va-select v-model="selectedMonth" :options="monthOptions" placeholder="월 선택" />
+                <va-select v-model="selectedYear" :options="yearOptions" placeholder="년도 선택" style="margin-right: 5px;" />
+                <va-select v-model="selectedMonth" :options="monthOptions" placeholder="월 선택" style="margin-right: 5px;" />
                 <VaSelect v-model="selectedSearchCondition" placeholder="검색 조건" :options="[
                     { text: '전체', value: '' },
                     { text: '구분', value: 'storageSeg' },
                     { text: '차량번호', value: 'storageCar' },
-                ]" value-by="value" />
-                <VaInput v-model="searchText" placeholder="검색어 입력" class="w-full" />
+                ]" value-by="value" style="margin-right: 5px;" />
+                <VaInput v-model="searchText" placeholder="검색어 입력" class="w-full" style="margin-right: 5px;" />
                 <va-button @click="applyFilter">검색</va-button>
             </div>
             <table class="va-table va-table--hoverable full-width">
@@ -128,4 +128,9 @@ export default {
     width: 100%;
     /* 테이블이 화면에 꽉 차도록 설정 */
 }
+
+.filter {
+  margin-bottom: 25px;
+}
+
 </style>

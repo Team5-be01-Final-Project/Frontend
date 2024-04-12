@@ -9,9 +9,9 @@
     <div class="Main">
       <div class="va-table-responsive">
         <h3 class="va-h3">거래처 조회</h3>
-        <div class="grid md:grid-cols-3 gap-6 mb-6 items-center">
-          <VaSelect v-model="selectedField" placeholder="검색 조건" :options="searchOptions" value-by="value" />
-          <VaInput v-model="searchKeyword" placeholder="검색어 입력" class="w-full search-input" />
+        <div class="grid md:grid-cols-3 gap-6 mb-6 items-center" style="margin-bottom: 25px;" >
+          <VaSelect v-model="selectedField" placeholder="검색 조건" :options="searchOptions" value-by="value" style="margin-right: 5px;" />
+          <VaInput v-model="searchKeyword" placeholder="검색어 입력" class="w-full search-input" style="margin-right: 5px;" />
           <VaButton @click="searchClients" class="search-button">검색</VaButton>
         </div>
         <table class="va-table va-table--hoverable full-width">
@@ -199,11 +199,6 @@ onMounted(() => {
 </script>
 
 <style>
-.search-input {
-  margin-right: 16px;
-  /* 오른쪽 마진 추가 */
-}
-
 .pagination {
   display: flex;
   justify-content: center;
