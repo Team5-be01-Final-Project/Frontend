@@ -42,10 +42,11 @@ export default {
   background-color: #f0f0f0; /* 배경색을 회색으로 설정 */
   text-align: center; /* 이미지를 중앙 정렬 */
   padding: 10px;
+  margin-top: 20px;
 }
 
 h4 {
-  font-size: 20px; /* h4 태그의 폰트 사이즈를 키움 */
+  font-size: 25px; /* h4 태그의 폰트 사이즈를 키움 */
 }
 .temperature-display {
   display: flex;

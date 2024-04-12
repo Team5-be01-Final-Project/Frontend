@@ -80,6 +80,7 @@ function formatCurrency(amount) {
   border-radius: 4px;
   text-align: center;
   /* 이미지를 중앙 정렬 */
+  margin-top: 20px;
 }
 
 /* 최우수 사원 사진 스타일 */
@@ -92,7 +93,7 @@ function formatCurrency(amount) {
 }
 
 h4 {
-  font-size: 20px;
+  font-size: 25px;
   /* h4 태그의 폰트 사이즈를 키움 */
 }
 </style>

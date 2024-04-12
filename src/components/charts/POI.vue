@@ -62,6 +62,7 @@ const formatCurrency = (value) => {
 .va-table {
   width: 715px;
   border-collapse: collapse;
+  margin-top: 20px;
 }
 
 .va-table th,
@@ -76,7 +77,7 @@ const formatCurrency = (value) => {
 }
 
 h4 {
-  font-size: 20px;
+  font-size: 25px;
   /* h4 태그의 폰트 사이즈를 키움 */
 }
 </style>

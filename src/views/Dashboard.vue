@@ -96,7 +96,11 @@ const selectedMonth = ref(new Date().getMonth() + 1);
 
 /* 차량 온도 막대 차트 컨테이너 스타일 */
 .car-temp-barchart-container {
-  height: 400px;
+  height: 300px;
+}
+
+.warehouse-container{
+  margin-bottom: 20px;
 }
 
 /* 아래쪽 그리드 스타일 */

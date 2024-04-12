@@ -59,6 +59,7 @@ export default {
                 },
                 options: {
                     responsive: true, // 반응형 설정
+                    
                     plugins: {
                         legend: {
                             position: 'top',
@@ -82,12 +83,14 @@ export default {
 </script>
 
 <style scoped>
-/* .carTempCharts {
+.carTempCharts {
     height: 300px;
-} */
+    margin-top: 20px;
+    
+}
 
 h4 {
-    font-size: 20px;
+    font-size: 25px;
     /* h4 태그의 폰트 사이즈를 키움 */
 }
 
