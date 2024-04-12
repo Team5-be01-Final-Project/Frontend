@@ -32,7 +32,7 @@
               <td>{{ item.proName || '-' }}</td>
               <td class='money-right'>{{ item.proUnit ? `${item.proUnit.toLocaleString()}` : '-' }}</td>
               <td class='money-right'>{{ item.voucSale ? `${item.voucSale.toLocaleString()}` : '-' }}</td>
-              <td class='money-right'>{{ item.voucAmount || '-' }}</td>
+              <td class='money-right'>{{ formatNumberWithCommas(item.voucAmount || '-') }}</td>
               <td class='money-right'>{{ item.costOfSales ? `${item.costOfSales.toLocaleString()}` : '-' }}</td>
               <td class='money-right'>{{ item.voucSales ? `${item.voucSales.toLocaleString()}` : '-' }}</td>
               <td class='money-right'>{{ item.grossProfit ? `${item.grossProfit.toLocaleString()}` : '-' }}</td>
@@ -59,6 +59,8 @@ import { monthOptions1 } from '@/utils/monthOptions';
 
 import SalesSidebar from '@/components/sidebar/SalesSidebar.vue';
 // 사이드바 컴포넌트를 가져옵니다.
+
+import formatNumberWithCommas from '@/utils/formatNumberWithCommas';
 
 const defaultYearOption = yearOptions.find(option => option.value === new Date().getFullYear());
 // 기본 년도 옵션을 현재 년도로 설정합니다.

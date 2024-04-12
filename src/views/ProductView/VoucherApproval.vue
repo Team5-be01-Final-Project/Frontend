@@ -29,6 +29,7 @@
             <th class="text-left">거래처명</th>
             <th class="text-left">등록일</th>
             <th class="text-left">결재상태</th>
+            <th class="text-left">총 합계</th>
           </tr>
         </thead>
         <tbody>
@@ -41,6 +42,7 @@
             <td>
               <VaBadge text="대기중" color="secondary" class="mr-2" />
             </td>
+            <td>{{ formatNumberWithCommas( voucherGroup[0].voucSales) }}</td>
           </tr>
           <!-- 승인된 출고전표 목록 출력 -->
           <tr v-for="(voucherGroup, index) in approvedVouchers" :key="'approved-' + index">
@@ -51,6 +53,7 @@
             <td>
               <VaBadge text="승인" color="success" class="mr-2" />
             </td>
+            <td>{{ formatNumberWithCommas( voucherGroup[0].voucSales) }}</td>
           </tr>
           <!-- 반려된 출고전표 목록 출력 -->
           <tr v-for="(voucherGroup, index) in rejectedVouchers" :key="'rejected-' + index">
@@ -61,6 +64,7 @@
             <td>
               <VaBadge text="반려" color="danger" class="mr-2" />
             </td>
+            <td>{{ formatNumberWithCommas( voucherGroup[0].voucSales) }}</td>
           </tr>
         </tbody>
       </table>
@@ -72,6 +76,7 @@
 import axios from 'axios';
 import { VaSelect, VaInput, VaButton, VaBadge } from 'vuestic-ui';
 import ProductSidebar from '@/components/sidebar/ProductSidebar.vue';
+import formatNumberWithCommas from '@/utils/formatNumberWithCommas';
 
 export default {
   components: {
@@ -129,6 +134,7 @@ export default {
     this.fetchUserDeptCode(); // 컴포넌트 마운트 시 사용자 부서 코드 조회
   },
   methods: {
+    formatNumberWithCommas,
     async fetchUserDeptCode() {
       // 사용자의 부서 코드를 쿠키에서 조회하는 메소드
       try {
