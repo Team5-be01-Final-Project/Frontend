@@ -24,9 +24,7 @@
           class="col-span-6 search-input"
           style="margin-right: 5px"
         />
-        <VaButton @click="searchVouchers" class="search-button col-span-2"
-          >검색</VaButton
-        >
+        <VaButton @click="searchVouchers" class="search-button col-span-2">검색</VaButton>
       </div>
       <div class="right-align">단위 : 원</div>
       <!-- 출고전표 결재 목록 테이블 -->
@@ -38,13 +36,13 @@
             <th class="text-left">거래처명</th>
             <th class="text-left">등록일</th>
             <th class="text-left">결재상태</th>
-            <th class="text-left">총 합계</th>
+            <th class="text-left">매출액</th>
           </tr>
         </thead>
         <tbody>
           <!-- 대기중인 출고전표 목록 출력 -->
           <tr
-            v-for="(voucherGroup, index) in waitingVouchers"
+            v-for="(voucherGroup, index) in uniqueVouchers"
             :key="'waiting-' + index"
           >
             <td style="text-align: center;" @click="navigateToDetail(voucherGroup[0].voucId)" class="clickable">{{ voucherGroup[0].voucId }}</td>
@@ -52,12 +50,15 @@
             <td>{{ voucherGroup[0].clientName }}</td>
             <td style="text-align: center">{{ voucherGroup[0].voucDate }}</td>
             <td style="text-align: center">
-              <VaBadge text="대기중" color="secondary" class="mr-2" />
+              <VaBadge v-if="voucherGroup[0].approvalStatus.trim() === '대기중'" text="대기중" color="secondary" class="mr-2" />
+              <VaBadge v-else-if="voucherGroup[0].approvalStatus.trim() === '승인'" text="승인" color="success" class="mr-2" />
+              <VaBadge v-else text="반려" color="danger" class="mr-2" />
+              <!-- <VaBadge text="대기중" color="secondary" class="mr-2" /> -->
             </td>
-            <td style="text-align: right;">{{ formatNumberWithCommas(voucherGroup[0].voucSales) }}</td>
+            <td style="text-align: right;">{{ formatNumberWithCommas(calculateTotalSalesForVoucherId(voucherGroup)) }}</td>
           </tr>
           <!-- 승인된 출고전표 목록 출력 -->
-          <tr
+          <!-- <tr
             v-for="(voucherGroup, index) in approvedVouchers"
             :key="'approved-' + index"
           >
@@ -68,10 +69,10 @@
             <td style="text-align: center">
               <VaBadge text="승인" color="success" class="mr-2" />
             </td>
-            <td style="text-align: right;">{{ formatNumberWithCommas(voucherGroup[0].voucSales) }}</td>
-          </tr>
+            <td style="text-align: right;">{{ formatNumberWithCommas(calculateTotalSalesForVoucherId(voucherGroup)) }}</td>
+          </tr> -->
           <!-- 반려된 출고전표 목록 출력 -->
-          <tr
+          <!-- <tr
             v-for="(voucherGroup, index) in rejectedVouchers"
             :key="'rejected-' + index"
           >
@@ -82,8 +83,8 @@
             <td style="text-align: center">
               <VaBadge text="반려" color="danger" class="mr-2" />
             </td>
-            <td style="text-align: right;">{{ formatNumberWithCommas(voucherGroup[0].voucSales) }}</td>
-          </tr>
+            <td style="text-align: right;">{{ formatNumberWithCommas(calculateTotalSalesForVoucherId(voucherGroup)) }}</td>
+          </tr> -->
         </tbody>
       </table>
     </div>
@@ -137,24 +138,24 @@ export default {
       });
       return Object.values(unique);
     },
-    waitingVouchers() {
-      // 대기중인 출고전표 목록 반환
-      return this.uniqueVouchers.filter(
-        (voucherGroup) => voucherGroup[0].approvalStatus.trim() === "대기중"
-      );
-    },
-    approvedVouchers() {
-      // 승인된 출고전표 목록 반환
-      return this.uniqueVouchers.filter(
-        (voucherGroup) => voucherGroup[0].approvalStatus.trim() === "승인"
-      );
-    },
-    rejectedVouchers() {
-      // 반려된 출고전표 목록 반환
-      return this.uniqueVouchers.filter(
-        (voucherGroup) => voucherGroup[0].approvalStatus.trim() === "반려"
-      );
-    },
+    // waitingVouchers() {
+    //   // 대기중인 출고전표 목록 반환
+    //   return this.uniqueVouchers.filter(
+    //     (voucherGroup) => voucherGroup[0].approvalStatus.trim() === "대기중"
+    //   );
+    // },
+    // approvedVouchers() {
+    //   // 승인된 출고전표 목록 반환
+    //   return this.uniqueVouchers.filter(
+    //     (voucherGroup) => voucherGroup[0].approvalStatus.trim() === "승인"
+    //   );
+    // },
+    // rejectedVouchers() {
+    //   // 반려된 출고전표 목록 반환
+    //   return this.uniqueVouchers.filter(
+    //     (voucherGroup) => voucherGroup[0].approvalStatus.trim() === "반려"
+    //   );
+    // },
   },
   mounted() {
     this.fetchUserDeptCode(); // 컴포넌트 마운트 시 사용자 부서 코드 조회
@@ -185,9 +186,13 @@ export default {
       try {
         const response = await axios.get("/vouchers");
         this.vouchers = response.data;
+        console.log(response)
       } catch (error) {
         console.error("Error fetching vouchers:", error);
       }
+    },
+    calculateTotalSalesForVoucherId(voucherGroup) { //같은 전표번호의 매출액 합계 계산
+      return voucherGroup.reduce((total, voucher) => total + Number(voucher.voucSales), 0);
     },
     navigateToDetail(voucId) {
       // 상세 페이지로 네비게이션
