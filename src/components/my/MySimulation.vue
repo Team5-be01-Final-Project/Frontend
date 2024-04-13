@@ -232,7 +232,7 @@ const fetchIncentiveSimulation = async () => {
   display: block; /* 블록 레벨 요소로 설정하여 단독 줄 사용 */
   margin: 20px auto 0; /* 상단에 마진을 주고 좌우를 자동으로 설정하여 중앙 정렬 */
   padding: 10px 20px; /* 패딩 설정 */
-  background-color: #007bff; /* 배경색 설정 */
+  background-color: #154EC1; /* 배경색 설정 */
   color: #fff; /* 글자색을 흰색으로 설정 */
   border: none; /* 테두리 제거 */
   border-radius: 4px; /* 테두리 둥글게 설정 */
