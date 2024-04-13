@@ -19,7 +19,7 @@ const items = [
 
     children: [
       {
-        title: "판매 제품 리스트",
+        title: "판매 제품 조회",
         routeName: "viewproduct",
       },
     ],
@@ -34,7 +34,7 @@ const items = [
         routeName: "ppccrud",
       },
       {
-        title: "거래처별 제품 리스트",
+        title: "거래처별 제품 조회",
         routeName: "ppcview"
       },
     ],
@@ -43,7 +43,7 @@ const items = [
     title: "재고 관리",
     icon: "warehouse",
     children: [
-      { title: "재고 리스트", routeName: "stockList" },
+      { title: "재고 조회 및 등록", routeName: "stockList" },
     ],
   },
   {
@@ -52,7 +52,7 @@ const items = [
     children: [
       { title: "전표 등록", routeName: "vouchersave" },
       { title: "전표 결재", routeName: "voucherapproval" },
-      { title: "전표 리스트", routeName: "viewvoucher" },
+      { title: "전표 조회", routeName: "viewvoucher" },
     ],
   },
 ];
