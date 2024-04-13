@@ -109,7 +109,7 @@ const items = [
         "
       >
         <VaSidebarItemContent>
-          <VaIcon name="settings" />
+          <VaIcon name="account_circle" />
           <VaSidebarItemTitle>My 영업</VaSidebarItemTitle>
         </VaSidebarItemContent>
       </VaSidebarItem>

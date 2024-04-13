@@ -17,13 +17,9 @@ const items = [
     title: "매출조회",
     icon: "query_stats",
     children: [
-<<<<<<< HEAD
-      { title: "제품별 매출 현황", icon: "drafts", routeName: "productsales" },
-      { title: "거래처별 매출 현황", icon: "drafts", routeName: "clientSales" },
-=======
       { title: "상품별 매출 현황",  routeName: "productsales" },
       { title: "거래처별 매출 현황", routeName: "clientSales" },
->>>>>>> 8f7781e ([Design] 사이드바 아이콘 변경)
+
     ],
   },
 ];

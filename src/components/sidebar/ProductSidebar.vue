@@ -14,13 +14,9 @@ const navigateTo = (routeName) => {
 
 const items = [
   {
-<<<<<<< HEAD
-    title: "제품 관리",
-    icon: "mail",
-=======
     title: "상품 관리",
     icon: "category",
->>>>>>> 8f7781e ([Design] 사이드바 아이콘 변경)
+
     children: [
       {
         title: "판매 제품 리스트",
@@ -33,37 +29,30 @@ const items = [
     icon: "dashboard",
     children: [
       {
-<<<<<<< HEAD
-        title: "거래처별 제품 등록 및 수정",
-        icon: "drafts",
-        routeName: "ppccrud",
-      },
-      { title: "거래처별 상품 리스트", icon: 'visibility', routeName: "ppcview" },
 
-=======
         title: "거래처별 상품 등록 및 수정",
         routeName: "ppccrud",
       },
-      { title: "거래처별 상품 리스트", 
-      routeName: "ppcview" 
-    },
->>>>>>> 8f7781e ([Design] 사이드바 아이콘 변경)
+      {
+        title: "거래처별 상품 리스트",
+        routeName: "ppcview"
+      },
     ],
   },
   {
     title: "재고 관리",
     icon: "warehouse",
     children: [
-      { title: "재고 리스트",  routeName: "stockList" },
+      { title: "재고 리스트", routeName: "stockList" },
     ],
   },
   {
     title: "출고 관리",
     icon: "local_shipping",
     children: [
-      { title: "전표 등록",  routeName: "vouchersave" },
-      { title: "전표 결재",  routeName: "voucherapproval" },
-      { title: "전표 리스트",  routeName: "viewvoucher" },
+      { title: "전표 등록", routeName: "vouchersave" },
+      { title: "전표 결재", routeName: "voucherapproval" },
+      { title: "전표 리스트", routeName: "viewvoucher" },
     ],
   },
 ];
