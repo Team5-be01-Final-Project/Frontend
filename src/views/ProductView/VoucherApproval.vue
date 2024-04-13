@@ -36,7 +36,7 @@
             <th class="text-left">거래처명</th>
             <th class="text-left">등록일</th>
             <th class="text-left">결재상태</th>
-            <th class="text-left">총 합계</th>
+            <th class="text-left">매출액</th>
           </tr>
         </thead>
         <tbody>
@@ -138,24 +138,24 @@ export default {
       });
       return Object.values(unique);
     },
-    waitingVouchers() {
-      // 대기중인 출고전표 목록 반환
-      return this.uniqueVouchers.filter(
-        (voucherGroup) => voucherGroup[0].approvalStatus.trim() === "대기중"
-      );
-    },
-    approvedVouchers() {
-      // 승인된 출고전표 목록 반환
-      return this.uniqueVouchers.filter(
-        (voucherGroup) => voucherGroup[0].approvalStatus.trim() === "승인"
-      );
-    },
-    rejectedVouchers() {
-      // 반려된 출고전표 목록 반환
-      return this.uniqueVouchers.filter(
-        (voucherGroup) => voucherGroup[0].approvalStatus.trim() === "반려"
-      );
-    },
+    // waitingVouchers() {
+    //   // 대기중인 출고전표 목록 반환
+    //   return this.uniqueVouchers.filter(
+    //     (voucherGroup) => voucherGroup[0].approvalStatus.trim() === "대기중"
+    //   );
+    // },
+    // approvedVouchers() {
+    //   // 승인된 출고전표 목록 반환
+    //   return this.uniqueVouchers.filter(
+    //     (voucherGroup) => voucherGroup[0].approvalStatus.trim() === "승인"
+    //   );
+    // },
+    // rejectedVouchers() {
+    //   // 반려된 출고전표 목록 반환
+    //   return this.uniqueVouchers.filter(
+    //     (voucherGroup) => voucherGroup[0].approvalStatus.trim() === "반려"
+    //   );
+    // },
   },
   mounted() {
     this.fetchUserDeptCode(); // 컴포넌트 마운트 시 사용자 부서 코드 조회
@@ -191,7 +191,7 @@ export default {
         console.error("Error fetching vouchers:", error);
       }
     },
-    calculateTotalSalesForVoucherId(voucherGroup) {
+    calculateTotalSalesForVoucherId(voucherGroup) { //같은 전표번호의 매출액 합계 계산
       return voucherGroup.reduce((total, voucher) => total + Number(voucher.voucSales), 0);
     },
     navigateToDetail(voucId) {
