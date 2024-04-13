@@ -14,20 +14,19 @@ const navigateTo = (routeName) => {
 
 const items = [
 {
-    title: "거래처별 관리",
-    icon: "dashboard",
+    title: "거래처 관리",
+    icon: "local_hospital",
     children: [
-      { title: "거래처 등록", icon: "drafts", routeName: "clientsave" },
-      { title: "거래처 조회", icon: "drafts", routeName: "viewclient" },
+      { title: "거래처 등록", routeName: "clientsave" },
+      { title: "거래처 리스트", routeName: "viewclient" },
     ],
   },
   {
     title: "인센티브 확인",
-    icon: "mail",
+    icon: "paid",
     children: [
       {
         title: "인센티브 현황 확인",
-        icon: "drafts",
         routeName: "incentivelist",
       },
     ],

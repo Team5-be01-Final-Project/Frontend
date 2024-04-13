@@ -14,12 +14,16 @@ const navigateTo = (routeName) => {
 
 const items = [
   {
+<<<<<<< HEAD
     title: "제품 관리",
     icon: "mail",
+=======
+    title: "상품 관리",
+    icon: "category",
+>>>>>>> 8f7781e ([Design] 사이드바 아이콘 변경)
     children: [
       {
-        title: "판매 상품 리스트",
-        icon: 'visibility',
+        title: "판매 제품 리스트",
         routeName: "viewproduct",
       },
     ],
@@ -29,28 +33,37 @@ const items = [
     icon: "dashboard",
     children: [
       {
+<<<<<<< HEAD
         title: "거래처별 제품 등록 및 수정",
         icon: "drafts",
         routeName: "ppccrud",
       },
       { title: "거래처별 상품 리스트", icon: 'visibility', routeName: "ppcview" },
 
+=======
+        title: "거래처별 상품 등록 및 수정",
+        routeName: "ppccrud",
+      },
+      { title: "거래처별 상품 리스트", 
+      routeName: "ppcview" 
+    },
+>>>>>>> 8f7781e ([Design] 사이드바 아이콘 변경)
     ],
   },
   {
     title: "재고 관리",
-    icon: "dashboard",
+    icon: "warehouse",
     children: [
-      { title: "재고 조회 및 등록", icon: "send", routeName: "stockList" },
+      { title: "재고 리스트",  routeName: "stockList" },
     ],
   },
   {
     title: "출고 관리",
-    icon: "dashboard",
+    icon: "local_shipping",
     children: [
-      { title: "전표 등록", icon: "drafts", routeName: "vouchersave" },
-      { title: "전표 결재", icon: "register", routeName: "voucherapproval" },
-      { title: "전표 리스트 조회", icon: 'visibility', routeName: "viewvoucher" },
+      { title: "전표 등록",  routeName: "vouchersave" },
+      { title: "전표 결재",  routeName: "voucherapproval" },
+      { title: "전표 리스트",  routeName: "viewvoucher" },
     ],
   },
 ];
@@ -105,7 +118,7 @@ const items = [
 
       <VaSidebarItem :active="$route.path === '/mysales'" @click="$router.push('/mysales')">
         <VaSidebarItemContent>
-          <VaIcon name="settings" />
+          <VaIcon name="account_circle" />
           <VaSidebarItemTitle>My 영업</VaSidebarItemTitle>
         </VaSidebarItemContent>
       </VaSidebarItem>
