@@ -15,9 +15,8 @@
           <va-input v-model="clientNameFilter" placeholder="거래처명 검색" style="margin-right: 5px;" />
           <va-button @click="filterSalesData">검색</va-button>
           <refresh-button class="left-margin"/>
-
+          <ExcelExportButton class="export" :data="exportData" :headers="exportHeaders" file-name="거래처별 매출 현황.xlsx" />
         </div>
-        <ExcelExportButton :data="exportData" :headers="exportHeaders" file-name="거래처별 매출 현황.xlsx" />
 
         <div class="right-align">단위 : 원 / 개</div>
         <table class="va-table va-table--hoverable full-width">
@@ -245,5 +244,9 @@ const filterByClientName = (data, clientName) => {
 
 .left-margin{
   margin-left: 5px;
+}
+
+.export{
+  margin-left: 170px;
 }
 </style>
