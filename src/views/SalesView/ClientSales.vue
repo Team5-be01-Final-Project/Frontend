@@ -9,6 +9,7 @@
     <div class="Main">
       <va-container>
         <h3 class="va-h3">거래처별 매출 현황</h3>
+        <va-button @click="exportToExcel">엑셀로 내보내기</va-button>
 
         <div>
           <va-select v-model="selectedYear" :options="yearOption" placeholder="년도 선택" style="margin-right: 5px;" />
@@ -66,6 +67,9 @@ import SalesSidebar from '@/components/sidebar/SalesSidebar.vue';
 import formatNumberWithCommas from '@/utils/formatNumberWithCommas';
 import RefreshButton from '@/components/RefreshButton.vue';
 
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
+
 const defaultYearOption = yearOptions.find(option => option.value === new Date().getFullYear());
 // 기본 년도 옵션을 현재 년도로 설정합니다.
 
@@ -75,10 +79,31 @@ const currentMonth = ("0" + (new Date().getMonth() + 1)).slice(-2);
 const yearOption = yearOptions;
 // 년도 선택 옵션을 설정합니다.
 
-const selectedYear = ref(defaultYearOption);
-// 선택된 년도를 현재 년도로 초기화합니다.
+const selectedYear = ref(yearOptions.find(option => option.value === new Date().getFullYear()));
+const selectedMonth = ref(monthOptions1.find(option => option.value === new Date().getMonth() + 1));
 
-const selectedMonth = ref(monthOptions1.find(option => option.value === currentMonth));
+const exportToExcel = () => {
+  // 데이터 변환을 위해 사용자 정의 컬럼명을 지정합니다.
+  const ws = XLSX.utils.json_to_sheet(mergedSalesData.value.map(item => ({
+    "거래처명": item.clientName,
+    "제품명": item.proName || '-',
+    "단가": item.proUnit ? `${item.proUnit.toLocaleString()}` : '-',
+    "판매가": item.voucSale ? `${item.voucSale.toLocaleString()}` : '-',
+    "수량": item.voucAmount ? `${item.voucAmount.toLocaleString()}` : '-',
+    "판매원가": item.costOfSales ? `${item.costOfSales.toLocaleString()}` : '-',
+    "매출액": item.voucSales ? `${item.voucSales.toLocaleString()}` : '-',
+    "매출이익": item.grossProfit ? `${item.grossProfit.toLocaleString()}` : '-',
+    "이익율": formatProfitMargin(item.profitMargin)
+  })), { header: [
+    "거래처명", "제품명", "단가", "판매가", "수량", "판매원가", "매출액", "매출이익", "이익율"
+  ],  }); //skipHeader: true 이건 해더 미포함
+
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Sales Data");
+  const wbout = XLSX.write(wb, { type: "array", bookType: "xlsx" });
+  saveAs(new Blob([wbout], { type: "application/octet-stream" }), "ClientSales.xlsx");
+};
+
 // 선택된 월을 현재 월로 초기화합니다.
 
 const clientNameFilter = ref('');
