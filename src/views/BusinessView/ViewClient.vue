@@ -287,7 +287,7 @@ onMounted(() => {
 
 .left-margin{
   margin-left: 5px;
-
+}
 td {
   vertical-align: middle !important; /* 값들 중간 정렬 */
 
