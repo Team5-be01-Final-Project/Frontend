@@ -8,14 +8,8 @@
   
   export default {
     props: {
-      data: {
-        type: Array,
-        required: true
-      },
-      headers: {
-        type: Array,
-        required: true
-      },
+      data: Array,
+      headers: Object,
       fileName: {
         type: String,
         default: 'Export.xlsx'
@@ -23,7 +17,15 @@
     },
     methods: {
       exportToExcel() {
-        const ws = XLSX.utils.json_to_sheet(this.data, { header: this.headers });
+        const formattedData = this.data.map(item => {
+          const formattedItem = {};
+          for (const key in this.headers) {
+            formattedItem[this.headers[key]] = item[key] || '-';
+          }
+          return formattedItem;
+        });
+  
+        const ws = XLSX.utils.json_to_sheet(formattedData, { header: Object.values(this.headers) });
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
         const wbout = XLSX.write(wb, { type: "array", bookType: "xlsx" });

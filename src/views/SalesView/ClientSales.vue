@@ -9,8 +9,6 @@
     <div class="Main">
       <va-container>
         <h3 class="va-h3">거래처별 매출 현황</h3>
-        <va-button @click="exportToExcel">엑셀로 내보내기</va-button>
-
         <div>
           <va-select v-model="selectedYear" :options="yearOption" placeholder="년도 선택" style="margin-right: 5px;" />
           <va-select v-model="selectedMonth" :options="monthOptions1" placeholder="월 선택" style="margin-right: 5px;" />
@@ -19,6 +17,8 @@
           <refresh-button class="left-margin"/>
 
         </div>
+        <ExcelExportButton :data="exportData" :headers="exportHeaders" file-name="거래처별 매출 현황.xlsx" />
+
         <div class="right-align">단위 : 원 / 개</div>
         <table class="va-table va-table--hoverable full-width">
           <thead>
@@ -66,6 +66,7 @@ import SalesSidebar from '@/components/sidebar/SalesSidebar.vue';
 
 import formatNumberWithCommas from '@/utils/formatNumberWithCommas';
 import RefreshButton from '@/components/RefreshButton.vue';
+import ExcelExportButton from '@/components/ExcelExportButton.vue';
 
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
@@ -82,27 +83,32 @@ const yearOption = yearOptions;
 const selectedYear = ref(yearOptions.find(option => option.value === new Date().getFullYear()));
 const selectedMonth = ref(monthOptions1.find(option => option.value === new Date().getMonth() + 1));
 
-const exportToExcel = () => {
-  // 데이터 변환을 위해 사용자 정의 컬럼명을 지정합니다.
-  const ws = XLSX.utils.json_to_sheet(mergedSalesData.value.map(item => ({
-    "거래처명": item.clientName,
-    "제품명": item.proName || '-',
-    "단가": item.proUnit ? `${item.proUnit.toLocaleString()}` : '-',
-    "판매가": item.voucSale ? `${item.voucSale.toLocaleString()}` : '-',
-    "수량": item.voucAmount ? `${item.voucAmount.toLocaleString()}` : '-',
-    "판매원가": item.costOfSales ? `${item.costOfSales.toLocaleString()}` : '-',
-    "매출액": item.voucSales ? `${item.voucSales.toLocaleString()}` : '-',
-    "매출이익": item.grossProfit ? `${item.grossProfit.toLocaleString()}` : '-',
-    "이익율": formatProfitMargin(item.profitMargin)
-  })), { header: [
-    "거래처명", "제품명", "단가", "판매가", "수량", "판매원가", "매출액", "매출이익", "이익율"
-  ],  }); //skipHeader: true 이건 해더 미포함
+// Props와 메서드 정의는 기존 코드에서 변경 없이 유지
+const exportHeaders = computed(() => ({
+  clientName: '거래처명',
+  proName: '제품명',
+  proUnit: '단가',
+  voucSale: '판매가',
+  voucAmount: '수량',
+  costOfSales: '판매원가',
+  voucSales: '매출액',
+  grossProfit: '매출이익',
+  profitMargin: '이익율'
+}));
 
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "Sales Data");
-  const wbout = XLSX.write(wb, { type: "array", bookType: "xlsx" });
-  saveAs(new Blob([wbout], { type: "application/octet-stream" }), "ClientSales.xlsx");
-};
+const exportData = computed(() => {
+  return mergedSalesData.value.map(item => ({
+    clientName: item.clientName,
+    proName: item.proName || '-',
+    proUnit: item.proUnit ? item.proUnit.toLocaleString() : '-',
+    voucSale: item.voucSale ? item.voucSale.toLocaleString() : '-',
+    voucAmount: item.voucAmount ? item.voucAmount.toLocaleString() : '-',
+    costOfSales: item.costOfSales ? item.costOfSales.toLocaleString() : '-',
+    voucSales: item.voucSales ? item.voucSales.toLocaleString() : '-',
+    grossProfit: item.grossProfit ? item.grossProfit.toLocaleString() : '-',
+    profitMargin: formatProfitMargin(item.profitMargin)
+  }));
+});
 
 // 선택된 월을 현재 월로 초기화합니다.
 
