@@ -1,3 +1,4 @@
+<!-- MySimulation.vue -->
 <template>
   <h3>인센티브 시뮬레이션</h3>
   <div class="incentive-simulation">
@@ -9,6 +10,20 @@
             <td class="amount-cell">{{ currentSales.toLocaleString() }}원</td>
           </tr>
           <tr>
+            <th>금월 인센티브 금액</th>
+            <td class="amount-cell">
+              {{ currentIncentive !== null ? currentIncentive.toLocaleString() : "0" }}원
+            </td>
+          </tr>
+          <tr>
+            <th>현재 영업 순위</th>
+            <td>{{ currentSalesRank || "순위 정보 없음" }}</td>
+          </tr>
+        </table>
+      </div>
+      <div class="incentive-info">
+        <table>
+          <tr>
             <th>추가 매출액</th>
             <td>
               <input
@@ -18,23 +33,21 @@
               />
             </td>
           </tr>
-        </table>
-      </div>
-      <div class="incentive-info">
-        <table>
           <tr>
             <th>금월 인센티브 예상 금액</th>
             <td class="amount-cell">
               {{
                 simulatedIncentive
-                  ? simulatedIncentive.incentive.toLocaleString()
+                  ? (currentIncentive + simulatedIncentive.incentive).toLocaleString()
+                  : currentIncentive !== null
+                  ? currentIncentive.toLocaleString()
                   : "0"
               }}원
             </td>
           </tr>
           <tr>
-            <th>영업 순위</th>
-            <td>{{ salesRank || "순위 정보 없음" }}</td>
+            <th>예상 영업 순위</th>
+            <td>{{ simulatedSalesRank || "순위 정보 없음" }}</td>
           </tr>
         </table>
       </div>
@@ -44,34 +57,54 @@
     </button>
   </div>
 </template>
-  
-  <script setup>
-import { ref, defineProps } from "vue";
+
+<script setup>
+import { ref, defineProps, onMounted, computed } from "vue";
 import axios from "axios";
 
-// props를 정의하여 부모 컴포넌트로부터 empCode와 currentSales를 받습니다.
 const props = defineProps({
   empCode: {
-    type: Number, // empCode는 Number 타입입니다.
-    required: true, // 필수 프로퍼티입니다.
+    type: Number,
+    required: true,
   },
   currentSales: {
-    type: Number, // currentSales 역시 Number 타입입니다.
-    required: true, // 필수 프로퍼티입니다.
+    type: Number,
+    required: true,
   },
 });
 
-// 추가 매출액을 저장할 반응형 변수입니다. 초기값은 0입니다.
 const additionalSales = ref(0);
-// 시뮬레이션으로 계산된 인센티브 정보를 저장할 반응형 변수입니다. 초기값은 null입니다.
 const simulatedIncentive = ref(null);
-// 계산된 영업 순위를 저장할 반응형 변수입니다. 초기값은 빈 문자열입니다.
-const salesRank = ref("");
+const simulatedSalesRank = ref("");
 
-// 인센티브 시뮬레이션을 수행하는 함수입니다.
+// 현재 인센티브와 현재 순위를 계산하는 computed 속성 추가
+const currentIncentive = computed(() => {
+  const incentive = Math.round(props.currentSales * 0.01);
+  return incentive;
+});
+
+const currentSalesRank = computed(async () => {
+  try {
+    const allIncentives = await axios.get("/incentive/list", {
+      params: {
+        year: new Date().getFullYear(),
+        month: new Date().getMonth() + 1,
+      },
+    });
+    const incentives = allIncentives.data;
+    const totalIncentive = currentIncentive.value;
+    const rank =
+      incentives.filter((incentive) => incentive.incentive > totalIncentive)
+        .length + 1;
+    return rank <= 3 ? `${rank}등` : "4등 이하";
+  } catch (error) {
+    console.error("현재 순위 조회 실패", error);
+    return "순위 정보 없음";
+  }
+});
+
 const fetchIncentiveSimulation = async () => {
   try {
-    // 서버로부터 인센티브 정보를 조회합니다. empCode, currentSales, additionalSales를 파라미터로 전달합니다.
     const response = await axios.get("/incentive/simulation", {
       params: {
         empCode: props.empCode,
@@ -79,28 +112,21 @@ const fetchIncentiveSimulation = async () => {
         additionalSales: additionalSales.value,
       },
     });
-    // 조회한 인센티브 정보를 simulatedIncentive에 저장합니다.
     simulatedIncentive.value = response.data;
 
-    // 모든 인센티브 정보를 조회하여, 전체에서의 순위를 계산합니다.
     const allIncentives = await axios.get("/incentive/list", {
       params: {
         year: new Date().getFullYear(),
         month: new Date().getMonth() + 1,
       },
     });
-    // 조회한 인센티브 리스트입니다.
     const incentives = allIncentives.data;
-    // 계산된 인센티브가 전체 인센티브 중에서 어디에 위치하는지를 계산합니다.
     const totalIncentive = simulatedIncentive.value.incentive;
-    // 현재 인센티브가 높은 순으로 몇 등인지를 계산합니다.
     const rank =
       incentives.filter((incentive) => incentive.incentive > totalIncentive)
         .length + 1;
-    // 계산된 순위를 salesRank에 저장합니다.
-    salesRank.value = rank <= 3 ? `${rank}등` : "4등 이하";
+    simulatedSalesRank.value = rank <= 3 ? `${rank}등` : "4등 이하";
   } catch (error) {
-    // 오류가 발생한 경우, 콘솔에 오류 메시지를 출력합니다.
     console.error("인센티브 시뮬레이션 조회 실패", error);
   }
 };
