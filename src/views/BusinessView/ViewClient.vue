@@ -8,7 +8,7 @@
 
     <div class="Main">
       <div class="va-table-responsive">
-        <h3 class="va-h3">거래처 조회</h3>
+        <h3 class="va-h3">거래처 리스트</h3>
         <div
           class="grid md:grid-cols-3 gap-6 mb-6 items-center"
           style="margin-bottom: 25px"
@@ -40,6 +40,7 @@
               <th>대표명</th>
               <th>담당자</th>
               <th>담당자 연락처</th>
+              <th>담당 사원</th>
               <th>삭제</th>
             </tr>
           </thead>
@@ -61,6 +62,7 @@
               <td style="text-align: center">{{ client.clientBoss }}</td>
               <td style="text-align: center">{{ client.clientEmp }}</td>
               <td style="text-align: center">{{ client.clientEmpTel }}</td>
+              <td style="text-align: center">{{ client.empName }}</td>
               <td class="index-center">
                 <VaButton
                 preset="primary" color="danger" class="mr-6 mb-2"
@@ -250,6 +252,8 @@ onMounted(() => {
 
 .clickable {
   cursor: pointer;
+  color: #2c3e50;
+  text-decoration: underline;
 }
 
 .flex {
@@ -278,11 +282,15 @@ onMounted(() => {
   font-weight: bold; /* 글자 굵게 */
   border: 2px solid #cccccc;
   border-bottom: 2px solid #cccccc; /* 회색 테두리 */
-  font-size: 15px;
+  font-size: 13px;
 }
 
 .left-margin{
   margin-left: 5px;
+
+td {
+  vertical-align: middle !important; /* 값들 중간 정렬 */
+
 }
 
 </style>
