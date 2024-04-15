@@ -64,7 +64,7 @@ const toggleDetails = (clientCode) => {
 }
 
 .client-details {
-  border-top: 1px solid #8ca4d0; /* 항목간 구분선 */
+  border-top: 1px solid #666E75; /* 항목간 구분선 */
   padding-top: 10px; /* 구분선 위 여백 */
 }
 h3 {
