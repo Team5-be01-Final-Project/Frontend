@@ -13,6 +13,7 @@
           <VaSelect v-model="selectedField" placeholder="검색 조건" :options="filterOptions" style="margin-right: 5px;" />
           <VaInput v-model="filter" placeholder="검색어 입력" class="w-full" style="margin-right: 5px;" />
           <VaButton @click="applyFilter">검색</VaButton>
+          <refresh-button class="left-margin"/>
         </div>
         <div class="right-align">단위 : 원</div>
         <table class="va-table va-table--hoverable full-width">
@@ -56,13 +57,14 @@ import axios from 'axios';
 import { VaButton, VaSelect, VaInput } from 'vuestic-ui';
 import ProductSidebar from '@/components/sidebar/ProductSidebar.vue';
 import formatNumberWithCommas from '@/utils/formatNumberWithCommas.js';
-
+import RefreshButton from '@/components/RefreshButton.vue';
 export default {
   components: {
     ProductSidebar,
     VaButton,
     VaSelect,
     VaInput,
+    RefreshButton
   },
   data() {
     return {
@@ -185,5 +187,9 @@ export default {
   border: 2px solid #cccccc;
   border-bottom: 2px solid #cccccc; /* 회색 테두리 */
   font-size: 15px;
+}
+
+.left-margin{
+  margin-left: 5px;
 }
 </style>

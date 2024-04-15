@@ -17,13 +17,13 @@ const navigateTo = (routeName) => {
 const items = [
   {
     title: '이상 온도 로그', icon: 'severe_cold', children: [
-      { title: '창고/차량 이상 온도 조회', icon: 'severe_cold', routeName: 'templog' },
+      { title: '창고/차량 이상 온도 조회',  routeName: 'templog' },
     ]
   },
   {
-    title: '사원 관리', icon: 'dashboard', children: [
-      { title: '사원 리스트 조회', icon: 'visibility', routeName: 'employeesspec' },// 이 항목에 대한 라우트가 없습니다.
-      { title: '사원 정보 수정', icon: 'edit_note', routeName: 'employeeslist' },
+    title: '사원 관리', icon: 'groups', children: [
+      { title: '사원 리스트',  routeName: 'employeesspec' },// 이 항목에 대한 라우트가 없습니다.
+      { title: '사원 정보 수정',  routeName: 'employeeslist' },
     ]
   },
 
@@ -80,7 +80,7 @@ const items = [
 
       <VaSidebarItem :active="$route.path === '/mysales'" @click="$router.push('/mysales')">
         <VaSidebarItemContent>
-          <VaIcon name="settings" />
+          <VaIcon name="account_circle" />
           <VaSidebarItemTitle>My 영업</VaSidebarItemTitle>
         </VaSidebarItemContent>
       </VaSidebarItem>

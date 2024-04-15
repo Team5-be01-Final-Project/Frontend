@@ -8,33 +8,15 @@
     <div class="Main">
       <div class="va-table-responsive">
         <h3 class="va-h3">사원 리스트 조회</h3>
-        <div
-          class="grid grid-cols-2 md:grid-cols-4 gap-4 items-end"
-          style="margin-bottom: 25px"
-        >
-          <VaSelect
-            v-model="selectedDept"
-            placeholder="부서"
-            :options="deptOptions"
-            style="margin-right: 5px"
-          />
-          <VaSelect
-            v-model="selectedSearchCondition"
-            placeholder="검색 조건"
-            :options="[
-              { text: '이름', value: 'empName' },
-              { text: '이메일', value: 'empEmail' },
-            ]"
-            value-by="value"
-            style="margin-right: 5px"
-          />
-          <VaInput
-            v-model="searchText"
-            placeholder="검색어 입력"
-            class="w-full"
-            style="margin-right: 5px"
-          />
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 items-end" style="margin-bottom: 25px">
+          <VaSelect v-model="selectedDept" placeholder="부서" :options="deptOptions" style="margin-right: 5px" />
+          <VaSelect v-model="selectedSearchCondition" placeholder="검색 조건" :options="[
+            { text: '이름', value: 'empName' },
+            { text: '이메일', value: 'empEmail' },
+          ]" value-by="value" style="margin-right: 5px" />
+          <VaInput v-model="searchText" placeholder="검색어 입력" class="w-full" style="margin-right: 5px" />
           <VaButton @click="fetchFilteredEmployees">검색</VaButton>
+          <refresh-button class="left-margin" />
         </div>
 
         <table class="va-table va-table--hoverable full-width">
@@ -53,11 +35,8 @@
           <tbody>
             <tr v-for="employee in employees" :key="employee.empCode">
               <td style="text-align: center">{{ employee.empCode }}</td>
-              <td style="text-align: center">                 <img
-                  :src="employee.empImg"
-                  alt="Employee Image"
-                  class="employee-image"
-                /><br>{{ employee.empName }}</td>
+              <td style="text-align: center"> <img :src="employee.empImg" alt="Employee Image"
+                  class="employee-image" /><br>{{ employee.empName }}</td>
               <td style="text-align: center">{{ employee.posName }}</td>
               <td style="text-align: center">{{ employee.deptName }}</td>
               <td>{{ employee.empTel }}</td>
@@ -77,10 +56,12 @@ import axios from "axios";
 import { VaButton } from "vuestic-ui/web-components";
 import SystemSidebar from "@/components/sidebar/SystemSidebar.vue";
 import { departmentOptions } from "@/utils/departmentOptions.js";
+import RefreshButton from "@/components/RefreshButton.vue";
 
 export default {
   components: {
     SystemSidebar,
+    RefreshButton,
   },
   data() {
     return {
@@ -183,17 +164,26 @@ export default {
   width: 100%;
   /* 테이블이 화면에 꽉 차도록 설정 */
 }
+
 th,
 
 td {
-  vertical-align : middle; /* 값들 중간 정렬 */
+  vertical-align: middle;
+  /* 값들 중간 정렬 */
 }
 
 .va-table thead th {
-  background-color: #DEE5F2; /* 짙은 파란색 배경 */
-  font-weight: bold; /* 글자 굵게 */
+  background-color: #DEE5F2;
+  /* 짙은 파란색 배경 */
+  font-weight: bold;
+  /* 글자 굵게 */
   border: 2px solid #cccccc;
-  border-bottom: 2px solid #cccccc; /* 회색 테두리 */
+  border-bottom: 2px solid #cccccc;
+  /* 회색 테두리 */
   font-size: 15px;
+}
+
+.left-margin{
+  margin-left: 5px;
 }
 </style>

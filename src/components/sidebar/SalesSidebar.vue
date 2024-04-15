@@ -15,10 +15,11 @@ const navigateTo = (routeName) => {
 const items = [
   {
     title: "매출조회",
-    icon: "mail",
+    icon: "query_stats",
     children: [
-      { title: "제품별 매출 현황", icon: "drafts", routeName: "productsales" },
-      { title: "거래처별 매출 현황", icon: "drafts", routeName: "clientSales" },
+      { title: "상품별 매출 현황",  routeName: "productsales" },
+      { title: "거래처별 매출 현황", routeName: "clientSales" },
+
     ],
   },
 ];
@@ -94,7 +95,7 @@ const items = [
         @click="$router.push('/mysales')"
       >
         <VaSidebarItemContent>
-          <VaIcon name="settings" />
+          <VaIcon name="account_circle" />
           <VaSidebarItemTitle>My 영업</VaSidebarItemTitle>
         </VaSidebarItemContent>
       </VaSidebarItem>

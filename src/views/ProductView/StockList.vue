@@ -20,6 +20,7 @@
         />
         <VaInput v-model="filter" placeholder="검색어 입력" class="col-span-8 search-input" />
         <VaButton @click="searchStockList" class="search-button col-span-2">검색</VaButton>
+        <refresh-button class="left-margin"/>
         <VaButton @click="openRegisterModal" class="register-button">재고 등록</VaButton>
       </div>
       <div class="right-align">단위 : 개 / 원</div>
@@ -63,6 +64,7 @@ import StockRegi from "@/components/StockRegi.vue";
 import { VaSelect, VaInput, VaButton } from "vuestic-ui";
 import ProductSidebar from "@/components/sidebar/ProductSidebar.vue";
 import formatNumberWithCommas from "@/utils/formatNumberWithCommas";
+import RefreshButton from "@/components/RefreshButton.vue";
 
 // 데이터와 상태 관리를 위한 변수들
 const stockList = ref([]); // 서버에서 받아온 재고 목록을 저장하는 배열
@@ -241,5 +243,9 @@ onMounted(() => {
   border: 2px solid #cccccc;
   border-bottom: 2px solid #cccccc; /* 회색 테두리 */
   font-size: 15px;
+}
+
+.left-margin{
+  margin-left: 5px;
 }
 </style>

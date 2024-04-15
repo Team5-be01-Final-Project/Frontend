@@ -28,6 +28,7 @@
           style="margin-right: 5px"
         />
         <VaButton @click="applyFilter">검색</VaButton>
+        <refresh-button class="left-margin"/>
       </div>
       <div class="right-align">단위 : 원</div>
       <table class="va-table va-table--hoverable full-width">
@@ -66,10 +67,12 @@ import { monthOptions } from "@/utils/monthOptions.js";
 import formatNumberWithCommas from "@/utils/formatNumberWithCommas.js";
 import BusinessSidebar from "@/components/sidebar/BusinessSidebar.vue";
 import Cookies from "js-cookie";
+import RefreshButton from "@/components/RefreshButton.vue";
 
 export default {
   components: {
     BusinessSidebar,
+    RefreshButton,
   },
   data() {
     // const currentYear = new Date().getFullYear();
@@ -199,5 +202,9 @@ td.money-right {
   border: 2px solid #cccccc;
   border-bottom: 2px solid #cccccc; /* 회색 테두리 */
   font-size: 15px;
+}
+
+.left-margin{
+  margin-left: 5px;
 }
 </style>

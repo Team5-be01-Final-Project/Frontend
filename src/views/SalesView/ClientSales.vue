@@ -15,6 +15,8 @@
           <va-select v-model="selectedMonth" :options="monthOptions1" placeholder="월 선택" style="margin-right: 5px;" />
           <va-input v-model="clientNameFilter" placeholder="거래처명 검색" style="margin-right: 5px;" />
           <va-button @click="filterSalesData">검색</va-button>
+          <refresh-button class="left-margin"/>
+
         </div>
         <div class="right-align">단위 : 원 / 개</div>
         <table class="va-table va-table--hoverable full-width">
@@ -62,6 +64,7 @@ import SalesSidebar from '@/components/sidebar/SalesSidebar.vue';
 // 사이드바 컴포넌트를 가져옵니다.
 
 import formatNumberWithCommas from '@/utils/formatNumberWithCommas';
+import RefreshButton from '@/components/RefreshButton.vue';
 
 const defaultYearOption = yearOptions.find(option => option.value === new Date().getFullYear());
 // 기본 년도 옵션을 현재 년도로 설정합니다.
@@ -207,5 +210,9 @@ const filterByClientName = (data, clientName) => {
   border: 2px solid #cccccc;
   border-bottom: 2px solid #cccccc; /* 회색 테두리 */
   font-size: 15px;
+}
+
+.left-margin{
+  margin-left: 5px;
 }
 </style>

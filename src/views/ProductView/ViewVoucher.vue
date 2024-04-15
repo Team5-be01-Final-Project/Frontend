@@ -9,27 +9,13 @@
     <div class="Main">
       <h3 class="va-h3">전표 리스트 조회</h3>
       <!-- 검색 폼: 사용자가 출고전표를 필터링할 수 있는 입력 필드와 버튼을 제공합니다. -->
-      <div
-        class="grid grid-cols-12 gap-4 mb-6 items-center"
-        style="margin-bottom: 25px"
-      >
-        <VaSelect
-          v-model="selectedField"
-          placeholder="검색 조건"
-          :options="filterOptions"
-          value-by="value"
-          class="col-span-4 filter-select"
-          style="margin-right: 5px"
-        />
-        <VaInput
-          v-model="filter"
-          placeholder="검색어 입력"
-          class="col-span-6 search-input"
-          style="margin-right: 5px"
-        />
-        <VaButton @click="searchVouchers" class="search-button col-span-2"
-          >검색</VaButton
-        >
+      <div class="grid grid-cols-12 gap-4 mb-6 items-center" style="margin-bottom: 25px">
+        <VaSelect v-model="selectedField" placeholder="검색 조건" :options="filterOptions" value-by="value"
+          class="col-span-4 filter-select" style="margin-right: 5px" />
+        <VaInput v-model="filter" placeholder="검색어 입력" class="col-span-6 search-input" style="margin-right: 5px" />
+        <VaButton @click="searchVouchers" class="search-button col-span-2">검색</VaButton>
+        <refresh-button class="left-margin" />
+
       </div>
       <!-- 출고전표 목록 테이블: 필터링된 출고전표 목록을 표시합니다. -->
       <table class="va-table va-table--hoverable full-width">
@@ -40,6 +26,7 @@
             <th class="text-left">거래처명</th>
             <th class="text-left">결재자</th>
             <th class="text-left">결재상태</th>
+            <th class="text-left">결재일</th>
           </tr>
         </thead>
         <tbody>
@@ -61,18 +48,15 @@
                 <VaBadge text="반려" color="danger" class="mr-2" />
               </template>
             </td>
+            <td style="text-align: center">{{ voucher.voucApproval }}</td>
           </tr>
         </tbody>
       </table>
       <!-- 페이지네이션: 사용자가 페이지를 이동할 수 있는 컨트롤을 제공합니다. -->
       <div class="pagination">
-        <VaButton @click="prevPage" :disabled="currentPage === 1"
-          >이전</VaButton
-        >
+        <VaButton @click="prevPage" :disabled="currentPage === 1">이전</VaButton>
         <VaButton disabled>{{ currentPage }}</VaButton>
-        <VaButton @click="nextPage" :disabled="currentPage === pageCount"
-          >다음</VaButton
-        >
+        <VaButton @click="nextPage" :disabled="currentPage === pageCount">다음</VaButton>
       </div>
     </div>
   </div>
@@ -82,6 +66,7 @@
 import axios from "axios";
 import { VaSelect, VaInput, VaButton, VaBadge } from "vuestic-ui";
 import ProductSidebar from "@/components/sidebar/ProductSidebar.vue";
+import RefreshButton from "@/components/RefreshButton.vue";
 
 export default {
   components: {
@@ -90,6 +75,7 @@ export default {
     VaInput,
     VaButton,
     VaBadge,
+    RefreshButton,
   },
   data() {
     return {
@@ -215,10 +201,17 @@ export default {
 }
 
 .va-table thead th {
-  background-color: #DEE5F2; /* 짙은 파란색 배경 */
-  font-weight: bold; /* 글자 굵게 */
+  background-color: #DEE5F2;
+  /* 짙은 파란색 배경 */
+  font-weight: bold;
+  /* 글자 굵게 */
   border: 2px solid #cccccc;
-  border-bottom: 2px solid #cccccc; /* 회색 테두리 */
+  border-bottom: 2px solid #cccccc;
+  /* 회색 테두리 */
   font-size: 15px;
+}
+
+.left-margin{
+  margin-left: 5px;
 }
 </style>

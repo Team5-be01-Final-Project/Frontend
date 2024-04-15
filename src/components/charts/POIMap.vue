@@ -1,5 +1,5 @@
 <template>
-  <h4>이달의 우수지점</h4>
+  <h4>이달의 거래처</h4>
   <div id="map" style="width: 100%; height: 450px;"></div>
 </template>
 

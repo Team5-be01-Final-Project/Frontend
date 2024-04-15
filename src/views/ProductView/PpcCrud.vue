@@ -12,6 +12,7 @@
           @update:modelValue="handleSelectedFieldChange()" style="margin-right: 5px;" />
         <VaInput v-model="filter" placeholder="검색어 입력" class="w-full" style="margin-right: 5px;" />
         <VaButton @click="applyFilter">검색</VaButton>
+        <refresh-button class="left-margin"/>
         <VaButton @click="openRegisterModal" class="register-button">
           판매제품 등록
         </VaButton>
@@ -68,12 +69,15 @@ import axios from 'axios';
 import ProductSidebar from '@/components/sidebar/ProductSidebar.vue';
 import EditDeleteModal from '@/components/Modal.vue';
 import RegisterModal from '@/components/RegisterModal.vue';
+import RefreshButton from '@/components/RefreshButton.vue';
 
 export default {
   components: {
     ProductSidebar,
     EditDeleteModal,
     RegisterModal,
+    RefreshButton,
+    
   },
   data() {
     return {
@@ -254,5 +258,9 @@ export default {
   border: 2px solid #cccccc;
   border-bottom: 2px solid #cccccc; /* 회색 테두리 */
   font-size: 15px;
+}
+
+.left-margin{
+  margin-left: 5px;
 }
 </style>
