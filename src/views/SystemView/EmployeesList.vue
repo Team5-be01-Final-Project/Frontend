@@ -102,7 +102,7 @@
         <VaCheckbox
           :value="code"
           v-model="alarmSettings[code]"
-          :label="`알림 ${code}`"
+          :label="alarmNames[code]"
         />
       </div>
     </div>
@@ -141,6 +141,10 @@ export default {
       alarmSettings: {
         AL01: false, // 이상 온도 알림
         // 'AL02': false, // 이상 압력 알림
+      },
+      alarmNames: {
+        AL01: '이상 온도 알림',
+        // AL02: '다른 알람 이름'
       },
     };
   },
