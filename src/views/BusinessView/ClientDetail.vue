@@ -247,4 +247,5 @@ onMounted(() => {
   margin-right: 2rem;
   /* 원하는 간격으로 조정 */
 }
+
 </style>

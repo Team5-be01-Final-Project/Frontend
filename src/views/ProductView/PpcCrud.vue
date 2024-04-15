@@ -37,12 +37,13 @@
             <td class='money-right'>{{ formatNumberWithCommas(ppc.proUnit) }}</td>
             <td class='money-right'>{{ formatNumberWithCommas(ppc.ppcSale) }}</td>
             <td class='index-center'>
-              <VaButton color="warning" class="mr-6 mb-2" @click="openEditModal(ppc)">
+              <VaButton preset="primary" class="mr-6 mb-2" @click="openEditModal(ppc)">
                 <va-icon name="edit" />
               </VaButton>
             </td>
             <td class='index-center'>
-              <VaButton color="danger" class="mr-6 mb-2" @click="openDeleteModal(ppc)"> <va-icon name="delete" />
+              <VaButton preset="primary" color="danger" class="mr-6 mb-2" @click="openDeleteModal(ppc)"> <va-icon
+                  name="delete" />
               </VaButton>
             </td>
           </tr>
@@ -247,4 +248,11 @@ export default {
   margin-right: 5px;
 }
 
+.va-table thead th {
+  background-color: #DEE5F2; /* 짙은 파란색 배경 */
+  font-weight: bold; /* 글자 굵게 */
+  border: 2px solid #cccccc;
+  border-bottom: 2px solid #cccccc; /* 회색 테두리 */
+  font-size: 15px;
+}
 </style>

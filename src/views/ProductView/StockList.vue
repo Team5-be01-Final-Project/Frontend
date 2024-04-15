@@ -234,4 +234,12 @@ onMounted(() => {
 .register-button {
     float: right; /* 버튼을 오른쪽으로 이동시킵니다. */
   }
+
+  .va-table thead th {
+  background-color: #DEE5F2; /* 짙은 파란색 배경 */
+  font-weight: bold; /* 글자 굵게 */
+  border: 2px solid #cccccc;
+  border-bottom: 2px solid #cccccc; /* 회색 테두리 */
+  font-size: 15px;
+}
 </style>

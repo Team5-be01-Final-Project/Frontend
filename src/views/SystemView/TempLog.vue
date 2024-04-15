@@ -39,6 +39,7 @@
         />
         <va-button @click="applyFilter">검색</va-button>
       </div>
+      <div class="right-align">단위 : °C</div>
       <table class="va-table va-table--hoverable full-width">
         <thead>
           <tr>
@@ -166,6 +167,7 @@ export default {
   /* 필요에 따라 추가 스타일링 */
 }
 
+
 .full-width {
   width: 100%;
   /* 테이블이 화면에 꽉 차도록 설정 */
@@ -174,4 +176,13 @@ export default {
 .filter {
   margin-bottom: 25px;
 }
+
+.va-table thead th {
+  background-color: #DEE5F2; /* 짙은 파란색 배경 */
+  font-weight: bold; /* 글자 굵게 */
+  border: 2px solid #cccccc;
+  border-bottom: 2px solid #cccccc; /* 회색 테두리 */
+  font-size: 15px;
+}
+
 </style>

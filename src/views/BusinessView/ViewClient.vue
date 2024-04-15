@@ -62,7 +62,7 @@
               <td style="text-align: center">{{ client.clientEmpTel }}</td>
               <td class="index-center">
                 <VaButton
-                  color="danger"
+                preset="primary" color="danger" class="mr-6 mb-2"
                   @click="deleteClient(client.clientCode)"
                   v-if="canDeleteClient"
                   ><va-icon name="delete"
@@ -269,5 +269,13 @@ onMounted(() => {
 .full-width {
   width: 100%;
   /* 테이블이 화면에 꽉 차도록 설정 */
+}
+
+.va-table thead th {
+  background-color: #DEE5F2; /* 짙은 파란색 배경 */
+  font-weight: bold; /* 글자 굵게 */
+  border: 2px solid #cccccc;
+  border-bottom: 2px solid #cccccc; /* 회색 테두리 */
+  font-size: 15px;
 }
 </style>
