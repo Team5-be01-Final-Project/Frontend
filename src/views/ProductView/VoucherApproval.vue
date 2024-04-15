@@ -7,7 +7,7 @@
     </div>
     <!-- 메인 컨텐츠 섹션 -->
     <div class="Main">
-      <h3 class="va-h3">출고전표 결재 목록</h3>
+      <h3 class="va-h3">전표 결재</h3>
       <!-- 검색 폼: 사용자가 결재 목록을 필터링할 수 있게 합니다. -->
       <div class="grid grid-cols-12 gap-4 mb-6 items-center">
         <VaSelect

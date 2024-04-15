@@ -92,7 +92,7 @@ const displayedSalesData = ref(filteredSalesData);
 
 const fields = [
   { key: 'clientName', label: '거래처', class: 'text-center' },
-  { key: 'proName', label: '상품명', class: 'text-center' },
+  { key: 'proName', label: '제품명', class: 'text-center' },
   { key: 'proUnit', label: '단가', class: 'text-center' },
   { key: 'voucSale', label: '판매가', class: 'text-center' },
   { key: 'voucAmount', label: '수량', class: 'text-center' },

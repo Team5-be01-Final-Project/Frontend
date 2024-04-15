@@ -7,7 +7,7 @@
 
     <div>
       <div class="header">
-        <h3 class="va-h3">출고전표 결재</h3>
+        <h3 class="va-h3">전표 결재</h3>
         <div class="button-container" v-if="showApproveButton || showRejectButton">
           <button v-if="showApproveButton" @click="approveVoucherDetails" class="approve-button">승인</button>
           <button v-if="showRejectButton" @click="rejectVoucherDetails" class="reject-button">반려</button>

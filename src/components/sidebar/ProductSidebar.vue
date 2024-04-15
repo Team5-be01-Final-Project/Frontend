@@ -14,7 +14,7 @@ const navigateTo = (routeName) => {
 
 const items = [
   {
-    title: "상품 관리",
+    title: "제품 관리",
     icon: "mail",
     children: [
       {
@@ -25,15 +25,16 @@ const items = [
     ],
   },
   {
-    title: "거래처별 상품 관리",
+    title: "거래처별 제품 관리",
     icon: "dashboard",
     children: [
       {
-        title: "거래처별 상품 등록 및 수정",
+        title: "거래처별 제품 등록 및 수정",
         icon: "drafts",
         routeName: "ppccrud",
       },
       { title: "거래처별 상품 리스트", icon: 'visibility', routeName: "ppcview" },
+
     ],
   },
   {
