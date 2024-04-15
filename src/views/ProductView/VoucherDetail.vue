@@ -17,15 +17,20 @@
       <div class="voucher-info">
         <div class="voucher-info-row">
           <div class="voucher-info-item"><span class="voucher-info-label">전표번호 : </span>
-            <span class="voucher-info-value">{{ voucId }}</span></div>
+            <span class="voucher-info-value">{{ voucId }}</span>
+          </div>
           <div class="voucher-info-item"><span class="voucher-info-label">등록일 : </span>
-            <span class="voucher-info-value">{{voucDate }}</span></div>
+            <span class="voucher-info-value">{{ voucDate }}</span>
+          </div>
           <div class="voucher-info-item"><span class="voucher-info-label">담당자 : </span>
-            <span class="voucher-info-value">{{ empName }}</span></div>
+            <span class="voucher-info-value">{{ empName }}</span>
+          </div>
           <div class="voucher-info-item"><span class="voucher-info-label">결재자 : </span>
-          <span class="voucher-info-value">{{ signerName }}</span></div>
+            <span class="voucher-info-value">{{ signerName }}</span>
+          </div>
           <div class="voucher-info-item"><span class="voucher-info-label">거래처 : </span>
-          <span class="voucher-info-value">{{ clientName }}</span></div>
+            <span class="voucher-info-value">{{ clientName }}</span>
+          </div>
         </div>
       </div>
       <hr />
@@ -44,17 +49,21 @@
           </thead>
           <tbody>
             <tr v-for="(detail, index) in voucherDetails" :key="index">
-              <td class = 'index-center'>{{ index+1 }}</td>
-              <td class = 'index-center'>{{ detail.proCode }}</td>
+              <td class='index-center'>{{ index + 1 }}</td>
+              <td class='index-center'>{{ detail.proCode }}</td>
               <td>{{ detail.proName }}</td>
-              <td class = 'money-right'>{{ detail.voucAmount }}</td>
-              <td class = 'money-right'>{{ detail.voucSale.toLocaleString() }}</td>
-              <td class = 'money-right'>{{ detail.voucSales.toLocaleString() }}</td>
+              <td class='money-right'>{{ detail.voucAmount }}</td>
+              <td class='money-right'>{{ detail.voucSale.toLocaleString() }}</td>
+              <td class='money-right'>{{ detail.voucSales.toLocaleString() }}</td>
             </tr>
           </tbody>
         </table>
         <div class="total-sales">총 합계(매출액): {{ totalVoucSales.toLocaleString() }}원</div>
-      </div>
+     <!-- 비고 섹션의 조건부 렌더링 -->
+     <div class="remarks">
+          <textarea v-model="remarks" :readonly="appCode !== 'A00'" placeholder="비고 입력" rows="3" class="remarks-textarea"></textarea>
+        </div>
+  </div>
       <p v-else>해당 전표번호에 대한 정보가 없습니다.</p>
     </div>
   </div>
@@ -78,6 +87,8 @@ export default {
       showApproveButton: false,
       showRejectButton: false,
       proCode: null,
+      remarks: "",
+      appCode: "",  // 추가된 appCode 데이터 프로퍼티
     };
   },
   mounted() {
@@ -113,45 +124,57 @@ export default {
             firstDetail.showApproveButton && this.isButtonsEnabled;
           this.showRejectButton =
             firstDetail.showRejectButton && this.isButtonsEnabled;
+            this.approvalStatus = firstDetail.approvalStatus; // 서버에서 승인 상태 데이터를 받아옴
+            this.remarks = firstDetail.voucNote || ""; // 비고 데이터 할당
+            this.appCode = firstDetail.appCode; // 승인 코드 설정
         }
       } catch (error) {
         console.error("Error fetching voucher details:", error);
       }
     },
     async approveVoucherDetails() {
-      try {
         if (!this.voucId) {
-          console.error("voucId is required for approving voucher details.");
-          return;
+            console.error("voucId is required for approving voucher details.");
+            return;
         }
 
-        await axios.put(`/vouchers/${this.voucId}/approve/details`);
-        console.log("Voucher details approved successfully");
+        const payload = {
+            remarks: this.remarks,
+        };
 
-        this.fetchVoucherDetails();
-        this.$router.push('/product/voucherapproval');
-      } catch (error) {
-        console.error("Error approving voucher details:", error);
-      }
+        await axios.put(`/vouchers/${this.voucId}/approve/details`, payload)
+            .then(() => {
+                console.log("Voucher details approved successfully");
+                this.fetchVoucherDetails();
+                this.$router.push('/product/voucherapproval');
+            })
+            .catch(error => {
+                console.error("Error approving voucher details:", error);
+            });
     },
+
     async rejectVoucherDetails() {
-      try {
         if (!this.voucId) {
-          console.error("voucId is required for rejecting voucher details.");
-          return;
+            console.error("voucId is required for rejecting voucher details.");
+            return;
         }
 
-        await axios.put(`/vouchers/${this.voucId}/reject/details`);
-        console.log("Voucher details rejected successfully");
+        const payload = {
+            remarks: this.remarks,
+        };
 
-        this.fetchVoucherDetails();
-        this.$router.push('/product/voucherapproval');
-      } catch (error) {
-        console.error("Error rejecting voucher details:", error);
-      }
+        await axios.put(`/vouchers/${this.voucId}/reject/details`, payload)
+            .then(() => {
+                console.log("Voucher details rejected successfully");
+                this.fetchVoucherDetails();
+                this.$router.push('/product/voucherapproval');
+            })
+            .catch(error => {
+                console.error("Error rejecting voucher details:", error);
+            });
     },
-  },
-};
+},
+}
 </script>
 
 
@@ -238,10 +261,24 @@ export default {
 }
 
 .va-table thead th {
-  background-color: #DEE5F2; /* 짙은 파란색 배경 */
-  font-weight: bold; /* 글자 굵게 */
+  background-color: #DEE5F2;
+  /* 짙은 파란색 배경 */
+  font-weight: bold;
+  /* 글자 굵게 */
   border: 2px solid #cccccc;
-  border-bottom: 2px solid #cccccc; /* 회색 테두리 */
+  border-bottom: 2px solid #cccccc;
+  /* 회색 테두리 */
   font-size: 15px;
 }
+
+.remarks-textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 4px;
+    border: 1px solid #cccccc;
+    font-size: 14px;
+    resize: none;
+    background-color: #ffffff;
+  }
 </style>
