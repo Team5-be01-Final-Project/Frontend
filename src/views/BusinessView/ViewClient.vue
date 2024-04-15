@@ -39,6 +39,7 @@
               <th>대표명</th>
               <th>담당자</th>
               <th>담당자 연락처</th>
+              <th>담당 사원</th>
               <th>삭제</th>
             </tr>
           </thead>
@@ -60,6 +61,7 @@
               <td style="text-align: center">{{ client.clientBoss }}</td>
               <td style="text-align: center">{{ client.clientEmp }}</td>
               <td style="text-align: center">{{ client.clientEmpTel }}</td>
+              <td style="text-align: center">{{ client.empName }}</td>
               <td class="index-center">
                 <VaButton
                 preset="primary" color="danger" class="mr-6 mb-2"
@@ -276,6 +278,6 @@ onMounted(() => {
   font-weight: bold; /* 글자 굵게 */
   border: 2px solid #cccccc;
   border-bottom: 2px solid #cccccc; /* 회색 테두리 */
-  font-size: 15px;
+  font-size: 14px;
 }
 </style>
