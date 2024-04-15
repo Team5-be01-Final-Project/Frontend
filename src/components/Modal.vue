@@ -161,7 +161,7 @@ label {
 }
 
 .submit-button {
-  background-color: #007bff;
+  background-color: #154EC1;
   color: #fff;
 }
 
@@ -170,8 +170,11 @@ label {
   color: #333;
 }
 
-.submit-button:hover,
+.submit-button:hover{
+  background-color: #8bc3ff;
+}
+
 .cancel-button:hover {
-  background-color: #0056b3;
+  background-color: #9b9b9b;
 }
 </style>
