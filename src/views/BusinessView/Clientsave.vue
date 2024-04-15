@@ -289,7 +289,7 @@ onMounted(async () => {
   // 컴포넌트가 마운트될 때 실행되는 함수
   try {
     const response = await axios.get("/employees/list"); // 서버로부터 담당 사원 목록 가져오기
-    employees.value = response.data.map((emp) => ({
+    employees.value = response.data.filter(emp => emp.authCode === "AUTH004").map((emp) => ({
       // 담당 사원 목록 데이터 가공
       text: `${emp.empName} (${emp.posName}, ${emp.deptName})`,
       value: emp.empCode,
