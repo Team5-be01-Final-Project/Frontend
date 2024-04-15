@@ -138,7 +138,7 @@ const fetchClientData = async () => {
 const fetchEmployees = async () => {
   try {
     const response = await axios.get('/employees/list');
-    employees.value = response.data.map(emp => ({
+    employees.value = response.data.filter(emp => emp.authCode ==="AUTH004").map(emp => ({
       text: `${emp.empName} (${emp.posName}, ${emp.deptName})`,
       value: emp.empCode
     }));
