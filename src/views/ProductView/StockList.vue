@@ -8,7 +8,7 @@
 
     <div class="Main">
       <div class="flex justify-between items-center mb-6">
-        <h3 class="va-h3">재고 조회</h3>
+        <h3 class="va-h3">재고 조회 및 등록</h3>
         </div>
       <div class="grid grid-cols-12 gap-4 mb-6 items-center">
         <VaSelect

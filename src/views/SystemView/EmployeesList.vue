@@ -7,7 +7,7 @@
 
     <div class="Main">
       <div class="va-table-responsive">
-        <h3 class="va-h3">사원 리스트 수정</h3>
+        <h3 class="va-h3">사원 정보 수정</h3>
         <div
           class="grid grid-cols-2 md:grid-cols-4 gap-4 items-end"
           style="margin-bottom: 25px"

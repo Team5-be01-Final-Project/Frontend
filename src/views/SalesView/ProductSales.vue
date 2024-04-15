@@ -14,6 +14,7 @@
           <va-input v-model="proNameFilter" placeholder="제품명 검색" style="margin-right: 5px;" />
           <va-button @click="filterSalesData">검색</va-button>
           <refresh-button class="left-margin"/>
+          <ExcelExportButton class="export" :data="exportData" :headers="exportHeaders" file-name="제품별 매출 현황.xlsx" />
         </div>
         <div class="right-align">단위 : 원 / 개</div>
         <table class="va-table va-table--hoverable full-width">
@@ -68,7 +69,7 @@ import SalesSidebar from '@/components/sidebar/SalesSidebar.vue';
 // 사이드바 컴포넌트를 가져옵니다.
 
 import formatNumberWithCommas from '@/utils/formatNumberWithCommas';
-
+import ExcelExportButton from '@/components/ExcelExportButton.vue';
 
 import RefreshButton from '@/components/RefreshButton.vue';
 const defaultYearOption = yearOptions.find(option => option.value === new Date().getFullYear());
@@ -181,6 +182,28 @@ const totalGrossProfit = computed(() => filteredSalesData.value.reduce((acc, ite
 const totalprofitMargin = computed(() => totalVoucSales.value ? (totalGrossProfit.value / totalVoucSales.value) * 100 : 0);
 // 총합계를 계산하는 computed 속성들입니다.
 // 필터링된 데이터를 기준으로 각 필드의 합계를 계산합니다.
+
+const exportHeaders = computed(() => ({
+  proName: '제품명',
+  proUnit: '단가',
+  voucAmount: '수량',
+  costOfSales: '판매가',
+  voucSales: '매출액',
+  grossProfit: '매출이익',
+  profitMargin: '이익율'
+}));
+
+const exportData = computed(() => {
+  return displayedSalesData.value.map(item => ({
+    proName: item.proName || '-',
+    proUnit: item.proUnit ? `${item.proUnit.toLocaleString()}` : '-',
+    voucAmount: formatNumberWithCommas(item.voucAmount || '-'),
+    costOfSales: item.costOfSales ? `${item.costOfSales.toLocaleString()}` : '-',
+    voucSales: item.voucSales ? `${item.voucSales.toLocaleString()}` : '-',
+    grossProfit: item.grossProfit ? `${item.grossProfit.toLocaleString()}` : '-',
+    profitMargin: formatProfitMargin(item.profitMargin)
+  }));
+});
 </script>
 
 <style scoped>
@@ -219,5 +242,9 @@ const totalprofitMargin = computed(() => totalVoucSales.value ? (totalGrossProfi
 
 .left-margin{
   margin-left: 5px;
+}
+
+.export{
+  margin-left: 170px;
 }
 </style>

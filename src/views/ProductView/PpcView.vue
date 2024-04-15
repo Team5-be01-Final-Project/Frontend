@@ -8,7 +8,7 @@
     <!-- 제품 목록 섹션 -->
     <div class="Main">
       <div class="va-table-responsive">
-        <h3 class="va-h3">거래처별 제품 리스트</h3>
+        <h3 class="va-h3">거래처별 제품 조회</h3>
         <div class="filter">
           <VaSelect v-model="selectedField" placeholder="검색 조건" :options="filterOptions" style="margin-right: 5px;" />
           <VaInput v-model="filter" placeholder="검색어 입력" class="w-full" style="margin-right: 5px;" />

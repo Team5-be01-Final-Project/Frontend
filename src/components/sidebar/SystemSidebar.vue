@@ -22,7 +22,7 @@ const items = [
   },
   {
     title: '사원 관리', icon: 'groups', children: [
-      { title: '사원 리스트',  routeName: 'employeesspec' },// 이 항목에 대한 라우트가 없습니다.
+      { title: '사원 정보 조회',  routeName: 'employeesspec' },// 이 항목에 대한 라우트가 없습니다.
       { title: '사원 정보 수정',  routeName: 'employeeslist' },
     ]
   },
