@@ -52,7 +52,7 @@ const toggleDetails = (clientCode) => {
 }
 
 .client-list > li {
-  background-color: #bad8f1; /* 배경색 */
+  background-color: #f5f5f5; /* 배경색 */
   margin-bottom: 5px; /* 항목간 하단 여백 */
   padding: 10px; /* 내부 패딩 */
   border-radius: 5px; /* 모서리 둥글게 */
@@ -64,7 +64,7 @@ const toggleDetails = (clientCode) => {
 }
 
 .client-details {
-  border-top: 1px solid #8ca4d0; /* 항목간 구분선 */
+  border-top: 1px solid #666E75; /* 항목간 구분선 */
   padding-top: 10px; /* 구분선 위 여백 */
 }
 h3 {

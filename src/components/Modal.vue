@@ -1,29 +1,41 @@
+<!-- Modal.vue -->
 <template>
   <div v-if="isVisible" class="modal">
     <div class="modal-content">
       <span class="close" @click="closeModal">&times;</span>
       <h2 class="modal-title">{{ isEditing ? '제품 수정' : '제품 삭제' }}</h2>
       <div class="form-group">
-        <label>거래처명 </label>
-        <label class="label-name"> {{ currentItem.clientName }} </label>
+        <label>거래처명</label>
+        <label class="label-name">{{ currentItem.clientName }}</label>
       </div>
       <div class="form-group">
-        <label>제품명 </label>
+        <label>제품명</label>
         <label class="label-name">{{ currentItem.proName }}</label>
       </div>
+      <div class="form-group">
+        <label>단가</label>
+        <label class="label-name">{{ currentItem.proUnit }}</label>
+      </div>
       <div class="form-group" v-if="isEditing">
-        <label>판매가 <input type="number" v-model="currentItem.ppcSale" /></label>
+        <label>
+          판매가
+          <input type="number" v-model="currentItem.ppcSale" />
+        </label>
       </div>
       <div v-else>
-        <label>판매가 </label>
+        <label>판매가</label>
         <label class="label-name">{{ currentItem.ppcSale }}</label>
       </div>
-    <div class="button-group">
-      <button v-if="isEditing" @click="confirmEdit" class="submit-button">수정하기</button>
-      <button v-else @click="confirmDelete" class="submit-button">삭제하기</button>
-      <button @click="closeModal" class="cancel-button">취소</button>
+      <div class="button-group">
+        <button v-if="isEditing" @click="confirmEdit" class="submit-button">
+          수정하기
+        </button>
+        <button v-else @click="confirmDelete" class="submit-button">
+          삭제하기
+        </button>
+        <button @click="closeModal" class="cancel-button">취소</button>
+      </div>
     </div>
-  </div>
   </div>
 </template>
 
@@ -63,19 +75,13 @@ export default {
   align-items: center;
 }
 
-input[type="number"] {
-  width: 100%;
-  /* 가로 전체 차지 */
-  padding: 5px;
-  /* 안쪽 여백 설정 */
-  height: 40px;
-  /* 높이 설정 */
-  font-size: 16px;
-  /* 폰트 크기 설정 */
-  border: 1px solid #ccc;
-  /* 테두리 스타일 및 색상 설정 */
-  border-radius: 4px;
-  /* 테두리 반경 설정 */
+input[type='number'] {
+  width: 100%; /* 가로 전체 차지 */
+  padding: 5px; /* 안쪽 여백 설정 */
+  height: 40px; /* 높이 설정 */
+  font-size: 16px; /* 폰트 크기 설정 */
+  border: 1px solid #ccc; /* 테두리 스타일 및 색상 설정 */
+  border-radius: 4px; /* 테두리 반경 설정 */
   margin-top: 10px;
 }
 
@@ -91,8 +97,7 @@ input[type="number"] {
 }
 
 .form-group {
-  margin-bottom: 20px;
-  /* 아래쪽 여백 설정 */
+  margin-bottom: 20px; /* 아래쪽 여백 설정 */
 }
 
 .modal-title {
@@ -116,24 +121,19 @@ input[type="number"] {
 }
 
 label {
-  display: block;
-  /* 블록 요소로 표시하여 한 줄에 하나씩 표시 */
-  margin-bottom: 5px;
-  /* 아래쪽 여백 설정 */
-  font-size: 16px;
-  /* 폰트 크기 설정 */
-  font-weight: bold;
-  /* 폰트 굵기 설정 */
+  display: block; /* 블록 요소로 표시하여 한 줄에 하나씩 표시 */
+  margin-bottom: 5px; /* 아래쪽 여백 설정 */
+  font-size: 16px; /* 폰트 크기 설정 */
+  font-weight: bold; /* 폰트 굵기 설정 */
 }
 
 .label-name {
   margin-top: 10px;
-  color:#888;
-  font-size: 16px;/* 원하는 글씨 크기로 설정 */
+  color: #888;
+  font-size: 16px; /* 원하는 글씨 크기로 설정 */
   font-weight: normal; /* 필요에 따라 글씨 굵기 조절 */
   border: 1px solid #ccc; /* 테두리 스타일 및 색상 설정 */
-  border-radius: 4px;
-  /* 테두리 반경 설정 */
+  border-radius: 4px; /* 테두리 반경 설정 */
   padding: 5px;
   height: 40px;
 }

@@ -1,4 +1,4 @@
-<!--  -->
+<!-- RegisterModal.vue -->
 <template>
   <div v-if="isVisible" class="modal-overlay">
     <div class="modal-content">
@@ -33,7 +33,7 @@
         <label class="label-name">{{ selectedProduct.proUnit }}</label>
       </div>
       <div>
-        <label for="salePrice">판매가 : </label>
+        <label for="salePrice">판매가</label>
         <input
           type="number"
           v-model.number="salePrice"
@@ -78,7 +78,7 @@ export default {
     },
     registerProduct() {
       if (!this.selectedClient || !this.selectedProduct || !this.salePrice) {
-        alert("거래처, 상품, 판매가를 모두 선택/입력해주세요.");
+        alert("거래처, 제품, 판매가를 모두 선택/입력해주세요.");
         return;
       }
 
@@ -88,13 +88,13 @@ export default {
         ppcSale: this.salePrice,
       };
 
-      // 해당 거래처에 이미 해당 상품이 있는지 확인
+      // 해당 거래처에 이미 해당 제품이 있는지 확인
       axios
         .post(`/ppc/existing`, newPpc)
         .then((response) => {
           if (response.data) {
-            // 이미 존재하는 상품이면 에러 메시지 표시 및 등록 거부
-            this.errorMessage = "해당 거래처에 이미 존재하는 상품입니다.";
+            // 이미 존재하는 제품이면 에러 메시지 표시 및 등록 거부
+            this.errorMessage = "해당 거래처에 이미 존재하는 제품입니다.";
           } else {
             // 존재하지 않는 경우 등록 진행
             this.$emit("register", newPpc);
@@ -102,8 +102,8 @@ export default {
           }
         })
         .catch((error) => {
-          console.error("상품 등록 여부를 확인하는데 실패했습니다:", error);
-          this.errorMessage = "상품 등록 여부를 확인하는데 실패했습니다.";
+          console.error("제품 등록 여부를 확인하는데 실패했습니다:", error);
+          this.errorMessage = "제품 등록 여부를 확인하는데 실패했습니다.";
         });
     },
 
@@ -130,7 +130,7 @@ export default {
           this.products = response.data;
         })
         .catch((error) => {
-          console.error("상품 목록을 가져오는데 실패했습니다:", error);
+          console.error("제품 목록을 가져오는데 실패했습니다:", error);
         });
     },
   },
