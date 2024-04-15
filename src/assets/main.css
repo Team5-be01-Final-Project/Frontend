@@ -76,4 +76,7 @@ table.va-table th {
   text-align: center;
 }
 
+.va-table {
+  margin-top: 0px;
+}
 

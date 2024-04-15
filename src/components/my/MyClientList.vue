@@ -52,7 +52,7 @@ const toggleDetails = (clientCode) => {
 }
 
 .client-list > li {
-  background-color: #bad8f1; /* 배경색 */
+  background-color: #DEE5F2; /* 배경색 */
   margin-bottom: 5px; /* 항목간 하단 여백 */
   padding: 10px; /* 내부 패딩 */
   border-radius: 5px; /* 모서리 둥글게 */
