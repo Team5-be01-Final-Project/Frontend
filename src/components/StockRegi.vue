@@ -161,7 +161,7 @@ input[type="number"] {
 
 /* 등록 버튼에 대한 스타일 */
 .submit-button {
-  background-color: #007bff; /* 배경색 설정 */
+  background-color: #154EC1; /* 배경색 설정 */
   color: #fff; /* 글자색 설정 */
 }
 
