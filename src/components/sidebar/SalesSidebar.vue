@@ -17,7 +17,7 @@ const items = [
     title: "매출조회",
     icon: "query_stats",
     children: [
-      { title: "상품별 매출 현황",  routeName: "productsales" },
+      { title: "제품별 매출 현황",  routeName: "productsales" },
       { title: "거래처별 매출 현황", routeName: "clientSales" },
 
     ],
