@@ -28,9 +28,11 @@
           </option>
         </select>
       </div>
-      <div v-if="selectedProduct">
+      <div>
         <label>단가</label>
-        <label class="label-name">{{ selectedProduct.proUnit }}</label>
+        <label class="label-name">{{
+          selectedProduct ? selectedProduct.proUnit : ""
+        }}</label>
       </div>
       <div>
         <label for="salePrice">판매가</label>
@@ -39,10 +41,20 @@
           v-model.number="salePrice"
           id="salePrice"
           class="full-width-input"
+          :min="selectedProduct ? selectedProduct.proUnit : ''"
+          @input="validatePrice"
         />
+        <p v-if="showInvalidPriceError" class="error-message">
+          판매가는 단가보다 높아야 합니다.
+        </p>
       </div>
       <div class="button-group">
-        <button type="submit" @click="registerProduct" class="submit-button">
+        <button
+          type="submit"
+          @click="registerProduct"
+          :disabled="isInvalidPrice"
+          class="submit-button"
+        >
           등록
         </button>
         <button type="button" @click="closeModal" class="cancel-button">
@@ -54,7 +66,7 @@
   </div>
 </template>
   
-  <script>
+<script>
 import axios from "axios";
 
 export default {
@@ -63,22 +75,38 @@ export default {
   },
   data() {
     return {
-      clients: [],
-      products: [],
-      selectedClient: null,
-      selectedProduct: null,
-      salePrice: null,
-      errorMessage: "",
+      clients: [], // 거래처 목록
+      products: [], // 제품 목록
+      selectedClient: null, // 선택된 거래처
+      selectedProduct: null, // 선택된 제품
+      salePrice: null, // 판매가
+      errorMessage: "", // 에러 메시지
+      showInvalidPriceError: false, // 판매가 에러 메시지 표시 여부
     };
+  },
+  computed: {
+    isInvalidPrice() {
+      // 판매가가 단가보다 낮거나 같은 경우 판별
+      return (
+        this.salePrice <=
+        (this.selectedProduct ? this.selectedProduct.proUnit : 0)
+      );
+    },
   },
   methods: {
     closeModal() {
+      // 모달 닫기
       this.$emit("close");
       this.resetForm();
     },
     registerProduct() {
+      // 제품 등록
       if (!this.selectedClient || !this.selectedProduct || !this.salePrice) {
         alert("거래처, 제품, 판매가를 모두 선택/입력해주세요.");
+        return;
+      }
+
+      if (this.isInvalidPrice) {
         return;
       }
 
@@ -106,14 +134,16 @@ export default {
           this.errorMessage = "제품 등록 여부를 확인하는데 실패했습니다.";
         });
     },
-
     resetForm() {
+      // 폼 초기화
       this.selectedClient = null;
       this.selectedProduct = null;
       this.salePrice = null;
-      this.errorMessage = ""; // 폼 재설정 시 에러 메시지 초기화
+      this.errorMessage = "";
+      this.showInvalidPriceError = false;
     },
     fetchClients() {
+      // 거래처 목록 조회
       axios
         .get("/clients/list")
         .then((response) => {
@@ -124,6 +154,7 @@ export default {
         });
     },
     fetchProducts() {
+      // 제품 목록 조회
       axios
         .get("/products")
         .then((response) => {
@@ -133,8 +164,13 @@ export default {
           console.error("제품 목록을 가져오는데 실패했습니다:", error);
         });
     },
+    validatePrice() {
+      // 판매가 유효성 검사
+      this.showInvalidPriceError = this.isInvalidPrice;
+    },
   },
   created() {
+    // 컴포넌트 생성 시 거래처 목록과 제품 목록 조회
     this.fetchClients();
     this.fetchProducts();
   },
