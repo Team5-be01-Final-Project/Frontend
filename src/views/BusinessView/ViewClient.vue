@@ -8,7 +8,7 @@
 
     <div class="Main">
       <div class="va-table-responsive">
-        <h3 class="va-h3">거래처 조회</h3>
+        <h3 class="va-h3">거래처 리스트</h3>
         <div
           class="grid md:grid-cols-3 gap-6 mb-6 items-center"
           style="margin-bottom: 25px"
@@ -250,6 +250,8 @@ onMounted(() => {
 
 .clickable {
   cursor: pointer;
+  color: #2c3e50;
+  text-decoration: underline;
 }
 
 .flex {
@@ -278,6 +280,11 @@ onMounted(() => {
   font-weight: bold; /* 글자 굵게 */
   border: 2px solid #cccccc;
   border-bottom: 2px solid #cccccc; /* 회색 테두리 */
-  font-size: 14px;
+  font-size: 13px;
 }
+
+td {
+  vertical-align: middle !important; /* 값들 중간 정렬 */
+}
+
 </style>
