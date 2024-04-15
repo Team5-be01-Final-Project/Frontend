@@ -2,13 +2,13 @@
   <div v-if="isVisible" class="modal">
     <div class="modal-content">
       <span class="close" @click="closeModal">&times;</span>
-      <h2 class="modal-title">{{ isEditing ? '상품 수정' : '상품 삭제' }}</h2>
+      <h2 class="modal-title">{{ isEditing ? '제품 수정' : '제품 삭제' }}</h2>
       <div class="form-group">
         <label>거래처명 </label>
         <label class="label-name"> {{ currentItem.clientName }} </label>
       </div>
       <div class="form-group">
-        <label>상품명 </label>
+        <label>제품명 </label>
         <label class="label-name">{{ currentItem.proName }}</label>
       </div>
       <div class="form-group" v-if="isEditing">
