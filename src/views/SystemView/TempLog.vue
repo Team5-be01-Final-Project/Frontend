@@ -8,63 +8,42 @@
     <div class="Main">
       <h3 class="va-h3">창고/차량 이상온도 조회</h3>
       <div class="filter">
-        <va-select
-          v-model="selectedYear"
-          :options="yearOptions"
-          placeholder="년도 선택"
-          style="margin-right: 5px"
-        />
-        <va-select
-          v-model="selectedMonth"
-          :options="monthOptions"
-          placeholder="월 선택"
-          style="margin-right: 5px"
-        />
-        <VaSelect
-          v-model="selectedSearchCondition"
-          placeholder="검색 조건"
-          :options="[
-            { text: '전체', value: '' },
-            { text: '구분', value: 'storageSeg' },
-            { text: '차량번호', value: 'storageCar' },
-          ]"
-          value-by="value"
-          style="margin-right: 5px"
-        />
-        <VaInput
-          v-model="searchText"
-          placeholder="검색어 입력"
-          class="w-full"
-          style="margin-right: 5px"
-        />
+        <va-select v-model="selectedYear" :options="yearOptions" placeholder="년도 선택" style="margin-right: 5px" />
+        <va-select v-model="selectedMonth" :options="monthOptions" placeholder="월 선택" style="margin-right: 5px" />
+        <VaSelect v-model="selectedSearchCondition" placeholder="검색 조건" :options="[
+          { text: '전체', value: '' },
+          { text: '구분', value: 'storageSeg' },
+          { text: '차량번호', value: 'storageCar' },
+        ]" value-by="value" style="margin-right: 5px" />
+        <VaInput v-model="searchText" placeholder="검색어 입력" class="w-full" style="margin-right: 5px" />
         <va-button @click="applyFilter">검색</va-button>
-        <refresh-button class="left-margin"/>
+        <refresh-button class="left-margin" />
       </div>
       <div class="right-align">단위 : °C</div>
-      <table class="va-table va-table--hoverable full-width">
-        <thead>
-          <tr>
-            <th>이상온도코드</th>
-            <th>구분</th>
-            <th>차량번호</th>
-            <th>이상온도</th>
-            <th>시간</th>
-            <th>담당자</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="item in filteredData" :key="item.tempCode">
-            <td style="text-align: center">{{ item.tempCode }}</td>
-            <td style="text-align: center">{{ item.storageSeg }}</td>
-            <td style="text-align: center">{{ item.storageCar }}</td>
-            <td style="text-align: center">{{ item.tempTemp }}</td>
-            <td style="text-align: center">{{ item.tempDate }}</td>
-            <td style="text-align: center">{{ item.empName }}</td>
-          </tr>
-        </tbody>
-      </table>
+        <table class="va-table va-table--hoverable full-width">
+          <thead>
+            <tr>
+              <th>이상온도코드</th>
+              <th>구분</th>
+              <th>차량번호</th>
+              <th>이상온도</th>
+              <th>시간</th>
+              <th>담당자</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in filteredData" :key="item.tempCode">
+              <td style="text-align: center">{{ item.tempCode }}</td>
+              <td style="text-align: center">{{ item.storageSeg }}</td>
+              <td style="text-align: center">{{ item.storageCar }}</td>
+              <td style="text-align: center">{{ item.tempTemp }}</td>
+              <td style="text-align: center">{{ item.tempDate }}</td>
+              <td style="text-align: center">{{ item.empName }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -176,20 +155,22 @@ export default {
   /* 테이블이 화면에 꽉 차도록 설정 */
 }
 
-.filter {
-  margin-bottom: 25px;
-}
+
 
 .va-table thead th {
-  background-color: #DEE5F2; /* 짙은 파란색 배경 */
-  font-weight: bold; /* 글자 굵게 */
+  background-color: #DEE5F2;
+  /* 짙은 파란색 배경 */
+  font-weight: bold;
+  /* 글자 굵게 */
   border: 2px solid #cccccc;
-  border-bottom: 2px solid #cccccc; /* 회색 테두리 */
+  border-bottom: 2px solid #cccccc;
+  /* 회색 테두리 */
   font-size: 15px;
 }
 
-.left-margin{
+.left-margin {
   margin-left: 5px;
 }
+
 
 </style>

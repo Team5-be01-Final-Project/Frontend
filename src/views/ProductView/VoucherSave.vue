@@ -275,7 +275,7 @@
                   this.fetchProducts();
                 } else {
                   // 기타 에러 처리
-                  alert("전표 저장에 실패했습니다: " + error.message);
+                  alert("전표 저장에 실패했습니다." );
                 }
               });
             }

@@ -129,6 +129,7 @@ export default {
         console.log("Voucher details approved successfully");
 
         this.fetchVoucherDetails();
+        this.$router.push('/product/voucherapproval');
       } catch (error) {
         console.error("Error approving voucher details:", error);
       }
@@ -144,6 +145,7 @@ export default {
         console.log("Voucher details rejected successfully");
 
         this.fetchVoucherDetails();
+        this.$router.push('/product/voucherapproval');
       } catch (error) {
         console.error("Error rejecting voucher details:", error);
       }
