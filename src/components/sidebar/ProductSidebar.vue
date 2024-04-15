@@ -14,26 +14,26 @@ const navigateTo = (routeName) => {
 
 const items = [
   {
-    title: "상품 관리",
+    title: "제품 관리",
     icon: "mail",
     children: [
       {
-        title: "판매 상품 리스트 조회",
+        title: "판매 제품 리스트 조회",
         icon: "drafts",
         routeName: "viewproduct",
       },
     ],
   },
   {
-    title: "거래처별 상품 관리",
+    title: "거래처별 제품 관리",
     icon: "dashboard",
     children: [
       {
-        title: "거래처별 상품 등록 및 수정",
+        title: "거래처별 제품 등록 및 수정",
         icon: "drafts",
         routeName: "ppccrud",
       },
-      { title: "거래처별 상품 리스트", icon: "drafts", routeName: "ppcview" },
+      { title: "거래처별 제품 리스트", icon: "drafts", routeName: "ppcview" },
     ],
   },
   {

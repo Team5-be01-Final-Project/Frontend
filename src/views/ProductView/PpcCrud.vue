@@ -6,14 +6,14 @@
     </div>
 
     <div class="Main">
-      <h3 class="va-h3">거래처별 상품 등록 및 수정</h3>
+      <h3 class="va-h3">거래처별 제품 등록 및 수정</h3>
       <div>
         <VaSelect v-model="selectedField" placeholder="검색 조건" :options="filterOptions"
           @update:modelValue="handleSelectedFieldChange()" style="margin-right: 5px;" />
         <VaInput v-model="filter" placeholder="검색어 입력" class="w-full" style="margin-right: 5px;" />
         <VaButton @click="applyFilter">검색</VaButton>
         <VaButton @click="openRegisterModal" class="register-button">
-          판매상품 등록
+          판매제품 등록
         </VaButton>
       </div>
       <div class="right-align">단위 : 원</div>

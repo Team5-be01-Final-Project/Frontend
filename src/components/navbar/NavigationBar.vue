@@ -33,7 +33,7 @@
 
       <router-link to="/product/viewproduct" class="hidden sm:block">
         <VaNavbarItem class="hidden sm:block">
-          상품 관리
+          제품 관리
         </VaNavbarItem>
       </router-link>
 

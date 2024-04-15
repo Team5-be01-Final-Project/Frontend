@@ -7,7 +7,7 @@
       </div>
       <div>
           <div class="header">
-              <h3 class="va-h3">출고전표 등록</h3>
+              <h3 class="va-h3">전표 등록</h3>
               <div class="button-container">
                   <VaButton  @click="SaveVoucher">등록</VaButton >
               </div>
@@ -50,7 +50,7 @@
                   @update:modelValue="fetchProducts()" />
               </div>
               <div class="voucher-info-row">
-                  <va-select v-model="selectedProduct" placeholder="상품 선택" :options="productOptions" @update:modelValue="fetchProductStock()" />
+                  <va-select v-model="selectedProduct" placeholder="제품 선택" :options="productOptions" @update:modelValue="fetchProductStock()" />
                   <div v-if="selectedProduct">
                       <span class="voucher-info-label">재고량: </span>
                       <span class="voucher-info-value">{{ formatNumberWithCommas(selectedProductStock) }}</span>
