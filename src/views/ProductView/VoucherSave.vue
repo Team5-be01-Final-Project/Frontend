@@ -7,7 +7,7 @@
       </div>
       <div>
           <div class="header">
-              <h3 class="va-h3">출고전표 등록</h3>
+              <h3 class="va-h3">전표 등록</h3>
               <div class="button-container">
                   <VaButton  @click="SaveVoucher">등록</VaButton >
               </div>
