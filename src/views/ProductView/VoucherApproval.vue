@@ -121,15 +121,30 @@ export default {
       });
     },
     uniqueVouchers() {
-      // 중복 제거된 유니크 출고전표 목록 생성
-      const unique = {};
-      this.filteredVouchers.forEach((voucher) => {
-        if (!unique[voucher.voucId]) {
-          unique[voucher.voucId] = [];
-        }
-        unique[voucher.voucId].push(voucher);
-      });
-      return Object.values(unique);
+     // 중복 제거된 유니크 출고전표 목록 생성
+  const unique = {};
+  this.filteredVouchers.forEach((voucher) => {
+    if (!unique[voucher.voucId]) {
+      unique[voucher.voucId] = [];
+    }
+    unique[voucher.voucId].push(voucher);
+  });
+
+  // 대기중인 항목을 최상단에 위치시키기 위해 정렬
+  const sortedValues = Object.values(unique).sort((a, b) => {
+    const aWaiting = a[0].approvalStatus.trim() === '대기중';
+    const bWaiting = b[0].approvalStatus.trim() === '대기중';
+
+    if (aWaiting && !bWaiting) {
+      return -1; // a는 대기중, b는 대기중이 아님 -> a를 앞으로 이동
+    } else if (!aWaiting && bWaiting) {
+      return 1; // a는 대기중이 아님, b는 대기중 -> b를 앞으로 이동
+    } else {
+      return 0; // 둘 다 대기중이거나 둘 다 대기중이 아님
+    }
+  });
+
+  return sortedValues;
     },
   },
   mounted() {
