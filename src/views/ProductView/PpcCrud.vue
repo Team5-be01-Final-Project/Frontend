@@ -67,8 +67,8 @@
 import formatNumberWithCommas from '@/utils/formatNumberWithCommas.js';
 import axios from 'axios';
 import ProductSidebar from '@/components/sidebar/ProductSidebar.vue';
-import EditDeleteModal from '@/components/Modal.vue';
-import RegisterModal from '@/components/RegisterModal.vue';
+import EditDeleteModal from '@/components/modal/EditDeleteModal.vue';
+import RegisterModal from '@/components/modal/RegisterModal.vue';
 import RefreshButton from '@/components/RefreshButton.vue';
 
 export default {
