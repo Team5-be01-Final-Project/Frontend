@@ -123,8 +123,7 @@ onMounted(async () => {
         (incentive) => incentive.incentive > currentIncentive.value
       ).length + 1;
 
-    // 순위가 3등 이내면 해당 순위를, 그 외에는 "4등 이하"로 표시
-    currentSalesRank.value = rank <= 3 ? `${rank}등` : "4등 이하";
+    currentSalesRank.value =  `${rank}등`;
   } catch (error) {
     // 에러 발생 시 에러 메시지 출력
     console.error("현재 순위 조회 실패", error);
