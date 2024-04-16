@@ -44,7 +44,7 @@
               <th>이름</th>
               <th>직급</th>
               <th>부서</th>
-              <th>전화번호</th>
+              <th>이메일</th>
               <th>권한</th>
               <th>알림설정</th>
             </tr>
@@ -96,6 +96,7 @@
     <template #header>
       <h4>알림 설정 변경</h4>
     </template>
+    <br>
 
     <div class="flex flex-col">
       <div v-for="(value, code) in alarmSettings" :key="code" class="mb-6">
@@ -303,7 +304,7 @@ export default {
         );
 
         await Promise.all(requests);
-        console.log("모든 알람 설정 저장 성공");
+        alert("알림 설정이 성공적으로 저장되었습니다."); // 성공 메시지 표시
         this.isAlarmSettingsModalOpen = false; // 모달 닫기
         this.fetchEmployeesList(); // 직원 목록 새로고침
         // 추가적인 처리...

@@ -11,8 +11,16 @@
       <!-- 검색 폼: 사용자가 결재 목록을 필터링할 수 있게 합니다. -->
       <div class="grid grid-cols-12 gap-4 mb-6 items-center">
         <VaSelect
+          v-model="selectedStatus"
+          placeholder="결재 상태"
+          :options="statusOptions"
+          value-by="value"
+          class="col-span-2 filter-select"
+          style="margin-right: 5px"
+        />
+        <VaSelect
           v-model="selectedField"
-          placeholder="검색 조건 선택"
+          placeholder="검색 조건"
           :options="filterOptions"
           value-by="value"
           class="col-span-4 filter-select"
@@ -95,46 +103,49 @@ export default {
         { text: "전표번호", value: "voucId" },
         { text: "담당자", value: "empName" },
         { text: "거래처명", value: "clientName" },
-        { text: "결재상태", value: "approvalStatus" },
+      ],
+      statusOptions: [ // 상태 필터 옵션 추가
+        { text: "전체", value: null },
+        { text: "대기중", value: "대기중" },
+        { text: "승인", value: "승인" },
+        { text: "반려", value: "반려" },
       ],
     };
   },
   computed: {
     filteredVouchers() {
       // 사용자 부서 코드에 따라 필터링된 출고전표 목록 반환
-      return this.vouchers.filter(
-        (voucher) => voucher.deptCode === this.userDeptCode
-      );
+      return this.vouchers.filter(voucher => {
+        return voucher.deptCode === this.userDeptCode &&
+          (this.selectedStatus ? voucher.approvalStatus.trim() === this.selectedStatus : true);
+      });
     },
     uniqueVouchers() {
-      // 중복 제거된 유니크 출고전표 목록 생성
-      const unique = {};
-      this.filteredVouchers.forEach((voucher) => {
-        if (!unique[voucher.voucId]) {
-          unique[voucher.voucId] = [];
-        }
-        unique[voucher.voucId].push(voucher);
-      });
-      return Object.values(unique);
+     // 중복 제거된 유니크 출고전표 목록 생성
+  const unique = {};
+  this.filteredVouchers.forEach((voucher) => {
+    if (!unique[voucher.voucId]) {
+      unique[voucher.voucId] = [];
+    }
+    unique[voucher.voucId].push(voucher);
+  });
+
+  // 대기중인 항목을 최상단에 위치시키기 위해 정렬
+  const sortedValues = Object.values(unique).sort((a, b) => {
+    const aWaiting = a[0].approvalStatus.trim() === '대기중';
+    const bWaiting = b[0].approvalStatus.trim() === '대기중';
+
+    if (aWaiting && !bWaiting) {
+      return -1; // a는 대기중, b는 대기중이 아님 -> a를 앞으로 이동
+    } else if (!aWaiting && bWaiting) {
+      return 1; // a는 대기중이 아님, b는 대기중 -> b를 앞으로 이동
+    } else {
+      return 0; // 둘 다 대기중이거나 둘 다 대기중이 아님
+    }
+  });
+
+  return sortedValues;
     },
-    // waitingVouchers() {
-    //   // 대기중인 출고전표 목록 반환
-    //   return this.uniqueVouchers.filter(
-    //     (voucherGroup) => voucherGroup[0].approvalStatus.trim() === "대기중"
-    //   );
-    // },
-    // approvedVouchers() {
-    //   // 승인된 출고전표 목록 반환
-    //   return this.uniqueVouchers.filter(
-    //     (voucherGroup) => voucherGroup[0].approvalStatus.trim() === "승인"
-    //   );
-    // },
-    // rejectedVouchers() {
-    //   // 반려된 출고전표 목록 반환
-    //   return this.uniqueVouchers.filter(
-    //     (voucherGroup) => voucherGroup[0].approvalStatus.trim() === "반려"
-    //   );
-    // },
   },
   mounted() {
     this.fetchUserDeptCode(); // 컴포넌트 마운트 시 사용자 부서 코드 조회
