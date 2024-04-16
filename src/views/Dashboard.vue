@@ -15,14 +15,14 @@
       </div>
       <!-- 차트 그룹 컴포넌트 -->
       <div class="chart-group-container">
-        <button @click="refreshData">데이터 새로 고침</button>
-        <p>마지막 업데이트: {{ lastUpdated }}</p>
         <div class="warehouse-container">
+          <button class="refresh-button" @click="refreshData">데이터 새로 고침</button>
           <Warehouse ref="warehouseRef" />
         </div>
         <div class="car-temp-barchart-container">
           <CarTempBarchart ref="carTempBarchartRef" />
         </div>
+        <p class="update">마지막 업데이트: {{ lastUpdated }}</p>
       </div>
     </div>
     <div class="grid-bottom">
@@ -157,4 +157,25 @@ const refreshData = async () => {
   box-sizing: border-box;
   /* 패딩과 테두리를 포함한 총 크기를 요소의 크기로 계산 */
 }
+
+.refresh-button {
+  position: absolute;
+  right: 10px; /* 컨테이너의 우측에 위치 */
+  background-color: #DEE5F2; /* 배경색 설정 */
+  color: black; /* 버튼 텍스트 색상 */
+  padding: 10px 10px; /* 패딩 */
+  border: none; /* 테두리 제거 */
+  border-radius: 5px; /* 테두리 둥글게 */
+  cursor: pointer; /* 마우스 오버 시 커서 변경 */
+}
+
+.refresh-button:hover {
+  background-color: #DEE5F2; /* 호버 상태의 배경색 변경 */
+}
+
+.update {
+  text-align: right;
+  font-size: 14px;
+}
+
 </style>

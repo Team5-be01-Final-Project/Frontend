@@ -3,9 +3,6 @@
     <div class="carTempCharts">
         <div style="display: flex; align-items: center;">
             <canvas id="carTempChart"></canvas>
-            <!-- <button class="refresh-button" @click="fetchData">
-                <va-icon spin="clockwise" name="refresh" />
-            </button> -->
         </div>
     </div>
 </template>

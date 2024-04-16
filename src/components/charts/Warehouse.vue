@@ -3,9 +3,6 @@
   <div class="warehouse-container">
     <div class="temperature-display">
       <p v-if="srg10Temp !== null">현재 창고 온도: {{ srg10Temp }}°C</p>
-      <!-- <button class="refresh-button" @click="fetchData">
-        <va-icon name="refresh" spin="clockwise"/>
-      </button> -->
     </div>
   </div>
 </template>
