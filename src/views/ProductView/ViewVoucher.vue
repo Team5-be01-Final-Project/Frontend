@@ -10,9 +10,21 @@
       <h3 class="va-h3">전표 조회</h3>
       <!-- 검색 폼: 사용자가 출고전표를 필터링할 수 있는 입력 필드와 버튼을 제공합니다. -->
       <div class="grid grid-cols-12 gap-4 mb-6 items-center" style="margin-bottom: 25px">
-        <VaSelect v-model="selectedField" placeholder="검색 조건" :options="filterOptions" value-by="value"
+        <VaSelect
+          v-model="selectedStatus"
+          placeholder="결재 상태"
+          :options="statusOptions"
+          value-by="value"
+          class="col-span-2 filter-select" style="margin-right: 5px"
+        />
+        <VaSelect v-model="selectedField" 
+          placeholder="검색 조건" 
+          :options="filterOptions" 
+          value-by="value"
           class="col-span-4 filter-select" style="margin-right: 5px" />
-        <VaInput v-model="filter" placeholder="검색어 입력" class="col-span-6 search-input" style="margin-right: 5px" />
+        <VaInput v-model="filter" 
+          placeholder="검색어 입력" 
+          class="col-span-6 search-input" style="margin-right: 5px" />
         <VaButton @click="searchVouchers" class="search-button col-span-2">검색</VaButton>
         <refresh-button class="left-margin" />
 
@@ -90,7 +102,12 @@ export default {
         { text: "담당자", value: "empName" },
         { text: "거래처명", value: "clientName" },
         { text: "결재자", value: "signerName" },
-        { text: "결재상태", value: "approvalStatus" },
+      ],
+      statusOptions: [ // 상태 필터 옵션 추가
+        { text: "전체", value: null },
+        { text: "대기중", value: "대기중" },
+        { text: "승인", value: "승인" },
+        { text: "반려", value: "반려" },
       ],
     };
   },
@@ -149,6 +166,14 @@ export default {
         }
         const response = await axios.get("/vouchers/search", { params });
         this.vouchers = response.data;
+
+        // 상태 필터는 프론트엔드에서 적용
+        if (this.selectedStatus) {
+          this.vouchers = this.vouchers.filter(voucher => 
+            voucher.approvalStatus.trim() === this.selectedStatus
+          );
+        }
+
         this.currentPage = 1; // 검색 후 현재 페이지를 1로 초기화합니다.
       } catch (error) {
         console.error("Error searching vouchers:", error);
