@@ -1,46 +1,46 @@
 <!-- Dashboard.vue -->
 <template>
   <div class="dashboard-container">
-      <h3 class="va-h3">대시보드</h3>
-      <div class="grid-top">
-        <!-- POI 지도 컴포넌트 -->
-        <div class="poi-map-container">
-          <POIMap />
-        </div>
-        <!-- 최우수 사원 정보 및 연도/월 선택 컴포넌트 그룹 -->
-        <div class="top-employee-group-container">
-          <div class="top-employee-container">
-            <TopEmployee :year="selectedYear" :month="selectedMonth" />
-          </div>
-        </div>
-        <!-- 차트 그룹 컴포넌트 -->
-        <div class="chart-group-container">
-          <!-- 창고 현황 차트 컴포넌트 -->
-          <div class="warehouse-container">
-            <Warehouse />
-          </div>
-          <!-- 차량 온도 막대 차트 컴포넌트 -->
-          <div class="car-temp-barchart-container">
-            <CarTempBarchart />
-          </div>
+    <h3 class="va-h3">대시보드</h3>
+    <div class="grid-top">
+      <!-- POI 지도 컴포넌트 -->
+      <div class="poi-map-container">
+        <POIMap />
+      </div>
+      <!-- 최우수 사원 정보 및 연도/월 선택 컴포넌트 그룹 -->
+      <div class="top-employee-group-container">
+        <div class="top-employee-container">
+          <TopEmployee :year="selectedYear" :month="selectedMonth" />
         </div>
       </div>
-      <div class="grid-bottom">
-        <!-- POI 정보 컴포넌트 -->
-        <div class="poi-container">
-          <POI />
+      <!-- 차트 그룹 컴포넌트 -->
+      <div class="chart-group-container">
+        <button @click="refreshData">데이터 새로 고침</button>
+        <p>마지막 업데이트: {{ lastUpdated }}</p>
+        <div class="warehouse-container">
+          <Warehouse ref="warehouseRef" />
         </div>
-        <!-- 월별 매출 차트 컴포넌트 -->
-        <div class="month-sale-container">
-          <MonthSale />
+        <div class="car-temp-barchart-container">
+          <CarTempBarchart ref="carTempBarchartRef" />
         </div>
       </div>
     </div>
+    <div class="grid-bottom">
+      <!-- POI 정보 컴포넌트 -->
+      <div class="poi-container">
+        <POI />
+      </div>
+      <!-- 월별 매출 차트 컴포넌트 -->
+      <div class="month-sale-container">
+        <MonthSale />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import { useRoute } from 'vue-router'
+import { useRoute } from 'vue-router';
 import CarTempBarchart from "@/components/charts/CarTempBarchart.vue";
 import Warehouse from "@/components/charts/Warehouse.vue";
 import POI from "@/components/charts/POI.vue";
@@ -48,27 +48,42 @@ import POIMap from "@/components/charts/POIMap.vue";
 import MonthSale from "@/components/charts/MonthSale.vue";
 import TopEmployee from "@/components/charts/TopEmployee.vue";
 
-const route = useRoute()
+const route = useRoute();
 
-
-// 현재 연도 가져오기
+// 현재 연도 가져오기 및 연도 배열 생성
 const currentYear = new Date().getFullYear();
-// 현재 연도부터 과거 5년까지의 연도 배열 생성
 const years = ref(Array.from({ length: 5 }, (_, i) => currentYear - i));
-// 1월부터 12월까지의 월 배열 생성
 const months = ref(Array.from({ length: 12 }, (_, i) => i + 1));
-// 선택된 연도 초기값 설정 (현재 연도)
 const selectedYear = ref(currentYear);
-// 선택된 월 초기값 설정 (현재 월)
 const selectedMonth = ref(new Date().getMonth() + 1);
+const lastUpdated = ref(new Date().toLocaleString());
 
+// ref()를 사용하여 컴포넌트 참조 생성
+const warehouseRef = ref(null);
+const carTempBarchartRef = ref(null);
+
+const componentRefs = [warehouseRef, carTempBarchartRef];
+const refreshData = async () => {
+  try {
+    for (const componentRef of componentRefs) {
+      if (componentRef.value && componentRef.value.fetchData) {
+        await componentRef.value.fetchData();
+      }
+    }
+    lastUpdated.value = new Date().toLocaleString();
+  } catch (error) {
+    console.error("Failed to refresh data:", error);
+  }
+};
 </script>
+
 
 <style scoped>
 .dashboard-container {
   width: 100vw;
   margin: 0;
-  margin-top: 60px; /* 네비게이션 바 아래로 60px 여백 추가 */
+  margin-top: 60px;
+  /* 네비게이션 바 아래로 60px 여백 추가 */
   padding: 20px;
   overflow: visible;
 }
@@ -99,7 +114,7 @@ const selectedMonth = ref(new Date().getMonth() + 1);
   height: 300px;
 }
 
-.warehouse-container{
+.warehouse-container {
   margin-bottom: 20px;
 }
 
@@ -112,8 +127,10 @@ const selectedMonth = ref(new Date().getMonth() + 1);
 }
 
 .poi-container {
-  height: 550px; /* 높이는 유지 */
-  overflow: auto; /* 내용이 넘칠 경우 자동으로 스크롤바 생성 */
+  height: 550px;
+  /* 높이는 유지 */
+  overflow: auto;
+  /* 내용이 넘칠 경우 자동으로 스크롤바 생성 */
   /* 기존 스타일은 유지 */
 }
 
