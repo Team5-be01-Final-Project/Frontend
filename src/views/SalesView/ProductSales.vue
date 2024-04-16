@@ -8,12 +8,15 @@
     <div class="Main">
       <va-container>
         <h3 class="va-h3">제품별 매출 현황</h3>
-        <div>
-          <va-select v-model="selectedYear" :options="yearOptions" placeholder="년도 선택" style="margin-right: 5px;" />
-          <va-select v-model="selectedMonth" :options="monthOptions1" placeholder="월 선택" style="margin-right: 5px;" />
-          <va-input v-model="proNameFilter" placeholder="제품명 검색" style="margin-right: 5px;" />
-          <va-button @click="filterSalesData">검색</va-button>
-          <refresh-button class="left-margin"/>
+      
+        <div class="sort-menu">
+          <div>
+            <va-select v-model="selectedYear" :options="yearOptions" placeholder="년도 선택" style="margin-right: 5px;" />
+            <va-select v-model="selectedMonth" :options="monthOptions1" placeholder="월 선택" style="margin-right: 5px;" />
+            <va-input v-model="proNameFilter" placeholder="제품명 검색" style="margin-right: 5px;" />
+            <va-button @click="filterSalesData">검색</va-button>
+            <refresh-button class="left-margin"/>
+          </div>
           <ExcelExportButton class="export" :data="exportData" :headers="exportHeaders" file-name="제품별 매출 현황.xlsx" />
         </div>
         <div class="right-align">단위 : 원 / 개</div>
@@ -244,7 +247,9 @@ const exportData = computed(() => {
   margin-left: 5px;
 }
 
-.export{
-  margin-left: 170px;
+.sort-menu{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 </style>

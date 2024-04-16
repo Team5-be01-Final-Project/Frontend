@@ -9,12 +9,15 @@
     <div class="Main">
       <va-container>
         <h3 class="va-h3">거래처별 매출 현황</h3>
-        <div>
-          <va-select v-model="selectedYear" :options="yearOption" placeholder="년도 선택" style="margin-right: 5px;" />
-          <va-select v-model="selectedMonth" :options="monthOptions1" placeholder="월 선택" style="margin-right: 5px;" />
-          <va-input v-model="clientNameFilter" placeholder="거래처명 검색" style="margin-right: 5px;" />
-          <va-button @click="filterSalesData">검색</va-button>
-          <refresh-button class="left-margin"/>
+
+        <div class="sort-menu">
+          <div>
+            <va-select v-model="selectedYear" :options="yearOption" placeholder="년도 선택" style="margin-right: 5px;" />
+            <va-select v-model="selectedMonth" :options="monthOptions1" placeholder="월 선택" style="margin-right: 5px;" />
+            <va-input v-model="clientNameFilter" placeholder="거래처명 검색" style="margin-right: 5px;" />
+            <va-button @click="filterSalesData">검색</va-button>
+            <refresh-button class="left-margin" />
+          </div>
           <ExcelExportButton class="export" :data="exportData" :headers="exportHeaders" file-name="거래처별 매출 현황.xlsx" />
         </div>
 
@@ -50,13 +53,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted,computed } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 // Vue의 컴포지션 API에서 필요한 함수들을 가져옵니다.
 
 import axios from 'axios';
 // HTTP 요청을 보내기 위한 axios 라이브러리를 가져옵니다.
 
-import { yearOptions } from '@/utils/yearOptions.js'; 
+import { yearOptions } from '@/utils/yearOptions.js';
 import { monthOptions1 } from '@/utils/monthOptions';
 // 년도와 월 선택 옵션을 가져옵니다.
 
@@ -235,18 +238,23 @@ const filterByClientName = (data, clientName) => {
 }
 
 .va-table thead th {
-  background-color: #DEE5F2; /* 짙은 파란색 배경 */
-  font-weight: bold; /* 글자 굵게 */
+  background-color: #DEE5F2;
+  /* 짙은 파란색 배경 */
+  font-weight: bold;
+  /* 글자 굵게 */
   border: 2px solid #cccccc;
-  border-bottom: 2px solid #cccccc; /* 회색 테두리 */
+  border-bottom: 2px solid #cccccc;
+  /* 회색 테두리 */
   font-size: 15px;
 }
 
-.left-margin{
+.left-margin {
   margin-left: 5px;
 }
 
-.export{
-  margin-left: 170px;
+.sort-menu {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 </style>
