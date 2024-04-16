@@ -25,9 +25,9 @@
             :min="currentItem.proUnit"
             @input="validatePrice"
           />
-          <p v-if="showInvalidPriceError" class="error-message">
-            판매가는 단가보다 높아야 합니다.
-          </p>
+        <p :class="{'error-message': true, 'hidden': !showInvalidPriceError}">
+          판매가는 단가보다 높아야 합니다.
+        </p>
         </label>
       </div>
       <div v-else>
@@ -74,6 +74,7 @@ export default {
     closeModal() {
       // 모달 닫기
       this.$emit("close");
+      this.showInvalidPriceError = false; // 에러 메시지 숨기기
     },
     confirmEdit() {
       // 수정 확인
@@ -169,6 +170,10 @@ label {
   padding: 5px; /* 내부 여백 */
   height: 40px; /* 높이 */
   margin-top: 10px; /* 위쪽 여백 */
+}
+
+.hidden { /*에러 메시지 공간 예약*/
+  visibility: hidden;
 }
 
 .button-group {
