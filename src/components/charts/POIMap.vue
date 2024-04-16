@@ -1,5 +1,5 @@
 <template>
-  <h4>이달의 우수지점</h4>
+  <h4>이달의 거래처</h4>
   <div id="map" style="width: 100%; height: 450px;"></div>
 </template>
 
@@ -107,8 +107,12 @@ onMounted(() => {
 </script>
 
 <style scoped>
+#map{
+  margin-top: 20px;
+}
+
 h4 {
-  font-size: 20px;
+  font-size: 25px;
   /* h4 태그의 폰트 사이즈를 키움 */
 }
 </style>

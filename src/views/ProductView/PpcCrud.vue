@@ -6,14 +6,15 @@
     </div>
 
     <div class="Main">
-      <h3 class="va-h3">거래처별 상품 등록 및 수정</h3>
+      <h3 class="va-h3">거래처별 제품 등록 및 수정</h3>
       <div>
         <VaSelect v-model="selectedField" placeholder="검색 조건" :options="filterOptions"
           @update:modelValue="handleSelectedFieldChange()" style="margin-right: 5px;" />
         <VaInput v-model="filter" placeholder="검색어 입력" class="w-full" style="margin-right: 5px;" />
         <VaButton @click="applyFilter">검색</VaButton>
+        <refresh-button class="left-margin"/>
         <VaButton @click="openRegisterModal" class="register-button">
-          판매상품 등록
+          판매제품 등록
         </VaButton>
       </div>
       <div class="right-align">단위 : 원</div>
@@ -37,12 +38,13 @@
             <td class='money-right'>{{ formatNumberWithCommas(ppc.proUnit) }}</td>
             <td class='money-right'>{{ formatNumberWithCommas(ppc.ppcSale) }}</td>
             <td class='index-center'>
-              <VaButton color="warning" class="mr-6 mb-2" @click="openEditModal(ppc)">
+              <VaButton preset="primary" class="mr-6 mb-2" @click="openEditModal(ppc)">
                 <va-icon name="edit" />
               </VaButton>
             </td>
             <td class='index-center'>
-              <VaButton color="danger" class="mr-6 mb-2" @click="openDeleteModal(ppc)"> <va-icon name="delete" />
+              <VaButton preset="primary" color="danger" class="mr-6 mb-2" @click="openDeleteModal(ppc)"> <va-icon
+                  name="delete" />
               </VaButton>
             </td>
           </tr>
@@ -65,14 +67,17 @@
 import formatNumberWithCommas from '@/utils/formatNumberWithCommas.js';
 import axios from 'axios';
 import ProductSidebar from '@/components/sidebar/ProductSidebar.vue';
-import EditDeleteModal from '@/components/Modal.vue';
-import RegisterModal from '@/components/RegisterModal.vue';
+import EditDeleteModal from '@/components/modal/EditDeleteModal.vue';
+import RegisterModal from '@/components/modal/RegisterModal.vue';
+import RefreshButton from '@/components/RefreshButton.vue';
 
 export default {
   components: {
     ProductSidebar,
     EditDeleteModal,
     RegisterModal,
+    RefreshButton,
+    
   },
   data() {
     return {
@@ -247,4 +252,15 @@ export default {
   margin-right: 5px;
 }
 
+.va-table thead th {
+  background-color: #DEE5F2; /* 짙은 파란색 배경 */
+  font-weight: bold; /* 글자 굵게 */
+  border: 2px solid #cccccc;
+  border-bottom: 2px solid #cccccc; /* 회색 테두리 */
+  font-size: 15px;
+}
+
+.left-margin{
+  margin-left: 5px;
+}
 </style>

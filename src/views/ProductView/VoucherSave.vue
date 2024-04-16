@@ -1,6 +1,5 @@
 <!-- VoucherDetail.vue -->
 <template>
-
   <div class="flex">
       <!-- 사이드바 섹션 -->
       <div class="sidebar">
@@ -8,7 +7,7 @@
       </div>
       <div>
           <div class="header">
-              <h3 class="va-h3">출고전표 등록</h3>
+              <h3 class="va-h3">전표 등록</h3>
               <div class="button-container">
                   <VaButton  @click="SaveVoucher">등록</VaButton >
               </div>
@@ -51,7 +50,7 @@
                   @update:modelValue="fetchProducts()" />
               </div>
               <div class="voucher-info-row">
-                  <va-select v-model="selectedProduct" placeholder="상품 선택" :options="productOptions" @update:modelValue="fetchProductStock()" />
+                  <va-select v-model="selectedProduct" placeholder="제품 선택" :options="productOptions" @update:modelValue="fetchProductStock()" />
                   <div v-if="selectedProduct">
                       <span class="voucher-info-label">재고량: </span>
                       <span class="voucher-info-value">{{ formatNumberWithCommas(selectedProductStock) }}</span>
@@ -82,8 +81,11 @@
                   <td class = 'money-right'>{{ formatNumberWithCommas(product.voucSale) }}</td>
                   <td class = 'money-right'>{{ formatNumberWithCommas(product.voucAmount) }}</td>
                   <td class = 'money-right'>{{ formatNumberWithCommas(product.voucSales) }}</td>
-                  <td>
-                    <VaButton @click="removeProduct(index)" color="danger" class="mr-6 mb-2">삭제</VaButton>
+                   <td class='index-center'>
+                    <VaButton preset="primary" color="danger" class="mr-6 mb-2" @click="removeProduct(index)"> <va-icon
+                  name="delete" />
+              </VaButton>
+                    <!-- <VaButton @click="removeProduct(index)" color="danger" class="mr-6 mb-2">삭제</VaButton> -->
                   </td>
                 </tr>
               </tbody>
@@ -215,7 +217,7 @@
             // 이미 목록에 존재하는 상품인 경우 경고 메시지 표시
             alert("이미 목록에 같은 상품이 있습니다.");
           }
-          else if (productInfo && this.selectedQuantity > 0 && this.selectedQuantity<this.selectedProductStock) {
+          else if (productInfo && this.selectedQuantity > 0 && this.selectedQuantity<=this.selectedProductStock) {
             const newProduct = {
               proCode: productInfo.proCode,
               proName: productInfo.proName,
@@ -273,7 +275,7 @@
                   this.fetchProducts();
                 } else {
                   // 기타 에러 처리
-                  alert("전표 저장에 실패했습니다: " + error.message);
+                  alert("전표 저장에 실패했습니다." );
                 }
               });
             }
@@ -337,12 +339,21 @@
       border-bottom: 1px solid #ddd;
     }
     
+    /* 테이블 헤더 배경색 */
     .va-table th {
-      background-color: #f2f2f2;
+      background-color: #DEE5F2;
       font-weight: bold;
     }
     
     .va-table tr:hover {
       background-color: #f5f5f5;
     }
+
+    .va-table thead th {
+  background-color: #DEE5F2; /* 짙은 파란색 배경 */
+  font-weight: bold; /* 글자 굵게 */
+  border: 2px solid #cccccc;
+  border-bottom: 2px solid #cccccc; /* 회색 테두리 */
+  font-size: 15px;
+}
 </style>

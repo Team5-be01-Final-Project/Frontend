@@ -14,42 +14,45 @@ const navigateTo = (routeName) => {
 
 const items = [
   {
-    title: "상품 관리",
-    icon: "mail",
+    title: "제품 관리",
+    icon: "category",
+
     children: [
       {
-        title: "판매 상품 리스트 조회",
-        icon: "drafts",
+        title: "판매 제품 조회",
         routeName: "viewproduct",
       },
     ],
   },
   {
-    title: "거래처별 상품 관리",
+    title: "거래처별 제품 관리",
     icon: "dashboard",
     children: [
       {
-        title: "거래처별 상품 등록 및 수정",
-        icon: "drafts",
+
+        title: "거래처별 제품 등록 및 수정",
         routeName: "ppccrud",
       },
-      { title: "거래처별 상품 리스트", icon: "drafts", routeName: "ppcview" },
+      {
+        title: "거래처별 제품 조회",
+        routeName: "ppcview"
+      },
     ],
   },
   {
     title: "재고 관리",
-    icon: "dashboard",
+    icon: "warehouse",
     children: [
-      { title: "재고 조회 및 등록", icon: "send", routeName: "stockList" },
+      { title: "재고 조회 및 등록", routeName: "stockList" },
     ],
   },
   {
     title: "출고 관리",
-    icon: "dashboard",
+    icon: "local_shipping",
     children: [
-      { title: "전표 등록", icon: "drafts", routeName: "vouchersave" },
-      { title: "전표 결재", icon: "drafts", routeName: "voucherapproval" },
-      { title: "전표 리스트 조회", icon: "drafts", routeName: "viewvoucher" },
+      { title: "전표 등록", routeName: "vouchersave" },
+      { title: "전표 결재", routeName: "voucherapproval" },
+      { title: "전표 조회", routeName: "viewvoucher" },
     ],
   },
 ];
@@ -78,9 +81,9 @@ const items = [
             <template #body>
               <VaSidebarItem v-for="child in item.children" :key="child.title" :active="child.title === activeElement"
                 @click="() => {
-                    activeElement = child.title;
-                    if (child.routeName) navigateTo(child.routeName); // 라우팅 함수 호출
-                  }
+                  activeElement = child.title;
+                  if (child.routeName) navigateTo(child.routeName); // 라우팅 함수 호출
+                }
                   ">
                 <VaSidebarItemContent>
                   <VaIcon :name="child.icon" />
@@ -104,7 +107,7 @@ const items = [
 
       <VaSidebarItem :active="$route.path === '/mysales'" @click="$router.push('/mysales')">
         <VaSidebarItemContent>
-          <VaIcon name="settings" />
+          <VaIcon name="account_circle" />
           <VaSidebarItemTitle>My 영업</VaSidebarItemTitle>
         </VaSidebarItemContent>
       </VaSidebarItem>

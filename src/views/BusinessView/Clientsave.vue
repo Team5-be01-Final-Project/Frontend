@@ -8,148 +8,87 @@
 
     <div>
       <h3 class="va-h3">거래처 등록</h3>
-      <div class="col-span-1" style="height: 50px"></div>
+      <div style="height: 50px"></div>
       <div class="form-container">
         <form @submit.prevent="submitForm">
           <div class="form-group">
             <!-- 사업자 등록번호 입력 필드 -->
-            <va-input
-              label="사업자 등록번호"
-              v-model="formattedClientCode"
-              @input="formatClientCode"
-              id="clientCode"
-              type="text"
-              required
-            ></va-input>
+            <va-input label="사업자 등록번호" v-model="formattedClientCode" @input="formatClientCode" id="clientCode"
+              type="text" required></va-input>
             <!-- 사업자 등록번호 입력 오류 메시지 -->
             <div v-if="clientCodeError" class="error-message">
               사업자 등록번호는 10자리여야 합니다.
             </div>
           </div>
-          <div class="col-span-1" style="height: 50px"></div>
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 items-end">
+          <div style="height: 50px"></div>
+          <div>
             <!-- 거래처명 입력 필드 -->
-            <va-input
-              class="extended-margin-right"
-              label="거래처명"
-              v-model="client.clientName"
-              id="clientName"
-              type="text"
-              required
-            ></va-input>
+            <va-input class="extended-margin-right" label="거래처명" v-model="client.clientName" id="clientName" type="text"
+              required></va-input>
 
             <!-- 병원 분류 선택 필드 -->
-            <va-select
-              v-model="selectedClass"
-              label="병원 분류"
-              :options="classes"
-            ></va-select>
+            <va-select v-model="selectedClass" label="병원 분류" :options="classes"></va-select>
+            <div v-if="classError" class="error-message1">
+              병원분류를 입력해주세요.
+            </div>
           </div>
-          <div class="col-span-1" style="height: 50px"></div>
+
+          <div style="height: 50px"></div>
           <div class="form-group">
             <!-- 대표명 입력 필드 -->
-            <va-input
-              label="대표명"
-              v-model="client.clientBoss"
-              id="clientCode"
-              type="text"
-              required
-            ></va-input
-            ><br />
-            <div class="col-span-1" style="height: 50px"></div>
+            <va-input label="대표명" v-model="client.clientBoss" id="clientCode" type="text" required></va-input><br />
+            <div style="height: 50px"></div>
             <!-- 우편번호 입력 필드 -->
-            <va-input
-              class="extended-margin-right"
-              label="우편번호"
-              v-model="client.clientPost"
-              placeholder="우편번호를 입력하세요"
-              required
-            ></va-input>
+            <va-input class="extended-margin-right" label="우편번호" v-model="client.clientPost" placeholder="우편번호를 입력하세요"
+              required></va-input>
             <!-- 우편번호 찾기 버튼 -->
             <va-button @click="openPostcodePopup()" style="margin-top: 19px">
               우편번호 찾기
             </va-button>
           </div>
-          <div class="col-span-1" style="height: 50px"></div>
+          <div style="height: 50px"></div>
           <div class="form-group">
             <!-- 주소 입력 필드 -->
-            <va-input
-              label="주소"
-              v-model="client.clientWhere"
-              placeholder="주소를 입력하세요"
-              required
-            ></va-input>
-            <div class="col-span-1" style="height: 50px"></div>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 items-end">
+            <va-input label="주소" v-model="client.clientWhere" placeholder="주소를 입력하세요" required></va-input>
+            <div style="height: 50px"></div>
+            <div>
               <!-- 담당자명 입력 필드 -->
-              <va-input
-                class="extended-margin-right"
-                label="담당자명"
-                v-model="client.clientEmp"
-                id="clientName"
-                type="text"
-                required
-              ></va-input>
+              <va-input class="extended-margin-right" label="담당자명" v-model="client.clientEmp" id="clientName"
+                type="text" required></va-input>
 
               <!-- 담당자 전화번호 입력 필드 -->
-              <va-input
-                class="extended-margin-right"
-                label="담당자 전화번호"
-                v-model="client.clientEmpTel"
-                id="clientName"
-                type="text"
-                required
-              ></va-input>
+              <va-input class="extended-margin-right" label="담당자 전화번호" v-model="client.clientEmpTel" id="clientName"
+                type="text" required></va-input>
             </div>
           </div>
-          <div class="col-span-1" style="height: 50px"></div>
-          <div
-            class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 items-end"
-          >
+          <div style="height: 50px"></div>
+          <div>
             <!-- 계약시작일 입력 필드 -->
-            <VaDateInput
-              class="extended-margin-right"
-              v-model="client.clientStart"
-              label="계약시작일"
-              clearable
-            />
+            <VaDateInput v-model="client.clientStart" label="계약시작일" clearable style="margin-right: 2rem;" />
             <!-- 계약종료일 입력 필드 -->
-            <VaDateInput
-              v-model="client.clientEnd"
-              label="계약종료일"
-              clearable
-            />
+            <VaDateInput v-model="client.clientEnd" label="계약종료일" clearable />
           </div>
-          <div class="col-span-1" style="height: 50px"></div>
-          <div
-            class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 items-end"
-          >
+          <div v-if="dateError" class="error-message2">
+            계약 종료일은 시작일 이후여야 합니다.
+          </div>
+          <div style="height: 50px"></div>
+          <div>
             <!-- 담당 사원 선택 필드 -->
-            <VaSelect
-              :key="selectKey"
-              v-model="client.employee"
-              label="담당 사원"
-              :options="employees"
-            ></VaSelect>
+            <VaSelect :key="selectKey" v-model="client.employee" label="담당 사원" :options="employees"></VaSelect>
             <!-- 담당 사원 선택 오류 메시지 -->
             <div v-if="employeeError" class="error-message">
               담당 사원을 선택해주세요.
             </div>
           </div>
-          <div class="col-span-1" style="height: 50px"></div>
+          <div style="height: 50px"></div>
 
           <div class="grid grid-cols-2 md:grid-cols-4 gap-4 items-end">
             <!-- 비고 입력 필드 -->
-            <va-input
-              class="extended-margin-right"
-              label="비고"
-              v-model="client.clientNote"
-              id="clientNote"
-              type="text"
-            ></va-input>
+            <va-input class="extended-margin-right" label="비고" v-model="client.clientNote" id="clientNote"
+              type="text"></va-input>
           </div>
-          <div class="col-span-1" style="height: 50px"></div>
-          <div class="col-span-1" style="height: 50px"></div>
+          <div style="height: 50px"></div>
+          <div style="height: 50px"></div>
           <div>
             <!-- 등록 버튼 -->
             <Button type="submit" color="primary">등록</Button>
@@ -201,6 +140,8 @@ const formattedClientCode = computed({
 
 const clientCodeError = ref(false); // 사업자 등록번호 입력 오류 상태를 저장할 ref
 const employeeError = ref(false); // 담당 사원 선택 오류 상태를 저장할 ref
+const classError = ref(false);  // 병원 분류 오류 상태를 저장할 ref
+const dateError = ref(false); // 계약날짜에 대한 오류 상태를 저장할 ref
 
 function formatClientCode(event) {
   // 사업자 등록번호 입력 시 호출되는 함수
@@ -223,6 +164,21 @@ function formatClientCodeDisplay(clientCode) {
 watch(selectedClass, (newValue) => {
   // 선택된 병원 분류가 변경될 때마다 호출되는 watch 함수
   client.value.clientClass = newValue ? newValue.value : null; // 선택된 병원 분류 값을 거래처 정보에 업데이트
+  classError.value = !newValue;
+});
+
+// 계약 시작일과 종료일의 변경을 감시
+watch([() => client.value.clientStart, () => client.value.clientEnd], ([newStart, newEnd]) => {
+  if (new Date(newStart) > new Date(newEnd)) {
+    dateError.value = true;  // 시작일이 종료일보다 뒤일 경우 에러
+  } else {
+    dateError.value = false; // 유효한 날짜일 경우 에러 상태 해제
+  }
+});
+
+// 담당 사원 선택 감시
+watch(() => client.value.employee, (newValue) => {
+  employeeError.value = !newValue;  // 사원이 선택되지 않았을 때 에러 상태 활성화
 });
 
 const errorMessage = ref(""); // 오류 메시지를 저장할 ref
@@ -258,6 +214,16 @@ const submitForm = async () => {
     employeeError.value = true; // 담당 사원 선택 오류 상태 설정
     return; // 함수 종료
   }
+  // 계약 시작일과 종료일 비교
+  if (new Date(client.value.clientStart) > new Date(client.value.clientEnd)) {
+    dateError.value = true;
+    return; // 경고 메시지 설정 후 함수 종료
+  }
+  // 병원 분류 선택 여부 검사
+  if (!selectedClass.value) {
+    classError.value = true;
+    return; // 경고 메시지 설정 후 함수 종료
+  }
 
   const formattedClientCode = formatClientCodeDisplay(client.value.clientCode); // 사업자 등록번호 형식화
 
@@ -289,7 +255,7 @@ onMounted(async () => {
   // 컴포넌트가 마운트될 때 실행되는 함수
   try {
     const response = await axios.get("/employees/list"); // 서버로부터 담당 사원 목록 가져오기
-    employees.value = response.data.map((emp) => ({
+    employees.value = response.data.filter(emp => emp.authCode === "AUTH004").map((emp) => ({
       // 담당 사원 목록 데이터 가공
       text: `${emp.empName} (${emp.posName}, ${emp.deptName})`,
       value: emp.empCode,
@@ -346,18 +312,43 @@ const openPostcodePopup = () => {
 
 <style scoped>
 .form-container {
-  max-width: 600px; /* 최대 너비 설정 */
-  margin: auto; /* 중앙 정렬 */
+  max-width: 600px;
+  /* 최대 너비 설정 */
+  margin: auto;
+  /* 중앙 정렬 */
 }
 
 .extended-margin-right {
-  margin-right: 2rem; /* 오른쪽 마진 추가 */
+  margin-right: 2rem;
+  /* 오른쪽 마진 추가 */
 }
 
 .error-message {
-  color: red; /* 에러 메시지 색상 */
-  font-size: 14px; /* 폰트 크기 */
-  margin-top: 5px; /* 상단 여백 */
+  color: red;
+  /* 에러 메시지 색상 */
+  font-size: 14px;
+  /* 폰트 크기 */
+  margin-top: 5px;
+  /* 상단 여백 */
+}
+
+.error-message1 {
+  color: red;
+  /* 에러 메시지 색상 */
+  font-size: 14px;
+  /* 폰트 크기 */
+  margin-top: 5px;
+  /* 상단 여백 */
+  margin-left: 285px;
+}
+
+.error-message2 {
+  color: red;
+  /* 에러 메시지 색상 */
+  font-size: 14px;
+  /* 폰트 크기 */
+  margin-top: 5px;
+  /* 상단 여백 */
+  margin-left: 285px;
 }
 </style>
-

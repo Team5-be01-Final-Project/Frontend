@@ -12,19 +12,23 @@
           v-model="selectedDepartment"
           placeholder="부서 선택"
           :options="deptOption"
-          :disabled="isDeptSelectDisabled" style="margin-right: 5px;"
+          :disabled="isDeptSelectDisabled"
+          style="margin-right: 5px"
         />
         <va-select
           v-model="selectedYear"
           placeholder="연도 선택"
-          :options="yearOption" style="margin-right: 5px;"
+          :options="yearOption"
+          style="margin-right: 5px"
         />
         <va-select
           v-model="selectedMonth"
           placeholder="월 선택"
-          :options="monthOption" style="margin-right: 5px;"
+          :options="monthOption"
+          style="margin-right: 5px"
         />
         <VaButton @click="applyFilter">검색</VaButton>
+        <refresh-button class="left-margin"/>
       </div>
       <div class="right-align">단위 : 원</div>
       <table class="va-table va-table--hoverable full-width">
@@ -39,12 +43,12 @@
         </thead>
         <tbody>
           <tr v-for="item in filteredData" :key="item.empName">
-            <td>{{ item.empName }}</td>
-            <td>{{ item.deptName }}</td>
+            <td style="text-align: center">{{ item.empName }}</td>
+            <td style="text-align: center">{{ item.deptName }}</td>
             <td class="money-right">
               {{ formatNumberWithCommas(item.voucMonthSales) }}
             </td>
-            <td>{{ item.salesRank }}</td>
+            <td style="text-align: center;">{{ item.salesRank }}</td>
             <td class="money-right">
               {{ formatNumberWithCommas(item.incentive) }}
             </td>
@@ -63,10 +67,12 @@ import { monthOptions } from "@/utils/monthOptions.js";
 import formatNumberWithCommas from "@/utils/formatNumberWithCommas.js";
 import BusinessSidebar from "@/components/sidebar/BusinessSidebar.vue";
 import Cookies from "js-cookie";
+import RefreshButton from "@/components/RefreshButton.vue";
 
 export default {
   components: {
     BusinessSidebar,
+    RefreshButton,
   },
   data() {
     // const currentYear = new Date().getFullYear();
@@ -188,5 +194,17 @@ td.money-right {
 .full-width {
   width: 100%;
   /* 테이블이 화면에 꽉 차도록 설정 */
+}
+
+.va-table thead th {
+  background-color: #DEE5F2; /* 짙은 파란색 배경 */
+  font-weight: bold; /* 글자 굵게 */
+  border: 2px solid #cccccc;
+  border-bottom: 2px solid #cccccc; /* 회색 테두리 */
+  font-size: 15px;
+}
+
+.left-margin{
+  margin-left: 5px;
 }
 </style>

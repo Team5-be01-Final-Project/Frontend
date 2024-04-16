@@ -137,6 +137,7 @@ td {
 /* 테이블 헤더 스타일 */
 th {
   background-color: #f2f2f2; /* 헤더 배경색 */
+  font-weight: bold; /* 헤더 글씨를 진하게 설정 */
 }
 
 /* 통화 형식 셀 텍스트 오른쪽 정렬 */

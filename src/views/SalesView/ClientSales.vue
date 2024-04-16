@@ -9,13 +9,15 @@
     <div class="Main">
       <va-container>
         <h3 class="va-h3">거래처별 매출 현황</h3>
-
         <div>
           <va-select v-model="selectedYear" :options="yearOption" placeholder="년도 선택" style="margin-right: 5px;" />
           <va-select v-model="selectedMonth" :options="monthOptions1" placeholder="월 선택" style="margin-right: 5px;" />
           <va-input v-model="clientNameFilter" placeholder="거래처명 검색" style="margin-right: 5px;" />
           <va-button @click="filterSalesData">검색</va-button>
+          <refresh-button class="left-margin"/>
+          <ExcelExportButton class="export" :data="exportData" :headers="exportHeaders" file-name="거래처별 매출 현황.xlsx" />
         </div>
+
         <div class="right-align">단위 : 원 / 개</div>
         <table class="va-table va-table--hoverable full-width">
           <thead>
@@ -27,7 +29,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in displayedSalesData" :key="item.clientName + item.proName">
+            <tr v-for="(item, index) in mergedSalesData" :key="item.clientName + item.proName">
               <td class='index-center'>{{ index + 1 }}</td>
               <td>{{ item.clientName }}</td>
               <td>{{ item.proName || '-' }}</td>
@@ -48,7 +50,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted,computed } from 'vue';
 // Vue의 컴포지션 API에서 필요한 함수들을 가져옵니다.
 
 import axios from 'axios';
@@ -62,6 +64,11 @@ import SalesSidebar from '@/components/sidebar/SalesSidebar.vue';
 // 사이드바 컴포넌트를 가져옵니다.
 
 import formatNumberWithCommas from '@/utils/formatNumberWithCommas';
+import RefreshButton from '@/components/RefreshButton.vue';
+import ExcelExportButton from '@/components/ExcelExportButton.vue';
+
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 
 const defaultYearOption = yearOptions.find(option => option.value === new Date().getFullYear());
 // 기본 년도 옵션을 현재 년도로 설정합니다.
@@ -72,10 +79,36 @@ const currentMonth = ("0" + (new Date().getMonth() + 1)).slice(-2);
 const yearOption = yearOptions;
 // 년도 선택 옵션을 설정합니다.
 
-const selectedYear = ref(defaultYearOption);
-// 선택된 년도를 현재 년도로 초기화합니다.
+const selectedYear = ref(yearOptions.find(option => option.value === new Date().getFullYear()));
+const selectedMonth = ref(monthOptions1.find(option => option.value === new Date().getMonth() + 1));
 
-const selectedMonth = ref(monthOptions1.find(option => option.value === currentMonth));
+// Props와 메서드 정의는 기존 코드에서 변경 없이 유지
+const exportHeaders = computed(() => ({
+  clientName: '거래처명',
+  proName: '제품명',
+  proUnit: '단가',
+  voucSale: '판매가',
+  voucAmount: '수량',
+  costOfSales: '판매원가',
+  voucSales: '매출액',
+  grossProfit: '매출이익',
+  profitMargin: '이익율'
+}));
+
+const exportData = computed(() => {
+  return mergedSalesData.value.map(item => ({
+    clientName: item.clientName,
+    proName: item.proName || '-',
+    proUnit: item.proUnit ? item.proUnit.toLocaleString() : '-',
+    voucSale: item.voucSale ? item.voucSale.toLocaleString() : '-',
+    voucAmount: item.voucAmount ? item.voucAmount.toLocaleString() : '-',
+    costOfSales: item.costOfSales ? item.costOfSales.toLocaleString() : '-',
+    voucSales: item.voucSales ? item.voucSales.toLocaleString() : '-',
+    grossProfit: item.grossProfit ? item.grossProfit.toLocaleString() : '-',
+    profitMargin: formatProfitMargin(item.profitMargin)
+  }));
+});
+
 // 선택된 월을 현재 월로 초기화합니다.
 
 const clientNameFilter = ref('');
@@ -89,7 +122,7 @@ const displayedSalesData = ref(filteredSalesData);
 
 const fields = [
   { key: 'clientName', label: '거래처', class: 'text-center' },
-  { key: 'proName', label: '상품명', class: 'text-center' },
+  { key: 'proName', label: '제품명', class: 'text-center' },
   { key: 'proUnit', label: '단가', class: 'text-center' },
   { key: 'voucSale', label: '판매가', class: 'text-center' },
   { key: 'voucAmount', label: '수량', class: 'text-center' },
@@ -131,6 +164,30 @@ const formatProfitMargin = (profitMargin) => {
 };
 // 이익율을 포맷팅하는 함수입니다.
 // 소수점 둘째 자리까지 표시하고 '%' 기호를 붙입니다.
+
+const mergedSalesData = computed(() => {
+  const mergedData = [];
+  const dataMap = new Map();
+
+  filteredSalesData.value.forEach(item => {
+    const key = `${item.clientName}_${item.proName}`;
+    const existingItem = dataMap.get(key);
+
+    if (existingItem) {
+      existingItem.voucSale += item.voucSale;
+      existingItem.voucAmount += item.voucAmount;
+      existingItem.costOfSales += item.costOfSales;
+      existingItem.voucSales += item.voucSales;
+      existingItem.grossProfit = existingItem.voucSales - existingItem.costOfSales;
+      existingItem.profitMargin = (existingItem.grossProfit * 100.0) / existingItem.voucSales;
+    } else {
+      dataMap.set(key, { ...item });
+      mergedData.push(item);
+    }
+  });
+
+  return mergedData;
+});
 
 const filterSalesData = () => {
   const year = selectedYear.value.value;
@@ -175,5 +232,21 @@ const filterByClientName = (data, clientName) => {
 .full-width {
   width: 100%;
   /* 테이블이 화면에 꽉 차도록 설정 */
+}
+
+.va-table thead th {
+  background-color: #DEE5F2; /* 짙은 파란색 배경 */
+  font-weight: bold; /* 글자 굵게 */
+  border: 2px solid #cccccc;
+  border-bottom: 2px solid #cccccc; /* 회색 테두리 */
+  font-size: 15px;
+}
+
+.left-margin{
+  margin-left: 5px;
+}
+
+.export{
+  margin-left: 170px;
 }
 </style>

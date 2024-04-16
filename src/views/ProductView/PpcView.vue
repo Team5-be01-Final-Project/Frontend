@@ -8,12 +8,14 @@
     <!-- 제품 목록 섹션 -->
     <div class="Main">
       <div class="va-table-responsive">
-        <h3 class="va-h3">거래처별 판매상품 목록</h3>
+        <h3 class="va-h3">거래처별 제품 조회</h3>
         <div class="filter">
           <VaSelect v-model="selectedField" placeholder="검색 조건" :options="filterOptions" style="margin-right: 5px;" />
           <VaInput v-model="filter" placeholder="검색어 입력" class="w-full" style="margin-right: 5px;" />
           <VaButton @click="applyFilter">검색</VaButton>
+          <refresh-button class="left-margin"/>
         </div>
+        <div class="right-align">단위 : 원</div>
         <table class="va-table va-table--hoverable full-width">
           <thead>
             <tr>
@@ -30,9 +32,9 @@
             <tr v-for="(item, index) in paginatedProducts" :key="index">
               <td class='index-center'>{{ (currentPage - 1) * perPage + index + 1 }}</td>
               <td>{{ item.clientName }}</td>
-              <td>{{ item.proCode }}</td>
+              <td style="text-align: center;">{{ item.proCode }}</td>
               <td>{{ item.proName }}</td>
-              <td>{{ item.proSeg }}</td>
+              <td style="text-align: center;">{{ item.proSeg }}</td>
               <td>{{ item.proCat }}</td>
               <td class='money-right'>{{ formatNumberWithCommas(item.ppcSale) }}</td>
             </tr>
@@ -55,13 +57,14 @@ import axios from 'axios';
 import { VaButton, VaSelect, VaInput } from 'vuestic-ui';
 import ProductSidebar from '@/components/sidebar/ProductSidebar.vue';
 import formatNumberWithCommas from '@/utils/formatNumberWithCommas.js';
-
+import RefreshButton from '@/components/RefreshButton.vue';
 export default {
   components: {
     ProductSidebar,
     VaButton,
     VaSelect,
     VaInput,
+    RefreshButton
   },
   data() {
     return {
@@ -178,4 +181,15 @@ export default {
   /* 테이블이 화면에 꽉 차도록 설정 */
 }
 
+.va-table thead th {
+  background-color: #DEE5F2; /* 짙은 파란색 배경 */
+  font-weight: bold; /* 글자 굵게 */
+  border: 2px solid #cccccc;
+  border-bottom: 2px solid #cccccc; /* 회색 테두리 */
+  font-size: 15px;
+}
+
+.left-margin{
+  margin-left: 5px;
+}
 </style>

@@ -9,7 +9,7 @@
     <!-- 제품 목록 섹션 -->
     <div class="Main">
       <div class="va-table-responsive">
-        <h3 class="va-h3">제품 목록</h3>
+        <h3 class="va-h3">판매 제품 조회</h3>
         <div class="grid md:grid-cols-3 gap-6 mb-6">
           <VaSelect
             v-model="selectedField"
@@ -24,6 +24,7 @@
           />
           <VaInput v-model="filter" placeholder="검색어 입력" class="w-full" style="margin-right: 5px;" />
           <VaButton @click="filterProducts">검색</VaButton>
+          <refresh-button class="left-margin"/>
         </div>
         <div class="right-align">단위 : 원</div>
         <table class="va-table va-table--hoverable full-width">
@@ -45,9 +46,9 @@
               :key="product.proCode"
             >
               <td class="index-center">{{ getPageNumber(index) }}</td>
-              <td>{{ product.proCode }}</td>
+              <td style="text-align: center;">{{ product.proCode }}</td>
               <td>{{ product.proName }}</td>
-              <td>{{ product.proSeg }}</td>
+              <td style="text-align: center;">{{ product.proSeg }}</td>
               <td>{{ product.proIngre }}</td>
               <td>{{ product.proAtc }}</td>
               <td>{{ product.proCat }}</td>
@@ -74,11 +75,13 @@ import ProductSidebar from "@/components/sidebar/ProductSidebar.vue";
 import NavigationBar from "@/components/navbar/NavigationBar.vue";
 import formatNumberWithCommas from "@/utils/formatNumberWithCommas.js";
 import Cookies from "js-cookie";
+import RefreshButton from '@/components/RefreshButton.vue';
 
 export default {
   components: {
     ProductSidebar,
     NavigationBar,
+    RefreshButton,
   },
   data() {
     return {
@@ -194,5 +197,17 @@ export default {
 .full-width {
   width: 100%;
   /* 테이블이 화면에 꽉 차도록 설정 */
+}
+
+.va-table thead th {
+  background-color: #DEE5F2; /* 짙은 파란색 배경 */
+  font-weight: bold; /* 글자 굵게 */
+  border: 2px solid #cccccc;
+  border-bottom: 2px solid #cccccc; /* 회색 테두리 */
+  font-size: 15px;
+}
+
+.left-margin{
+  margin-left: 5px;
 }
 </style>

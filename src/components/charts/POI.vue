@@ -1,6 +1,7 @@
 <template>
   <h4>이달의 매출 현황</h4>
   <div>
+    <div class="right-align">단위 : 원</div>
     <table class="va-table va-table--hoverable">
       <thead>
         <tr>
@@ -60,8 +61,9 @@ const formatCurrency = (value) => {
 
 <style>
 .va-table {
-  width: 715px;
+  width: 700px;
   border-collapse: collapse;
+  margin-top: 20px;
 }
 
 .va-table th,
@@ -76,7 +78,15 @@ const formatCurrency = (value) => {
 }
 
 h4 {
-  font-size: 20px;
+  font-size: 25px;
   /* h4 태그의 폰트 사이즈를 키움 */
+}
+
+.va-table thead th {
+  background-color: #f5f5f5; /* 짙은 파란색 배경 */
+  font-weight: bold; /* 글자 굵게 */
+  border: 2px solid #cccccc;
+  border-bottom: 2px solid #cccccc; /* 회색 테두리 */
+  font-size: 15px;
 }
 </style>

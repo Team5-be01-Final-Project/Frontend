@@ -17,7 +17,8 @@
       </div>
 
       <button type="submit">Login</button>
-      <p v-if="loginError" class="error-message">잘못된 정보입니다. 재시도 해주세요</p>
+      <p v-if="loginError" class="error-message">아이디 또는 패스워드가 일치하지 않습니다. <br>
+        입력하신 내용을 다시 한번 확인해 주세요.</p>
     </form>
   </div>
 </template>
@@ -92,8 +93,9 @@ export default {
 
 
 .login-container {
-  max-width: 600px; /* 최대 너비를 500px에서 600px로 조정 */
-  padding: 40px; /* 내부 패딩을 20px에서 40px로 조정 */
+  max-width: 700px; /* 최대 너비를600px로 조정 */
+  min-height: 400px; /* 컨테이너의 최소 높이 설정 */
+  padding: 40px; 
   border: 1px solid #ccc;
   border-radius: 10px; /* 모서리의 둥근 정도를 조금 더 증가 */
   background-color: #ffffff;
@@ -103,6 +105,7 @@ export default {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 2;
+  overflow: hidden; /* 내용이 넘칠 경우 숨기기 */
 }
 
 
@@ -141,6 +144,7 @@ button[type="submit"] {
 
 .error-message {
   color: red;
+  font-size: 10px;
 }
 
 button[type="submit"] {
@@ -148,7 +152,7 @@ button[type="submit"] {
   width: 100%;
   padding: 10px;
   margin-top: 20px;
-  background-color: #007bff;
+  background-color: #154EC1;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -157,6 +161,6 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-  background-color: #0056b3;
+  background-color: #154EC1;
 }
 </style>

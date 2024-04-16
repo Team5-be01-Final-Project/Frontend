@@ -5,64 +5,63 @@
       <SystemSidebar />
     </div>
 
-
     <div class="Main">
       <div class="va-table-responsive">
-        <h3 class="va-h3">사원 리스트 조회</h3>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 items-end" style="margin-bottom: 25px;" >
-          <VaSelect v-model="selectedDept" placeholder="부서" :options=deptOptions style="margin-right: 5px;" />
+        <h3 class="va-h3">사원 정보 조회</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 items-end" style="margin-bottom: 25px">
+          <VaSelect v-model="selectedDept" placeholder="부서" :options="deptOptions" style="margin-right: 5px" />
           <VaSelect v-model="selectedSearchCondition" placeholder="검색 조건" :options="[
             { text: '이름', value: 'empName' },
             { text: '이메일', value: 'empEmail' },
-          ]" value-by="value" style="margin-right: 5px;" />
-          <VaInput v-model="searchText" placeholder="검색어 입력" class="w-full" style="margin-right: 5px;" />
+          ]" value-by="value" style="margin-right: 5px" />
+          <VaInput v-model="searchText" placeholder="검색어 입력" class="w-full" style="margin-right: 5px" />
           <VaButton @click="fetchFilteredEmployees">검색</VaButton>
+          <refresh-button class="left-margin" />
         </div>
 
         <table class="va-table va-table--hoverable full-width">
           <thead>
             <tr>
-              <th>사진</th>
               <th>사번</th>
               <th>이름</th>
               <th>직급</th>
               <th>부서</th>
-              <th>이메일</th>
               <th>전화번호</th>
+              <th>이메일</th>
               <th>입사일</th>
               <th>퇴사일</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="employee in employees" :key="employee.empCode">
-              <td><img :src="employee.empImg" alt="Employee Image" class="employee-image" /></td>
-              <td>{{ employee.empCode }}</td>
-              <td>{{ employee.empName }}</td>
-              <td>{{ employee.posName }}</td>
-              <td>{{ employee.deptName }}</td>
+              <td style="text-align: center">{{ employee.empCode }}</td>
+              <td style="text-align: center"> <img :src="employee.empImg" alt="Employee Image"
+                  class="employee-image" /><br>{{ employee.empName }}</td>
+              <td style="text-align: center">{{ employee.posName }}</td>
+              <td style="text-align: center">{{ employee.deptName }}</td>
               <td>{{ employee.empTel }}</td>
-              <td>{{ employee.empEmail }}</td>
-              <td>{{ employee.empStartDate }}</td>
-              <td>{{ employee.empEndDate }}</td>
+              <td style="text-align: center">{{ employee.empEmail }}</td>
+              <td style="text-align: center">{{ employee.empStartDate }}</td>
+              <td style="text-align: center">{{ employee.empEndDate }}</td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
-import axios from 'axios';
-import { VaButton } from 'vuestic-ui/web-components';
-import SystemSidebar from '@/components/sidebar/SystemSidebar.vue'
-import { departmentOptions } from '@/utils/departmentOptions.js'; 
-
+import axios from "axios";
+import { VaButton } from "vuestic-ui/web-components";
+import SystemSidebar from "@/components/sidebar/SystemSidebar.vue";
+import { departmentOptions } from "@/utils/departmentOptions.js";
+import RefreshButton from "@/components/RefreshButton.vue";
 
 export default {
   components: {
-    SystemSidebar
+    SystemSidebar,
+    RefreshButton,
   },
   data() {
     return {
@@ -72,7 +71,7 @@ export default {
       loading: true,
       selectedDept: null, // 부서 선택을 위한 변수
       selectedSearchCondition: null, // 검색 조건 선택을 위한 변수
-      searchText: '', // 검색어 입력을 위한 변수
+      searchText: "", // 검색어 입력을 위한 변수
     };
   },
 
@@ -89,14 +88,18 @@ export default {
       let filteredEmployees = [...this.originemployees]; // 복사본을 사용하여 필터링합니다.
 
       if (this.selectedDept) {
-        filteredEmployees = filteredEmployees.filter(employee => 
-          this.selectedDept.text === '전체' || employee.deptName === this.selectedDept.text
+        filteredEmployees = filteredEmployees.filter(
+          (employee) =>
+            this.selectedDept.text === "전체" ||
+            employee.deptName === this.selectedDept.text
         );
       }
 
       if (this.searchText && this.selectedSearchCondition) {
-        filteredEmployees = filteredEmployees.filter(employee =>
-          employee[this.selectedSearchCondition].toLowerCase().includes(this.searchText.toLowerCase())
+        filteredEmployees = filteredEmployees.filter((employee) =>
+          employee[this.selectedSearchCondition]
+            .toLowerCase()
+            .includes(this.searchText.toLowerCase())
         );
       }
 
@@ -110,14 +113,13 @@ export default {
         this.originemployees = response.data;
         this.employees = [...this.originemployees];
       } catch (error) {
-        console.error('데이터 가져오기 실패:', error);
+        console.error("데이터 가져오기 실패:", error);
       } finally {
         this.loading = false;
       }
     },
-  }
+  },
 };
-
 </script>
 
 <style scoped>
@@ -163,4 +165,25 @@ export default {
   /* 테이블이 화면에 꽉 차도록 설정 */
 }
 
+th,
+
+td {
+  vertical-align: middle;
+  /* 값들 중간 정렬 */
+}
+
+.va-table thead th {
+  background-color: #DEE5F2;
+  /* 짙은 파란색 배경 */
+  font-weight: bold;
+  /* 글자 굵게 */
+  border: 2px solid #cccccc;
+  border-bottom: 2px solid #cccccc;
+  /* 회색 테두리 */
+  font-size: 15px;
+}
+
+.left-margin{
+  margin-left: 5px;
+}
 </style>
