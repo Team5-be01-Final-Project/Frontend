@@ -12,7 +12,7 @@
           <tr>
             <th>금월 인센티브 금액</th>
             <td class="amount-cell">
-              {{ currentIncentiveBase.toLocaleString() }}원 + {{ currentRankIncentive.toLocaleString() }}원({{ currentRankMessage }})
+              {{ currentIncentiveBase.toLocaleString() }}원 + {{ currentRankIncentive.toLocaleString() }}원 ({{ currentRankMessage }})
               <br>
               = {{ currentIncentive.toLocaleString() }}원
             </td>
@@ -40,7 +40,7 @@
           <tr>
             <th>인센티브 예상 금액</th>
             <td class="amount-cell">
-              {{ simulatedIncentiveBase.toLocaleString() }}원 + {{ simulatedRankIncentive.toLocaleString() }}원({{ simulatedRankMessage }})
+              {{ simulatedIncentiveBase.toLocaleString() }}원 + {{ simulatedRankIncentive.toLocaleString() }}원 ({{ simulatedRankMessage }})
               <br>
               = {{ simulatedIncentive.toLocaleString() }}원
             </td>
@@ -193,17 +193,25 @@ const fetchIncentiveSimulation = async () => {
     // 랭크가 0이 아닌 인센티브 데이터만 필터링
     const validIncentives = response.data.filter(incentive => incentive.salesRank > 0);
 
-    // 현재 사용자의 새로운 매출 데이터 추가
-    validIncentives.push({ empCode: props.empCode, voucMonthSales: newTotalSales, incentive: simulatedIncentiveBase.value, salesRank: 0 });
+    // 새로운 총 매출액이 포함된 인센티브 데이터 생성
+    const newIncentive = {
+      empCode: props.empCode,
+      voucMonthSales: newTotalSales,
+      incentive: simulatedIncentiveBase.value,
+    };
 
-    // 매출액 기준으로 내림차순 정렬
-    validIncentives.sort((a, b) => b.voucMonthSales - a.voucMonthSales);
-
-    // 새로운 매출액의 순위 계산
-    const rank = validIncentives.findIndex(incentive => incentive.empCode === props.empCode) + 1;
+    // 새로운 총 매출액을 기준으로 순위 계산
+    let rank = 1;
+    for (const incentive of validIncentives) {
+      if (incentive.voucMonthSales > newTotalSales) {
+        rank++;
+      } else if (incentive.voucMonthSales === newTotalSales && incentive.empCode < props.empCode) {
+        rank++;
+      }
+    }
 
     // 순위 업데이트
-    simulatedSalesRank.value = rank === 0 ? "순위 정보 없음" : `${rank}등`;
+    simulatedSalesRank.value = `${rank}등`;
 
     if (rank === 1) {
       simulatedRankIncentive.value = Math.round(newTotalSales * 0.005);
