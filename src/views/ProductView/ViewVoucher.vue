@@ -23,12 +23,18 @@
       <table class="va-table va-table--hoverable full-width">
         <thead>
           <tr>
-            <th class="text-left" @click="sort('voucId')">전표번호</th>
+            <th class="text-left" @click="sort('voucId')">
+              전표번호
+              <span v-if="currentSort === 'voucId'">{{ currentSortDir === 'asc' ? '▲' : '▼' }}</span>
+            </th>
             <th class="text-left">담당자</th>
             <th class="text-left">거래처명</th>
             <th class="text-left">결재자</th>
             <th class="text-left">결재상태</th>
-            <th class="text-left" @click="sort('voucApproval')">결재일</th>
+            <th class="text-left" @click="sort('voucApproval')">
+              결재일
+              <span v-if="currentSort === 'voucApproval'">{{ currentSortDir === 'asc' ? '▲' : '▼' }}</span>
+            </th>
           </tr>
         </thead>
         <tbody>
