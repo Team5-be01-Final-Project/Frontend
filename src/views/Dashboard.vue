@@ -13,10 +13,10 @@
           <TopEmployee :year="selectedYear" :month="selectedMonth" />
         </div>
       </div>
-      <!-- 차트 그룹 컴포넌트 -->
+      <!-- 차트 그룹 컴포넌트(온도) -->
       <div class="chart-group-container">
         <div class="warehouse-container">
-          <button class="refresh-button" @click="refreshData">데이터 새로 고침</button>
+          <button class="refresh-button" @click="refreshData"> <va-icon spin="clockwise" name="refresh" /></button>
           <Warehouse ref="warehouseRef" />
         </div>
         <div class="car-temp-barchart-container">
@@ -47,6 +47,7 @@ import POI from "@/components/charts/POI.vue";
 import POIMap from "@/components/charts/POIMap.vue";
 import MonthSale from "@/components/charts/MonthSale.vue";
 import TopEmployee from "@/components/charts/TopEmployee.vue";
+import { debounce } from 'lodash-es'; // lodash의 debounce 함수 임포트
 
 const route = useRoute();
 
@@ -57,13 +58,17 @@ const months = ref(Array.from({ length: 12 }, (_, i) => i + 1));
 const selectedYear = ref(currentYear);
 const selectedMonth = ref(new Date().getMonth() + 1);
 const lastUpdated = ref(new Date().toLocaleString());
+const isLoading = ref(false);  // 데이터 로딩 상태를 추적하는 변수
 
 // ref()를 사용하여 컴포넌트 참조 생성
 const warehouseRef = ref(null);
 const carTempBarchartRef = ref(null);
-
 const componentRefs = [warehouseRef, carTempBarchartRef];
-const refreshData = async () => {
+
+// refreshData 함수에 debounce 적용
+const refreshData = debounce(async () => {
+  if (isLoading.value) return;
+  isLoading.value = true;
   try {
     for (const componentRef of componentRefs) {
       if (componentRef.value && componentRef.value.fetchData) {
@@ -73,8 +78,10 @@ const refreshData = async () => {
     lastUpdated.value = new Date().toLocaleString();
   } catch (error) {
     console.error("Failed to refresh data:", error);
+  } finally {
+    isLoading.value = false;
   }
-};
+}, 1000); // 1초 동안의 중복 호출 무시
 </script>
 
 
@@ -115,7 +122,7 @@ const refreshData = async () => {
 }
 
 .warehouse-container {
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 /* 아래쪽 그리드 스타일 */
@@ -161,7 +168,7 @@ const refreshData = async () => {
 .refresh-button {
   position: absolute;
   right: 10px; /* 컨테이너의 우측에 위치 */
-  background-color: #DEE5F2; /* 배경색 설정 */
+  background-color: #f5f5f5; /* 배경색 설정 */
   color: black; /* 버튼 텍스트 색상 */
   padding: 10px 10px; /* 패딩 */
   border: none; /* 테두리 제거 */
@@ -170,7 +177,7 @@ const refreshData = async () => {
 }
 
 .refresh-button:hover {
-  background-color: #DEE5F2; /* 호버 상태의 배경색 변경 */
+  background-color: #f5f5f5; /* 호버 상태의 배경색 변경 */
 }
 
 .update {
