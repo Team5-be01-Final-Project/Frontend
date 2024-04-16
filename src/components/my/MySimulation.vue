@@ -12,7 +12,9 @@
           <tr>
             <th>금월 인센티브 금액</th>
             <td class="amount-cell">
-              {{ currentIncentive.toLocaleString() }}원
+              {{ currentIncentiveBase.toLocaleString() }}원 + {{ currentRankIncentive.toLocaleString() }}원 ({{ currentRankMessage }})
+              <br>
+              = {{ currentIncentive.toLocaleString() }}원
             </td>
           </tr>
           <tr>
@@ -38,20 +40,15 @@
           <tr>
             <th>인센티브 예상 금액</th>
             <td class="amount-cell">
-              {{
-                simulatedIncentive
-                  ? simulatedIncentive.incentive.toLocaleString()
-                  : currentIncentive.toLocaleString()
-              }}원
+              {{ simulatedIncentiveBase.toLocaleString() }}원 + {{ simulatedRankIncentive.toLocaleString() }}원 ({{ simulatedRankMessage }})
+              <br>
+              = {{ simulatedIncentive.toLocaleString() }}원
             </td>
           </tr>
           <tr>
             <th>예상 영업 순위</th>
             <td class="rank-cell">
-              {{
-                simulatedSalesRank ||
-                (additionalSales === 0 ? currentSalesRank : "")
-              }}
+              {{ simulatedSalesRank }}
             </td>
           </tr>
         </table>
@@ -64,7 +61,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, onMounted } from "vue";
+import { ref, defineProps, onMounted, computed } from "vue";
 import axios from "axios";
 
 // 부모 컴포넌트에서 전달받은 props 정의
@@ -87,7 +84,7 @@ const additionalSales = ref(0);
 
 // 시뮬레이션 결과를 저장하기 위한 ref 변수
 // 초기값은 null로 설정
-const simulatedIncentive = ref(null);
+const simulatedIncentive = ref(0);
 
 // 시뮬레이션 결과의 영업 순위를 저장하기 위한 ref 변수
 // 초기값은 빈 문자열로 설정
@@ -101,77 +98,138 @@ const currentIncentive = ref(0);
 // 초기값은 빈 문자열로 설정
 const currentSalesRank = ref("");
 
+const incentivesData = ref([]); // 전체 인센티브 데이터 저장
+
+const currentIncentiveBase = ref(0);
+const currentRankIncentive = ref(0);
+
+const simulatedIncentiveBase = ref(0);
+const simulatedRankIncentive = ref(0);
+
+const currentRankMessage = computed(() => {
+  const rank = parseInt(currentSalesRank.value);
+  if (rank === 1) {
+    return "1순위 가중치";
+  } else if (rank === 2) {
+    return "2순위 가중치";
+  } else if (rank === 3) {
+    return "3순위 가중치";
+  }
+  return "";
+});
+
+const simulatedRankMessage = computed(() => {
+  const rank = parseInt(simulatedSalesRank.value);
+  if (rank === 1) {
+    return "1순위 가중치";
+  } else if (rank === 2) {
+    return "2순위 가중치";
+  } else if (rank === 3) {
+    return "3순위 가중치";
+  }
+  return "";
+});
+
 // 컴포넌트가 마운트될 때 실행되는 함수
 onMounted(async () => {
   try {
-    // 현재 년도와 월을 기준으로 모든 인센티브 정보를 조회
-    const allIncentives = await axios.get("/incentive/list", {
+    const response = await axios.get("/incentive/list", {
       params: {
         year: new Date().getFullYear(),
         month: new Date().getMonth() + 1,
       },
     });
-    const incentives = allIncentives.data;
+    incentivesData.value = response.data;
 
-    // 현재 인센티브 금액 계산 (현재 매출액의 1%)
-    currentIncentive.value = Math.round(props.currentSales * 0.01);
-
-    // 현재 영업 순위 계산
-    // 현재 인센티브 금액보다 큰 인센티브를 가진 직원의 수 + 1
-    const rank =
-      incentives.filter(
-        (incentive) => incentive.incentive > currentIncentive.value
-      ).length + 1;
-
-    currentSalesRank.value =  `${rank}등`;
+    currentIncentiveBase.value = Math.round(props.currentSales * 0.01);
+    updateCurrentRank();
+    currentIncentive.value = currentIncentiveBase.value + currentRankIncentive.value;
   } catch (error) {
-    // 에러 발생 시 에러 메시지 출력
-    console.error("현재 순위 조회 실패", error);
+    console.error("인센티브 데이터 조회 실패", error);
     currentSalesRank.value = "순위 정보 없음";
   }
 });
 
+const filteredIncentives = computed(() => {
+  return incentivesData.value.filter(incentive => incentive.salesRank > 0);
+});
+
+function updateCurrentRank() {
+  const sortedIncentives = filteredIncentives.value.sort(
+    (a, b) => b.voucMonthSales - a.voucMonthSales
+  );
+  const rank = sortedIncentives.findIndex(
+    incentive => incentive.voucMonthSales === props.currentSales
+  ) + 1;
+  currentSalesRank.value = `${rank}등`;
+
+  if (rank === 1) {
+    currentRankIncentive.value = Math.round(props.currentSales * 0.005);
+  } else if (rank === 2) {
+    currentRankIncentive.value = Math.round(props.currentSales * 0.003);
+  } else if (rank === 3) {
+    currentRankIncentive.value = Math.round(props.currentSales * 0.001);
+  } else {
+    currentRankIncentive.value = 0;
+  }
+}
+
 // 인센티브 시뮬레이션을 조회하는 함수
 const fetchIncentiveSimulation = async () => {
   try {
-    // 인센티브 시뮬레이션 API 호출
-    // 직원 코드, 현재 매출액, 추가 매출액을 파라미터로 전달
-    const response = await axios.get("/incentive/simulation", {
-      params: {
-        empCode: props.empCode,
-        currentSales: props.currentSales,
-        additionalSales: additionalSales.value,
-      },
-    });
+    // 추가 매출액 반영하여 새로운 총 매출액 계산
+    const newTotalSales = props.currentSales + additionalSales.value;
+    // 새로운 인센티브 계산
+    simulatedIncentiveBase.value = Math.round(newTotalSales * 0.01);
 
-    // 시뮬레이션 결과를 simulatedIncentive에 저장
-    simulatedIncentive.value = response.data;
-
-    // 현재 년도와 월을 기준으로 모든 인센티브 정보를 조회
-    const allIncentives = await axios.get("/incentive/list", {
+    // 모든 인센티브 정보를 조회
+    const response = await axios.get("/incentive/list", {
       params: {
         year: new Date().getFullYear(),
         month: new Date().getMonth() + 1,
       },
     });
-    const incentives = allIncentives.data;
 
-    // 시뮬레이션 결과의 총 인센티브 금액 계산
-    const totalIncentive = simulatedIncentive.value.incentive;
+    // 랭크가 0이 아닌 인센티브 데이터만 필터링
+    const validIncentives = response.data.filter(incentive => incentive.salesRank > 0);
 
-    // 시뮬레이션 결과의 영업 순위 계산
-    // 총 인센티브 금액보다 큰 인센티브를 가진 직원의 수 + 1
-    const rank =
-      incentives.filter((incentive) => incentive.incentive > totalIncentive)
-        .length + 1;
+    // 새로운 총 매출액이 포함된 인센티브 데이터 생성
+    const newIncentive = {
+      empCode: props.empCode,
+      voucMonthSales: newTotalSales,
+      incentive: simulatedIncentiveBase.value,
+    };
 
-    // 순위가 3등 이내면 해당 순위를, 그 외에는 "4등 이하"로 표시
-    simulatedSalesRank.value = rank <= 3 ? `${rank}등` : "4등 이하";
+    // 새로운 총 매출액을 기준으로 순위 계산
+    let rank = 1;
+    for (const incentive of validIncentives) {
+      if (incentive.voucMonthSales > newTotalSales) {
+        rank++;
+      } else if (incentive.voucMonthSales === newTotalSales && incentive.empCode < props.empCode) {
+        rank++;
+      }
+    }
+
+    // 순위 업데이트
+    simulatedSalesRank.value = `${rank}등`;
+
+    if (rank === 1) {
+      simulatedRankIncentive.value = Math.round(newTotalSales * 0.005);
+    } else if (rank === 2) {
+      simulatedRankIncentive.value = Math.round(newTotalSales * 0.003);
+    } else if (rank === 3) {
+      simulatedRankIncentive.value = Math.round(newTotalSales * 0.001);
+    } else {
+      simulatedRankIncentive.value = 0;
+    }
+
+    simulatedIncentive.value = simulatedIncentiveBase.value + simulatedRankIncentive.value;
   } catch (error) {
-    // 에러 발생 시 에러 메시지 출력
     console.error("인센티브 시뮬레이션 조회 실패", error);
+    simulatedSalesRank.value = "순위 정보 없음";
   }
 };
+
 </script>
 
 <style scoped>
