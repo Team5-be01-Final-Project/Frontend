@@ -14,28 +14,31 @@
             <va-input label="사업자 등록번호" v-model="client.clientCode" disabled></va-input>
           </div>
 
-          <div class="col-span-1" style="height: 50px;"></div>
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 items-end">
+          <div  style="height: 50px;"></div>
+          <div >
             <va-input class="extended-margin-right" label="거래처명" v-model="client.clientName" id="clientName" type="text"
               required></va-input>
 
-            <va-select v-model="selectedClass" label="병원 분류" :options="classes"></va-select>
-          </div>
-          <div class="col-span-1" style="height: 50px;"></div>
+              <va-select v-model="selectedClass" label="병원 분류" :options="classes"></va-select>
+            <div v-if="classError" class="error-message1">
+              병원분류를 입력해주세요.
+            </div>
+                    </div>
+          <div  style="height: 50px;"></div>
           <div class="form-group">
             <va-input label="대표명" v-model="client.clientBoss" id="clientCode" type="text" required></va-input><br>
-            <div class="col-span-1" style="height: 50px;"></div>
+            <div  style="height: 50px;"></div>
             <va-input class="extended-margin-right" label="우편번호" v-model="client.clientPost" placeholder="우편번호를 입력하세요"
               required></va-input>
             <va-button @click="openPostcodePopup()" style="margin-top: 19px;">
               우편번호 찾기
             </va-button>
           </div>
-          <div class="col-span-1" style="height: 50px;"></div>
+          <div  style="height: 50px;"></div>
           <div class="form-group">
             <va-input label="주소" v-model="client.clientWhere" placeholder="주소를 입력하세요" required></va-input>
-            <div class="col-span-1" style="height: 50px;"></div>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 items-end">
+            <div  style="height: 50px;"></div>
+            <div >
               <va-input class="extended-margin-right" label="담당자명" v-model="client.clientEmp" id="clientName"
                 type="text" required></va-input>
 
@@ -43,24 +46,27 @@
                 type="text" required></va-input>
             </div>
           </div>
-          <div class="col-span-1" style="height: 50px;"></div>
-          <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 items-end">
-            <VaDateInput class="extended-margin-right" v-model="client.clientStart" label="계약시작일" clearable />
+          <div  style="height: 50px;"></div>
+          <div >
+            <VaDateInput v-model="client.clientStart" label="계약시작일" clearable style="margin-right: 2rem;" />
             <VaDateInput v-model="client.clientEnd" label="계약종료일" clearable />
           </div>
-          <div class="col-span-1" style="height: 50px;"></div>
-          <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 items-end">
+          <div v-if="dateError" class="error-message2">
+            계약 종료일은 시작일 이후여야 합니다.
+          </div>
+          <div  style="height: 50px;"></div>
+          <div >
             <VaSelect :key="selectKey" v-model="selectedEmployee" label="담당 사원" :options="employees"
               @input="updateSelectedEmployee"></VaSelect>
           </div>
-          <div class="col-span-1" style="height: 50px;"></div>
+          <div  style="height: 50px;"></div>
 
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 items-end">
+          <div >
             <va-input class="extended-margin-right" label="비고" v-model="client.clientNote" id="clientNote"
               type="text"></va-input>
           </div>
-          <div class="col-span-1" style="height: 50px;"></div>
-          <div class="col-span-1" style="height: 50px;"></div>
+          <div style="height: 50px;"></div>
+          <div  style="height: 50px;"></div>
           <div class="form-group actions">
             <button color="primary" type="submit" style="width: 45%;">수정 완료</button>
             <button color="danger" type="submit" style="width: 45%;" @click="cancel">취소</button>
@@ -72,7 +78,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 import { VaInput, VaButton, VaSelect, VaDatePicker } from 'vuestic-ui';
@@ -105,6 +111,9 @@ const classes = ref([
 ]);
 
 const employees = ref([]);
+const employeeError = ref(false); // 담당 사원 선택 오류 상태를 저장할 ref
+const classError = ref(false);  // 병원 분류 오류 상태를 저장할 ref
+const dateError = ref(false); // 계약날짜에 대한 오류 상태를 저장할 ref
 
 // 서버로부터 거래처 데이터를 가져옵니다.
 const fetchClientData = async () => {
@@ -148,13 +157,39 @@ const fetchEmployees = async () => {
 };
 
 
+
 // 선택된 사원의 empCode를 client.employee에 할당
 const updateSelectedEmployee = (newValue) => {
   client.value.employee = newValue ? newValue.value : null;
 };
 
+watch(selectedClass, (newValue) => {
+  // 선택된 병원 분류가 변경될 때마다 호출되는 watch 함수
+  client.value.clientClass = newValue ? newValue.value : null; // 선택된 병원 분류 값을 거래처 정보에 업데이트
+  classError.value = !newValue;
+});
+
+// 계약 시작일과 종료일의 변경을 감시
+watch([() => client.value.clientStart, () => client.value.clientEnd], ([newStart, newEnd]) => {
+  if (new Date(newStart) > new Date(newEnd)) {
+    dateError.value = true;  // 시작일이 종료일보다 뒤일 경우 에러
+  } else {
+    dateError.value = false; // 유효한 날짜일 경우 에러 상태 해제
+  }
+});
+
+// 담당 사원 선택 감시
+watch(() => client.value.employee, (newValue) => {
+  employeeError.value = !newValue;  // 사원이 선택되지 않았을 때 에러 상태 활성화
+});
 
 const submitForm = async () => {
+  // 폼 제출 시 호출되는 함수
+  // 계약 시작일과 종료일 비교
+  if (new Date(client.value.clientStart) > new Date(client.value.clientEnd)) {
+    dateError.value = true;
+    return; // 경고 메시지 설정 후 함수 종료
+  }
   const clientData = {
     clientCode: client.value.clientCode,
     clientName: client.value.clientName,
@@ -246,6 +281,15 @@ onMounted(() => {
 .extended-margin-right {
   margin-right: 2rem;
   /* 원하는 간격으로 조정 */
+}
+.error-message2 {
+  color: red;
+  /* 에러 메시지 색상 */
+  font-size: 14px;
+  /* 폰트 크기 */
+  margin-top: 5px;
+  /* 상단 여백 */
+  margin-left: 285px;
 }
 
 </style>
