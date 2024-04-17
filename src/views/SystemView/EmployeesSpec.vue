@@ -14,7 +14,7 @@
             { text: '이름', value: 'empName' },
             { text: '이메일', value: 'empEmail' },
           ]" value-by="value" style="margin-right: 5px" />
-          <VaInput v-model="searchText" placeholder="검색어 입력" class="w-full" style="margin-right: 5px" />
+          <VaInput v-model="searchText" :disabled="!selectedSearchCondition" placeholder="검색어 입력" class="w-full" style="margin-right: 5px" />
           <VaButton @click="fetchFilteredEmployees">검색</VaButton>
           <refresh-button class="left-margin" />
         </div>

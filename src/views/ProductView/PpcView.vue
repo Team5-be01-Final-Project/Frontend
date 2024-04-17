@@ -10,8 +10,8 @@
       <div class="va-table-responsive">
         <h3 class="va-h3">거래처별 제품 조회</h3>
         <div class="filter">
-          <VaSelect v-model="selectedField" placeholder="검색 조건" :options="filterOptions" style="margin-right: 5px;" />
-          <VaInput v-model="filter" placeholder="검색어 입력" class="w-full" style="margin-right: 5px;" />
+          <VaSelect v-model="selectedSearchCondition" placeholder="검색 조건" :options="filterOptions" style="margin-right: 5px;" />
+          <VaInput v-model="filter" :disabled="!selectedSearchCondition" placeholder="검색어 입력" class="w-full" style="margin-right: 5px;" />
           <VaButton @click="applyFilter">검색</VaButton>
           <refresh-button class="left-margin"/>
         </div>
@@ -72,27 +72,16 @@ export default {
       products: [],
       filteredProducts: [],
       filter: '',
-      selectedField: '전체', // '전체' 선택을 위한 'all' 값으로 초기화
+      selectedSearchCondition: '',
       currentPage: 1,
       perPage: 20,
       // 필터 옵션
       filterOptions: [
-        { text: '전체', value: 'all' },
         { text: '거래처명', value: 'clientName' },
         { text: '제품명', value: 'proName' },
         { text: '분류', value: 'proCat' },
       ],
     };
-  },
-  // 계산된 속성, 메서드 등...
-  watch: {
-    // selectedField의 값이 변경될 때 실행될 함수
-    selectedField(newVal) {
-      if (newVal.text === '전체') {
-        // "전체"가 선택되면 검색 필드를 초기화
-        this.filter = '';
-      }
-    }
   },
   computed: {
     // 페이징 처리를 위한 계산 속성
@@ -120,13 +109,13 @@ export default {
       // 로그를 추가하여 현재 필터링 상태를 확인
       //console.log(`Selected Field: ${this.selectedField}, Filter: ${this.filter}`);
 
-      if (this.selectedField.value === 'all' || !this.filter.trim()) {
+      if (this.selectedSearchCondition.value === 'all' || !this.filter.trim()) {
         // "전체"가 선택되었거나 검색어가 비어있는 경우, 모든 제품을 표시
         this.filteredProducts = this.products;
       } else {
         // 선택된 필드에 따라 필터링
         this.filteredProducts = this.products.filter(product => {
-          const fieldValue = product[this.selectedField.value]?.toString().toLowerCase() || '';
+          const fieldValue = product[this.selectedSearchCondition.value]?.toString().toLowerCase() || '';
           return fieldValue.includes(this.filter.toLowerCase());
         });
       }

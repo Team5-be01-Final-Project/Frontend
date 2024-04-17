@@ -19,7 +19,7 @@
           style="margin-right: 5px"
         />
         <VaSelect
-          v-model="selectedField"
+          v-model="selectedSearchCondition"
           placeholder="검색 조건"
           :options="filterOptions"
           value-by="value"
@@ -28,6 +28,7 @@
         />
         <VaInput
           v-model="filter"
+          :disabled="!selectedSearchCondition"
           placeholder="검색어 입력"
           class="col-span-6 search-input"
           style="margin-right: 5px"
@@ -96,7 +97,7 @@ export default {
     return {
       vouchers: [], // 조회된 전체 출고전표 목록
       userDeptCode: "", // 현재 사용자의 부서 코드
-      selectedField: null, // 선택된 검색 조건
+      selectedSearchCondition: null, // 선택된 검색 조건
       filter: "", // 입력된 검색어
       filterOptions: [
         // 검색 필터 옵션
@@ -180,8 +181,8 @@ export default {
     },
     async searchVouchers() {
       this.activeVouchers = this.filteredVouchers.filter(voucher => {
-        const fieldFilter = this.selectedField && this.filter 
-        ? voucher[this.selectedField].toString().includes(this.filter) : true;
+        const fieldFilter = this.selectedSearchCondition && this.filter 
+        ? voucher[this.selectedSearchCondition].toString().includes(this.filter) : true;
         const statusFilter = this.selectedStatus ? voucher.approvalStatus.trim() === this.selectedStatus : true;
         
         return fieldFilter && statusFilter;

@@ -12,13 +12,13 @@
         </div>
       <div class="grid grid-cols-12 gap-4 mb-6 items-center">
         <VaSelect
-          v-model="selectedField"
+          v-model="selectedSearchCondition"
           placeholder="검색 조건"
           :options="filterOptions"
           value-by="value"
           class="col-span-2 filter-select"
         />
-        <VaInput v-model="filter" placeholder="검색어 입력" class="col-span-8 search-input" />
+        <VaInput v-model="filter" :disabled="!selectedSearchCondition" placeholder="검색어 입력" class="col-span-8 search-input" />
         <VaButton @click="searchStockList" class="search-button col-span-2">검색</VaButton>
         <refresh-button class="left-margin"/>
         <VaButton @click="openRegisterModal" class="register-button">재고 등록</VaButton>
@@ -68,7 +68,7 @@ import RefreshButton from "@/components/RefreshButton.vue";
 
 // 데이터와 상태 관리를 위한 변수들
 const stockList = ref([]); // 서버에서 받아온 재고 목록을 저장하는 배열
-const selectedField = ref(null); // 사용자가 선택한 필터링 필드를 저장하는 변수
+const selectedSearchCondition = ref(null); // 사용자가 선택한 필터링 필드를 저장하는 변수
 const filter = ref(""); // 사용자가 입력한 검색어를 저장하는 변수
 const currentPage = ref(1); // 현재 페이지 번호를 저장하는 변수
 const perPage = ref(15); // 페이지당 보여줄 항목 수를 저장하는 변수
@@ -137,9 +137,9 @@ const searchStockList = async () => {
     let proCode = null;
     let proName = null;
 
-    if (selectedField.value === "proCode") {
+    if (selectedSearchCondition.value === "proCode") {
       proCode = filter.value;
-    } else if (selectedField.value === "proName") {
+    } else if (selectedSearchCondition.value === "proName") {
       proName = filter.value;
     }
 
