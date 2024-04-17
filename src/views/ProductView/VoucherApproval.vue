@@ -110,41 +110,28 @@ export default {
         { text: "승인", value: "승인" },
         { text: "반려", value: "반려" },
       ],
+      selectedStatus: "",
+      activeVouchers: [], // 검색 버튼 클릭 후의 필터링 결과를 저장
     };
   },
   computed: {
     filteredVouchers() {
       // 사용자 부서 코드에 따라 필터링된 출고전표 목록 반환
-      return this.vouchers.filter(voucher => {
-        return voucher.deptCode === this.userDeptCode &&
-          (this.selectedStatus ? voucher.approvalStatus.trim() === this.selectedStatus : true);
-      });
+      return this.vouchers.filter(voucher => voucher.deptCode === this.userDeptCode);
     },
     uniqueVouchers() {
-     // 중복 제거된 유니크 출고전표 목록 생성
-  const unique = {};
-  this.filteredVouchers.forEach((voucher) => {
-    if (!unique[voucher.voucId]) {
-      unique[voucher.voucId] = [];
-    }
-    unique[voucher.voucId].push(voucher);
-  });
+      // 중복 제거된 유니크 출고전표 목록 생성
+      const unique = {};
+      this.activeVouchers.forEach((voucher) => {
+        if (!unique[voucher.voucId]) {
+          unique[voucher.voucId] = [];
+        }
+        unique[voucher.voucId].push(voucher);
+      });
 
-  // 대기중인 항목을 최상단에 위치시키기 위해 정렬
-  const sortedValues = Object.values(unique).sort((a, b) => {
-    const aWaiting = a[0].approvalStatus.trim() === '대기중';
-    const bWaiting = b[0].approvalStatus.trim() === '대기중';
+      return Object.values(unique).sort((a, b) => a[0].approvalStatus.trim() === '대기중' ? -1 : 1);
 
-    if (aWaiting && !bWaiting) {
-      return -1; // a는 대기중, b는 대기중이 아님 -> a를 앞으로 이동
-    } else if (!aWaiting && bWaiting) {
-      return 1; // a는 대기중이 아님, b는 대기중 -> b를 앞으로 이동
-    } else {
-      return 0; // 둘 다 대기중이거나 둘 다 대기중이 아님
-    }
-  });
-
-  return sortedValues;
+    return sortedValues;
     },
   },
   mounted() {
@@ -181,6 +168,14 @@ export default {
         console.error("Error fetching vouchers:", error);
       }
     },
+    searchVouchers() {
+      // 사용자가 설정한 필터에 따라 `filteredVouchers`를 추가로 필터링
+      this.activeVouchers = this.filteredVouchers.filter(voucher => {
+        const fieldFilter = this.selectedField && this.filter ? voucher[this.selectedField] === this.filter : true;
+        const statusFilter = this.selectedStatus ? voucher.approvalStatus.trim() === this.selectedStatus : true;
+        return fieldFilter && statusFilter;
+      });
+    },
     calculateTotalSalesForVoucherId(voucherGroup) { //같은 전표번호의 매출액 합계 계산
       return voucherGroup.reduce((total, voucher) => total + Number(voucher.voucSales), 0);
     },
@@ -189,17 +184,11 @@ export default {
       this.$router.push(`/product/voucherdetail/${voucId}`);
     },
     async searchVouchers() {
-      // 사용자가 입력한 조건으로 출고전표 검색
-      try {
-        const params = {};
-        if (this.selectedField && this.filter) {
-          params[this.selectedField] = this.filter;
-        }
-        const response = await axios.get("/vouchers/search", { params });
-        this.vouchers = response.data;
-      } catch (error) {
-        console.error("Error searching vouchers:", error);
-      }
+      this.activeVouchers = this.filteredVouchers.filter(voucher => {
+        const fieldFilter = this.selectedField && this.filter ? voucher[this.selectedField].includes(this.filter) : true;
+        const statusFilter = this.selectedStatus ? voucher.approvalStatus.trim() === this.selectedStatus : true;
+        return fieldFilter && statusFilter;
+      });
     },
   },
 };
