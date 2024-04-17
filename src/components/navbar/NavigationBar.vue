@@ -117,8 +117,14 @@ const sitelogout = async () => {
 </script>
 
 <style lang="scss" scoped>
+@font-face {
+  font-family: '05HanwhaGothicR';
+  src: url('/src/assets/fonts/05HanwhaGothicR.ttf') format('truetype');
+}
 .va-navbar {
   z-index: 2;
+  
+}
 
   @media screen and (max-width: 950px) {
     .left {
@@ -130,7 +136,7 @@ const sitelogout = async () => {
       justify-content: space-between;
     }
   }
-}
+
 
 .left {
   display: flex;
@@ -160,6 +166,7 @@ const sitelogout = async () => {
 }
 
 .va-navbar__item {
+  font-family: '05HanwhaGothicR', sans-serif !important;
   font-size: 18px; // Center 폰트 크기
   &:hover {
     // text-decoration: underline;
