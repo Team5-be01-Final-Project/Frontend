@@ -107,6 +107,7 @@ export default {
         { text: "승인", value: "승인" },
         { text: "반려", value: "반려" },
       ],
+      selectedStatus: ""
     };
   },
   computed: {
@@ -182,7 +183,7 @@ export default {
     },
     nextPage() {
       // 다음 페이지로 이동하는 메서드입니다.
-      if (this.currentPage < this.pageCount) {
+      if (this.currentPage+1 < this.pageCount) {
         this.currentPage++;
       }
     },
