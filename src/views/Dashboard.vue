@@ -1,7 +1,6 @@
 <!-- Dashboard.vue -->
 <template>
   <div class="dashboard-container">
-    <h3 class="va-h3">대시보드</h3>
     <div class="grid-top">
       <!-- POI 지도 컴포넌트 -->
       <div class="poi-map-container">
