@@ -25,7 +25,7 @@
           <tr>
             <th class="text-left" @click="sort('voucId')">
               전표번호
-              <span v-if="currentSort === 'voucId'">{{ currentSortDir === 'asc' ? '▲' : '▼' }}</span>
+              <span>{{ currentSort === 'voucId' ? (currentSortDir === 'asc' ? '▲' : '▼') : '▼' }}</span>
             </th>
             <th class="text-left">담당자</th>
             <th class="text-left">거래처명</th>
@@ -33,7 +33,7 @@
             <th class="text-left">결재상태</th>
             <th class="text-left" @click="sort('voucApproval')">
               결재일
-              <span v-if="currentSort === 'voucApproval'">{{ currentSortDir === 'asc' ? '▲' : '▼' }}</span>
+              <span>{{ currentSort === 'voucApproval' ? (currentSortDir === 'asc' ? '▲' : '▼') : '▼' }}</span>
             </th>
           </tr>
         </thead>
@@ -183,7 +183,7 @@ export default {
     },
     nextPage() {
       // 다음 페이지로 이동하는 메서드입니다.
-      if (this.currentPage+1 < this.pageCount) {
+      if (this.currentPage < this.pageCount) {
         this.currentPage++;
       }
     },
