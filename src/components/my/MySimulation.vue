@@ -12,9 +12,7 @@
           <tr>
             <th>금월 인센티브 금액</th>
             <td class="amount-cell">
-              {{ currentIncentiveBase.toLocaleString() }}원 + {{ currentRankIncentive.toLocaleString() }}원 ({{ currentRankMessage }})
-              <br>
-              = {{ currentIncentive.toLocaleString() }}원
+              {{ currentIncentive.toLocaleString() }}원
             </td>
           </tr>
           <tr>
@@ -40,9 +38,7 @@
           <tr>
             <th>인센티브 예상 금액</th>
             <td class="amount-cell">
-              {{ simulatedIncentiveBase.toLocaleString() }}원 + {{ simulatedRankIncentive.toLocaleString() }}원 ({{ simulatedRankMessage }})
-              <br>
-              = {{ simulatedIncentive.toLocaleString() }}원
+              {{ simulatedIncentive.toLocaleString() }}원
             </td>
           </tr>
           <tr>
