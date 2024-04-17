@@ -17,8 +17,8 @@ const items = [
     title: "거래처 관리",
     icon: "local_hospital",
     children: [
-      { title: "거래처 등록", routeName: "clientsave" },
       { title: "거래처 조회", routeName: "viewclient" },
+      { title: "거래처 등록", routeName: "clientsave" },
     ],
   },
   {
