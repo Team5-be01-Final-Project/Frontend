@@ -130,8 +130,6 @@ export default {
       });
 
       return Object.values(unique).sort((a, b) => a[0].approvalStatus.trim() === '대기중' ? -1 : 1);
-
-    return sortedValues;
     },
   },
   mounted() {
@@ -164,17 +162,14 @@ export default {
         const response = await axios.get("/vouchers");
         this.vouchers = response.data;
         console.log(response)
+
+        this.activeVouchers = this.filteredVouchers.filter(voucher => {
+        const statusFilter = this.selectedStatus ? voucher.approvalStatus.trim() === this.selectedStatus : true;
+        return voucher.deptCode === this.userDeptCode && statusFilter;
+      });
       } catch (error) {
         console.error("Error fetching vouchers:", error);
       }
-    },
-    searchVouchers() {
-      // 사용자가 설정한 필터에 따라 `filteredVouchers`를 추가로 필터링
-      this.activeVouchers = this.filteredVouchers.filter(voucher => {
-        const fieldFilter = this.selectedField && this.filter ? voucher[this.selectedField] === this.filter : true;
-        const statusFilter = this.selectedStatus ? voucher.approvalStatus.trim() === this.selectedStatus : true;
-        return fieldFilter && statusFilter;
-      });
     },
     calculateTotalSalesForVoucherId(voucherGroup) { //같은 전표번호의 매출액 합계 계산
       return voucherGroup.reduce((total, voucher) => total + Number(voucher.voucSales), 0);
@@ -185,8 +180,10 @@ export default {
     },
     async searchVouchers() {
       this.activeVouchers = this.filteredVouchers.filter(voucher => {
-        const fieldFilter = this.selectedField && this.filter ? voucher[this.selectedField].includes(this.filter) : true;
+        const fieldFilter = this.selectedField && this.filter 
+        ? voucher[this.selectedField].toString().includes(this.filter) : true;
         const statusFilter = this.selectedStatus ? voucher.approvalStatus.trim() === this.selectedStatus : true;
+        
         return fieldFilter && statusFilter;
       });
     },
