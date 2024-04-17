@@ -41,7 +41,7 @@
               <th>담당자</th>
               <th>담당자 연락처</th>
               <th>담당 사원</th>
-              <th>삭제</th>
+              <th v-if="canDeleteClient">삭제</th>
             </tr>
           </thead>
           <tbody>
@@ -63,7 +63,7 @@
               <td style="text-align: center">{{ client.clientEmp }}</td>
               <td style="text-align: center">{{ client.clientEmpTel }}</td>
               <td style="text-align: center">{{ client.empName }}</td>
-              <td class="index-center">
+              <td v-if="canDeleteClient" class="index-center">
                 <VaButton
                 preset="primary" color="danger" class="mr-6 mb-2"
                   @click="deleteClient(client.clientCode)"
