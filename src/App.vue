@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <NavigationBar v-if="!isLoginPage" class="navigation-bar" />
+    <NavigationBar v-if="!isLoginPage && !isNotFoundPage" class="navigation-bar" />
     <div class="main-content" v-if="!isMySalesPage && !isDashboardPage &&!isNotFoundPage">
       <RouterView />
     </div>
@@ -11,8 +11,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
-import { useRoute } from 'vue-router'
+import { computed } from 'vue';import { useRoute } from 'vue-router'
 import NavigationBar from '@/components/navbar/NavigationBar.vue'
 import Dashboard from '@/views/Dashboard.vue';
 import MySales from '@/views/MySales.vue';
