@@ -13,7 +13,7 @@
         <div class="sort-menu">
           <div>
             <va-select v-model="selectedYear" :options="yearOption" placeholder="년도 선택" style="margin-right: 5px;" />
-            <va-select v-model="selectedMonth" :options="monthOptions1" placeholder="월 선택" style="margin-right: 5px;" />
+            <va-select v-model="selectedMonth" :options="monthOptions" placeholder="월 선택" style="margin-right: 5px;" />
             <va-input v-model="clientNameFilter" placeholder="거래처명 검색" style="margin-right: 5px;" />
             <va-button @click="filterSalesData">검색</va-button>
             <refresh-button class="left-margin" />
@@ -60,7 +60,7 @@ import axios from 'axios';
 // HTTP 요청을 보내기 위한 axios 라이브러리를 가져옵니다.
 
 import { yearOptions } from '@/utils/yearOptions.js';
-import { monthOptions1 } from '@/utils/monthOptions';
+import { monthOptions } from '@/utils/monthOptions.js';
 // 년도와 월 선택 옵션을 가져옵니다.
 
 import SalesSidebar from '@/components/sidebar/SalesSidebar.vue';
@@ -82,8 +82,10 @@ const currentMonth = ("0" + (new Date().getMonth() + 1)).slice(-2);
 const yearOption = yearOptions;
 // 년도 선택 옵션을 설정합니다.
 
+
+// 선택된 월을 현재 월로 초기화합니다.
 const selectedYear = ref(yearOptions.find(option => option.value === new Date().getFullYear()));
-const selectedMonth = ref(monthOptions1.find(option => option.value === new Date().getMonth() + 1));
+const selectedMonth = ref(monthOptions.find(option => option.value === new Date().getMonth() + 1));
 
 // Props와 메서드 정의는 기존 코드에서 변경 없이 유지
 const exportHeaders = computed(() => ({
@@ -111,8 +113,6 @@ const exportData = computed(() => {
     profitMargin: formatProfitMargin(item.profitMargin)
   }));
 });
-
-// 선택된 월을 현재 월로 초기화합니다.
 
 const clientNameFilter = ref('');
 // 거래처명 검색어를 저장할 ref를 생성합니다.
