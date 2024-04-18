@@ -30,11 +30,6 @@ $ npm install @fortawesome/fontawesome-free
 npm run dev
 ```
 
-## Compile and Minify for Production
-
-```sh
-npm run build
-```
 ## Deploy URL
 - https://bpssystem.store
 
