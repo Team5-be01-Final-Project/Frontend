@@ -30,7 +30,7 @@ const items = [
     children: [
       {
 
-        title: "거래처별 제품 등록 및 수정",
+        title: "거래처별 판매가 등록 및 수정",
         routeName: "ppccrud",
       },
       {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h4>월별 매출 현황</h4>
+    <h4>총 매출 현황</h4>
     <div class="chart-container">
       <canvas ref="monthlySalesChartRef"></canvas>
     </div>

@@ -37,7 +37,7 @@
               <th>주성분</th>
               <th>ATC코드</th>
               <th>분류</th>
-              <th>단가</th>
+              <th v-if="isAuthorized">단가</th>
             </tr>
           </thead>
           <tbody>
@@ -52,10 +52,9 @@
               <td>{{ product.proIngre }}</td>
               <td>{{ product.proAtc }}</td>
               <td>{{ product.proCat }}</td>
-              <td class="money-right" v-if="isAuthorized">
+              <td  class="money-right" v-if="isAuthorized">
                 {{ formatNumberWithCommas(product.proUnit) }}
               </td>
-              <td class="money-right" v-else>-</td>
             </tr>
           </tbody>
         </table>
