@@ -21,7 +21,7 @@
         <VaInput v-model="filter" :disabled="!selectedSearchCondition" placeholder="검색어 입력" class="col-span-8 search-input" />
         <VaButton @click="searchStockList" class="search-button col-span-2">검색</VaButton>
         <refresh-button class="left-margin"/>
-        <VaButton @click="openRegisterModal" class="register-button">재고 등록</VaButton>
+        <VaButton v-if ="canRegisterStock" @click="openRegisterModal" class="register-button">재고 등록</VaButton>
       </div>
       <div class="right-align">단위 : 개 / 원</div>
       <div class="va-table-responsive">
@@ -60,6 +60,7 @@
 <script setup>
 import { defineComponent, ref, computed, onMounted } from "vue";
 import axios from "axios";
+import Cookies from "js-cookie";
 import StockRegi from "@/components/StockRegi.vue";
 import { VaSelect, VaInput, VaButton } from "vuestic-ui";
 import ProductSidebar from "@/components/sidebar/ProductSidebar.vue";
@@ -73,6 +74,12 @@ const filter = ref(""); // 사용자가 입력한 검색어를 저장하는 변�
 const currentPage = ref(1); // 현재 페이지 번호를 저장하는 변수
 const perPage = ref(15); // 페이지당 보여줄 항목 수를 저장하는 변수
 const showRegisterModal = ref(false); // 재고 등록 모달의 표시 여부를 저장하는 변수
+
+// 삭제 권한 확인
+const canRegisterStock = computed(() => {
+  const userRole = Cookies.get("empAuthCode");
+  return ["AUTH001", "AUTH002", "AUTH003"].includes(userRole); // 여러 권한 확인
+});
 
 const filterOptions = ref([
   // 필터링 옵션 목록
