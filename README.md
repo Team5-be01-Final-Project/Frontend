@@ -287,7 +287,7 @@ ___
 
 - [v6.0.0](https://github.com/Team5-be01-Final-Project/Frontend2/releases/tag/v6.0.0)
   - 버그 수정 및 기타 디자인 수정
-  - 
+    
 <details>
 <summary>  릴리즈 모음  </summary>
 <div markdown="1">
