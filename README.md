@@ -44,6 +44,14 @@ npm run build
 
 
 ## Release History
+- [v6.0.0](https://github.com/Team5-be01-Final-Project/Frontend2/releases/tag/v6.0.0)
+  - 버그 수정 및 기타 디자인 수정
+- [v5.0.0](https://github.com/Team5-be01-Final-Project/Frontend2/releases/tag/v5.0.0)
+  - 디자인 및 기타 오류 수정
+- [v4.0.0](https://github.com/Team5-be01-Final-Project/Frontend2/releases/tag/v4.0.0)
+  - 권한 관리 추가.
+- [v3.0.0](https://github.com/Team5-be01-Final-Project/Frontend2/releases/tag/v3.0.0)
+  - 대시보드, My영업 및 매출 관리 기능 추가.
 - [v2.0.0](https://github.com/Team5-be01-Final-Project/Frontend2/releases/tag/v2.0.0)
   - Docker, Nginx 사용, npm run build로 수정 및 쿠키 들어오는거 확인
 - [v1.0.0](https://github.com/Team5-be01-Final-Project/Frontend2/releases/tag/v1.0.0)
