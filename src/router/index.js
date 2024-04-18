@@ -91,8 +91,7 @@ const router = createRouter({
         { //재고 조회 및 재고 등록
           path: 'stockList',
           name: 'stockList',
-          component: () => import('../views/ProductView/StockList.vue'),
-          meta: { allowedAuthCodes: ['AUTH001', 'AUTH002', 'AUTH003'] }//팀장 이상만 접속
+          component: () => import('../views/ProductView/StockList.vue')
         },
         { //출고 전표 등록
           path: 'vouchersave',
