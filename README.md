@@ -22,6 +22,9 @@ $ npm install -D sass
 $ npm install js-cookie
 $ npm install chart.js
 $ npm install @fortawesome/fontawesome-free
+$ npm install xlsx file-saver
+$ npm install lodash-es
+$ npm install autonumeric
 
 ```
 ## Compile and Hot-Reload for Development
