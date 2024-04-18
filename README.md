@@ -285,23 +285,24 @@ ___
 ### 🧾 릴리즈 내역
 <br>
 
-- [v6.0.0](https://github.com/Team5-be01-Final-Project/Frontend2/releases/tag/v6.0.0)
+- [Release v6.0.0](https://github.com/Team5-be01-Final-Project/Frontend2/releases/tag/v6.0.0)
   - 버그 수정 및 기타 디자인 수정
     
 <details>
 <summary>  릴리즈 모음  </summary>
 <div markdown="1">
-- [v5.0.0](https://github.com/Team5-be01-Final-Project/Frontend2/releases/tag/v5.0.0)
+  
+- [Release v5.0.0](https://github.com/Team5-be01-Final-Project/Frontend2/releases/tag/v5.0.0)
   - 디자인 및 기타 오류 수정
-- [v4.0.0](https://github.com/Team5-be01-Final-Project/Frontend2/releases/tag/v4.0.0)
+- [Release v4.0.0](https://github.com/Team5-be01-Final-Project/Frontend2/releases/tag/v4.0.0)
   - 권한 관리 추가.
-- [v3.0.0](https://github.com/Team5-be01-Final-Project/Frontend2/releases/tag/v3.0.0)
+- [Release v3.0.0](https://github.com/Team5-be01-Final-Project/Frontend2/releases/tag/v3.0.0)
   - 대시보드, My영업 및 매출 관리 기능 추가.
-- [v2.0.0](https://github.com/Team5-be01-Final-Project/Frontend2/releases/tag/v2.0.0)
+- [Release v2.0.0](https://github.com/Team5-be01-Final-Project/Frontend2/releases/tag/v2.0.0)
   - Docker, Nginx 사용, npm run build로 수정 및 쿠키 들어오는거 확인
-- [v1.0.0](https://github.com/Team5-be01-Final-Project/Frontend2/releases/tag/v1.0.0)
+- [Release v1.0.0](https://github.com/Team5-be01-Final-Project/Frontend2/releases/tag/v1.0.0)
   - Github Flow를 통해 EC2로 CI/CD 구축. (Docker 및 nginx는 사용하지 않고, npm run dev로 실행 확인)
-  - 
+
  </div>
 </details>
 
