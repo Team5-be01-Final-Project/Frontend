@@ -1,5 +1,5 @@
 <template>
-  <h4>이달의 매출 현황</h4>
+  <h4>거래처별 매출 현황</h4>
   <div>
     <div class="right-align">단위 : 원</div>
     <table class="va-table va-table--hoverable">
