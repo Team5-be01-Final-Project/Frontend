@@ -2,7 +2,7 @@
   <h4>현재 창고 온도</h4>
   <div class="warehouse-container">
     <div class="temperature-display">
-      <p v-if="srg10Temp !== null">현재 창고 온도: {{ srg10Temp }}°C</p>
+      <p v-if="srg10Temp !== null">SRG10 온도 : {{ srg10Temp }}°C</p>
     </div>
   </div>
 </template>
@@ -36,11 +36,16 @@ defineExpose({ fetchData });
 
 <style scoped>
 .warehouse-container {
-  background-color: #f0f0f0; /* 배경색을 회색으로 설정 */
-  text-align: center; /* 이미지를 중앙 정렬 */
-  padding: 10px;
-  margin-top: 20px;
+ background-color: #ffffff;
+ text-align: center;
+ padding: 20px;
+ margin-top: 20px;
+ border: 2px solid #e0e0e0;
+ border-radius: 10px;
+ box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+ position: relative;
 }
+
 
 h4 {
   font-size: 25px; /* h4 태그의 폰트 사이즈를 키움 */
