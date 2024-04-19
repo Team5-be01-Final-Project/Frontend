@@ -41,6 +41,18 @@ npm run dev
 ```
 
 ___
+### 📀 Deploy URL
+- https://bpssystem.store
+
+___
+### 🚩 Github Action Deploy to EC2 with docker container
+<br/>
+
+![image](https://github.com/Team5-be01-Final-Project/Frontend/assets/149128094/f7fe7fce-9df0-44fe-a317-844d61d97a6f)
+
+
+
+___
 ### 🎨 FrontEnd View
 <br/>
 
@@ -266,20 +278,6 @@ ___
 </div>
 </details>
 <br/>
-
-
-
-
-
-___
-### 📀 Deploy URL
-- https://bpssystem.store
-
-___
-### 🚩 Github Action Deploy to EC2 with docker container
-<br/>
-
-![image](https://github.com/Team5-be01-Final-Project/Frontend/assets/149128094/f7fe7fce-9df0-44fe-a317-844d61d97a6f)
 
 ___
 ### 🧾 릴리즈 내역
