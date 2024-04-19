@@ -112,6 +112,7 @@ function renderChart(data) {
 defineExpose({
   fetchData
 });
+
 </script>
 
 <style scoped>
