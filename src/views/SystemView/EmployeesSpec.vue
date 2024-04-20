@@ -39,7 +39,7 @@
                   class="employee-image" /><br>{{ employee.empName }}</td>
               <td style="text-align: center">{{ employee.posName }}</td>
               <td style="text-align: center">{{ employee.deptName }}</td>
-              <td>{{ employee.empTel }}</td>
+              <td style="text-align: center">{{ employee.empTel }}</td>
               <td style="text-align: center">{{ employee.empEmail }}</td>
               <td style="text-align: center">{{ employee.empStartDate }}</td>
               <td style="text-align: center">{{ employee.empEndDate }}</td>
