@@ -194,7 +194,7 @@ select {
 
 /* 등록 버튼에 대한 스타일 */
 .submit-button {
-  background-color: #154EC1;
+  background-color: #0056b3;
   color: #fff;
 }
 
@@ -205,9 +205,12 @@ select {
 }
 
 /* 마우스를 올렸을 때 버튼에 대한 스타일 */
-.submit-button:hover,
+.submit-button:hover {
+  background-color: #3a90eb;
+}
+
 .cancel-button:hover {
-  background-color: #0056b3;
+  background-color: #a5a5a5;
 }
 
 /* 모달 애니메이션 */
