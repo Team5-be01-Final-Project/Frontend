@@ -82,6 +82,7 @@ function formatCurrency(amount) {
   padding: 20px;
   background-color: #ffffff;
   border: 2px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
   text-align: center;
@@ -113,7 +114,7 @@ function formatCurrency(amount) {
 }
 
 h4 {
-  font-size: 25px;
+  font-size: 20px;
 }
 
 .employee-name {

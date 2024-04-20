@@ -78,7 +78,7 @@ const formatCurrency = (value) => {
 }
 
 h4 {
-  font-size: 25px;
+  font-size: 20px;
   /* h4 태그의 폰트 사이즈를 키움 */
 }
 

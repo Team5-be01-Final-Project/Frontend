@@ -115,11 +115,11 @@ watch(selectedYear, fetchMonthlySales);
 <style>
 .chart-container {
   height: 480px; /* 또는 적절한 높이로 설정 */
-  width: 800px;
+  width: 100%;
   margin-top: 20px;
 }
 
 h4 {
-  font-size: 25px; /* h4 태그의 폰트 사이즈를 키움 */
+  font-size: 20px; /* h4 태그의 폰트 사이즈를 키움 */
 }
 </style>

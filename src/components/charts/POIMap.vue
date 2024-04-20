@@ -107,12 +107,15 @@ onMounted(() => {
 </script>
 
 <style scoped>
-#map{
+#map {
   margin-top: 20px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 h4 {
-  font-size: 25px;
+  font-size: 20px;
   /* h4 태그의 폰트 사이즈를 키움 */
 }
 </style>

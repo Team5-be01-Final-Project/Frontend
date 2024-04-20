@@ -48,7 +48,7 @@ defineExpose({ fetchData });
 
 
 h4 {
-  font-size: 25px; /* h4 태그의 폰트 사이즈를 키움 */
+  font-size: 20px; /* h4 태그의 폰트 사이즈를 키움 */
 }
 .temperature-display {
   display: flex;
