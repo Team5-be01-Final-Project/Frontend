@@ -1,55 +1,59 @@
-<!-- Modal.vue -->
+<!-- EditDeleteModal.vue -->
 <template>
-  <div v-if="isVisible" class="modal">
-    <div class="modal-content">
-      <span class="close" @click="closeModal">&times;</span>
-      <h2 class="modal-title">{{ isEditing ? "제품 수정" : "제품 삭제" }}</h2>
-      <div class="form-group">
-        <label>거래처명</label>
-        <label class="label-name">{{ currentItem.clientName }}</label>
-      </div>
-      <div class="form-group">
-        <label>제품명</label>
-        <label class="label-name">{{ currentItem.proName }}</label>
-      </div>
-      <div class="form-group">
-        <label>단가</label>
-        <label class="label-name">{{ currentItem.proUnit }}</label>
-      </div>
-      <div class="form-group" v-if="isEditing">
-        <label>
-          판매가
-          <input
-            type="number"
-            v-model="currentItem.ppcSale"
-            :min="currentItem.proUnit"
-            @input="validatePrice"
-          />
-        <p :class="{'error-message': true, 'hidden': !showInvalidPriceError}">
-          판매가는 단가보다 높아야 합니다.
-        </p>
-        </label>
-      </div>
-      <div v-else>
-        <label>판매가</label>
-        <label class="label-name">{{ currentItem.ppcSale }}</label>
-      </div>
-      <div class="button-group">
-        <button
-          v-if="isEditing"
-          @click="confirmEdit"
-          :disabled="isInvalidPrice"
-          class="submit-button"
-        >
-          수정하기
-        </button>
-        <button v-else @click="confirmDelete" class="submit-button">
-          삭제하기
-        </button>
-        <button @click="closeModal" class="cancel-button">취소</button>
+  <transition name="modal" appear>
+    <div v-if="isVisible" class="modal">
+      <div class="modal-content">
+        <span class="close" @click="closeModal">&times;</span>
+        <h2 class="modal-title">{{ isEditing ? "제품 수정" : "제품 삭제" }}</h2>
+        <div class="form-group">
+          <label>거래처명</label>
+          <label class="label-name">{{ currentItem.clientName }}</label>
+        </div>
+        <div class="form-group">
+          <label>제품명</label>
+          <label class="label-name">{{ currentItem.proName }}</label>
+        </div>
+        <div class="form-group">
+          <label>단가</label>
+          <label class="label-name">{{ currentItem.proUnit }}</label>
+        </div>
+        <div class="form-group" v-if="isEditing">
+          <label>
+            판매가
+            <input
+              type="number"
+              v-model="currentItem.ppcSale"
+              :min="currentItem.proUnit"
+              @input="validatePrice"
+            />
+            <p
+              :class="{ 'error-message': true, hidden: !showInvalidPriceError }"
+            >
+              판매가는 단가보다 높아야 합니다.
+            </p>
+          </label>
+        </div>
+        <div v-else>
+          <label>판매가</label>
+          <label class="label-name">{{ currentItem.ppcSale }}</label>
+        </div>
+        <div class="button-group">
+          <button
+            v-if="isEditing"
+            @click="confirmEdit"
+            :disabled="isInvalidPrice"
+            class="submit-button"
+          >
+            수정하기
+          </button>
+          <button v-else @click="confirmDelete" class="submit-button">
+            삭제하기
+          </button>
+          <button @click="closeModal" class="cancel-button">취소</button>
+        </div>
       </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -80,11 +84,15 @@ export default {
       // 수정 확인
       if (!this.isInvalidPrice) {
         this.$emit("edit", this.currentItem);
+        alert("제품 수정이 완료되었습니다.");
+        this.closeModal();
       }
     },
     confirmDelete() {
       // 삭제 확인
       this.$emit("delete", this.currentItem);
+      alert("제품 삭제가 완료되었습니다.");
+      this.closeModal();
     },
     validatePrice() {
       // 판매가 유효성 검사
@@ -172,7 +180,8 @@ label {
   margin-top: 10px; /* 위쪽 여백 */
 }
 
-.hidden { /*에러 메시지 공간 예약*/
+.hidden {
+  /*에러 메시지 공간 예약*/
   visibility: hidden;
 }
 
@@ -213,5 +222,23 @@ label {
 
 .cancel-button:hover {
   background-color: #9b9b9b; /* 호버시 배경색 */
+}
+
+/* 모달 애니메이션 */
+.modal-enter-active,
+.modal-leave-active {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.modal-enter-from,
+.modal-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.modal-enter-to,
+.modal-leave-from {
+  opacity: 1;
+  transform: translateY(0);
 }
 </style>
