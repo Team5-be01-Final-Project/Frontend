@@ -19,7 +19,11 @@
         </div>
         <div>
           <label for="product">제품 선택</label>
-          <select v-model="selectedProduct" id="product" @change="handleProductChange">
+          <select
+            v-model="selectedProduct"
+            id="product"
+            @change="handleProductChange"
+          >
             <option
               v-for="product in products"
               :key="product.proCode"
@@ -45,7 +49,7 @@
             :min="selectedProduct ? selectedProduct.proUnit : ''"
             @input="validatePrice"
           />
-          <p :class="{'error-message': true, 'hidden': !showInvalidPriceError}">
+          <p :class="{ 'error-message': true, hidden: !showInvalidPriceError }">
             판매가는 단가보다 높아야 합니다.
           </p>
         </div>
@@ -128,15 +132,19 @@ export default {
           } else {
             // 존재하지 않는 경우 등록 진행
             this.$emit("register", newPpc);
+            alert("제품 등록이 완료되었습니다.");
+            this.closeModal();
             this.resetForm();
           }
         })
         .catch((error) => {
           console.error("제품 등록 여부를 확인하는데 실패했습니다:", error);
           this.errorMessage = "제품 등록 여부를 확인하는데 실패했습니다.";
+          alert("제품 등록에 실패했습니다.");
         });
     },
-    handleProductChange() { // 다른 상품을 선택하면
+    handleProductChange() {
+      // 다른 상품을 선택하면
       this.salePrice = null; // 판매가 초기화
       this.showInvalidPriceError = false; // 가격 오류 메시지 표시 비활성화
     },
@@ -268,7 +276,8 @@ label {
   margin-top: 5px;
 }
 
-.hidden { /*에러 메시지 공간 예약*/
+.hidden {
+  /*에러 메시지 공간 예약*/
   visibility: hidden;
 }
 
@@ -343,5 +352,4 @@ label {
   opacity: 1;
   transform: translateY(0);
 }
-
 </style>
