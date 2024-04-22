@@ -107,8 +107,6 @@ https://github.com/T2-Papillon/Main/assets/148880521/d3202842-64e8-4f0b-8f74-310
 
 - 월별로 총매출 합계와 순이익을 조회할 수 있다.
 
-<br/>
-
 </div>
 </details>
 <br/>
