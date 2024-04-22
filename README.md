@@ -212,6 +212,7 @@ https://github.com/Team5-be01-Final-Project/.github/assets/148880521/9138c2b7-58
 ### 전표 조회
 <br/>
 
+![image](https://github.com/Team5-be01-Final-Project/Frontend/assets/149128094/89c6553f-ce79-4e82-8deb-49431d77b204)
 - 전표의 상태는 승인대기, 승인완료, 반려가 있다.
 - 모든 전표 목록은 전 직원이 조회할 수 있다.
 <br/>
@@ -241,13 +242,6 @@ https://github.com/Team5-be01-Final-Project/.github/assets/148880521/9138c2b7-58
 - 반려 시 전표 등록에 차감되었던 물품 수량은 재고로 재등록 된다.
 <br/>
 
-### 전표 조회
-<br/>
-
-![image](https://github.com/Team5-be01-Final-Project/Frontend/assets/149128094/89c6553f-ce79-4e82-8deb-49431d77b204)
-
-- 등록된 전표의 목록들은 전 사원이 조회가 가능하다.
-<br/>
 
 </div>
 </details>
