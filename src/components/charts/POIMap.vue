@@ -75,9 +75,9 @@ async function displayClientsOnMap() {
         if (status === kakao.maps.services.Status.OK) {
           const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
           let imageSrc = client.clientName === topSalesClient.clientName
-            ? 'https://raw.githubusercontent.com/Team5-be01-Final-Project/Frontend/e11ab941ef01063c05b2469ed1b8069ae3175450/src/components/icons/%EC%A7%80%EB%8F%84%EC%95%84%EC%9D%B4%EC%BD%98_%EC%99%95%EA%B4%80.png'
-            : 'https://raw.githubusercontent.com/Team5-be01-Final-Project/Frontend/e11ab941ef01063c05b2469ed1b8069ae3175450/src/components/icons/%EC%A7%80%EB%8F%84%EC%95%84%EC%9D%B4%EC%BD%98.png';
-            // ? 'https://cdn-icons-png.flaticon.com/512/4834/4834723.png'
+            ? 'https://cdn-icons-png.flaticon.com/512/4834/4834723.png'
+            // ? 'https://raw.githubusercontent.com/Team5-be01-Final-Project/Frontend/e11ab941ef01063c05b2469ed1b8069ae3175450/src/components/icons/%EC%A7%80%EB%8F%84%EC%95%84%EC%9D%B4%EC%BD%98_%EC%99%95%EA%B4%80.png'
+            : 'https://raw.githubusercontent.com/Team5-be01-Final-Project/Frontend/e11ab941ef01063c05b2469ed1b8069ae3175450/src/components/icons/%EC%A7%80%EB%8F%84%EC%95%84%EC%9D%B4%EC%BD%98.png'; 
             // : 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
           const markerImage = new kakao.maps.MarkerImage(imageSrc, new kakao.maps.Size(24, 35));
           const marker = new kakao.maps.Marker({ map, position: coords, image: markerImage });
