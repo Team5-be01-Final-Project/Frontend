@@ -196,7 +196,7 @@ https://github.com/Team5-be01-Final-Project/.github/assets/148880521/5d08f08e-0d
 <summary> ⭐ <b>재고 관리</b>  </summary>
 <div markdown="1">
 
-### 재고 조회
+### 재고 조회 및 등록
 <br/>
 
 https://github.com/Team5-be01-Final-Project/.github/assets/148880521/9138c2b7-58e8-48d6-9161-d30310e312e6
@@ -281,6 +281,8 @@ https://github.com/Team5-be01-Final-Project/.github/assets/148880521/b0ba662c-4f
 ### 거래처 등록 및 수정
 <br/>
 
+https://github.com/Team5-be01-Final-Project/.github/assets/148880521/4f2a3fc3-3683-4bdd-913f-04aa27911d2f
+
 - 대표, 팀장만 매출 거래처 등록, 수정과 삭제 권한이 있으며 사원은 등록, 수정 삭제 기능을 이용할 수 없다.
 <br/>
 
@@ -310,22 +312,22 @@ https://github.com/Team5-be01-Final-Project/.github/assets/148880521/b0ba662c-4f
 <summary> ⭐ <b>My 영업</b>  </summary>
 <div markdown="1">
 
-### 내 정보 조회
+### My 영업
+<br/>
+
+https://github.com/Team5-be01-Final-Project/.github/assets/148880521/5ab69fd8-0df9-42bb-b62d-44b1b6afbece
+
+#### 내 정보 조회
 - 사원은 자신의 정보를 조회할 수 있다.
-<br/>
 
-### 내 거래처 조회
+#### 내 거래처 조회
 - 사원은 자신의 담당 병원에 대한 이름, 담당자, 담당자 전화번호를 조회할 수 있다.
-<br/>
 
-### 내 매출 현황
+#### 내 매출 현황
 - 사원은 자신의 최근 3개월 거래처 당 매출현황을 볼 수 있다.
-<br/>
 
-### 내 인센티브
+#### 내 인센티브
 - 사원은 자신의 현재매출 대비 인센티브를 확인할 수 있다.
-<br/>
-
 - 추가 매출을 기입하여 예상 인센티브를 확인할 수 있다.
 - 시뮬레이션 기능이기 때문에 데이터를 변환하지 않는다.
 
