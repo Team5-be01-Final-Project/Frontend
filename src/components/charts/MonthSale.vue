@@ -66,20 +66,20 @@ const updateChart = (filledData) => {
       labels: labels,
       datasets: [
         {
-          type: 'bar',
-          label: '매출액(100만)',
-          data: salesData,
-          backgroundColor: 'rgba(255, 229, 180, 0.5)',
-          borderColor: 'rgba(255, 229, 180, 1)',
-          borderWidth: 0
-        },
-        {
           type: 'line',
           label: '매출이익(100만)',
           data: grossProfitData,
           fill: false,
-          borderColor: 'rgb(144, 238, 144)',
+          borderColor: 'rgba(135, 206, 250, 1)', // 파스텔 블루
           tension: 0.1
+        },
+        {
+          type: 'bar',
+          label: '매출액(100만)',
+          data: salesData,
+          backgroundColor: 'rgba(255, 182, 193, 0.5)', // 파스텔 레드
+          borderColor: 'rgba(255, 182, 193, 1)',
+          borderWidth: 0
         }
       ]
     },
