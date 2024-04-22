@@ -61,7 +61,7 @@ const formatCurrency = (value) => {
 
 <style>
 .va-table {
-  width: 700px;
+  width: 670px;
   border-collapse: collapse;
   margin-top: 20px;
 }

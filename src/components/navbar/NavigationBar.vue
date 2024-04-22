@@ -60,7 +60,7 @@
 
     </template>
     <template #right>
-      <router-link to="/mysales" >
+      <router-link to="/mysales">
         <VaAvatar style="height: auto; margin-top: 5px;" :src="empImg" />
       </router-link>
       <div class="right-section">
@@ -70,9 +70,9 @@
         target="_blank" aria-label="Visit github">
         <img src="https://cdn.icon-icons.com/icons2/509/PNG/512/Github_icon-icons.com_49946.png" alt="GitHub Icon" />
       </VaButton>
-      <VaButton preset="primary" @click="sitelogout"><VaIcon name="logout"/></VaButton>
-
-
+      <Button class="logout-button" @click="sitelogout">
+        <VaIcon name="logout" />
+      </Button>
     </template>
   </VaNavbar>
 </template>
@@ -120,21 +120,22 @@ const sitelogout = async () => {
   font-family: '05HanwhaGothicR';
   src: url('/src/assets/fonts/05HanwhaGothicR.ttf') format('truetype');
 }
+
 .va-navbar {
   z-index: 2;
-  
+
 }
 
-  @media screen and (max-width: 950px) {
-    .left {
-      width: 100%;
-    }
-
-    .app-navbar__actions {
-      display: flex;
-      justify-content: space-between;
-    }
+@media screen and (max-width: 950px) {
+  .left {
+    width: 100%;
   }
+
+  .app-navbar__actions {
+    display: flex;
+    justify-content: space-between;
+  }
+}
 
 
 .left {
@@ -152,9 +153,12 @@ const sitelogout = async () => {
 }
 
 img {
-  width: 50px;  /* 이미지의 너비 조정 */
-  height: auto; /* 이미지의 높이를 비율에 맞게 자동 조정 */
-  border-radius: 10px; /* 이미지의 모서리를 둥글게 처리 */
+  width: 50px;
+  /* 이미지의 너비 조정 */
+  height: auto;
+  /* 이미지의 높이를 비율에 맞게 자동 조정 */
+  border-radius: 10px;
+  /* 이미지의 모서리를 둥글게 처리 */
 }
 
 
@@ -172,6 +176,7 @@ img {
   font-family: '05HanwhaGothicR', sans-serif !important;
   font-weight: bold;
   font-size: 18px; // Center 폰트 크기
+
   &:hover {
     // text-decoration: underline;
     transition: 0.2s all;
@@ -182,6 +187,7 @@ img {
     border-bottom: 0
   }
 }
+
 .right-section {
   display: flex;
   /* Flexbox 레이아웃 사용 */
@@ -192,10 +198,21 @@ img {
   font-size: 18px;
 
 }
+
 .logout-button {
-  margin-right: 20px; /* 로그아웃 버튼 우측 마진 설정 */
+  /* 텍스트 색상을 흰색으로 지정 */
+  background-color: transparent;
+  /* 배경색을 투명하게 지정 */
+  margin-right: 5px;
+  /* 로그아웃 버튼 우측 마진 설정 */
+  padding: 10px 20px; /* 버튼 안쪽 여백 설정 */
+  border: none; /* 테두리 제거 */
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+  /* 이미지의 모서리를 둥글게 처리 */
+  }
 }
+
 /* 추가적인 스타일링이 필요한 경우 여기에 추가 */
-
-
 </style>
