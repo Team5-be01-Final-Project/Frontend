@@ -135,7 +135,7 @@
       });
       incentivesData.value = response.data;
   
-      currentIncentiveBase.value = Math.round(props.currentSales * 0.01);
+      currentIncentiveBase.value = Math.round(props.currentSales * 0.1);
       updateCurrentRank();
       currentIncentive.value = currentIncentiveBase.value + currentRankIncentive.value;
     } catch (error) {
@@ -164,11 +164,11 @@
     currentSalesRank.value = `${rank}등`;
   
     if (rank === 1) {
-      currentRankIncentive.value = Math.round(props.currentSales * 0.005);
+      currentRankIncentive.value = Math.round(props.currentSales * 0.05);
     } else if (rank === 2) {
-      currentRankIncentive.value = Math.round(props.currentSales * 0.003);
+      currentRankIncentive.value = Math.round(props.currentSales * 0.03);
     } else if (rank === 3) {
-      currentRankIncentive.value = Math.round(props.currentSales * 0.001);
+      currentRankIncentive.value = Math.round(props.currentSales * 0.01);
     } else {
       currentRankIncentive.value = 0;
     }
@@ -186,7 +186,7 @@
       // 추가 매출액 반영하여 새로운 총 매출액 계산
       const newTotalSales = props.currentSales + parseCurrencyToNumber(additionalSales.value);
       // 새로운 인센티브 계산
-      simulatedIncentiveBase.value = Math.round(newTotalSales * 0.01);
+      simulatedIncentiveBase.value = Math.round(newTotalSales * 0.1);
   
       // 모든 인센티브 정보를 조회
       const response = await axios.get("/incentive/list", {
@@ -220,11 +220,11 @@
       simulatedSalesRank.value = `${rank}등`;
   
       if (rank === 1) {
-        simulatedRankIncentive.value = Math.round(newTotalSales * 0.005);
+        simulatedRankIncentive.value = Math.round(newTotalSales * 0.05);
       } else if (rank === 2) {
-        simulatedRankIncentive.value = Math.round(newTotalSales * 0.003);
+        simulatedRankIncentive.value = Math.round(newTotalSales * 0.03);
       } else if (rank === 3) {
-        simulatedRankIncentive.value = Math.round(newTotalSales * 0.001);
+        simulatedRankIncentive.value = Math.round(newTotalSales * 0.01);
       } else {
         simulatedRankIncentive.value = 0;
       }
@@ -271,13 +271,13 @@
 .incentive-info th {
   font-weight: bold;
   text-align: left;
-  padding: 12px;
+  /* padding: 12px; */
   color: #333;
 }
 
 .sales-info td,
 .incentive-info td {
-  padding: 12px;
+  /* padding: 12px; */
 }
 
 .amount-cell {

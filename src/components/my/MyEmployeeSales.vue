@@ -129,7 +129,7 @@ table {
 /* 테이블 헤더와 셀 스타일 */
 th,
 td {
-  padding: 8px;
+  padding: 16px;
   text-align: center;
   border-bottom: 1px solid #ddd; /* 셀 하단 경계선 */
 }
@@ -145,7 +145,7 @@ th {
   text-align: right;
 }
 h3 {
-  font-size: 20px;
+  font-size: 24px;
   /* h4 태그의 폰트 사이즈를 키움 */
 }
 
