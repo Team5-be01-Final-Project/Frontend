@@ -28,7 +28,7 @@
             style="margin-right: 5px"
           />
           <VaButton @click="searchClients" class="search-button">검색</VaButton>
-          <refresh-button class="left-margin"/>
+          <refresh-button class="left-margin" />
         </div>
         <table class="va-table va-table--hoverable full-width">
           <thead>
@@ -66,7 +66,9 @@
               <td style="text-align: center">{{ client.empName }}</td>
               <td v-if="canDeleteClient" class="index-center">
                 <VaButton
-                preset="primary" color="danger" class="mr-6 mb-2"
+                  preset="primary"
+                  color="danger"
+                  class="mr-6 mb-2"
                   @click="deleteClient(client.clientCode)"
                   v-if="canDeleteClient"
                   ><va-icon name="delete"
@@ -202,7 +204,8 @@ function searchClients() {
       );
       if (classValue) {
         searchResults.value = clients.value.filter(
-          (client) => client[selectedSearchCondition.value] === classMapping[classValue]
+          (client) =>
+            client[selectedSearchCondition.value] === classMapping[classValue]
         );
       } else {
         // 매핑되는 병원 분류가 없는 경우 검색 결과 없음
@@ -271,19 +274,19 @@ onMounted(() => {
 }
 
 .va-table thead th {
-  background-color: #DEE5F2; /* 짙은 파란색 배경 */
+  background-color: #dee5f2; /* 짙은 파란색 배경 */
   font-weight: bold; /* 글자 굵게 */
   border: 2px solid #cccccc;
   border-bottom: 2px solid #cccccc; /* 회색 테두리 */
   font-size: 13px;
 }
 
-.left-margin{
+.left-margin {
   margin-left: 5px;
 }
+
 td {
   vertical-align: middle !important; /* 값들 중간 정렬 */
-
 }
 
 </style>
