@@ -10,31 +10,14 @@
       <h3 class="va-h3">전표 결재</h3>
       <!-- 검색 폼: 사용자가 결재 목록을 필터링할 수 있게 합니다. -->
       <div class="grid grid-cols-12 gap-4 mb-6 items-center">
-        <VaSelect
-          v-model="selectedStatus"
-          placeholder="결재 상태"
-          :options="statusOptions"
-          value-by="value"
-          class="col-span-2 filter-select"
-          style="margin-right: 5px"
-        />
-        <VaSelect
-          v-model="selectedSearchCondition"
-          placeholder="검색 조건"
-          :options="filterOptions"
-          value-by="value"
-          class="col-span-4 filter-select"
-          style="margin-right: 5px"
-        />
-        <VaInput
-          v-model="filter"
-          :disabled="!selectedSearchCondition"
-          placeholder="검색어 입력"
-          class="col-span-6 search-input"
-          style="margin-right: 5px"
-        />
+        <VaSelect v-model="selectedStatus" placeholder="결재 상태" :options="statusOptions" value-by="value"
+          class="col-span-2 filter-select" style="margin-right: 5px" />
+        <VaSelect v-model="selectedSearchCondition" placeholder="검색 조건" :options="filterOptions" value-by="value"
+          class="col-span-4 filter-select" style="margin-right: 5px" />
+        <VaInput v-model="filter" :disabled="!selectedSearchCondition" placeholder="검색어 입력"
+          class="col-span-6 search-input" style="margin-right: 5px" />
         <VaButton @click="searchVouchers" class="search-button col-span-2">검색</VaButton>
-        <refresh-button class="left-margin"/>
+        <refresh-button class="left-margin" />
 
       </div>
       <div class="right-align">단위 : 원</div>
@@ -53,24 +36,25 @@
         </thead>
         <tbody>
           <!-- 대기중인 출고전표 목록 출력 -->
-          <tr
-            v-for="(voucherGroup, index) in uniqueVouchers"
-            :key="'waiting-' + index"
-          >
-            <td style="text-align: center;" @click="navigateToDetail(voucherGroup[0].voucId)" class="clickable">{{ voucherGroup[0].voucId }}</td>
+          <tr v-for="(voucherGroup, index) in uniqueVouchers" :key="'waiting-' + index">
+            <td style="text-align: center;" @click="navigateToDetail(voucherGroup[0].voucId)" class="clickable">{{
+              voucherGroup[0].voucId }}</td>
             <td style="text-align: center">{{ voucherGroup[0].empName }}</td>
             <td>{{ voucherGroup[0].clientName }}</td>
             <td style="text-align: center">{{ voucherGroup[0].voucDate }}</td>
             <td style="text-align: center">
-              <VaBadge v-if="voucherGroup[0].approvalStatus.trim() === '대기중'" text="대기중" color="secondary" class="mr-2" />
-              <VaBadge v-else-if="voucherGroup[0].approvalStatus.trim() === '승인'" text="승인" color="success" class="mr-2" />
+              <VaBadge v-if="voucherGroup[0].approvalStatus.trim() === '대기중'" text="대기중" color="secondary"
+                class="mr-2" />
+              <VaBadge v-else-if="voucherGroup[0].approvalStatus.trim() === '승인'" text="승인" color="success"
+                class="mr-2" />
               <VaBadge v-else text="반려" color="danger" class="mr-2" />
               <!-- <VaBadge text="대기중" color="secondary" class="mr-2" /> -->
             </td>
             <td style="text-align: center">{{ voucherGroup[0].voucApproval }}</td>
-            <td style="text-align: right;">{{ formatNumberWithCommas(calculateTotalSalesForVoucherId(voucherGroup)) }}</td>
+            <td style="text-align: right;">{{ formatNumberWithCommas(calculateTotalSalesForVoucherId(voucherGroup)) }}
+            </td>
           </tr>
-          
+
         </tbody>
       </table>
     </div>
@@ -117,13 +101,18 @@ export default {
   },
   computed: {
     filteredVouchers() {
-      // 사용자 부서 코드에 따라 필터링된 출고전표 목록 반환
-      return this.vouchers.filter(voucher => voucher.deptCode === this.userDeptCode);
+      if (this.userDeptCode === 'D04') {
+        // 사용자 부서 코드가 'D04'인 경우 전체 출고전표 목록 반환
+        return this.vouchers;
+      } else {
+        // 그렇지 않은 경우 사용자 부서 코드에 따라 필터링된 출고전표 목록 반환
+        return this.vouchers.filter(voucher => voucher.deptCode === this.userDeptCode);
+      }
     },
     uniqueVouchers() {
       // 중복 제거된 유니크 출고전표 목록 생성
       const unique = {};
-      this.activeVouchers.forEach((voucher) => {
+      this.filteredVouchers.forEach((voucher) => {
         if (!unique[voucher.voucId]) {
           unique[voucher.voucId] = [];
         }
@@ -165,9 +154,9 @@ export default {
         console.log(response)
 
         this.activeVouchers = this.filteredVouchers.filter(voucher => {
-        const statusFilter = this.selectedStatus ? voucher.approvalStatus.trim() === this.selectedStatus : true;
-        return voucher.deptCode === this.userDeptCode && statusFilter;
-      });
+          const statusFilter = this.selectedStatus ? voucher.approvalStatus.trim() === this.selectedStatus : true;
+          return voucher.deptCode === this.userDeptCode && statusFilter;
+        });
       } catch (error) {
         console.error("Error fetching vouchers:", error);
       }
@@ -181,10 +170,10 @@ export default {
     },
     async searchVouchers() {
       this.activeVouchers = this.filteredVouchers.filter(voucher => {
-        const fieldFilter = this.selectedSearchCondition && this.filter 
-        ? voucher[this.selectedSearchCondition].toString().includes(this.filter) : true;
+        const fieldFilter = this.selectedSearchCondition && this.filter
+          ? voucher[this.selectedSearchCondition].toString().includes(this.filter) : true;
         const statusFilter = this.selectedStatus ? voucher.approvalStatus.trim() === this.selectedStatus : true;
-        
+
         return fieldFilter && statusFilter;
       });
     },
@@ -222,14 +211,17 @@ export default {
 }
 
 .va-table thead th {
-  background-color: #DEE5F2; /* 짙은 파란색 배경 */
-  font-weight: bold; /* 글자 굵게 */
+  background-color: #DEE5F2;
+  /* 짙은 파란색 배경 */
+  font-weight: bold;
+  /* 글자 굵게 */
   border: 2px solid #cccccc;
-  border-bottom: 2px solid #cccccc; /* 회색 테두리 */
+  border-bottom: 2px solid #cccccc;
+  /* 회색 테두리 */
   font-size: 15px;
 }
 
-.left-margin{
+.left-margin {
   margin-left: 5px;
 }
 </style>
