@@ -171,6 +171,8 @@ https://github.com/Team5-be01-Final-Project/.github/assets/148880521/5d08f08e-0d
 ### 거래처 별 판매가 등록, 수정, 삭제
 <br/>
 
+https://github.com/Team5-be01-Final-Project/.github/assets/148880521/c1fb03a9-0775-47f0-beab-5cfcc1ef8262
+
 - 거래처별 판매가 등록은 대표와 팀장만 가능하다.
 <br/>
 
@@ -178,6 +180,7 @@ https://github.com/Team5-be01-Final-Project/.github/assets/148880521/5d08f08e-0d
 <br/>
 
 - 대표와 팀장은 수정, 삭제가 가능하지만 사원은 불가능하다.
+<br/>
 
 ### 거래처 별 제품 조회
 <br/>
@@ -195,6 +198,8 @@ https://github.com/Team5-be01-Final-Project/.github/assets/148880521/5d08f08e-0d
 <div markdown="1">
 
 ### 재고 조회
+<br/>
+
 - 재고 조회는 현재 남아있는 재고를 조회하며 전 직원이 조회할 수 있다.
 <br/>
 
@@ -212,6 +217,8 @@ https://github.com/Team5-be01-Final-Project/.github/assets/148880521/5d08f08e-0d
 <div markdown="1">
 
 ### 전표 조회
+<br/>
+
 - 전표의 상태는 승인대기, 승인완료, 반려가 있다.
 - 모든 전표 목록은 전 직원이 조회할 수 있다.
 <br/>
@@ -220,6 +227,8 @@ https://github.com/Team5-be01-Final-Project/.github/assets/148880521/5d08f08e-0d
 <br/>
 
 ### 전표 등록
+<br/>
+
 - 전표 등록은 사원만 가능하다.
 - 일자별로 출고 전표를 등록 할 수 있다.
 <br/>
@@ -227,15 +236,24 @@ https://github.com/Team5-be01-Final-Project/.github/assets/148880521/5d08f08e-0d
 - 전표를 등록하면 승인 대기 상태가 된다.
 <br/>
 
-- 등록된 전표의 목록들은 전 사원이 조회가 가능하다.
-<br/>
+
 
 - 전표 등록 시 재고는 차감이 된다.
 <br/>
 
 ### 전표 승인 및 반려
+<br/>
+
 - 대표, 팀장만 전표 승인 및 반려 권한이 있으며 대기 상태의 출고전표를 승인 및 반려 할 수 있다.
 - 반려 시 전표 등록에 차감되었던 물품 수량은 재고로 재등록 된다.
+<br/>
+
+### 전표 조회
+<br/>
+
+![image](https://github.com/Team5-be01-Final-Project/Frontend/assets/149128094/89c6553f-ce79-4e82-8deb-49431d77b204)
+
+- 등록된 전표의 목록들은 전 사원이 조회가 가능하다.
 <br/>
 
 </div>
@@ -279,6 +297,10 @@ https://github.com/Team5-be01-Final-Project/.github/assets/148880521/5d08f08e-0d
 <div markdown="1">
 
 ### 인센티브 현황
+<br/>
+
+![image](https://github.com/Team5-be01-Final-Project/Frontend/assets/149128094/91b57341-15b8-450c-adb0-31c7c2d1db94)
+
 - 대표는 전 직원에 대한 인센티브 조회가 가능하다.
 - 팀장인 본인 팀원에 대한 인센티브 조회가 가능하다.
 - 사원은 이 메뉴를 이용할 수 없다.
