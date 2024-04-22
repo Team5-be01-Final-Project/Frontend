@@ -172,7 +172,7 @@ const refreshData = debounce(async () => {
 
 .refresh-button {
   position: absolute;
-  right: 10px; /* 컨테이너의 우측에 위치 */
+  right: 50px; /* 컨테이너의 우측에 위치 */
   background-color: #f5f5f5; /* 배경색 설정 */
   color: black; /* 버튼 텍스트 색상 */
   padding: 10px 10px; /* 패딩 */
