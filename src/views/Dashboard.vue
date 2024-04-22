@@ -186,6 +186,7 @@ const refreshData = debounce(async () => {
 .update {
   text-align: right;
   font-size: 14px;
+  margin-top: 10px;
 }
 
 </style>
