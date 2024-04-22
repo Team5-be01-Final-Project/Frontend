@@ -215,29 +215,24 @@ https://github.com/Team5-be01-Final-Project/.github/assets/148880521/9138c2b7-58
 ![image](https://github.com/Team5-be01-Final-Project/Frontend/assets/149128094/89c6553f-ce79-4e82-8deb-49431d77b204)
 - 전표의 상태는 승인대기, 승인완료, 반려가 있다.
 - 모든 전표 목록은 전 직원이 조회할 수 있다.
-<br/>
-
 - 해당 전표 조회는 전표를 생성한 팀만 조회가 가능하다.
 <br/>
 
 ### 전표 등록
 <br/>
 
+https://github.com/Team5-be01-Final-Project/.github/assets/148880521/da65893d-490e-4d44-a0b1-3a1fb4efca1c
 - 전표 등록은 사원만 가능하다.
 - 일자별로 출고 전표를 등록 할 수 있다.
-<br/>
-
-- 전표를 등록하면 승인 대기 상태가 된다.
-<br/>
-
-
-
 - 전표 등록 시 재고는 차감이 된다.
+- 전표를 등록하면 승인 대기 상태가 된다.
+
 <br/>
 
 ### 전표 승인 및 반려
 <br/>
 
+https://github.com/Team5-be01-Final-Project/.github/assets/148880521/14bf4e52-daaf-42c3-a2de-29e2e1daf48d
 - 대표, 팀장만 전표 승인 및 반려 권한이 있으며 대기 상태의 출고전표를 승인 및 반려 할 수 있다.
 - 반려 시 전표 등록에 차감되었던 물품 수량은 재고로 재등록 된다.
 <br/>
@@ -251,7 +246,9 @@ https://github.com/Team5-be01-Final-Project/.github/assets/148880521/9138c2b7-58
 <summary> ⭐ <b>판매 관리</b>  </summary>
 <div markdown="1">
 
-### 매출 
+### 매출
+<br/>
+
 - 제품별로 판매 현황을 테이블로 조회할 수 있다.
 - 사원은 제품명, 판매가, 수량, 매출액 만 확인할 수 있다.
 <br/>
@@ -268,10 +265,14 @@ https://github.com/Team5-be01-Final-Project/.github/assets/148880521/9138c2b7-58
 <div markdown="1">
 
 ### 거래처 조회
+<br/>
+
 - 매출 거래처 목록을 조회 할 수 있다.
 <br/>
 
 ### 거래처 등록 및 수정
+<br/>
+
 - 대표, 팀장만 매출 거래처 등록, 수정과 삭제 권한이 있으며 사원은 등록, 수정 삭제 기능을 이용할 수 없다.
 <br/>
 
@@ -328,22 +329,32 @@ ___
 ### 🧾 릴리즈 내역
 <br>
 
-[Release v6.0.0](https://github.com/Team5-be01-Final-Project/Frontend2/releases/tag/v6.0.0)
+
+[Release v7.0.0](https://github.com/Team5-be01-Final-Project/Frontend/releases/tag/v7.0.0)
 <br>
-  - 버그 수정 및 기타 디자인 수정
+
+- 화면 권한 수정
+- 버그 수정 및 기타 디자인 수정
     
 <details>
 <summary>  릴리즈 모음  </summary>
 <div markdown="1">
   
+- [Release v6.0.0](https://github.com/Team5-be01-Final-Project/Frontend2/releases/tag/v6.0.0)
+  - 버그 수정 및 기타 디자인 수정
+
 - [Release v5.0.0](https://github.com/Team5-be01-Final-Project/Frontend2/releases/tag/v5.0.0)
   - 디자인 및 기타 오류 수정
+
 - [Release v4.0.0](https://github.com/Team5-be01-Final-Project/Frontend2/releases/tag/v4.0.0)
   - 권한 관리 추가.
+
 - [Release v3.0.0](https://github.com/Team5-be01-Final-Project/Frontend2/releases/tag/v3.0.0)
   - 대시보드, My영업 및 매출 관리 기능 추가.
+
 - [Release v2.0.0](https://github.com/Team5-be01-Final-Project/Frontend2/releases/tag/v2.0.0)
   - Docker, Nginx 사용, npm run build로 수정 및 쿠키 들어오는거 확인
+
 - [Release v1.0.0](https://github.com/Team5-be01-Final-Project/Frontend2/releases/tag/v1.0.0)
   - Github Flow를 통해 EC2로 CI/CD 구축. (Docker 및 nginx는 사용하지 않고, npm run dev로 실행 확인)
 
