@@ -105,9 +105,9 @@ const client = ref({
 });
 
 const classes = ref([
-  { text: '1등급', value: 1 },
-  { text: '2등급', value: 2 },
-  { text: '3등급', value: 3 },
+  { text: '1차 병원', value: 1 },
+  { text: '2차 병원', value: 2 },
+  { text: '3차 병원', value: 3 },
 ]);
 
 const employees = ref([]);
