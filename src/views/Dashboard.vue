@@ -86,7 +86,7 @@ const refreshData = debounce(async () => {
 
 <style scoped>
 .dashboard-container {
-  width: 100vw;
+  width: calc(100vw - 40px); /* 총 가로 패딩을 뺀 너비 */
   margin: 0;
   margin-top: 60px;
   /* 네비게이션 바 아래로 60px 여백 추가 */
@@ -151,6 +151,8 @@ const refreshData = debounce(async () => {
 
 .va-table {
   min-width: 1000px;
+  /* width: 100%; 테이블의 너비를 부모 컨테이너에 맞게 조정 */
+  /* max-width: 100%; 테이블의 최대 너비를 부모 컨테이너의 너비로 제한 */
 }
 
 /* 컴포넌트 테두리 스타일 및 box-sizing 적용 */
