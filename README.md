@@ -336,8 +336,8 @@ https://github.com/Team5-be01-Final-Project/.github/assets/148880521/5ab69fd8-0d
 <br/>
 
 ---
-### 📝Changelog.md
-[changelog.md](https://github.com/Team5-be01-Final-Project/Frontend/blob/dev/Changelog.md)
+### 📝 Changelog
+[Changelog.md](https://github.com/Team5-be01-Final-Project/Frontend/blob/dev/Changelog.md)
 ___
 ### 🧾 릴리즈 내역
 <br>
