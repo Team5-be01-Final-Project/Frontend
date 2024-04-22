@@ -82,7 +82,8 @@ https://github.com/T2-Papillon/Main/assets/148880521/4cfb8e7f-c529-4259-8ce5-33b
 <br>
 
 ### 대시 보드
-  
+<br/>
+
 https://github.com/T2-Papillon/Main/assets/148880521/d3202842-64e8-4f0b-8f74-3108f1fc44b8
 
 #### 이달의 거래처
@@ -143,6 +144,10 @@ https://github.com/Team5-be01-Final-Project/.github/assets/148880521/5d08f08e-0d
 <div markdown="1">
 
 ### 이상 온도 알림
+<br/>
+
+![image](https://github.com/Team5-be01-Final-Project/Frontend/assets/149128094/c8c3a92f-a43b-4c29-85d1-5c6d116ddb2d)
+
 - 온도가 특정 범위(냉장(2∼8℃))를 벗어나면 관리자(알림대상자) 이메일로 알림을 전송한다.
 - 관리자(알림대상자)는 알림 로그 목록을 조회할 수 있다.
 
@@ -155,20 +160,31 @@ https://github.com/Team5-be01-Final-Project/.github/assets/148880521/5d08f08e-0d
 <div markdown="1">
 
 ### 제품 조회
-- 제품 목록 조회 시 대표, 팀장의 경우 모두 조회할 수 있지만 사원은 단가를 조회할 수 없다.
 <br/>
 
+![image](https://github.com/Team5-be01-Final-Project/.github/assets/148880521/101f18e3-caae-491d-afd5-3c47b5fc10e9)
+![image](https://github.com/Team5-be01-Final-Project/.github/assets/148880521/8e48d034-0375-4a04-aeaa-13e1076b833f)
+- 제품 목록 조회 시 대표, 팀장의 경우 모두 조회할 수 있지만 사원은 단가를 조회할 수 없다.
 - 특정 거래처에 대한 제품을 검색하여 조회할 수 있다.
 <br/>
 
-### 제품 등록, 수정, 삭제
-- 거래처별 판매 목록에 등록은 대표와 팀장만 가능하다.
+### 거래처 별 판매가 등록, 수정, 삭제
+<br/>
+
+- 거래처별 판매가 등록은 대표와 팀장만 가능하다.
 <br/>
 
 - 거래처에 중복된 조건의 제품은 등록이 불가능하다.
 <br/>
 
 - 대표와 팀장은 수정, 삭제가 가능하지만 사원은 불가능하다.
+
+### 거래처 별 제품 조회
+<br/>
+
+![image](https://github.com/Team5-be01-Final-Project/Frontend/assets/149128094/58df5d28-80d8-412c-8786-721decd80870)
+
+- 거래처별 제품을 모든 사원이 조회가 가능하다.
 
 </div>
 </details>
