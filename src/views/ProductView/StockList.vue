@@ -23,7 +23,8 @@
         <refresh-button class="left-margin"/>
         <VaButton v-if ="canRegisterStock" @click="openRegisterModal" class="register-button">재고 등록</VaButton>
       </div>
-      <div class="right-align">단위 : 개 / 원</div>
+      <div v-if ="canRegisterStock" class="right-align">단위 : 개 / 원</div>
+      <div v-else="canRegisterStock" class="right-align">단위 : 개 </div>
       <div class="va-table-responsive">
         <table class="va-table va-table--hoverable full-width">
           <thead>
@@ -31,7 +32,7 @@
               <th class="text-center w-aaa">품목기준코드</th>
               <th class="text-center w-bbb">제품명</th>
               <th class="text-center w-aaa">재고</th>
-              <th class="text-center w-aaa">단가</th>
+              <th v-if ="canRegisterStock" class="text-center w-aaa">단가</th>
             </tr>
           </thead>
           <tbody>
@@ -39,7 +40,7 @@
               <td class="text-center">{{ stock.proCode }}</td>
               <td>{{ stock.proName }}</td>
               <td class="text-right">{{ formatNumberWithCommas(stock.stoAmo) }}</td>
-              <td class="text-right">{{ formatPrice(stock.proUnit) }}</td>
+              <td  v-if ="canRegisterStock" class="text-right">{{ formatPrice(stock.proUnit) }}</td>
             </tr>
           </tbody>
         </table>
