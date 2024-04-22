@@ -20,7 +20,7 @@
           </div>
           <div class="form-group">
             <label for="stoAmo">재고수량</label>
-            <input type="number" id="stoAmo" v-model="stoAmo" required>
+            <input type="number" id="stoAmo" v-model="stoAmo" min="0" required>
           </div>
           <div class="form-group button-group">
             <button type="submit" class="submit-button">등록</button>
