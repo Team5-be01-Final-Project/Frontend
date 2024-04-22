@@ -342,17 +342,12 @@ ___
 ### 🧾 릴리즈 내역
 <br>
 
-<<<<<<< HEAD
-- [Release v7.0.0](https://github.com/Team5-be01-Final-Project/Frontend2/releases/tag/v7.0.0)
-  - 최종 배포
-=======
 
 [Release v7.0.0](https://github.com/Team5-be01-Final-Project/Frontend/releases/tag/v7.0.0)
 <br>
 
 - 화면 권한 수정
 - 버그 수정 및 기타 디자인 수정
->>>>>>> dev
     
 <details>
 <summary>  릴리즈 모음  </summary>
