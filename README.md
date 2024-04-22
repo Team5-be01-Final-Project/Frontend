@@ -100,6 +100,8 @@ https://github.com/T2-Papillon/Main/assets/148880521/d3202842-64e8-4f0b-8f74-310
 
 #### 창고/차량 온도 조회
 
+![image](https://github.com/Team5-be01-Final-Project/.github/assets/150888333/77e43f6c-4703-4794-be95-76ea68437052)
+
 - 창고의 온도를 대시보드에서 확인할 수 있다.
 - 각 차량 별로 온도를 그래프를 통해 대시보드에서 확인할 수 있다.
 - 하단에 마지막 업데이트 시간이 표기된다.
@@ -251,10 +253,12 @@ https://github.com/Team5-be01-Final-Project/.github/assets/148880521/14bf4e52-da
 ### 매출
 <br/>
 
+https://github.com/Team5-be01-Final-Project/.github/assets/148880521/329ea5fd-404b-4fa9-bedf-316d2cf4da24
 - 제품별로 판매 현황을 테이블로 조회할 수 있다.
 - 사원은 제품명, 판매가, 수량, 매출액 만 확인할 수 있다.
 <br/>
 
+https://github.com/Team5-be01-Final-Project/.github/assets/148880521/b0ba662c-4f62-4ee3-b260-cbd712007350
 - 거래처별로 판매 현황을 테이블로 조회할 수 있다.
 - 사원은 제품명, 판매가, 수량, 매출액 만 확인할 수 있다.
 
@@ -268,6 +272,8 @@ https://github.com/Team5-be01-Final-Project/.github/assets/148880521/14bf4e52-da
 
 ### 거래처 조회
 <br/>
+
+![image](https://github.com/Team5-be01-Final-Project/Frontend/assets/149128094/1cb2c41e-1988-4521-91f3-18a63bf6c4de)
 
 - 매출 거래처 목록을 조회 할 수 있다.
 <br/>
