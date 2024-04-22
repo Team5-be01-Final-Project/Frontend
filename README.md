@@ -31,6 +31,8 @@ $ npm install @fortawesome/fontawesome-free
 $ npm install xlsx file-saver
 $ npm install lodash-es
 $ npm install autonumeric
+$ npm install exceljs
+$ npm install file-saver
 ```
 
 ___
