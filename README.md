@@ -171,14 +171,9 @@ https://github.com/Team5-be01-Final-Project/.github/assets/148880521/5d08f08e-0d
 ### 거래처 별 판매가 등록, 수정, 삭제
 <br/>
 
-https://github.com/Team5-be01-Final-Project/.github/assets/148880521/c1fb03a9-0775-47f0-beab-5cfcc1ef8262
-
+[https://github.com/Team5-be01-Final-Project/.github/assets/148880521/c1fb03a9-0775-47f0-beab-5cfcc1ef8262](https://github.com/Team5-be01-Final-Project/.github/assets/148880521/0f5877cf-6171-4694-84d4-a704c26825b3)
 - 거래처별 판매가 등록은 대표와 팀장만 가능하다.
-<br/>
-
 - 거래처에 중복된 조건의 제품은 등록이 불가능하다.
-<br/>
-
 - 대표와 팀장은 수정, 삭제가 가능하지만 사원은 불가능하다.
 <br/>
 
@@ -200,12 +195,10 @@ https://github.com/Team5-be01-Final-Project/.github/assets/148880521/c1fb03a9-07
 ### 재고 조회
 <br/>
 
+https://github.com/Team5-be01-Final-Project/.github/assets/148880521/9138c2b7-58e8-48d6-9161-d30310e312e6
+
 - 재고 조회는 현재 남아있는 재고를 조회하며 전 직원이 조회할 수 있다.
-<br/>
-
 - 재고를 등록하기 위해서 특정 제품을 검색할 수 있다.
-<br/>
-
 - 재고 등록은 대표와 팀장만 가능하다. 
 
 </div>
