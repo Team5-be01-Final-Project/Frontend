@@ -50,12 +50,20 @@
   }
 }
 
+/* 폰트 추가 */
+@font-face {
+  font-family: 'NanumGothic';
+  src: url('/src/assets/fonts/08HanwhaGothicT.ttf') format('truetype');
+}
+
+/* 기존 스타일에서 폰트 적용 */
 *,
 *::before,
 *::after {
+  font-family: 'NanumGothic', sans-serif;
   box-sizing: border-box;
   margin: 0;
-  font-weight: normal;
+  font-weight: bold;
 }
 
 body {
@@ -66,20 +74,8 @@ body {
     color 0.5s,
     background-color 0.5s;
   line-height: 1.6;
-  font-family:
-    Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    'Fira Sans',
-    'Droid Sans',
-    'Helvetica Neue',
-    sans-serif;
-  font-size: 15px;
+  font-family: 'NanumGothic', sans-serif;
+  font-size: 13px;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

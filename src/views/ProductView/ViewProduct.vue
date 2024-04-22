@@ -12,7 +12,7 @@
         <h3 class="va-h3">판매 제품 조회</h3>
         <div class="grid md:grid-cols-3 gap-6 mb-6">
           <VaSelect
-            v-model="selectedField"
+            v-model="selectedSearchCondition"
             placeholder="검색 조건"
             :options="[
               { text: '제품명', value: 'proName' },
@@ -22,7 +22,7 @@
             ]"
             value-by="value" style="margin-right: 5px;"
           />
-          <VaInput v-model="filter" placeholder="검색어 입력" class="w-full" style="margin-right: 5px;" />
+          <VaInput v-model="filter" :disabled="!selectedSearchCondition" placeholder="검색어 입력" class="w-full" style="margin-right: 5px;" />
           <VaButton @click="filterProducts">검색</VaButton>
           <refresh-button class="left-margin"/>
         </div>
@@ -37,7 +37,7 @@
               <th>주성분</th>
               <th>ATC코드</th>
               <th>분류</th>
-              <th>단가</th>
+              <th v-if="isAuthorized">단가</th>
             </tr>
           </thead>
           <tbody>
@@ -52,10 +52,9 @@
               <td>{{ product.proIngre }}</td>
               <td>{{ product.proAtc }}</td>
               <td>{{ product.proCat }}</td>
-              <td class="money-right" v-if="isAuthorized">
+              <td  class="money-right" v-if="isAuthorized">
                 {{ formatNumberWithCommas(product.proUnit) }}
               </td>
-              <td class="money-right" v-else>-</td>
             </tr>
           </tbody>
         </table>
@@ -87,7 +86,7 @@ export default {
     return {
       products: [], // 모든 제품 목록
       filteredProducts: [], // 필터링된 제품 목록
-      selectedField: null, // VaSelect에서 선택한 필드
+      selectedSearchCondition: null, // VaSelect에서 선택한 필드
       filter: "", // VaInput의 필터 값
       currentPage: 1, // 현재 페이지 번호
       perPage: 20, // 페이지당 표시할 항목 수
@@ -131,8 +130,8 @@ export default {
         // 선택한 필드에 따라 제품을 필터링
         this.filteredProducts = this.products.filter((product) => {
           return (
-            product[this.selectedField] &&
-            product[this.selectedField]
+            product[this.selectedSearchCondition] &&
+            product[this.selectedSearchCondition]
               .toLowerCase()
               .includes(this.filter.toLowerCase())
           );

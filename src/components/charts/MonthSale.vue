@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h4>월별 매출 현황</h4>
+    <h4>총 매출 현황</h4>
     <div class="chart-container">
       <canvas ref="monthlySalesChartRef"></canvas>
     </div>
@@ -36,8 +36,6 @@ const fetchMonthlySales = async () => {
   }
 };
 
-
-
 const fillMissingMonths = (monthlySalesData, year) => {
   const filledData = [];
   for (let month = 1; month <= 12; month++) {
@@ -68,20 +66,20 @@ const updateChart = (filledData) => {
       labels: labels,
       datasets: [
         {
-          type: 'bar',
-          label: '매출액(100만)',
-          data: salesData,
-          backgroundColor: 'rgba(255, 99, 132, 0.2)',
-          borderColor: 'rgba(255, 99, 132, 1)',
-          borderWidth: 1
-        },
-        {
           type: 'line',
           label: '매출이익(100만)',
           data: grossProfitData,
           fill: false,
-          borderColor: 'rgb(54, 162, 235)',
+          borderColor: 'rgba(135, 206, 250, 1)', // 파스텔 블루
           tension: 0.1
+        },
+        {
+          type: 'bar',
+          label: '매출액(100만)',
+          data: salesData,
+          backgroundColor: 'rgba(255, 182, 193, 0.5)', // 파스텔 레드
+          borderColor: 'rgba(255, 182, 193, 1)',
+          borderWidth: 0
         }
       ]
     },
@@ -89,30 +87,39 @@ const updateChart = (filledData) => {
       scales: {
         y: {
           beginAtZero: true,
-
+          grid: {
+            display: false
+          }
+        },
+        x: {
+          grid: {
+            display: false
+          }
         }
       },
       responsive: true,
-      maintainAspectRatio: false
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          align: 'end'
+        }
+      }
     }
   });
 };
 
 onMounted(fetchMonthlySales);
-
 watch(selectedYear, fetchMonthlySales);
 </script>
 
 <style>
 .chart-container {
-  height: 480px;
-  /* 또는 적절한 높이로 설정 */
-  width: 800x;
+  height: 480px; /* 또는 적절한 높이로 설정 */
+  width: 100%;
   margin-top: 20px;
 }
 
 h4 {
-  font-size: 25px;
-  /* h4 태그의 폰트 사이즈를 키움 */
+  font-size: 20px; /* h4 태그의 폰트 사이즈를 키움 */
 }
 </style>

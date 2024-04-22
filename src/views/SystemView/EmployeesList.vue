@@ -30,6 +30,7 @@
           />
           <VaInput
             v-model="searchText"
+            :disabled="!selectedSearchCondition"
             placeholder="검색어 입력"
             class="w-full"
             style="margin-right: 5px"

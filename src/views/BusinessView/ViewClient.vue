@@ -14,7 +14,7 @@
           style="margin-bottom: 25px"
         >
           <VaSelect
-            v-model="selectedField"
+            v-model="selectedSearchCondition"
             placeholder="검색 조건"
             :options="searchOptions"
             value-by="value"
@@ -22,12 +22,13 @@
           />
           <VaInput
             v-model="searchKeyword"
+            :disabled="!selectedSearchCondition"
             placeholder="검색어 입력"
             class="w-full search-input"
             style="margin-right: 5px"
           />
           <VaButton @click="searchClients" class="search-button">검색</VaButton>
-          <refresh-button class="left-margin"/>
+          <refresh-button class="left-margin" />
         </div>
         <table class="va-table va-table--hoverable full-width">
           <thead>
@@ -41,7 +42,7 @@
               <th>담당자</th>
               <th>담당자 연락처</th>
               <th>담당 사원</th>
-              <th>삭제</th>
+              <th v-if="canDeleteClient">삭제</th>
             </tr>
           </thead>
           <tbody>
@@ -63,9 +64,11 @@
               <td style="text-align: center">{{ client.clientEmp }}</td>
               <td style="text-align: center">{{ client.clientEmpTel }}</td>
               <td style="text-align: center">{{ client.empName }}</td>
-              <td class="index-center">
+              <td v-if="canDeleteClient" class="index-center">
                 <VaButton
-                preset="primary" color="danger" class="mr-6 mb-2"
+                  preset="primary"
+                  color="danger"
+                  class="mr-6 mb-2"
                   @click="deleteClient(client.clientCode)"
                   v-if="canDeleteClient"
                   ><va-icon name="delete"
@@ -100,13 +103,12 @@ import RefreshButton from "@/components/RefreshButton.vue";
 const router = useRouter();
 const clients = ref([]); // 전체 거래처 목록
 const searchResults = ref([]); // 검색 결과 목록
-const selectedField = ref(null); // 검색할 필드
+const selectedSearchCondition = ref(null); // 검색할 필드
 const searchKeyword = ref(""); // 검색어
 const currentPage = ref(1); // 현재 페이지
 const perPage = ref(10); // 페이지당 보여줄 거래처 수
 
 const searchOptions = ref([
-  { text: "전체", value: "전체" },
   { text: "거래처명", value: "clientName" },
   { text: "병원 분류", value: "clientClass" },
   { text: "대표명", value: "clientBoss" },
@@ -194,15 +196,16 @@ function searchClients() {
   };
 
   // 검색 결과 필터링
-  if (selectedField.value && searchKeyword.value) {
-    if (selectedField.value === "clientClass") {
+  if (selectedSearchCondition.value && searchKeyword.value) {
+    if (selectedSearchCondition.value === "clientClass") {
       // 병원 분류로 검색하는 경우
       const classValue = Object.keys(classMapping).find((key) =>
         key.toLowerCase().includes(searchKeyword.value.toLowerCase())
       );
       if (classValue) {
         searchResults.value = clients.value.filter(
-          (client) => client[selectedField.value] === classMapping[classValue]
+          (client) =>
+            client[selectedSearchCondition.value] === classMapping[classValue]
         );
       } else {
         // 매핑되는 병원 분류가 없는 경우 검색 결과 없음
@@ -211,7 +214,7 @@ function searchClients() {
     } else {
       // 그 외 필드로 검색하는 경우
       searchResults.value = clients.value.filter((client) =>
-        String(client[selectedField.value])
+        String(client[selectedSearchCondition.value])
           .toLowerCase()
           .includes(searchKeyword.value.toLowerCase())
       );
@@ -223,13 +226,6 @@ function searchClients() {
 
   currentPage.value = 1; // 검색 후 현재 페이지를 1로 초기화
 }
-
-watch(selectedField, (newValue) => {
-  // "전체"가 선택되었을 때 검색어 입력란을 초기화합니다.
-  if (newValue === "전체") {
-    searchKeyword.value = "";
-  }
-});
 
 onMounted(() => {
   fetchClients();
@@ -278,19 +274,19 @@ onMounted(() => {
 }
 
 .va-table thead th {
-  background-color: #DEE5F2; /* 짙은 파란색 배경 */
+  background-color: #dee5f2; /* 짙은 파란색 배경 */
   font-weight: bold; /* 글자 굵게 */
   border: 2px solid #cccccc;
   border-bottom: 2px solid #cccccc; /* 회색 테두리 */
   font-size: 13px;
 }
 
-.left-margin{
+.left-margin {
   margin-left: 5px;
 }
+
 td {
   vertical-align: middle !important; /* 값들 중간 정렬 */
-
 }
 
 </style>

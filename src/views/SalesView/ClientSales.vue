@@ -15,7 +15,7 @@
             <va-select v-model="selectedYear" :options="yearOption" placeholder="년도 선택" style="margin-right: 5px;" />
             <va-select v-model="selectedMonth" :options="monthOptions1" placeholder="월 선택" style="margin-right: 5px;" />
             <va-input v-model="clientNameFilter" placeholder="거래처명 검색" style="margin-right: 5px;" />
-            <va-button @click="filterSalesData">검색</va-button>
+            <va-button  @click="filterSalesData" >검색</va-button>
             <refresh-button class="left-margin" />
           </div>
           <ExcelExportButton class="export" :data="exportData" :headers="exportHeaders" file-name="거래처별 매출 현황.xlsx" />

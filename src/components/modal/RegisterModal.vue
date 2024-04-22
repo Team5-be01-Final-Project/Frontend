@@ -1,69 +1,75 @@
 <!-- RegisterModal.vue -->
 <template>
-  <div v-if="isVisible" class="modal-overlay">
-    <div class="modal-content">
-      <span class="close-btn" @click="closeModal">&times;</span>
-      <h2 class="modal-title">판매 제품 등록</h2>
-      <div>
-        <label for="client">거래처 선택</label>
-        <select v-model="selectedClient" id="client">
-          <option
-            v-for="client in clients"
-            :key="client.clientCode"
-            :value="client"
+  <transition name="modal" appear>
+    <div v-if="isVisible" class="modal-overlay">
+      <div class="modal-content">
+        <span class="close-btn" @click="closeModal">&times;</span>
+        <h2 class="modal-title">판매 제품 등록</h2>
+        <div>
+          <label for="client">거래처 선택</label>
+          <select v-model="selectedClient" id="client">
+            <option
+              v-for="client in clients"
+              :key="client.clientCode"
+              :value="client"
+            >
+              {{ client.clientName }}
+            </option>
+          </select>
+        </div>
+        <div>
+          <label for="product">제품 선택</label>
+          <select
+            v-model="selectedProduct"
+            id="product"
+            @change="handleProductChange"
           >
-            {{ client.clientName }}
-          </option>
-        </select>
-      </div>
-      <div>
-        <label for="product">제품 선택</label>
-        <select v-model="selectedProduct" id="product" @change="handleProductChange">
-          <option
-            v-for="product in products"
-            :key="product.proCode"
-            :value="product"
+            <option
+              v-for="product in products"
+              :key="product.proCode"
+              :value="product"
+            >
+              {{ product.proName }}
+            </option>
+          </select>
+        </div>
+        <div>
+          <label>단가</label>
+          <label class="label-name">{{
+            selectedProduct ? selectedProduct.proUnit : ""
+          }}</label>
+        </div>
+        <div>
+          <label for="salePrice">판매가</label>
+          <input
+            type="number"
+            v-model.number="salePrice"
+            id="salePrice"
+            class="full-width-input"
+            :min="selectedProduct ? selectedProduct.proUnit : ''"
+            @input="validatePrice"
+          />
+          <p :class="{ 'error-message': true, hidden: !showInvalidPriceError }">
+            판매가는 단가보다 높아야 합니다.
+          </p>
+        </div>
+        <div class="button-group">
+          <button
+            type="submit"
+            @click="registerProduct"
+            :disabled="isInvalidPrice"
+            class="submit-button"
           >
-            {{ product.proName }}
-          </option>
-        </select>
+            등록
+          </button>
+          <button type="button" @click="closeModal" class="cancel-button">
+            취소
+          </button>
+        </div>
+        <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
       </div>
-      <div>
-        <label>단가</label>
-        <label class="label-name">{{
-          selectedProduct ? selectedProduct.proUnit : ""
-        }}</label>
-      </div>
-      <div>
-        <label for="salePrice">판매가</label>
-        <input
-          type="number"
-          v-model.number="salePrice"
-          id="salePrice"
-          class="full-width-input"
-          :min="selectedProduct ? selectedProduct.proUnit : ''"
-          @input="validatePrice"
-        />
-        <p :class="{'error-message': true, 'hidden': !showInvalidPriceError}">
-          판매가는 단가보다 높아야 합니다.
-        </p>
-      </div>
-      <div class="button-group">
-        <button
-          type="submit"
-          @click="registerProduct"
-          :disabled="isInvalidPrice"
-          class="submit-button"
-        >
-          등록
-        </button>
-        <button type="button" @click="closeModal" class="cancel-button">
-          취소
-        </button>
-      </div>
-      <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
     </div>
-  </div>
+  </transition>
 </template>
   
 <script>
@@ -126,15 +132,19 @@ export default {
           } else {
             // 존재하지 않는 경우 등록 진행
             this.$emit("register", newPpc);
+            alert("제품 등록이 완료되었습니다.");
+            this.closeModal();
             this.resetForm();
           }
         })
         .catch((error) => {
           console.error("제품 등록 여부를 확인하는데 실패했습니다:", error);
           this.errorMessage = "제품 등록 여부를 확인하는데 실패했습니다.";
+          alert("제품 등록에 실패했습니다.");
         });
     },
-    handleProductChange() { // 다른 상품을 선택하면
+    handleProductChange() {
+      // 다른 상품을 선택하면
       this.salePrice = null; // 판매가 초기화
       this.showInvalidPriceError = false; // 가격 오류 메시지 표시 비활성화
     },
@@ -266,7 +276,8 @@ label {
   margin-top: 5px;
 }
 
-.hidden { /*에러 메시지 공간 예약*/
+.hidden {
+  /*에러 메시지 공간 예약*/
   visibility: hidden;
 }
 
@@ -324,5 +335,21 @@ label {
   background-color: #a5a5a5;
 }
 
+/* 모달 애니메이션 */
+.modal-enter-active,
+.modal-leave-active {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.modal-enter-from,
+.modal-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.modal-enter-to,
+.modal-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+}
 </style>
-  

@@ -1,7 +1,6 @@
 <!-- Dashboard.vue -->
 <template>
   <div class="dashboard-container">
-    <h3 class="va-h3">대시보드</h3>
     <div class="grid-top">
       <!-- POI 지도 컴포넌트 -->
       <div class="poi-map-container">
@@ -109,6 +108,7 @@ const refreshData = debounce(async () => {
   display: flex;
   flex-direction: column;
   gap: 0px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* 연도/월 선택 컨테이너 스타일 */
@@ -119,6 +119,7 @@ const refreshData = debounce(async () => {
 /* 차량 온도 막대 차트 컨테이너 스타일 */
 .car-temp-barchart-container {
   height: 300px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .warehouse-container {
@@ -145,6 +146,7 @@ const refreshData = debounce(async () => {
 .poi-container,
 .month-sale-container {
   height: 550px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .va-table {
@@ -162,6 +164,7 @@ const refreshData = debounce(async () => {
   padding: 10px;
   margin-bottom: 20px;
   box-sizing: border-box;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   /* 패딩과 테두리를 포함한 총 크기를 요소의 크기로 계산 */
 }
 
@@ -183,6 +186,7 @@ const refreshData = debounce(async () => {
 .update {
   text-align: right;
   font-size: 14px;
+  margin-top: 10px;
 }
 
 </style>

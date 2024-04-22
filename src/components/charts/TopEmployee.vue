@@ -2,17 +2,21 @@
 <template>
   <h4>이달의 최우수 사원</h4>
   <div class="top-employee">
-
     <!-- 최우수 사원 정보가 있을 경우 -->
     <div v-if="salesRankTopEmployee">
       <!-- 최우수 사원 사진 -->
-      <img :src="salesRankTopEmployee.empImg" alt="최우수 사원 사진" />
+      <div class="employee-image">
+        <img :src="salesRankTopEmployee.empImg" alt="최우수 사원 사진" />
+        <!-- <img src="crown.png" alt="1등 아이콘" class="crown-icon" /> -->
+      </div>
       <!-- 최우수 사원 이름과 부서 -->
-      <p>
+      <p class="employee-name">
         {{ salesRankTopEmployee.empName }} ({{ salesRankTopEmployee.deptName }})
       </p>
       <!-- 최우수 사원의 매출액 -->
-      <p>매출: {{ formatCurrency(salesRankTopEmployee.voucMonthSales) }}</p>
+      <p class="employee-sales">
+        매출 : {{ formatCurrency(salesRankTopEmployee.voucMonthSales) }}
+      </p>
     </div>
     <!-- 최우수 사원 정보가 없을 경우 -->
     <div v-else>
@@ -79,15 +83,23 @@ function formatCurrency(amount) {
 .top-employee {
   height: 450px;
   padding: 20px;
-  background-color: #f5f5f5;
-  border-radius: 4px;
+  background-color: #ffffff;
+  border: 2px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
   text-align: center;
-  /* 이미지를 중앙 정렬 */
   margin-top: 20px;
+  position: relative;
 }
 
 /* 최우수 사원 사진 스타일 */
-.top-employee img {
+.employee-image {
+  position: relative;
+  display: inline-block;
+}
+
+.employee-image img {
   width: 300px;
   height: 300px;
   object-fit: cover;
@@ -95,8 +107,26 @@ function formatCurrency(amount) {
   margin-bottom: 10px;
 }
 
+.crown-icon {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 80px;
+}
+
 h4 {
-  font-size: 25px;
-  /* h4 태그의 폰트 사이즈를 키움 */
+  font-size: 20px;
+}
+
+.employee-name {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.employee-sales {
+  font-size: 17px;
 }
 </style>

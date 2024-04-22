@@ -12,9 +12,10 @@
       <div class="grid grid-cols-12 gap-4 mb-6 items-center" style="margin-bottom: 25px">
         <VaSelect v-model="selectedStatus" placeholder="결재 상태" :options="statusOptions" value-by="value"
           class="col-span-2 filter-select" style="margin-right: 5px" />
-        <VaSelect v-model="selectedField" placeholder="검색 조건" :options="filterOptions" value-by="value"
+        <VaSelect v-model="selectedSearchCondition" placeholder="검색 조건" :options="filterOptions" value-by="value"
           class="col-span-4 filter-select" style="margin-right: 5px" />
-        <VaInput v-model="filter" placeholder="검색어 입력" class="col-span-6 search-input" style="margin-right: 5px" />
+        <VaInput v-model="filter" :disabled="!selectedSearchCondition" placeholder="검색어 입력" 
+          class="col-span-6 search-input" style="margin-right: 5px" />
         <VaButton @click="searchVouchers" class="search-button col-span-2">검색</VaButton>
         <refresh-button class="left-margin" />
 
@@ -25,7 +26,7 @@
           <tr>
             <th class="text-left" @click="sort('voucId')">
               전표번호
-              <span v-if="currentSort === 'voucId'">{{ currentSortDir === 'asc' ? '▲' : '▼' }}</span>
+              <span>{{ currentSort === 'voucId' ? (currentSortDir === 'asc' ? '▲' : '▼') : '▼' }}</span>
             </th>
             <th class="text-left">담당자</th>
             <th class="text-left">거래처명</th>
@@ -33,7 +34,7 @@
             <th class="text-left">결재상태</th>
             <th class="text-left" @click="sort('voucApproval')">
               결재일
-              <span v-if="currentSort === 'voucApproval'">{{ currentSortDir === 'asc' ? '▲' : '▼' }}</span>
+              <span>{{ currentSort === 'voucApproval' ? (currentSortDir === 'asc' ? '▲' : '▼') : '▼' }}</span>
             </th>
           </tr>
         </thead>
@@ -90,7 +91,7 @@ export default {
       vouchers: [], // 출고전표 목록을 저장할 배열
       currentPage: 1, // 현재 페이지 번호
       perPage: 20, // 페이지당 출고전표 개수
-      selectedField: null, // 사용자가 선택한 필터링 필드를 저장하는 변수
+      selectedSearchCondition: null, // 사용자가 선택한 필터링 필드를 저장하는 변수
       filter: "", // 사용자가 입력한 검색어를 저장하는 변수
       currentSort: 'voucId', // 현재 정렬 기준 컬럼
       currentSortDir: 'asc', // 현재 정렬 방향
@@ -107,6 +108,7 @@ export default {
         { text: "승인", value: "승인" },
         { text: "반려", value: "반려" },
       ],
+      selectedStatus: ""
     };
   },
   computed: {
@@ -190,8 +192,8 @@ export default {
       // 검색 조건에 맞는 출고전표를 조회하는 메서드입니다.
       try {
         const params = {};
-        if (this.selectedField && this.filter) {
-          params[this.selectedField] = this.filter;
+        if (this.selectedSearchCondition && this.filter) {
+          params[this.selectedSearchCondition] = this.filter;
         }
         const response = await axios.get("/vouchers/search", { params });
         this.vouchers = response.data;

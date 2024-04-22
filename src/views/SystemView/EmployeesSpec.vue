@@ -14,7 +14,7 @@
             { text: '이름', value: 'empName' },
             { text: '이메일', value: 'empEmail' },
           ]" value-by="value" style="margin-right: 5px" />
-          <VaInput v-model="searchText" placeholder="검색어 입력" class="w-full" style="margin-right: 5px" />
+          <VaInput v-model="searchText" :disabled="!selectedSearchCondition" placeholder="검색어 입력" class="w-full" style="margin-right: 5px" />
           <VaButton @click="fetchFilteredEmployees">검색</VaButton>
           <refresh-button class="left-margin" />
         </div>
@@ -39,7 +39,7 @@
                   class="employee-image" /><br>{{ employee.empName }}</td>
               <td style="text-align: center">{{ employee.posName }}</td>
               <td style="text-align: center">{{ employee.deptName }}</td>
-              <td>{{ employee.empTel }}</td>
+              <td style="text-align: center">{{ employee.empTel }}</td>
               <td style="text-align: center">{{ employee.empEmail }}</td>
               <td style="text-align: center">{{ employee.empStartDate }}</td>
               <td style="text-align: center">{{ employee.empEndDate }}</td>

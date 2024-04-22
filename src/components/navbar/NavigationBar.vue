@@ -60,17 +60,17 @@
 
     </template>
     <template #right>
-      <router-link to="/mysales" class="hidden sm:block">
-        <VaAvatar :src="empImg" />
+      <router-link to="/mysales" >
+        <VaAvatar style="height: auto; margin-top: 5px;" :src="empImg" />
       </router-link>
       <div class="right-section">
         <p>{{ empName }}님 안녕하세요!</p>
       </div>
       <VaButton preset="secondary" color="textPrimary" href="https://github.com/Team5-be01-Final-Project"
         target="_blank" aria-label="Visit github">
-        <VaIcon :component="VaIconGitHub" />
+        <img src="https://cdn.icon-icons.com/icons2/509/PNG/512/Github_icon-icons.com_49946.png" alt="GitHub Icon" />
       </VaButton>
-      <VaButton preset="primary" class="logout-button mb-2" @click="sitelogout"><VaIcon name="logout"/></VaButton>
+      <VaButton preset="primary" @click="sitelogout"><VaIcon name="logout"/></VaButton>
 
 
     </template>
@@ -83,7 +83,6 @@ import { defineComponent, ref, onMounted } from 'vue';
 import Cookies from 'js-cookie'; // js-cookie 임포트
 import { VaAvatar } from 'vuestic-ui'; // VaAvatar 컴포넌트 임포트
 import axios from 'axios';
-import VaIconGitHub from '@/components/icons/VaIconGitHub.vue';
 import { useRouter } from 'vue-router';
 
 const empName = ref('');
@@ -117,8 +116,14 @@ const sitelogout = async () => {
 </script>
 
 <style lang="scss" scoped>
+@font-face {
+  font-family: '05HanwhaGothicR';
+  src: url('/src/assets/fonts/05HanwhaGothicR.ttf') format('truetype');
+}
 .va-navbar {
   z-index: 2;
+  
+}
 
   @media screen and (max-width: 950px) {
     .left {
@@ -130,7 +135,7 @@ const sitelogout = async () => {
       justify-content: space-between;
     }
   }
-}
+
 
 .left {
   display: flex;
@@ -146,7 +151,11 @@ const sitelogout = async () => {
   }
 }
 
-
+img {
+  width: 50px;  /* 이미지의 너비 조정 */
+  height: auto; /* 이미지의 높이를 비율에 맞게 자동 조정 */
+  border-radius: 10px; /* 이미지의 모서리를 둥글게 처리 */
+}
 
 
 .icon-fade-enter-active,
@@ -160,6 +169,8 @@ const sitelogout = async () => {
 }
 
 .va-navbar__item {
+  font-family: '05HanwhaGothicR', sans-serif !important;
+  font-weight: normal;
   font-size: 18px; // Center 폰트 크기
   &:hover {
     // text-decoration: underline;
@@ -185,4 +196,6 @@ const sitelogout = async () => {
   margin-right: 20px; /* 로그아웃 버튼 우측 마진 설정 */
 }
 /* 추가적인 스타일링이 필요한 경우 여기에 추가 */
+
+
 </style>
