@@ -3,7 +3,7 @@ name: Deployaws
 on:
   push:
     branches:
-      - release/6.0.0
+      - release/7.0.0
   pull_request:
     types:
       - closed
@@ -11,7 +11,7 @@ on:
 jobs:
   deploy:
 #    if: github.event.pull_request.merged == true
-    environment: release/6.0.0
+    environment: release/7.0.0
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
