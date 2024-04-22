@@ -66,7 +66,10 @@ ___
 
 ### 로그인 / 로그아웃
 <br/>
-https://github.com/T2-Papillon/Main/assets/148880521/e8f569b2-d6bc-4f04-bb47-e2561da6f16b
+
+https://github.com/T2-Papillon/Main/assets/148880521/4cfb8e7f-c529-4259-8ce5-33bd960ca7bc
+
+
 <br>
 - DB에 저장되어있는 사번과 비밀번호로 로그인한다.
 - 퇴사자는 로그인할 수 없다.
