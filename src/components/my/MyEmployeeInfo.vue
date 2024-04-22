@@ -116,7 +116,7 @@ const props = defineProps({
 }
 
 h3 {
-  font-size: 20px;
+  font-size: 24px;
   /* h4 태그의 폰트 사이즈를 키움 */
 }
 </style>

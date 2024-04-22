@@ -170,7 +170,7 @@ img {
 
 .va-navbar__item {
   font-family: '05HanwhaGothicR', sans-serif !important;
-  font-weight: normal;
+  font-weight: bold;
   font-size: 18px; // Center 폰트 크기
   &:hover {
     // text-decoration: underline;
