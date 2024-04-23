@@ -26,7 +26,8 @@
           <VaButton @click="filterProducts">검색</VaButton>
           <refresh-button class="left-margin"/>
         </div>
-        <div class="right-align">단위 : 원</div>
+        <div v-if="isAuthorized" class="right-align">단위 : 원</div>
+        <div v-else="isAuthorized" ><br></div>
         <table class="va-table va-table--hoverable full-width">
           <thead>
             <tr>
