@@ -198,6 +198,12 @@ export default {
         const response = await axios.get("/vouchers/search", { params });
         this.vouchers = response.data;
 
+        const uniqueVouchers = new Map();
+        response.data.forEach(voucher => {
+          uniqueVouchers.set(voucher.voucId, voucher);
+        });
+        this.vouchers = Array.from(uniqueVouchers.values());
+
         // 상태 필터는 프론트엔드에서 적용
         if (this.selectedStatus) {
           this.vouchers = this.vouchers.filter(voucher =>
