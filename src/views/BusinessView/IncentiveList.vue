@@ -28,7 +28,7 @@
           style="margin-right: 5px"
         />
         <VaButton @click="applyFilter">검색</VaButton>
-        <refresh-button class="left-margin"/>
+        <refresh-button class="left-margin" />
       </div>
       <div class="right-align">단위 : 원</div>
       <table class="va-table va-table--hoverable full-width">
@@ -48,13 +48,16 @@
             <td class="money-right">
               {{ formatNumberWithCommas(item.voucMonthSales) }}
             </td>
-            <td style="text-align: center;">{{ item.salesRank }}</td>
+            <td style="text-align: center">{{ item.salesRank }}</td>
             <td class="money-right">
               {{ formatNumberWithCommas(item.incentive) }}
             </td>
           </tr>
         </tbody>
       </table>
+      <p colspan="5" style="text-align: right; font-weight: bold">
+        * 팀장은 0순위로 표기됩니다.
+      </p>
     </div>
   </div>
 </template>
@@ -197,14 +200,14 @@ td.money-right {
 }
 
 .va-table thead th {
-  background-color: #DEE5F2; /* 짙은 파란색 배경 */
+  background-color: #dee5f2; /* 짙은 파란색 배경 */
   font-weight: bold; /* 글자 굵게 */
   border: 2px solid #cccccc;
   border-bottom: 2px solid #cccccc; /* 회색 테두리 */
   font-size: 15px;
 }
 
-.left-margin{
+.left-margin {
   margin-left: 5px;
 }
 </style>
