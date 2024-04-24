@@ -58,8 +58,7 @@ ___
 ### 🎨 FrontEnd View
 <br/>
 
-### [화면 설계서](화면설계서 링크!!!!)
-
+### [화면 설계서](https://github.com/Team5-be01-Final-Project/.github/blob/main/Datas/%ED%99%94%EB%A9%B4%EC%84%A4%EA%B3%84%EC%84%9C%20team%205_v2.pdf)
 <br/>
 
 <details>
