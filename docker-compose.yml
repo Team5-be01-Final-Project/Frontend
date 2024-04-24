@@ -1,0 +1,10 @@
+version: '3'
+services:
+  nginx_server:
+    image: nginx:latest
+    volumes:
+      - ./dist:/usr/share/nginx/html
+      - ./nginx/conf/:/etc/nginx/conf.d
+    ports:
+      - "5174:80"
+    restart: always
