@@ -58,10 +58,6 @@ ___
 ### 🎨 FrontEnd View
 <br/>
 
-### [화면 설계서](화면설계서 링크!!!!)
-
-<br/>
-
 <details>
 <summary> ⭐ <b>로그인</b> </summary>
 <div markdown="1">
